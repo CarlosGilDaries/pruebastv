@@ -1,0 +1,116 @@
+.menu {
+  width: 100%;
+  padding-inline: 60px;
+  background-color: black;
+}
+
+.container {
+    max-width: 800px;
+    min-height: 72vh;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    color: #1a1a2e;
+    text-align: center;
+    margin-bottom: 2rem;
+    border-bottom: 2px solid #e94560;
+    padding-bottom: 0.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+select, input[type="number"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.ad-group {
+    background: #f9f9f9;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    border: 1px solid #eee;
+}
+
+.ad-group strong {
+    margin-left: 0.5rem;
+}
+
+.ad-options, .midroll-time, .skip-time {
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.error-message {
+    color: #f44336;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.success-message {
+    color: #4caf50;
+    font-size: 1rem;
+    margin-block: 1rem;
+    text-align: center;
+    padding: 1rem;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: 4px;
+    display: none;
+}
+
+.loading {
+    display: none;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+.loading-spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid #e94560;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.btn {
+    display: inline-block;
+    background-color: #e94560;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background-color: #16213e;
+}

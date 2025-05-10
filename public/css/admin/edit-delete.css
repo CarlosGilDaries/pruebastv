@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
+@import '/css/commons.css';
+@import '/css/nav.css';
+@import '/css/footer.css';
+@import '/css/admin/admin.css';
+
+#admin-panel {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    width: 90%;
+    margin: auto;
+}
+
+.admin-card {
+    cursor: auto;
+    padding: 9px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: calc(20% - 30px);
+    height: 190px;
+    gap: 5px;
+}
+
+.admin-card:hover {
+    transform: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+i {
+    transition: transform 0.3s ease;
+}
+
+i:hover {
+    transform: translateY(-5px);
+}
+
+.success-message {
+    color: #4caf50;
+    font-size: 1rem;
+    margin-block: 1rem;
+    text-align: center;
+    padding: 1rem;
+    background-color: rgba(76, 175, 80, 0.1);
+    border-radius: 4px;
+    display: none;
+}
+
+@media (max-width: 1210px) {
+    .admin-card {
+        width: calc(25% - 30px);
+    }
+}
+
+@media (max-width: 980px) {
+    .admin-card {
+        width: calc(33% - 30px);
+    }
+}
+
+@media (max-width: 750px) {
+    .admin-card {
+        width: calc(50% - 30px);
+    }
+}
+
+@media (max-width: 500px) {
+    .admin-card {
+        width: 100%;
+    }
+}

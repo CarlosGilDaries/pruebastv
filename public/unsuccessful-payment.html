@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/payment-error.css">
+    <link id="favicon" rel="icon" type="image/png" href="/images/stream-word.png">
+    <title>Pago no realizado | Streaming</title>
+</head>
+<body>
+    <div class="menu">
+        <nav>
+            <ul class="nav left-nav">
+                <li class="logo"><a href="/"><img src="/images/stream-word.png" alt="Streaming logo"></a></li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="nav right-nav">
+                <a id="logout-button"><button class="login-btn">Cerrar sesión</button></a>
+            </ul>
+        </nav>
+    </div>
+    
+    <main>
+        <div class="payment-error">
+            <div class="error-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#f44336" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                </svg>
+            </div>
+            <h1>¡Error en el pago!</h1>
+            <p class="error-message">No hemos podido procesar tu pago.</p>
+            
+            <div class="error-details">
+                <p>Si el problema persiste, contacta con nuestro servicio de atención al cliente.</p>
+            </div>
+            
+            <div class="error-actions">
+                <a href="/plans.html" class="error-primary-button">Reintentar</a>
+                <a href="/" class="error-primary-button">Ir a inicio</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="info">
+                <a href="#">Centro de ayuda</a>
+                <a href="#">¿Quiénes somos?</a>
+                <a href="#">Cambiar preferencias de cookies</a>
+            </div>
+            <ul class="icons">
+                <a href="#"><li><img src="/images/instagram-53.png" alt="Instagram"></li></a>
+                <a href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
+                <a href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
+                <a href="#"><li><img src="/images/github.png" alt="Github"></li></a> 
+            </ul>
+        </div>
+    </footer>
+
+    <script type="module" src="/js/payment.js"></script>
+</body>
+</html>

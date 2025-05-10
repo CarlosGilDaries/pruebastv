@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
+@import '/css/commons.css';
+
+body, html {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+}
+
+#my-video,
+#video-container,
+iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.vjs-big-play-button {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+}
