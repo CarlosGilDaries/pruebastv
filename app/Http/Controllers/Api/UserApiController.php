@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Gender;
 use App\Models\Order;
 use App\Models\Plan;
 use App\Models\User;
 use Creagia\Redsys\Enums\PayMethod;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 class UserApiController extends Controller
 {
@@ -34,14 +34,14 @@ class UserApiController extends Controller
             ], 500);
         }
 	}
-
-    /**
+	
+	/**
      * Display the specified resource.
      */
     public function show(string $id)
     {
         try {
-            $user = User::with(['gender', 'plan'])
+            $user = User::with(['plan'])
                 ->where('id', $id)->first();
             $plans = Plan::all();
 
@@ -77,8 +77,9 @@ class UserApiController extends Controller
             $dni = sanitize_html($request->input('dni'));
             $address = sanitize_html($request->input('address'));
             $city = sanitize_html($request->input('city'));
-            $country = sanitize_html($request->input('address'));
-            
+            $country = sanitize_html($request->input('country'));
+            $password = sanitize_html($request->input('password'));
+			
             $user->name = $name;
             $user->surnames = $surnames;
             $user->email = $email;
@@ -87,8 +88,11 @@ class UserApiController extends Controller
             $user->city = $city;
             $user->country = $country;
             $user->birthday = $request->input('birthday');
-            $user->plan = $request->input('plan');
+			if ($request->input('plan') != 0) {
+            	$user->plan_id = $request->input('plan');
+			}
             $user->gender = $request->input('gender');
+			$user->password = Hash::make($password);
             $user->save();
 
             return response()->json([
@@ -114,7 +118,7 @@ class UserApiController extends Controller
     {
         try {
             $id = $request->input('content_id');
-            $user = Plan::where('id', $id)->first();
+            $user = User::where('id', $id)->first();
             $user->delete();
 
             return response()->json([

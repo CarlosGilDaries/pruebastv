@@ -40,7 +40,7 @@ import { storageData } from '../modules/storageData.js';
         let tableHTML = `
 					<div class="add-button-container">
 						<h1><i class="fas fa-film"></i> Lista de Contenido</h1>
-						<button class="add-button add-content"><a href="/admin/add-content.html">Añadir Contenido</a></button>
+						<a href="/admin/add-content.html" class="add-button add-content">Añadir Contenido</a>
 					</div>
                     <div id="delete-content-success-message" class="success-message" style="margin-bottom: 20px;">
                       ¡Contenido eliminado con éxito!

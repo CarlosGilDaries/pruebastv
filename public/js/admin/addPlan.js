@@ -1,5 +1,4 @@
-(function () {
-  async function initAddPlan() {
+async function initAddPlan() {
     const backendAPI = 'https://pruebastv.kmc.es/api/';
 
     // Manejar envío del formulario
@@ -65,10 +64,5 @@
       });
   }
 
-  // Verificar si el DOM está listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAddPlan);
-  } else {
-    initAddPlan();
-  }
-})();
+initAddPlan();
+

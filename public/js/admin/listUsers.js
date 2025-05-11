@@ -10,7 +10,7 @@ async function listUsers() {
     const authToken = localStorage.getItem('auth_token');
 
     // Función para cargar y mostrar los datos
-    async function loadUsersList() {
+    async function loadContentList() {
       try {
         const response = await fetch(backendAPI, {
           headers: {
@@ -29,7 +29,7 @@ async function listUsers() {
 		let tableHTML = `
 			<div class="add-button-container">
 		 		<h1><i class="fas fa-user"></i> Lista de Usuarios</h1>
-				<button class="add-button add-user"><a href="/admin/add-user.html">Añadir Usuario</a></button>
+				<a href="/admin/add-user.html" class="add-button add-user">Añadir Usuario</a>
 			</div>
 		  <div id="delete-user-success-message" class="success-message" style="margin-bottom: 20px;">
 			¡Usuario eliminado con éxito!
@@ -51,8 +51,14 @@ async function listUsers() {
 			  </thead>
 			  <tbody>
 		`;
-
+		  
+		let plan;
 		users.forEach((user) => {
+			if (user.plan != null) {
+				plan = user.plan.name;
+			} else {
+				plan = 'N/A';
+			}
 		  tableHTML += `
 			<tr>
 			  <td>${user.id}</td>
@@ -62,7 +68,7 @@ async function listUsers() {
 			  <td>${user.country}</td>
 			  <td>${user.birthday}</td>
 			  <td>${user.gender}</td>
-			  <td>${user.plan.name}</td>
+			  <td>${plan}</td>
 			  <td>
 				<div class="actions-container">
 				  <button class="actions-button users-button">Acciones</button>
@@ -113,7 +119,7 @@ async function listUsers() {
     }
 
     // Cargar los datos al iniciar
-    loadUsersList();
+    loadContentList();
   }
 
 listUsers();

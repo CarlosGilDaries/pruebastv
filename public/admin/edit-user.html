@@ -66,6 +66,12 @@
                         <span>Usuarios</span>
                 	</li>
 				</a>
+				<a href="/admin/list-orders.html">
+                	<li data-content="list-orders">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Pedidos</span>
+                	</li>
+				</a>
             </ul>
         </aside>
 
@@ -75,7 +81,7 @@
                 <div class="container" id="edit-user">
                     <!-- Editar Usuario -->
                     <h1><i class="fas fa-pen"></i> Editar Usuario</h1>
-                    <div id="edit-plan-success-message" class="success-message">
+                    <div id="edit-user-success-message" class="success-message">
                         Usuario editado con éxito
                     </div>
                     <form id="edit-user-form">
@@ -148,15 +154,14 @@
                         <div class="form-group">
                             <label for="edit-user-password">Contraseña</label>
                             <input type="password" id="edit-user-password" name="password" required>
-                            <label>Contraseña</label>
+							<div id="edit-user-password-error" class="error-message"></div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="edit-user-password-confirmation">Plan</label>
+                            <label for="edit-user-password-confirmation">Confirmar contraseña</label>
                             <input type="password" id="edit-user-password-confirmation" name="password_confirmation" required>
-                            <label>Confirmar contraseña</label>
+							<div id="edit-user-password-confirmation-error" class="error-message"></div>
                         </div>
-                    </div>
 
                         <div class="loading" id="edit-user-loading">
                             <div class="loading-spinner"></div>
@@ -192,6 +197,6 @@
 
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src=""></script>
+    <script src="/js/admin/editUserForm.js"></script>
 </body>
 </html>

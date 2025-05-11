@@ -12,13 +12,6 @@ async function listPlans() {
 		
     // Cargar los datos al iniciar
     loadPlansList();
-	
-	// Escuchar cuando se muestra este contenido
-    document
-      .getElementById('list-plans')
-      .addEventListener('show', function () {
-        loadPlansList();
-    });
 
     // Función para cargar y mostrar los datos
     async function loadPlansList() {
@@ -37,7 +30,7 @@ async function listPlans() {
           let tableHTML = `
 		  			<div class="add-button-container">
                     	<h1><i class="fa-solid fa-euro-sign"></i> Lista de Planes</h1>
-						<button class="add-button add-plan"><a href="/admin/add-plan.html">Añadir Plan</a></button>
+						<a href="/admin/add-plan.html" class="add-button add-plan">Añadir Plan</a>
 					</div>
                     <div id="delete-plan-success-message" class="success-message" style="margin-bottom: 20px;">
                       ¡Plan eliminado con éxito!

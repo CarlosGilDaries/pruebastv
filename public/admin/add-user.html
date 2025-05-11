@@ -66,12 +66,114 @@
                         <span>Usuarios</span>
                 	</li>
 				</a>
+				<a href="/admin/list-orders.html">
+                	<li data-content="list-orders">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Pedidos</span>
+                	</li>
+				</a>
             </ul>
         </aside>
 
         <main class="admin-main">
             <div id="content-area">
                 
+				<div class="container" id="add-user">
+					<!-- Añadir Usuario -->
+					<h1><i class="fas fa-user"></i> Añadir Usuario</h1>
+					<div id="add-user-success-message" class="success-message">
+						Usuario añadido con éxito
+					</div>
+					<form id="add-user-form">
+						<div class="form-group">
+							<label for="add-user-name">Nombre</label>
+							<input type="text" id="add-user-name" name="name" required>
+							<div id="add-user-name-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-surnames">Apellidos</label>
+							<input type="text" id="add-user-surnames" name="name" required>
+							<div id="add-user-surnames-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-email">Email</label>
+							<input type="email" id="add-user-email" name="email" required>
+							<div id="add-user-email-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-dni">DNI</label>
+							<input type="text" id="add-user-dni" name="dni" required>
+							<div id="add-user-dni-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-address">Dirección</label>
+							<input type="text" id="add-user-address" name="address" required>
+							<div id="add-user-address-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-city">Ciudad</label>
+							<input type="text" id="add-user-city" name="city" required>
+							<div id="add-user-city-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-country">País</label>
+							<input type="text" id="add-user-country" name="country" required>
+							<div id="add-user-country-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-birthday">Fecha nacimiento</label>
+							<input type="date" id="add-user-birthday" name="birthday" required>
+							<div id="add-user-birthday-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-gender">Género</label>
+							<select id="add-user-gender" name="gender" required>
+								<option value="man">Hombre</option>
+								<option value="woman">Mujer</option>
+								<option value="non-binary">No binario</option>
+								<option value="others">Otros</option>
+							</select>
+							<div id="add-user-gender-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-plan">Plan</label>
+							<select id="add-user-plan" name="plan" required>
+							</select>
+							<div id="add-user-plan-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-password">Contraseña</label>
+							<input type="password" id="add-user-password" name="password" required>
+							<div id="add-user-password-error" class="error-message"></div>
+						</div>
+
+						<div class="form-group">
+							<label for="add-user-password-confirmation">Confirmar Contraseña</label>
+							<input type="password" id="add-user-password-confirmation" name="password_confirmation" required>
+							<div id="add-user-password-confirmation-error" class="error-message"></div>
+						</div>
+
+						<div class="loading" id="add-user-loading">
+							<div class="loading-spinner"></div>
+							<p>Añadiendo usuario, por favor espere...</p>
+						</div>
+
+						<button type="submit" class="btn">
+							<i class="fas fa-upload"></i> Añadir Usuario
+						</button>
+					</form>
+				</div>
+
             </div>
         </main>
 
@@ -95,6 +197,6 @@
 
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src=""></script>
+    <script src="/js/admin/addUser.js"></script>
 </body>
 </html>

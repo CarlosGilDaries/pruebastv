@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\RedsysController;
 use App\Http\Controllers\Api\UserSessionApiController;
 use App\Http\Controllers\Api\UserApiController;
+use App\Http\Controllers\Api\OrderController;
 //use Illuminate\Support\Facades\Storage;
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -33,7 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [LoginApiController::class, 'logout']);
     Route::get('user', [UserApiController::class, 'getCurrentUser']);
 	Route::get('users', [UserApicontroller::class, 'index']);
-    Route::get('user/{id}', [UserApiController::class, 'show']);
+	Route::get('user/{id}', [UserApiController::class, 'show']);
     Route::post('edit-user/{id}', [UserApiController::class, 'update']);
     Route::delete('delete-user', [UserApiController::class, 'destroy']);
 
@@ -67,6 +68,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('add-gender', [GenderController::class, 'store']);
     Route::post('edit-gender/{id}', [GenderController::class, 'update']);
     Route::delete('delete-gender', [GenderController::class, 'destroy']);
+	
+	Route::get('orders', [OrderController::class, 'index']);
+    Route::get('order/{id}', [OrderController::class, 'show']);
+    Route::post('add-order', [OrderController::class, 'store']);
+    Route::post('edit-order/{id}', [OrderController::class, 'update']);
+    Route::delete('delete-order', [OrderController::class, 'destroy']);
 });
 
 Route::post('register', [LoginApiController::class, 'register']);

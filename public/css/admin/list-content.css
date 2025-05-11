@@ -55,14 +55,14 @@
 .add-button {
 	background-color: #e94560;
 	font-weight: bold;
-}
-
-.add-button {
+	display: inline-block;
 	position: absolute;
 	top: 13px;
 	right: 40px;
 	margin: 8px; /* opcional, para que no esté pegado al borde */
-	height: 36px;
+	height: 32px;
+	width: 160px;
+	text-align: center;
 }
 
 #add-gender-button {

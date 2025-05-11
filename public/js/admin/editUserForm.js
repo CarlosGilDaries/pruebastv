@@ -53,8 +53,14 @@ async function editUserForm() {
                 "plan",
                 document.getElementById("edit-user-plan").value
             );
-
-            // No se envían los campos de contraseña
+		    formData.append(
+                "password",
+                document.getElementById("edit-user-password").value
+            );
+            formData.append(
+                "password_confirmation",
+                document.getElementById("edit-user-password-confirmation").value
+            );
 
             try {
                 const editResponse = await fetch(
@@ -72,11 +78,11 @@ async function editUserForm() {
 
                 if (data.success) {
                     document.getElementById(
-                        "edit-plan-success-message"
+                        "edit-user-success-message"
                     ).style.display = "block";
                     setTimeout(() => {
                         document.getElementById(
-                            "edit-plan-success-message"
+                            "edit-user-success-message"
                         ).style.display = "none";
                     }, 5000);
                     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -102,6 +108,7 @@ async function editUserForm() {
             const result = await response.json();
             const user = result.data.user;
             const plans = result.data.plans;
+			console.log(user);
 
             document.getElementById("edit-user-name").value = user.name || "";
             document.getElementById("edit-user-surnames").value =
@@ -116,10 +123,14 @@ async function editUserForm() {
             document.getElementById("edit-user-birthday").value =
                 user.birthday || "";
             document.getElementById("edit-user-gender").value =
-                user.gender?.gender || "";
+                user.gender || "";
 
             const planSelect = document.getElementById("edit-user-plan");
             planSelect.innerHTML = "";
+			const nulo = document.createElement("option");
+			nulo.value = 0;
+			nulo.text = 'Sin plan';
+			planSelect.appendChild(nulo);
             plans.forEach((plan) => {
                 const option = document.createElement("option");
                 option.value = plan.id;
