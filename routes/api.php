@@ -33,6 +33,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('logout', [LoginApiController::class, 'logout']);
     Route::get('user', [UserApiController::class, 'getCurrentUser']);
 	Route::get('users', [UserApicontroller::class, 'index']);
+    Route::get('user/{id}', [UserApiController::class, 'show']);
+    Route::post('edit-user/{id}', [UserApiController::class, 'update']);
+    Route::delete('delete-user', [UserApiController::class, 'destroy']);
 
     Route::post('check-active-streams', [ActiveStreamApiController::class, 'startStream']);
     Route::put('keep-alive', [ActiveStreamApiController::class, 'keepAlive']);

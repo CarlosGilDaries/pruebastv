@@ -9,38 +9,8 @@ async function listUsers() {
     const backendURL = 'https://pruebastv.kmc.es';
     const authToken = localStorage.getItem('auth_token');
 
-    // Función para mostrar/ocultar menús de acciones
-    function setupActionMenus() {
-      document.querySelectorAll('.users-button').forEach((button) => {
-        button.addEventListener('click', function (e) {
-          e.stopPropagation();
-          const menu = this.nextElementSibling;
-          const allMenus = document.querySelectorAll('.actions-menu');
-
-          // Cerrar otros menús abiertos
-          allMenus.forEach((m) => {
-            if (m !== menu) m.style.display = 'none';
-          });
-
-          // Alternar el menú actual
-          menu.style.display =
-            menu.style.display === 'block' ? 'none' : 'block';
-        });
-      });
-
-      // Cerrar menús al hacer clic en cualquier parte del documento
-      document.addEventListener('click', function () {
-        document.querySelectorAll('.actions-menu').forEach((menu) => {
-          menu.style.display = 'none';
-        });
-      });
-    }
-
-    const menuItems = document.querySelectorAll('.admin-menu li');
-    const contentContainers = document.querySelectorAll('.container');
-
     // Función para cargar y mostrar los datos
-    async function loadContentList() {
+    async function loadUsersList() {
       try {
         const response = await fetch(backendAPI, {
           headers: {
@@ -143,7 +113,7 @@ async function listUsers() {
     }
 
     // Cargar los datos al iniciar
-    loadContentList();
+    loadUsersList();
   }
 
 listUsers();
