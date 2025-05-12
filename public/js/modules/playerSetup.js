@@ -1,20 +1,23 @@
+import { getVideoSource } from './getVideoSource.js';
+
 export function setupPlayer(player, movieUrl, backendUrl, movieType) {
+	const { type, url } = getVideoSource(movieType, movieUrl, backendUrl);
 
-  player.src({
-    src: backendUrl + movieUrl,
-    type: movieType,
-  });
+	player.src({
+		src: url,
+		type: type,
+	});
 
-  // Inicializar ads
-  player.ads();
+	// Inicializar ads
+	player.ads();
 
-  // Manejar reinicio después de contentended
-  player.on('contentended', function () {
-    player.one('play', function () {
-      player.currentTime(0);
-      player.play();
-    });
-  });
+	// Manejar reinicio después de contentended
+	player.on('contentended', function () {
+		player.one('play', function () {
+			player.currentTime(0);
+			player.play();
+		});
+	});
 
-  return player;
+	return player;
 }

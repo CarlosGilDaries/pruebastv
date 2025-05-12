@@ -48,9 +48,14 @@ class User extends Authenticatable
         return $this->hasMany(ActiveStream::class);
     }
 
-        public function orders()
+        public function planOrders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(PlanOrder::class);
+    }
+	
+	    public function ppvOrders()
+    {
+        return $this->hasMany(PpvOrder::class);
     }
 
     /**

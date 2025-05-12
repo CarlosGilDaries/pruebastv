@@ -44,13 +44,25 @@ return new class extends Migration
             $table->timestamps();
          });
 
-         Schema::create('orders', function (Blueprint $table) {
+         Schema::create('plan_orders', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
             $table->decimal('amount', 10, 2);
             $table->string('status')->default('pending');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('plan_id')->constrained()->onDelete('cascade');
+			$table->string('description');
+            $table->timestamps();
+        });
+		
+		Schema::create('ppv_orders', function (Blueprint $table) {
+            $table->id();
+            $table->string('reference')->unique();
+            $table->decimal('amount', 10, 2);
+            $table->string('status')->default('pending');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('movie_id')->constrained()->onDelete('cascade');
+			$table->string('description');
             $table->timestamps();
         });
     }
@@ -60,6 +72,7 @@ return new class extends Migration
         Schema::dropIfExists('redsys_requests');
         Schema::dropIfExists('redsys_cards');
         Schema::dropIfExists('redsys_notification_logs');
-        Schema::dropIfExists('orders');
+        Schema::dropIfExists('plan_orders');
+		Schema::dropIfExists('ppv_orders');
     }
 };

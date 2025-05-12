@@ -146,6 +146,8 @@ class LoginApiController extends Controller
             // Verificar límite de dispositivos según plan
 			if ($plan) {
             	$maxDevices = $plan->max_devices;
+			} else {
+				$maxDevices = 1;
 			}
             $deviceCount = UserSession::where('user_id', $user->id)->count();
 
@@ -155,19 +157,6 @@ class LoginApiController extends Controller
                 ->where('ip_address', $ip)
                 ->where('user_agent', $userAgent)
                 ->first();
-			
-			// Crear nueva sesión si no existe
-            if (!$session || (!$session && !$plan)) {
-                return response()->json([
-                    'success' => true,
-                    'data' => [
-                        'require_device_registration' => true,
-                        'user' => $user->email,
-                        'auth_token' => $user->createToken($user->name . '/' . $user->email)->plainTextToken
-                    ],
-                    'message' => 'Por favor registre este dispositivo'
-                ], 200);
-            }
 			
 			// Si se ha superado el límite de dispositivos
             if (!$session && $deviceCount >= $maxDevices) {
@@ -187,6 +176,19 @@ class LoginApiController extends Controller
 						'userAgent' => $userAgent,
 					],
                 ], 403);
+            }
+			
+			// Crear nueva sesión si no existe
+            if (!$session || (!$session && !$plan)) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'require_device_registration' => true,
+                        'user' => $user->email,
+                        'auth_token' => $user->createToken($user->name . '/' . $user->email)->plainTextToken
+                    ],
+                    'message' => 'Por favor registre este dispositivo'
+                ], 200);
             }
 
             // Si existe sesión, actualizar y generar token

@@ -1,6 +1,6 @@
 const token = localStorage.getItem('auth_token');
-const user_id = localStorage.getItem('current_user_id');
-const device_id = localStorage.getItem('device_id_' + user_id);
+const email = localStorage.getItem('current_user_email');
+const device_id = localStorage.getItem('device_id_' + email);
 const apiActiveStreams = 'https://pruebastv.kmc.es/api/check-active-streams';
 const apiKeepAlive = 'https://pruebastv.kmc.es/api/keep-alive';
 

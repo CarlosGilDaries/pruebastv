@@ -14,6 +14,7 @@ export function adminCheck(token) {
 
                 if (user.rol != 'admin') {
                     window.location.href = '/';
+					condole.log(user);
                 }
             }
         })

@@ -4,7 +4,7 @@ import { adminCheck } from '../modules/adminCheck.js';
 const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
 const token = localStorage.getItem('auth_token');
-const logOutButton = document.querySelector('.login-btn');
+const logOutButton = document.getElementById('logout-button');
 const backendAPI = 'https://pruebastv.kmc.es/api/';
 
 if (token == null) {
@@ -14,3 +14,10 @@ if (token == null) {
 if (device_id == null) {
   logOut(token);
 }
+
+adminCheck(token);
+
+logOutButton.addEventListener('click', function() {
+	logOut(token);
+});
+

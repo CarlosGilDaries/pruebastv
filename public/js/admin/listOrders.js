@@ -5,10 +5,9 @@ import { storageData } from '../modules/storageData.js';
 
 async function listOrders() {
     const listContent = document.getElementById('list-orders');
-    const backendAPI = 'https://pruebastv.kmc.es/api/orders';
+    const backendAPI = 'https://pruebastv.kmc.es/api/';
       const backendURL = 'https://pruebastv.kmc.es';
       const authToken = localStorage.getItem('auth_token');
-      const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-order';
 		
     // Cargar los datos al iniciar
     loadOrdersList();
@@ -16,7 +15,7 @@ async function listOrders() {
     // Función para cargar y mostrar los datos
     async function loadOrdersList() {
       try {
-        const response = await fetch(backendAPI, {
+        const response = await fetch(backendAPI + 'orders', {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
@@ -29,6 +28,7 @@ async function listOrders() {
         }
 
         const orders = data.orders;
+		const allOrders = [...orders.planOrder, ...orders.ppvOrder];
 
         // Generar HTML de la tabla
           let tableHTML = `
@@ -42,21 +42,21 @@ async function listOrders() {
                         <table class="content-table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
                                     <th>Nº Pedido</th>
                                     <th>Cantidad</th>
                                     <th>Estado</th>
                                     <th>Usuario</th>
-                                    <th>Plan</th>
+                                    <th>Descripción</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                 `;
 
-        orders.forEach((order) => {
+        allOrders.forEach((order) => {
 			console.log(order);
-          let status;
+          	let status;
+			let deleteFormClass;
 
           if (order.status == 'pending') {
             status = 'Pendiente';
@@ -66,15 +66,20 @@ async function listOrders() {
 		} else {
 			status = 'Error';
 		}
+		
+		if (order.plan) {
+			deleteFormClass = 'plan-order-delete-form';
+		} else {
+			deleteFormClass = 'ppv-order-delete-form';
+		}
             
         tableHTML += ` 
                     <tr>
-                        <td>${order.id}</td>
                         <td>${order.reference}</td>
                         <td>${order.amount} €</td>
                         <td>${status}</td>
                         <td>${order.user.email}</td>
-                        <td>${order.plan.name}</td>
+                        <td>${order.description}</td>
                         <td>
                             <div class="actions-container">
                                 <button class="actions-button orders-button">Acciones</button>
@@ -85,7 +90,7 @@ async function listOrders() {
 									<a href="#" class="action-item bill-button plan-action" data-id="${
                                         order.id
                                     }">Factura</a>
-                                    <form class="orders-delete-form" data-id="${
+                                    <form class="${deleteFormClass}" data-id="${
                                         order.id
                                     }">
                                     <input type="hidden" name="plan_id" value="${
@@ -117,9 +122,10 @@ async function listOrders() {
 
       // Configurar los menús de acciones
       setUpMenuActions();
-
+		
         const message = document.getElementById('delete-order-success-message');
-        deleteForm(authToken, '.orders-delete-form', backendDeleteApi, message);
+        deleteForm(authToken, '.plan-order-delete-form', 'https://pruebastv.kmc.es/api/delete-order', message);
+		deleteForm(authToken, '.ppv-order-delete-form', 'https://pruebastv.kmc.es/api/delete-ppv-order', message);
       } catch (error) {
         console.error('Error al cargar la lista de pedidos:', error);
         listContent.innerHTML = `

@@ -18,14 +18,14 @@ class Plan extends Model
         return $this->hasMany(User::class);
     }
 
-    public function contents()
+    public function movies()
     {
         return $this->belongsToMany(Movie::class);
     }
 
-    public function orders()
+    public function planOrders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(PlanOrder::class);
     }
 
 }

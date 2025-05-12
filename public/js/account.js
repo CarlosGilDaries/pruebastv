@@ -13,6 +13,7 @@ if (device_id == null) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+	localStorage.removeItem("needed_plans"); 
   fetch('https://pruebastv.kmc.es/api/user', {
     headers: {
       Authorization: `Bearer ${token}`,

@@ -18,17 +18,6 @@ async function linkAds() {
     // Cargar datos iniciales
     loadInitialData();
 	
-	// Escuchar cuando se muestra este contenido
-    document
-      .getElementById('link-content-with-ads')
-      .addEventListener('show', function () {
-		id = localStorage.getItem('id');
-		title = localStorage.getItem('title');
-		h1Element.innerHTML = title;
-		document.getElementById('link-ads-container').textContent = "";
-        loadInitialData();
-      });
-	
 	 async function loadInitialData() {
     try {
       const linkedAdIds = await linkedAds(id, backendAPI, authToken, table, unlinkMessage);

@@ -32,6 +32,11 @@ class Movie extends Model
     {
         return $this->belongsTo(Gender::class);
     }
+	
+	public function ppvOrders()
+    {
+        return $this->hasMany(PpvOrder::class);
+    }
 
     public function ads()
     {
