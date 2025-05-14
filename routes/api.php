@@ -82,6 +82,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
+	
+	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 });
 
 Route::post('register', [LoginApiController::class, 'register']);

@@ -4,7 +4,7 @@
     </IfModule>
 
     RewriteEngine On
-
+	
     # ----------------------------------------------------------------------
     # Reglas para el FRONTEND
     # ----------------------------------------------------------------------
@@ -20,12 +20,13 @@
     RewriteRule ^player/ad/([^/]+)$ /admin/ad-player.html [L,QSA]
     RewriteRule ^account$ /account.html [L,QSA]
     
-	# Redirigir todo lo demás del frontend a show.html, EXCEPTO si empieza por "api/"
-	RewriteCond %{HTTP_ACCEPT} text/html
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(?!api/).* /show.html [L]
-
+    # Redirigir a show.html solo si es HTML y no API, archivo o directorio
+    RewriteCond %{HTTP_ACCEPT} text/html
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} !^/api/
+    RewriteRule ^(.*)$ /show.html [L]
+	
     # ----------------------------------------------------------------------
     # Reglas para el BACKEND (Laravel)
     # ----------------------------------------------------------------------

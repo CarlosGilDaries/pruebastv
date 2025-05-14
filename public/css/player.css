@@ -5,11 +5,13 @@ body, html {
     background-color: black;
     height: 100%;
     width: 100%;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
-#my-video,
-#video-container,
-iframe {
+#my-video {
     width: 100%;
     height: 100%;
 }
@@ -19,3 +21,17 @@ iframe {
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
 }
+
+#iframe-container {
+	width: 100%;
+	height: 100%;
+	justify-content: center;
+	align-items: center;
+}
+
+#iframe-without-ads {
+	width: 100vw;
+	height: 100vh;
+	border: none;
+}
+

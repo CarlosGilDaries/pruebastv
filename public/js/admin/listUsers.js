@@ -29,7 +29,7 @@ async function listUsers() {
 		let tableHTML = `
 			<div class="add-button-container">
 		 		<h1><i class="fas fa-user"></i> Lista de Usuarios</h1>
-				<a href="/admin/add-user.html" class="add-button add-user">Añadir Usuario</a>
+				<a href="/admin/add-user.html" class="add-button add-user">Crear Usuario</a>
 			</div>
 		  <div id="delete-user-success-message" class="success-message" style="margin-bottom: 20px;">
 			¡Usuario eliminado con éxito!

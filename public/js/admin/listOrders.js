@@ -54,7 +54,6 @@ async function listOrders() {
                 `;
 
         allOrders.forEach((order) => {
-			console.log(order);
           	let status;
 			let deleteFormClass;
 

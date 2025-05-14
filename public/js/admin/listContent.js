@@ -26,9 +26,9 @@ import { storageData } from '../modules/storageData.js';
         if (!data.success) {
           throw new Error(data.message);
         }
-
-        const { movies, genders } = data.data;
-		  console.log(data);
+		  
+		const genders = data.data.genders;
+		const movies = data.data.movies;
 
         // Crear mapeo de géneros para búsqueda rápida
         const genderMap = {};
@@ -40,7 +40,7 @@ import { storageData } from '../modules/storageData.js';
         let tableHTML = `
 					<div class="add-button-container">
 						<h1><i class="fas fa-film"></i> Lista de Contenido</h1>
-						<a href="/admin/add-content.html" class="add-button add-content">Añadir Contenido</a>
+						<a href="/admin/add-content.html" class="add-button add-content">Crear Contenido</a>
 					</div>
                     <div id="delete-content-success-message" class="success-message" style="margin-bottom: 20px;">
                       ¡Contenido eliminado con éxito!

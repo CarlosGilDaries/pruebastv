@@ -63,7 +63,7 @@ async function initContent() {
       if (type === 'application/vnd.apple.mpegurl') {
         hlsContent.classList.remove('hidden');
         document.getElementById('m3u8').required = true;
-      } else if (type === 'iframe' || type === 'url_mp4' || type === 'url_hls' || type === 'youtube' || type === 'vimeo') {
+      } else if (type === 'iframe' || type === 'url_mp4' || type === 'url_hls' || type === 'video/youtube' || type === 'vimeo') {
         externalContent.classList.remove('hidden');
         document.getElementById('external_url').required = true;
       } else {
@@ -154,7 +154,7 @@ async function initContent() {
           formData.append('ts1', document.getElementById('ts1').files[0]);
           formData.append('ts2', document.getElementById('ts2').files[0]);
           formData.append('ts3', document.getElementById('ts3').files[0]);
-        } else if (type === 'iframe' || type === 'url_mp4' || type === 'url_hls' || type === 'youtube' || type === 'vimeo') {
+        } else if (type === 'iframe' || type === 'url_mp4' || type === 'url_hls' || type === 'video/youtube' || type === 'vimeo') {
           formData.append(
             'external_url',
             document.getElementById('external_url').value

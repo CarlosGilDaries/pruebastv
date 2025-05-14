@@ -1,7 +1,7 @@
 import { getVideoSource } from './getVideoSource.js';
 
-export function setupPlayer(player, movieUrl, backendUrl, movieType) {
-	const { type, url } = getVideoSource(movieType, movieUrl, backendUrl);
+export async function setupPlayer(player, movieUrl, backendUrl, movieType, movieId, token) {
+	const { type, url } = await getVideoSource(movieType, movieUrl, backendUrl, movieId, token);
 
 	player.src({
 		src: url,

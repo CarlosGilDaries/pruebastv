@@ -33,7 +33,7 @@ import { setUpMenuActions } from '../modules/setUpMenuActions.js';
         let tableHTML = `
 					<div class="add-button-container">
 						<h1><i class="fas fa-ad"></i> Lista de Anuncios</h1>
-						<a href="/admin/add-ad.html" class="add-button add-ad">Añadir Anuncio</a>
+						<a href="/admin/add-ad.html" class="add-button add-ad">Crear Anuncio</a>
 					</div>
                     <div id="delete-ad-success-message" class="success-message" style="margin-bottom: 20px;">
                       ¡Anuncio eliminado con éxito!

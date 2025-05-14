@@ -30,7 +30,7 @@ async function listPlans() {
           let tableHTML = `
 		  			<div class="add-button-container">
                     	<h1><i class="fa-solid fa-euro-sign"></i> Lista de Planes</h1>
-						<a href="/admin/add-plan.html" class="add-button add-plan">Añadir Plan</a>
+						<a href="/admin/add-plan.html" class="add-button add-plan">Crear Plan</a>
 					</div>
                     <div id="delete-plan-success-message" class="success-message" style="margin-bottom: 20px;">
                       ¡Plan eliminado con éxito!

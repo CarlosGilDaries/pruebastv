@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('brand');
-            $table->enum('type', ['video/mp4', 'audio/mp3', 'application/vnd.apple.mpegurl']);
+            $table->enum('type', ['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl']);
             $table->string('url');
             $table->string('duration')->nullable();
             $table->string('slug')->unique();

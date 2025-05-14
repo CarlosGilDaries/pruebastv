@@ -16,13 +16,15 @@
 </head>
 <body>
 
-	<video id="my-video" class="video-js" preload="auto" controls autoplay="true">
+	<video id="my-video" class="video-js" preload="auto" controls autoplay="true" >
 		<p class="vjs-no-js">
 			Para ver este video, habilita JavaScript o usa un navegador compatible con HTML5.
 			<a href="https://videojs.com/html5-video-support/" target="_blank">Más info</a>
 		</p>
 	</video>
-	<div id="video-container"></div>
+
+	<!-- Contenedor del iframe de la película -->
+	<div id="iframe-container" style="display: none;"></div>
 
     <!-- Video.js JavaScript -->
     <script src="https://vjs.zencdn.net/7.0/video.min.js"></script>
@@ -33,6 +35,6 @@
     <script type="module" src="/js/player.js"></script>
     <script src="/js/activeStreams.js"></script>
 	<!-- Plugin Youtube -->
-	<script src="https://cdn.jsdelivr.net/npm/videojs-youtube@3.0.1/dist/Youtube.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/videojs-youtube@3.0.1/dist/Youtube.min.js"></script> 
 </body>
 </html>

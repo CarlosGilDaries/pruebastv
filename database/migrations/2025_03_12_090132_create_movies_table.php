@@ -19,7 +19,7 @@ return new class extends Migration
             $table->longText('overview');
             $table->longText('tagline');
             $table->foreignId('gender_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['video/mp4', 'audio/mp3', 'application/vnd.apple.mpegurl', 'iframe', 'url_mp4', 'ulr_hls']);
+            $table->enum('type', ['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl', 'iframe', 'url_mp4', 'ulr_hls', 'url_mp3']);
             $table->string('url');
             $table->boolean('pay_per_view');
             $table->decimal('pay_per_view_price', 5, 2)->nullable();

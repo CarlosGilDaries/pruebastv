@@ -10,9 +10,13 @@ use App\Models\Plan;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Http;
 
 class MovieApiController extends Controller
 {
@@ -47,14 +51,24 @@ class MovieApiController extends Controller
     {
         try {
             $movie = Movie::where('slug', $slug)->first();
-            $plans = $movie->plans;
-
+			$user = Auth::user();
+			
             if (!$movie) {
                 return response()->json([
                     'success' => false,
                     'error' => 'Película no encontrada'
                 ], 404);
             }
+			
+			if ($movie->type === 'url_hls') {
+				// Reescribir la URL del m3u8 a una ruta protegida del backend que actuará como proxy
+				$movie->url = URL::signedRoute('proxy.m3u8', [
+					'movieId' => $movie->id,
+					'userId' => $user->id,
+				], now()->addMinutes(5));
+			}
+			
+            $plans = $movie->plans;
 
             $ads = DB::table('ad_movie')->where('movie_id', $movie->id)->count();
 
@@ -204,8 +218,6 @@ class MovieApiController extends Controller
             $start_time = sanitize_html($request->input('start_time'));
             $end_time = sanitize_html($request->input('end_time'));
             $duration = sanitize_html($request->input('duration'));
-			Log::debug('Sin sanitizar: ' . $request->input('external_url'));
-			Log::debug('Sanitizada: ' . $external_url);
 
             $movie = new Movie();
             $movie->title = $title;
@@ -254,7 +266,7 @@ class MovieApiController extends Controller
                 $trailer->storeAs('content/' . $slug, $slug . '-trailer.' . $trailerExtension, 'private');
             }
 
-            if ($request->input('type') != "iframe" && $request->input('type') != "url_mp4" && $request->input('type') != "url_hls" && $request->input('type') != "youtube" && $request->input('type') != "vimeo") {
+            if ($request->input('type') != "iframe" && $request->input('type') != "url_mp4" && $request->input('type') != "url_hls" && $request->input('type') != "video/youtube" && $request->input('type') != "vimeo") {
                 if ($request->input('type') != 'application/vnd.apple.mpegurl') {
                     $content = $request->file('content');
                     $contentExtension = $content->getClientOriginalExtension();
@@ -348,4 +360,87 @@ class MovieApiController extends Controller
             ], 500);
         }
     }
+	
+	
+	
+	public function streamSigned($movieId, $userId)
+	{
+		try {
+			// Validar que el usuario autenticado es el mismo que generó la URL
+			$movie = Movie::findOrFail($movieId);
+			if ($movie->type == 'url_mp4') {
+				$accept = 'video/mp4';
+			}
+			else if ($movie->type == 'url_hls') {
+				$accept = 'application/vnd.apple.mpegurl';
+			} 
+			else if ($movie->type == 'url_mp3') {
+				$accept = 'audio/mpeg';
+			} else {
+				$accept = $movie->type;
+			}
+
+			$client = new Client(['stream' => true]);
+
+			$response = $client->get($movie->url, [
+				'headers' => ['Accept' => $accept]
+			]);
+
+			return response()->stream(function () use ($response) {
+				while (!$response->getBody()->eof()) {
+					echo $response->getBody()->read(8192);
+					ob_flush();
+					flush();
+				}
+			}, 200, [
+				'Content-Type' => $response->getHeaderLine('Content-Type') ?: 'video/mp4',
+				'Content-Length' => $response->getHeaderLine('Content-Length'),
+				'Accept-Ranges' => 'bytes',
+				'Cache-Control' => 'no-store',
+				'Pragma' => 'no-cache',
+			]);
+			
+		} catch (\Exception $e) {
+			Log::error('Error: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+        }
+	}
+
+	public function getSignedUrl($movieId)
+	{
+		try {
+			$user = Auth::user();
+			$movie = Movie::where('id', $movieId)->first();
+
+			if ($movie->type === 'url_hls') {
+				$signedUrl = URL::signedRoute('proxy.m3u8', [
+					'movieId' => $movie->id,
+					'userId' => $user->id,
+				], now()->addMinutes(5));
+				
+			} else {
+				$signedUrl = URL::signedRoute('secure.stream', [
+					'movie' => $movie->id,
+					'user' => $user->id,
+				], now()->addMinutes(5));
+			}
+
+			return response()->json([
+				'success' => true,
+				'url' => $signedUrl
+			], 200);
+
+		} catch (\Exception $e) {
+			Log::error('Error: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+		}
+	}
 }

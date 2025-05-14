@@ -11,7 +11,7 @@ const pathParts = window.location.pathname.split('/');
 const movieSlug = pathParts[pathParts.length - 1]; // Extraer el último segmento de la URL
 const api = 'https://pruebastv.kmc.es/api/';
 const backendURL = 'https://pruebastv.kmc.es';
-const play = document.getElementById('play-button');
+const play = document.querySelector('.play-button');
 const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
 const ip = await getIp();
@@ -42,7 +42,11 @@ async function fetchMovieData() {
       },
     });
 
-    const data = await response.json();
+	if (response.status == 404) {
+		window.location.href = '/404.html';
+	}
+	  
+    const data = await response.json();	  
     const userData = await userResponse.json();
 	const movieId = data.data.movie.id;
 	  
@@ -80,7 +84,7 @@ async function fetchMovieData() {
 		const ppvData = await ppvResponse.json();
 		
 		if (!ppvData.success) {
-			document.getElementById('play-button').textContent = 'Pagar para ver: ' +  data.data.movie.pay_per_view_price + ' €';
+			play.textContent = 'Pagar para ver: ' +  data.data.movie.pay_per_view_price + ' €';
 			play.addEventListener('click', async function () {
         		  try {
 					  const paymentResponse = await fetch(api + 'ppv-payment', {
@@ -99,23 +103,22 @@ async function fetchMovieData() {
 					  if (paymentData.success && paymentData.payment_required) {
 						  await processRedsysPayment(paymentData);
 						  return;
-					  } else {
-						  console.log('Else');
-					  }
+					  } 
+					  
 				  } catch (error) {
 					  console.log(error);
 					  alert(error);
 				  }
       		});
 		} else {
-			document.getElementById('play-button').innerHTML = '&#11208; Ver Ahora';
+			play.innerHTML = 'Ver Ahora';
 		
 		    play.addEventListener('click', function () {
         		window.location.href = `/player/${movieSlug}`;
       		});
 		}
 	} else {
-			document.getElementById('play-button').innerHTML = '&#11208; Ver Ahora';
+			play.innerHTML = 'Ver Ahora';
 		
 		    play.addEventListener('click', function () {
         		window.location.href = `/player/${movieSlug}`;

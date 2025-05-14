@@ -34,7 +34,7 @@ async function listGenders() {
         let tableHTML = `
 					<div class="add-button-container">
 						<h1><i class="fas fa-rocket"></i> Lista de Géneros</h1>
-						<a href="/admin/add-gender.html" class="add-button">Añadir Género</a>
+						<a href="/admin/add-gender.html" class="add-button">Crear Género</a>
 					</div>
                     <div id="delete-gender-success-message" class="success-message" style="margin-bottom: 20px;">
                       ¡Género eliminado con éxito!

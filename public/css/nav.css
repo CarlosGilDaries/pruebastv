@@ -49,14 +49,14 @@
 .left-nav li:nth-child(4),
 .left-nav li:nth-child(5) {
     display: none;
-	transition: transform 0.3s ease-out;
+	transition: transform 0.3s ease;
 }
 
 .left-nav li:nth-child(2):hover,
 .left-nav li:nth-child(3):hover,
 .left-nav li:nth-child(4):hover,
 .left-nav li:nth-child(5):hover {
-    transform: scale(105%);
+    transform: scale(1.1);
 }
 
 @media (min-width: 992px) {
@@ -76,7 +76,7 @@
 
 .right-nav li:nth-child(1) {
     width: 32px;  
-	transition: transform 0.3s ease-out;
+	transition: transform 0.3s ease;
 }
 
 .user {
@@ -85,7 +85,7 @@
     border-radius: 10px;
     overflow: hidden;
     background-color: white;
-	transition: transform 0.3s ease-out;
+	transition: transform 0.3s ease;
 }
 
 .user:hover,
