@@ -49,8 +49,8 @@ return new class extends Migration
             $table->string('reference')->unique();
             $table->decimal('amount', 10, 2);
             $table->string('status')->default('pending');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('plan_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('set null')->nullable();
+            $table->foreignId('plan_id')->constrained()->onDelete('set null')->nullable();
 			$table->string('description');
             $table->timestamps();
         });
@@ -60,8 +60,8 @@ return new class extends Migration
             $table->string('reference')->unique();
             $table->decimal('amount', 10, 2);
             $table->string('status')->default('pending');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('movie_id')->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrained()->onDelete('set null')->nullable();
+            $table->foreignId('movie_id')->constrained()->onDelete('set null')->nullable();
 			$table->string('description');
             $table->timestamps();
         });

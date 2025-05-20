@@ -1,3 +1,5 @@
+ErrorDocument 404 /404.html
+
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
@@ -8,6 +10,7 @@
     # ----------------------------------------------------------------------
     # Reglas para el FRONTEND
     # ----------------------------------------------------------------------
+	
     # Excluir archivos estáticos (JS, CSS, imágenes, etc.)
     RewriteCond %{REQUEST_URI} !\.(js|css|png|jpg|jpeg|gif|svg|mp4|webm|ogg|mp3|wav|woff|woff2|ttf|eot)$ [NC]
     
@@ -19,13 +22,17 @@
     RewriteRule ^player/([^/]+)$ /player.html [L,QSA]
     RewriteRule ^player/ad/([^/]+)$ /admin/ad-player.html [L,QSA]
     RewriteRule ^account$ /account.html [L,QSA]
+	
+    # Solo permitir si el Referer es nuestro dominio
+    RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC]
+    RewriteRule ^(secure-stream|proxy/(ts|hls))/ - [F,L]
     
     # Redirigir a show.html solo si es HTML y no API, archivo o directorio
     RewriteCond %{HTTP_ACCEPT} text/html
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} !^/api/
-    RewriteRule ^(.*)$ /show.html [L]
+    RewriteRule ^content/(.*)$ /show.html [L]
 	
     # ----------------------------------------------------------------------
     # Reglas para el BACKEND (Laravel)
@@ -34,6 +41,11 @@
     RewriteCond %{HTTP_REFERER} !^http(s)?://(pruebastv\.kmc\.es) [NC]
     RewriteCond %{REQUEST_URI} ^/file/.*\.(mp4|mp3|m3u8|avi|mov)$ [NC]
     RewriteRule ^ - [F,L]
+
+	## Bloquear acceso directo a archivos PDF (excepto desde el dominio permitido)
+	RewriteCond %{HTTP_REFERER} !^https?://(www\.)?pruebastv\.kmc\.es [NC]
+	RewriteCond %{REQUEST_URI} \.pdf$ [NC]
+	RewriteRule ^ - [F,L]
 
     # Manejar headers de autorización
     RewriteCond %{HTTP:Authorization} .
@@ -51,6 +63,5 @@
     # Enviar todo lo demás al controlador de Laravel (excepto rutas del frontend)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} !^/frontend/ [NC]
     RewriteRule ^ index.php [L]
 </IfModule>

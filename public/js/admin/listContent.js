@@ -87,7 +87,7 @@ import { storageData } from '../modules/storageData.js';
                                 <div class="actions-container">
                                     <button class="actions-button content-button">Acciones</button>
                                     <div class="actions-menu">
-                                        <a href="/${
+                                        <a href="/content/${
                                           movie.slug
                                         }" class="action-item">Ver</a>
                                         <a href="/admin/edit-content.html" class="action-item content-action edit-button" data-id="${movie.id}" data-slug="${

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('trailer')->nullable();
             $table->longText('overview');
             $table->longText('tagline');
-            $table->foreignId('gender_id')->constrained()->onDelete('cascade');
-            $table->enum('type', ['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl', 'iframe', 'url_mp4', 'ulr_hls', 'url_mp3']);
+            $table->foreignId('gender_id')->constrained();
+            $table->enum('type', ['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl', 'iframe', 'url_mp4', 'url_hls', 'url_mp3']);
             $table->string('url');
             $table->boolean('pay_per_view');
             $table->decimal('pay_per_view_price', 5, 2)->nullable();

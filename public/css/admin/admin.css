@@ -5,6 +5,7 @@
 @import '/css/admin/list-content.css';
 @import '/css/admin/linkAds.css';
 @import '/css/admin/single-content-with-ads.css';
+@import '/css/admin/stats.css';
 
 .menu {
   width: 100%;
@@ -100,3 +101,4 @@ a {
 	width: 100%;
 	height: 100%;
 }
+

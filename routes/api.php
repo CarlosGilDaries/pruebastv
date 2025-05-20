@@ -15,12 +15,12 @@ use App\Http\Controllers\Api\UserSessionApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\PlanOrderController;
 use App\Http\Controllers\Api\PpvOrderController;
+use App\Http\Controllers\Api\CompanyDetailController;
 //use Illuminate\Support\Facades\Storage;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('new-device', [UserSessionApiController::class, 'store']);
     Route::get('manage-devices', [UserSessionApiController::class, 'manage']);
-    Route::get('check-device-id', [UserSessionApiController::class, 'checkDeviceId']);
     Route::delete('destroy-device' , [UserSessionApiController::class, 'destroy']);
 
     Route::get('content/{slug}', [MovieApiController::class, 'show']); 
@@ -68,14 +68,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('delete-gender', [GenderController::class, 'destroy']);
 	
 	Route::get('orders', [PlanOrderController::class, 'index']);
-    Route::get('order/{id}', [PlanOrderController::class, 'show']);
     Route::post('add-order', [PlanOrderController::class, 'store']);
     Route::post('edit-order/{id}', [PlanOrderController::class, 'update']);
     Route::delete('delete-order', [PlanOrderController::class, 'destroy']);
 	
 	Route::get('ppv-orders', [PpvOrderController::class, 'index']);
 	Route::get('ppv-current-user-order/{id}', [PpvOrderController::class, 'currentUserOrder']);
-    Route::get('ppv-order/{id}', [PpvOrderController::class, 'show']);
     Route::post('add-ppv-order', [PpvOrderController::class, 'store']);
     Route::post('edit-ppv-order/{id}', [PpvOrderController::class, 'update']);
     Route::delete('delete-ppv-order', [PpvOrderController::class, 'destroy']);
@@ -83,13 +81,27 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
 	
+	Route::get('bills', [BillController::class, 'index']);
+    Route::get('bill/{id}', [BillController::class, 'show']);
+    Route::post('add-bill', [BillController::class, 'store']);
+    Route::delete('delete-bill', [BillController::class, 'destroy']);
+	
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 });
 
+//Route::get('check-device-id', [UserSessionApiController::class, 'checkDeviceId']);
 Route::post('register', [LoginApiController::class, 'register']);
 Route::post('login', [LoginApiController::class, 'login']);
 Route::get('content', [MovieApiController::class, 'index']);
 Route::get('plans', [PlanController::class, 'index']);
 
+Route::get('company-details', [CompanyDetailController::class, 'show'])
+	->name('company-details');
+
 Route::post('redsys-plan-resp', [RedsysController::class, 'handlePlanRedsysResponse']);
 Route::post('redsys-ppv-resp', [RedsysController::class, 'handlePpvRedsysResponse']);
+
+Route::get('order/{id}', [PlanOrderController::class, 'show'])
+	->name('plan-order.show');
+Route::get('ppv-order/{id}', [PpvOrderController::class, 'show'])
+	->name('ppv-order.show');

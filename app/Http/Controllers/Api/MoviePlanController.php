@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Models\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Database\QueryException;
@@ -57,6 +58,14 @@ class MoviePlanController extends Controller
                     'updated_at' => now(),
                 ]);
             }
+			
+			$adminPlan = Plan::where('name', 'admin')->first();
+			DB::table('movie_plan')->insert([
+				'movie_id' => $request->content_id,
+				'plan_id' => $adminPlan->id,
+				'created_at' => now(),
+				'updated_at' => now(),
+			]);
 
             return response()->json([
                 'success' => true,

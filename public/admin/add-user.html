@@ -28,14 +28,12 @@
 
         <aside class="admin-sidebar">
             <ul class="admin-menu">
-                <!--<li class="active" data-content="add-content" data-script="/js/admin/addContent.js">
-                    <i class="fa-solid fa-upload"></i>
-                    <span>Añadir contenido</span>
-                </li>
-                <li data-content="add-ad" data-script="/js/admin/addAds.js">
-                    <i class="fa-solid fa-upload"></i>
-                    <span>Añadir anuncio</span>
-                </li>-->
+				<a href="/admin/admin-panel.html">
+                	<li data-content="admin-panel">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                        <span>Estadísticas</span>
+                	</li>
+				 </a>
 				<a href="/admin/list-content.html">
                 	<li data-content="list-content">
                         <i class="fas fa-film"></i>
@@ -147,6 +145,7 @@
 						<div class="form-group">
 							<label for="add-user-plan">Plan</label>
 							<select id="add-user-plan" name="plan" required>
+								<option value=null>Nulo</option>
 							</select>
 							<div id="add-user-plan-error" class="error-message"></div>
 						</div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PlanOrder;
 use App\Models\PpvOrder;
+use App\Models\CompanyDetail;
 //use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -14,14 +15,16 @@ class PlanOrderController extends Controller
         public function index()
     {
         try {
-        $planOrders = PlanOrder::with(['user', 'plan'])->get();
-		$ppvOrders = PpvOrder::with(['user', 'movie'])->get();
+        $planOrders = PlanOrder::with(['user', 'plan', 'bill'])->get();
+		$ppvOrders = PpvOrder::with(['user', 'movie', 'bill'])->get();
+		$companyDetails = CompanyDetail::first();
 
         return response()->json([
             'success' => true,
             'orders' => [
 				'planOrder' => $planOrders,
-				'ppvOrder' => $ppvOrders
+				'ppvOrder' => $ppvOrders,
+				'companyDetails' => $companyDetails
 			],
             'message' => 'Pedidos obtenidos con éxito.',
         ], 200);

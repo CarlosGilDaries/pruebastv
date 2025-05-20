@@ -4,34 +4,34 @@ import { storageData } from '../modules/storageData.js';
 
 
 async function listOrders() {
-    const listContent = document.getElementById('list-orders');
-    const backendAPI = 'https://pruebastv.kmc.es/api/';
-      const backendURL = 'https://pruebastv.kmc.es';
-      const authToken = localStorage.getItem('auth_token');
-		
-    // Cargar los datos al iniciar
-    loadOrdersList();
+	const listContent = document.getElementById('list-orders');
+	const backendAPI = 'https://pruebastv.kmc.es/api/';
+	const backendURL = 'https://pruebastv.kmc.es';
+	const authToken = localStorage.getItem('auth_token');
 
-    // Función para cargar y mostrar los datos
-    async function loadOrdersList() {
-      try {
-        const response = await fetch(backendAPI + 'orders', {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });;
+	// Cargar los datos al iniciar
+	loadOrdersList();
 
-        const data = await response.json();
+	// Función para cargar y mostrar los datos
+	async function loadOrdersList() {
+		try {
+			const response = await fetch(backendAPI + 'orders', {
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+				},
+			});;
 
-        if (!data.success) {
-          throw new Error(data.message);
-        }
+			const data = await response.json();
 
-        const orders = data.orders;
-		const allOrders = [...orders.planOrder, ...orders.ppvOrder];
+			if (!data.success) {
+				throw new Error(data.message);
+			}
 
-        // Generar HTML de la tabla
-          let tableHTML = `
+			const orders = data.orders;
+			const allOrders = [...orders.planOrder, ...orders.ppvOrder];
+
+			// Generar HTML de la tabla
+			let tableHTML = `
 		  			<div class="add-button-container">
                     	<h1><i class="fa-solid fa-file-invoice-dollar"></i> Lista de Pedidos</h1>
 					</div>
@@ -47,54 +47,54 @@ async function listOrders() {
                                     <th>Estado</th>
                                     <th>Usuario</th>
                                     <th>Descripción</th>
+									<th>Fecha Compra</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                 `;
 
-        allOrders.forEach((order) => {
-          	let status;
-			let deleteFormClass;
+			allOrders.forEach((order) => {
+				let status;
+				let deleteFormClass;
+				let date = formatDate(order.created_at);
 
-          if (order.status == 'pending') {
-            status = 'Pendiente';
-          } 
-		else if(order.status == 'paid') {
-            status = 'Pagado';
-		} else {
-			status = 'Error';
-		}
-		
-		if (order.plan) {
-			deleteFormClass = 'plan-order-delete-form';
-		} else {
-			deleteFormClass = 'ppv-order-delete-form';
-		}
-            
-        tableHTML += ` 
+				if (order.status == 'pending') {
+					status = 'Pendiente';
+				} 
+				else if(order.status == 'paid') {
+					status = 'Pagado';
+				} else {
+					status = 'Error';
+				}
+
+				if (order.plan) {
+					deleteFormClass = 'plan-order-delete-form';
+				} else {
+					deleteFormClass = 'ppv-order-delete-form';
+				}
+
+				tableHTML += ` 
                     <tr>
                         <td>${order.reference}</td>
                         <td>${order.amount} €</td>
                         <td>${status}</td>
                         <td>${order.user.email}</td>
                         <td>${order.description}</td>
+						<td>${date}</td>
                         <td>
                             <div class="actions-container">
                                 <button class="actions-button orders-button">Acciones</button>
                                 <div class="actions-menu">
-                                    <a href="#" class="action-item edit-button plan-action" data-id="${
-                                        order.id
-                                    }">Editar</a>
-									<a href="#" class="action-item bill-button plan-action" data-id="${
-                                        order.id
-                                    }">Factura</a>
+									<button class="action-item bill-button plan-action" data-id="${
+				order.id
+			}">Factura</button>
                                     <form class="${deleteFormClass}" data-id="${
-                                        order.id
-                                    }">
+				order.id
+			}">
                                     <input type="hidden" name="plan_id" value="${
-                                        order.id
-                                    }">
+				order.id
+			}">
                                     <button class="action-item content-action delete-btn" type="submit">Eliminar</button>
                                     </form>
                                 </div>
@@ -102,38 +102,65 @@ async function listOrders() {
                         </td>
                     </tr>
                 `;
-          }
-        );
+			}
+							 );
 
-        tableHTML += `
+			tableHTML += `
                             </tbody>
                         </table>
                     </div>
                 `;
 
-        // Insertar la tabla en el DOM
-        listContent.innerHTML = tableHTML;
+			// Insertar la tabla en el DOM
+			listContent.innerHTML = tableHTML;
 
-      const links = document.querySelectorAll('.action-item');
-      links.forEach((link) => {
-        link.addEventListener('click', storageData);
-      });
+			const links = document.querySelectorAll('.action-item');
+			links.forEach((link) => {
+				link.addEventListener('click', storageData);
+			});
 
-      // Configurar los menús de acciones
-      setUpMenuActions();
-		
-        const message = document.getElementById('delete-order-success-message');
-        deleteForm(authToken, '.plan-order-delete-form', 'https://pruebastv.kmc.es/api/delete-order', message);
-		deleteForm(authToken, '.ppv-order-delete-form', 'https://pruebastv.kmc.es/api/delete-ppv-order', message);
-      } catch (error) {
-        console.error('Error al cargar la lista de pedidos:', error);
-        listContent.innerHTML = `
+			// Configurar los menús de acciones
+			setUpMenuActions();
+
+			document.querySelectorAll('.bill-button').forEach(btn => {
+				btn.addEventListener('click', function (e) {
+					e.preventDefault();
+					const orderId = this.dataset.id;
+
+					fetch(`/bill-path/${orderId}`)
+						.then(res => res.json())
+						.then(data => {
+						if (data.path) {
+							window.open(`/${data.path}`, '_blank');
+						} else {
+							alert('Factura no disponible.');
+						}
+					});
+				});
+			});
+
+			const message = document.getElementById('delete-order-success-message');
+			deleteForm(authToken, '.plan-order-delete-form', 'https://pruebastv.kmc.es/api/delete-order', message);
+			deleteForm(authToken, '.ppv-order-delete-form', 'https://pruebastv.kmc.es/api/delete-ppv-order', message);
+		} catch (error) {
+			console.error('Error al cargar la lista de pedidos:', error);
+			listContent.innerHTML = `
                     <div class="error-message">
                         Error al cargar la lista de pedidos: ${error.message}
                     </div>
                 `;
-      }
-    }
-  }
+		}
+	}
+}
 
 listOrders();
+
+function formatDate(date) {
+	const newDate = new Date(date);
+	const day = String(newDate.getDate()).padStart(2, '0');
+	const month = String(newDate.getMonth() + 1).padStart(2, '0');
+	const year = newDate.getFullYear();
+	const formatedDate = `${day}/${month}/${year}`;
+
+	return formatedDate;
+}

@@ -5,6 +5,7 @@ export async function signedUrl(token, movieId) {
 			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
+		credentials: 'include'
 	});
 
 	const urlData = await urlResponse.json();

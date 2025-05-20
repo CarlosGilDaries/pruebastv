@@ -2,7 +2,7 @@ export function getVideoContent(data, node, backendURL) {
   const videos = new Set();
 
   data.data.movies.forEach((element) => {
-    if (element.type != 'audio/mp3') {
+    if (element.type != 'audio/mpeg' || element.type != 'url_mp3') {
       videos.add(element);
     }
   });
@@ -12,7 +12,7 @@ export function getVideoContent(data, node, backendURL) {
     article.classList.add('content');
 
     const link = document.createElement('a');
-    link.href = `/${video.slug}`;
+    link.href = `/content/${video.slug}`;
 
     const img = document.createElement('img');
     img.src = backendURL + video.cover;

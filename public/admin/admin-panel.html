@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/admin/admin.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/stream-word.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Panel de admin</title>
+    <title>Estadísticas</title>
 </head>
 <body>
     <div class="menu">
@@ -28,14 +28,12 @@
 
         <aside class="admin-sidebar">
             <ul class="admin-menu">
-                <!--<li class="active" data-content="add-content" data-script="/js/admin/addContent.js">
-                    <i class="fa-solid fa-upload"></i>
-                    <span>Añadir contenido</span>
-                </li>
-                <li data-content="add-ad" data-script="/js/admin/addAds.js">
-                    <i class="fa-solid fa-upload"></i>
-                    <span>Añadir anuncio</span>
-                </li>-->
+				<a href="/admin/admin-panel.html">
+                	<li data-content="admin-panel">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                        <span>Estadísticas</span>
+                	</li>
+				 </a>
 				<a href="/admin/list-content.html">
                 	<li data-content="list-content">
                         <i class="fas fa-film"></i>
@@ -75,29 +73,127 @@
             </ul>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area" id="admin-panel"></div>
-        </main>
+		<main class="admin-main">
+			<div id="content-area">
 
-    </div>
+				<div class="container" id="admin-panel">
+					<h1><i class="fa-solid fa-square-poll-vertical fa-lg"></i> Estadísticas</h1>
 
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="info">
-                <a href="#">Centro de ayuda</a>
-                <a href="#">¿Quiénes somos?</a>
-                <a href="#">Cambiar preferencias de cookies</a>
-            </div>
-            <ul class="icons">
-                <a href="#"><li><img src="/images/instagram-53.png" alt="Instagram"></li></a>
-                <a href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
-                <a href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
-                <a href="#"><li><img src="/images/github.png" alt="Github"></li></a> 
-            </ul>
-        </div>
-    </footer>
+					<div class="stats-container">
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fas fa-video"></i>
+							</div>
+							<div class="stat-info">
+								<h3>MP4 Local</h3>
+								<p id="local-mp4-count">0</p>
+							</div>
+						</div>
 
-    <script src="/ckeditor/ckeditor.js"></script>
-    <script type="module" src="/js/admin/admin.js"></script>
-</body>
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fas fa-stream"></i>
+							</div>
+							<div class="stat-info">
+								<h3>HLS Local</h3>
+								<p id="local-hls-count">0</p>
+							</div>
+						</div>
+
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fas fa-music"></i>
+							</div>
+							<div class="stat-info">
+								<h3>MP3 Local</h3>
+								<p id="local-mp3-count">0</p>
+							</div>
+						</div>
+
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fas fa-link"></i>
+							</div>
+							<div class="stat-info">
+								<h3>URLs Externas</h3>
+								<p id="external-urls-count">0</p>
+							</div>
+						</div>
+
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fa-solid fa-star"></i>
+							</div>
+							<div class="stat-info">
+								<h3>Contenido PPV</h3>
+								<p id="ppv-content-count">0</p>
+							</div>
+						</div>
+
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fas fa-users"></i>
+							</div>
+							<div class="stat-info">
+								<h3>Usuarios Registrados</h3>
+								<p id="users-count">0</p>
+							</div>
+						</div>
+
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fas fa-euro-sign"></i>
+							</div>
+							<div class="stat-info">
+								<h3>Suscripciones</h3>
+								<p id="subscriptions-amount">0€</p>
+							</div>
+						</div>
+
+						<div class="stat-card">
+							<div class="stat-icon">
+								<i class="fas fa-money-bill-wave"></i>
+							</div>
+							<div class="stat-info">
+								<h3>PPV</h3>
+								<p id="ppv-amount">0€</p>
+							</div>
+						</div>
+					</div>
+
+					<div class="chart-container">
+						<h2>Distribución de Planes</h2>
+						<div class="chart-wrapper">
+							<canvas id="plansChart"></canvas>
+							<div id="chart-legend"></div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</main>
+
+	</div>
+
+	<!-- <footer class="footer">
+		<div class="footer-container">
+			<div class="info">
+				<a href="#">Centro de ayuda</a>
+				<a href="#">¿Quiénes somos?</a>
+				<a href="#">Cambiar preferencias de cookies</a>
+			</div>
+			<ul class="icons">
+				<a href="#"><li><img src="/images/instagram-53.png" alt="Instagram"></li></a>
+				<a href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
+				<a href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
+				<a href="#"><li><img src="/images/github.png" alt="Github"></li></a> 
+			</ul>
+		</div>
+	</footer> -->
+
+	<script src="/ckeditor/ckeditor.js"></script>
+	<script type="module" src="/js/admin/admin.js"></script>
+	<script type="module" src="/js/admin/stats.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+	</body>
 </html>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Creagia\LaravelRedsys\Concerns\CanCreateRedsysRequests;
 use Creagia\LaravelRedsys\Contracts\RedsysPayable;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class PpvOrder extends Model implements RedsysPayable
 {
@@ -24,9 +25,14 @@ class PpvOrder extends Model implements RedsysPayable
         return $this->belongsTo(User::class);
     }
 
-        public function movie()
+    public function movie()
     {
         return $this->belongsTo(Movie::class);
+    }
+	
+    public function bill(): MorphOne
+    {
+        return $this->morphOne(Bill::class, 'billable');
     }
 
     public function getTotalAmount(): int
@@ -41,6 +47,8 @@ class PpvOrder extends Model implements RedsysPayable
         $this->update([
             'status' => 'paid',
         ]);
+		
+		app(\App\Http\Controllers\BillPdfController::class)->generatePpvOrderInvoice($this);
     }
 
 }

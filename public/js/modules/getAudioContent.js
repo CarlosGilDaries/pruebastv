@@ -3,7 +3,7 @@ export function getAudioContent(data, node, backendURL) {
 	console.log(data);
 
   data.data.movies.forEach((element) => {
-    if (element.type == 'audio/mp3') {
+    if (element.type == 'audio/mpeg' || element.type == 'url_mp3') {
       audios.add(element);
     }
   });
@@ -13,7 +13,7 @@ export function getAudioContent(data, node, backendURL) {
     article.classList.add('content');
 
     const link = document.createElement('a');
-    link.href = `/${audio.slug}`;
+    link.href = `/content/${audio.slug}`;
 
     const img = document.createElement('img');
     img.src = backendURL + audio.cover;

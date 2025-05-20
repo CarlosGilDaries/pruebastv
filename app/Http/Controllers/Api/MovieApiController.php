@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+
 
 class MovieApiController extends Controller
 {
@@ -59,14 +61,24 @@ class MovieApiController extends Controller
                     'error' => 'Película no encontrada'
                 ], 404);
             }
+			/*
+			// Generar clave temporal segura
+			$tempToken = Str::random(40);
+			
+			// Guardar en cache 5 minutos
+			Cache::put("stream_token:$tempToken", [
+				'user_id' => $user->id,
+				'movie_id' => $movie->id
+			], now()->addMinutes(5));
 			
 			if ($movie->type === 'url_hls') {
 				// Reescribir la URL del m3u8 a una ruta protegida del backend que actuará como proxy
 				$movie->url = URL::signedRoute('proxy.m3u8', [
 					'movieId' => $movie->id,
 					'userId' => $user->id,
+					'tempToken' => $tempToken,
 				], now()->addMinutes(5));
-			}
+			}*/
 			
             $plans = $movie->plans;
 
@@ -270,103 +282,115 @@ class MovieApiController extends Controller
                 if ($request->input('type') != 'application/vnd.apple.mpegurl') {
                     $content = $request->file('content');
                     $contentExtension = $content->getClientOriginalExtension();
-                    $movie->url = '/file/' . $slug . '/' . $slug . '.' . $contentExtension;
-                    $content->storeAs('content/' . $slug, $slug . '.' . $contentExtension, 'private');
-                } else {
-                    $content = $request->file('m3u8');
-                    //$mime = $content->getMimeType();
-                    //dd($mime);
-                    $contentExtension = $content->getClientOriginalExtension();
-                    $movie->url = '/file/' . $slug . '/' . $slug . '.' . $contentExtension;
-                    $content->storeAs('content/' . $slug, $slug . '.' . $contentExtension, 'private');
-                }
+					$movie->url = '/file/' . $slug . '/' . $slug . '.' . $contentExtension;
+					$content->storeAs('content/' . $slug, $slug . '.' . $contentExtension, 'private');
+				} else {
+					$content = $request->file('m3u8');
+					//$mime = $content->getMimeType();
+					//dd($mime);
+					$contentExtension = $content->getClientOriginalExtension();
+					$movie->url = '/file/' . $slug . '/' . $slug . '.' . $contentExtension;
+					$content->storeAs('content/' . $slug, $slug . '.' . $contentExtension, 'private');
+				}
 
-                $zips = ['ts1', 'ts2', 'ts3'];
-                $extractPath = storage_path('app/private/content/' . $slug);
+				$zips = ['ts1', 'ts2', 'ts3'];
+				$extractPath = storage_path('app/private/content/' . $slug);
 
-                if (!file_exists($extractPath)) {
-                    mkdir($extractPath, 0777, true);
-                }
+				if (!file_exists($extractPath)) {
+					mkdir($extractPath, 0777, true);
+				}
 
-                foreach ($zips as $zipKey) {
-                    $zipFile = $request->file($zipKey);
-                    if ($zipFile) {
-                        $zip = new \ZipArchive;
-                        if ($zip->open($zipFile->getRealPath()) === true) {
-                            $zip->extractTo($extractPath);
-                            $zip->close();
-                        }
-                    }
-                }
-            } else {
-                $movie->url = $external_url;
-            }
+				foreach ($zips as $zipKey) {
+					$zipFile = $request->file($zipKey);
+					if ($zipFile) {
+						$zip = new \ZipArchive;
+						if ($zip->open($zipFile->getRealPath()) === true) {
+							$zip->extractTo($extractPath);
+							$zip->close();
+						}
+					}
+				}
+			} else {
+				$movie->url = $external_url;
+			}
 
-            $movie->save();
-            $plans = $request->input('plans');
+			$movie->save();
+			
+			$adminPlan = Plan::where('name', 'admin')->first();
+			DB::table('movie_plan')->insert([
+				'movie_id' => $movie->id,
+				'plan_id' => $adminPlan->id,
+				'created_at' => now(),
+				'updated_at' => now(),
+			]);
+			
+			$plans = $request->input('plans');
 
-            foreach($plans as $plan) {
-                DB::table('movie_plan')->insert([
-                    'movie_id' => $movie->id,
-                    'plan_id' => $plan,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-            }
+			foreach($plans as $plan) {
+				DB::table('movie_plan')->insert([
+					'movie_id' => $movie->id,
+					'plan_id' => $plan,
+					'created_at' => now(),
+					'updated_at' => now(),
+				]);
+			}
 
-            return response()->json([
-                'success' => true,
-                'movie' => $movie,
-                'message' => $title . ' subido correctamente'
-            ], 201);
+			return response()->json([
+				'success' => true,
+				'movie' => $movie,
+				'message' => $title . ' subido correctamente'
+			], 201);
 
-        } catch (\Exception $e) {
-            // Limpiar archivos subidos en caso de error
-            /*if (isset($slug)) {
+		} catch (\Exception $e) {
+			// Limpiar archivos subidos en caso de error
+			/*if (isset($slug)) {
                 Storage::disk('private')->deleteDirectory('content/' . $slug);
             }*/
 
-            Log::error('Error al crear contenido: ' . $e->getMessage());
-            
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
+			Log::error('Error al crear contenido: ' . $e->getMessage());
 
-    public function destroy(Request $request)
-    {
-        try {
-            $id = $request->input('content_id');
-            $movie = Movie::where('id', $id)->first();
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+		}
+	}
 
-            if (Auth::check() && Auth::user()->rol == 'admin') {
-                $directory = ("content/{$movie->slug}");
-                Storage::disk('private')->deleteDirectory($directory, true);
-                Movie::where('id', $id)->delete();
-
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Contenido eliminado con éxito'
-                ], 200);
-            }
-        } catch (\Exception $e) {
-            Log::error('Error al eliminar el archivo: ' . $e->getMessage());
-            
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
-	
-	
-	
-	public function streamSigned($movieId, $userId)
+	public function destroy(Request $request)
 	{
 		try {
-			// Validar que el usuario autenticado es el mismo que generó la URL
+			$id = $request->input('content_id');
+			$movie = Movie::where('id', $id)->first();
+
+			if (Auth::check() && Auth::user()->rol == 'admin') {
+				$directory = ("content/{$movie->slug}");
+				Storage::disk('private')->deleteDirectory($directory, true);
+				Movie::where('id', $id)->delete();
+
+				return response()->json([
+					'success' => true,
+					'message' => 'Contenido eliminado con éxito'
+				], 200);
+			}
+		} catch (\Exception $e) {
+			Log::error('Error al eliminar el archivo: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+		}
+	}
+
+
+
+	public function streamSigned(Request $request, $movieId, $userId)
+	{
+		try {
+			if (! $request->hasValidSignature()) {
+				return response()->json(['success' => false, 'message' => 'Firma inválida'], 403);
+			}
+
 			$movie = Movie::findOrFail($movieId);
 			if ($movie->type == 'url_mp4') {
 				$accept = 'video/mp4';
@@ -399,34 +423,35 @@ class MovieApiController extends Controller
 				'Cache-Control' => 'no-store',
 				'Pragma' => 'no-cache',
 			]);
-			
+
 		} catch (\Exception $e) {
-			Log::error('Error: ' . $e->getMessage());
+			Log::error('Error en streamSigned: ' . $e->getMessage());
 
 			return response()->json([
 				'success' => false,
 				'message' => 'Error: ' . $e->getMessage(),
 			], 500);
-        }
+		}
 	}
 
-	public function getSignedUrl($movieId)
+	public function getSignedUrl(Request $request, $movieId)
 	{
-		try {
+		try {	
 			$user = Auth::user();
+
 			$movie = Movie::where('id', $movieId)->first();
 
 			if ($movie->type === 'url_hls') {
 				$signedUrl = URL::signedRoute('proxy.m3u8', [
 					'movieId' => $movie->id,
 					'userId' => $user->id,
-				], now()->addMinutes(5));
-				
+				]);
+
 			} else {
 				$signedUrl = URL::signedRoute('secure.stream', [
 					'movie' => $movie->id,
 					'user' => $user->id,
-				], now()->addMinutes(5));
+				]);
 			}
 
 			return response()->json([
@@ -435,7 +460,7 @@ class MovieApiController extends Controller
 			], 200);
 
 		} catch (\Exception $e) {
-			Log::error('Error: ' . $e->getMessage());
+			Log::error('Error en signedUrl: ' . $e->getMessage());
 
 			return response()->json([
 				'success' => false,

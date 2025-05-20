@@ -6,15 +6,16 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Http\Request;
 use App\Models\Movie;
 
 class ProxyController extends Controller
 {
-	public function proxyHLS($movieId, $userId)
+	public function proxyHLS(request $request, $movieId, $userId)
 	{
-		// Verificar que la URL esté firmada (seguridad contra acceso directo)
-		if (!request()->hasValidSignature()) {
-			abort(403, 'Firma inválida o URL expirada');
+		if (! $request->hasValidSignature()) {
+			return response()->json(['success' => false, 'message' => 'Firma inválida'], 403);
 		}
 
 		try {

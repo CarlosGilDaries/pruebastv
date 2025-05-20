@@ -43,7 +43,7 @@ async function listUsers() {
 				  <th>Email</th>
 				  <th>Ciudad</th>
 				  <th>País</th>
-				  <th>Nacimiento</th>
+				  <th>Edad</th>
 				  <th>Género</th>
 				  <th>Plan</th>
 				  <th>Acciones</th>
@@ -52,13 +52,29 @@ async function listUsers() {
 			  <tbody>
 		`;
 		  
-		let plan;
 		users.forEach((user) => {
+			let age = calculateAge(user.birthday);
+			let gender;
+			let plan;
+			
+			if (user.gender == 'man') {
+				gender = 'Hombre';
+			}
+			else if (user.gender == 'woman') {
+				gender = 'Mujer';
+			}
+			else if (user.gender == 'non_binary') {
+				gender == 'No binario';
+			} else {
+				gender = 'Otros';
+			}
+			
 			if (user.plan != null) {
 				plan = user.plan.name;
 			} else {
 				plan = 'N/A';
 			}
+			
 		  tableHTML += `
 			<tr>
 			  <td>${user.id}</td>
@@ -66,8 +82,8 @@ async function listUsers() {
 			  <td>${user.email}</td>
 			  <td>${user.city}</td>
 			  <td>${user.country}</td>
-			  <td>${user.birthday}</td>
-			  <td>${user.gender}</td>
+			  <td>${age}</td>
+			  <td>${gender}</td>
 			  <td>${plan}</td>
 			  <td>
 				<div class="actions-container">
@@ -123,3 +139,21 @@ async function listUsers() {
   }
 
 listUsers();
+
+function calculateAge(birthday) {
+    const today = new Date();
+    const birth = new Date(birthday);
+
+    let age = today.getFullYear() - birth.getFullYear();
+
+    const actualMonth = today.getMonth();
+    const actualDay = today.getDate();
+    const birthMonth = birth.getMonth();
+    const birthdayDay = birth.getDate();
+
+    if (actualMonth < birthMonth || (actualMonth === birthMonth && actualDay < birthdayDay)) {
+        age--;
+    }
+
+    return age;
+}

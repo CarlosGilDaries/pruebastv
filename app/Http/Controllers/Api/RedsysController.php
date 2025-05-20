@@ -50,6 +50,7 @@ class RedsysController extends Controller
                 'status' => 'pending',
 				'description' => "Suscripción {$plan->name}"
             ]);
+			
 
             $redsysRequest = $order->createRedsysRequest(
                 productDescription: "Suscripción {$plan->name}",
@@ -71,6 +72,7 @@ class RedsysController extends Controller
                 'DS_MERCHANT_URLKO' => "https://pruebastv.kmc.es/unsuccessful-payment.html",
                 'DS_MERCHANT_URLOK' =>"https://pruebastv.kmc.es/successful-payment.html",
             ];
+			
 
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));
 

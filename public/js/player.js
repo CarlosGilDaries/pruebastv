@@ -92,7 +92,7 @@ async function initPlayer() {
 
 			const ppvData = await ppvResponse.json();
 			if (!ppvData.success) {
-				window.location.href = `/${showData.data.movie.slug}`;
+				window.location.href = `/content/${showData.data.movie.slug}`;
 				return;
 			}
 		}
@@ -160,12 +160,23 @@ async function playVideoWithoutAds(movie, backendURL, token, signedUrl) {
 			techOrder: [techOrder],
 			sources: [{
 				src: videoUrl,
-				type: type
-			}]
+				type: type,
+				withCredentials: true
+			}],
+			html5: {
+                hls: {
+                    withCredentials: true // Para HLS
+                }
+            }
 		});
-
-		player.play();
-
+		
+		        // Manejar errores de autenticación
+        player.on('error', (e) => {
+            if (e.code === 4) { // Error de red/autenticación
+                console.error('Error de autenticación, refrescando token...');
+                // Aquí puedes implementar lógica para refrescar el token
+            }
+        });
 	} catch (error) {
 		console.log(error);
 	}

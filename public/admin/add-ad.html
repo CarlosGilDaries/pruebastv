@@ -28,14 +28,12 @@
 
         <aside class="admin-sidebar">
             <ul class="admin-menu">
-                <!--<li class="active" data-content="add-content" data-script="/js/admin/addContent.js">
-                    <i class="fa-solid fa-upload"></i>
-                    <span>Añadir contenido</span>
-                </li>
-                <li data-content="add-ad" data-script="/js/admin/addAds.js">
-                    <i class="fa-solid fa-upload"></i>
-                    <span>Añadir anuncio</span>
-                </li>-->
+ 				<a href="/admin/admin-panel.html">
+                	<li data-content="admin-panel">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                        <span>Estadísticas</span>
+                	</li>
+				 </a>
 				<a href="/admin/list-content.html">
                 	<li data-content="list-content">
                         <i class="fas fa-film"></i>
@@ -118,7 +116,7 @@
                                 <option value="" disabled selected>Selecciona un formato</option>
                                 <option value="video/mp4">MP4</option>
                                 <option value="application/vnd.apple.mpegurl">HLS</option>
-                                <option value="audio/mp3">MP3</option>
+                                <option value="audio/mpeg">MP3</option>
                             </select>
                             <div id="ad-type-error" class="error-message"></div>
                         </div>

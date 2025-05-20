@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
- const allKeys = Object.keys(localStorage);
+ /*const allKeys = Object.keys(localStorage);
  const deviceIds = allKeys
    .filter((key) => key.startsWith('device_id_'))
   .map((key) => localStorage.getItem(key));
@@ -55,7 +55,7 @@ if (deviceIds.length != 0 && token != null) {
   } catch (error) {
     console.error('Error:', error);
   }
-}
+}*/
 
 
 fetch(api)
