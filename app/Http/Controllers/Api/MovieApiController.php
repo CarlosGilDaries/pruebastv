@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use DataTables;
 
 
 class MovieApiController extends Controller
@@ -47,6 +48,46 @@ class MovieApiController extends Controller
                 'message' => 'Error: ' . $e->getMessage()
             ], 500);
         } 
+    }
+
+    public function datatable()
+    {
+        try {
+        $movies = Movie::with('gender')->get();
+
+			return DataTables::of($movies)
+				->addColumn('title', function($movie) {
+					return $movie->title;
+				})
+				->addColumn('cover', function($movie) {
+					return $movie->cover;
+				})
+				->addColumn('gender', function($movie) {
+					return $movie->gender->name;
+				})
+				->addColumn('type', function($movie) {
+					return $movie->type;
+				})
+				->addColumn('ppv', function($movie) {
+					return $movie->ppv;
+				})
+				->addColumn('duration', function($movie) {
+					return $movie->duration;
+				})
+				->addColumn('actions', function($movie) {
+					return $this->getActionButtons($movie);
+				})
+				->rawColumns(['actions'])
+				->make(true);
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function show($slug)
@@ -467,5 +508,26 @@ class MovieApiController extends Controller
 				'message' => 'Error: ' . $e->getMessage(),
 			], 500);
 		}
+	}
+
+    private function getActionButtons($movie)
+	{
+		$id = $movie->id;
+        $slug = $movie->slug;
+        $title = $movie->title;
+
+		return '
+			<div class="actions-container">
+				<button class="actions-button orders-button">Acciones</button>
+				<div class="actions-menu">
+                <a href="/content/"'.$slug.'" class="action-item">Ver</a>
+					<a href="/admin/edit-content.html" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
+					<a href="/admin/link-content-with-ads.html" class="action-item content-action link-button" data-id="'.$id.'" data-title="'.$title.'" data-slug="'.$slug.'">Anuncios</a>
+                    <form class="content-delete-form" data-id="'.$id.'">
+						<input type="hidden" name="content_id" value="'.$id.'">
+						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
+					</form>
+				</div>
+			</div>';
 	}
 }

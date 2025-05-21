@@ -12,13 +12,14 @@
     background-color: #343a40;
     color: white;
     padding: 12px;
-    text-align: left;
+    text-align: left !important;
 }
 
 .list td {
     padding: 12px;
     vertical-align: middle;
     border-top: 1px solid #dee2e6;
+	text-align: left !important;
 }
 
 .list img {
@@ -27,12 +28,6 @@
 
 .list .dropdown-menu {
     min-width: 100px;
-}
-
-.list table th, 
-.list table td {
-    text-align: center;
-    vertical-align: middle;
 }
 
 .actions-container {

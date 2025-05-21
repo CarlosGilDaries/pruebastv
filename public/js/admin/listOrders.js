@@ -21,7 +21,7 @@ async function listOrders() {
                     ¡Pedido eliminado con éxito!
                 </div>    
                 <div class="table-responsive">
-                    <table class="content-table display datatable" style="width:100%">
+                    <table class="content-table display datatable">
                         <thead>
                             <tr>
                                 <th>Nº Pedido</th>
@@ -29,7 +29,7 @@ async function listOrders() {
                                 <th>Estado</th>
                                 <th>DNI Usuario</th>
                                 <th>Descripción</th>
-								<th>Fecha</th>
+								                <th>Fecha</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -45,6 +45,7 @@ async function listOrders() {
       const table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
+        order: [[5, 'asc']],
         ajax: {
           url: api + 'orders/datatable',
           type: 'GET',

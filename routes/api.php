@@ -39,7 +39,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('check-active-streams', [ActiveStreamApiController::class, 'startStream']);
     Route::put('keep-alive', [ActiveStreamApiController::class, 'keepAlive']);
 
-    Route::get('content-list', [MovieApiController::class, 'index']);
+    Route::get('content/datatable', [MovieApiController::class, 'index']);
     Route::get('ads-list', [AdApiController::class, 'index']);
     Route::post('add-content', [MovieApiController::class, 'store']);
     Route::delete('delete-content', [MovieApiController::class, 'destroy']);

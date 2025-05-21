@@ -40,9 +40,9 @@ class PlanOrderController extends Controller
 	public function datatable()
 	{
 		try {
-			$orders = UnifiedOrder::with('user');
+			$orders = UnifiedOrder::with('user')->orderBy('created_at', 'asc')->get();
 
-			return DataTables::eloquent($orders)
+			return DataTables::of($orders)
 				->addColumn('reference', function($order) {
 					return $order->reference;
 				})
