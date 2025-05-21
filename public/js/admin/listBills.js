@@ -7,6 +7,7 @@ async function listBills() {
   const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-bill';
   const backendURL = 'https://pruebastv.kmc.es/';
   const authToken = localStorage.getItem('auth_token');
+  const api = 'https://pruebastv.kmc.es/api/';
 
   // Cargar los datos al iniciar
   loadBillsList();
@@ -85,7 +86,7 @@ async function listBills() {
           links.forEach((link) => {
             link.addEventListener('click', storageData);
           });
-            
+
           document.querySelectorAll('.bill-button').forEach((btn) => {
             btn.addEventListener('click', function (e) {
               e.preventDefault();
@@ -106,7 +107,9 @@ async function listBills() {
           // Configurar los menús de acciones
           setUpMenuActions();
 
-          const message = document.getElementById('delete-bill-success-message');
+          const message = document.getElementById(
+            'delete-bill-success-message'
+          );
           deleteForm(authToken, '.bill-delete-form', backendDeleteApi, message);
         },
       });
