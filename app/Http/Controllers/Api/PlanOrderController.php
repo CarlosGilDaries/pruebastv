@@ -6,28 +6,43 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PlanOrder;
 use App\Models\PpvOrder;
-use App\Models\CompanyDetail;
-//use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use DataTables;
+use Illuminate\Support\Carbon;
 
 class PlanOrderController extends Controller
 {
-        public function index()
-    {
-        try {
-        $planOrders = PlanOrder::with(['user', 'plan', 'bill'])->get();
-		$ppvOrders = PpvOrder::with(['user', 'movie', 'bill'])->get();
-		$companyDetails = CompanyDetail::first();
+	public function index()
+	{
+		try {
+			$planOrders = PlanOrder::with(['user', 'plan'])->select('plan_orders.*');
+			$ppvOrders = PpvOrder::with(['user', 'movie'])->select('ppv_orders.*');
+			$orders = $planOrders->unionAll($ppvOrders);
 
-        return response()->json([
-            'success' => true,
-            'orders' => [
-				'planOrder' => $planOrders,
-				'ppvOrder' => $ppvOrders,
-				'companyDetails' => $companyDetails
-			],
-            'message' => 'Pedidos obtenidos con éxito.',
-        ], 200);
+			return DataTables::of($orders)
+				->addColumn('reference', function($order) {
+					return $order->reference;
+				})
+				->addColumn('amount', function($order) {
+					return $order->amount.' €';
+				})
+				->addColumn('status', function($order) {
+					return $this->getStatusText($order->status);
+				})
+				->addColumn('user_dni', function($order) {
+					return $order->user->dni;
+				})
+				->addColumn('description', function($order) {
+					return $order->description;
+				})
+				->addColumn('created_at', function($order) {
+					return Carbon::parse($order->created_at)->format('d-m-Y');
+				})
+				->addColumn('actions', function($order) {
+					return $this->getActionButtons($order);
+				})
+				->rawColumns(['actions'])
+				->make(true);
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
@@ -133,7 +148,34 @@ class PlanOrderController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        }
-    }
+			], 500);
+		}
+	}
+
+	private function getStatusText($status)
+	{
+		switch ($status) {
+			case 'pending': return 'Pendiente';
+			case 'paid': return 'Pagado';
+			default: return 'Error';
+		}
+	}
+
+	private function getActionButtons($order)
+	{
+		$type = $order instanceof PlanOrder ? 'plan' : 'ppv';
+		$id = $order->id;
+
+		return '
+			<div class="actions-container">
+				<button class="actions-button orders-button">Acciones</button>
+				<div class="actions-menu">
+					<button class="action-item bill-button plan-action" data-id="'.$id.'">Factura</button>
+					<form class="'.$type.'-order-delete-form" data-id="'.$id.'">
+						<input type="hidden" name="plan_id" value="'.$id.'">
+						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
+					</form>
+				</div>
+			</div>';
+	}
 }

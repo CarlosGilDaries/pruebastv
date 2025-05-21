@@ -67,7 +67,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('edit-gender/{id}', [GenderController::class, 'update']);
     Route::delete('delete-gender', [GenderController::class, 'destroy']);
 	
-	Route::get('orders', [PlanOrderController::class, 'index']);
+	Route::get('orders/datatable', [PlanOrderController::class, 'index']);
     Route::post('add-order', [PlanOrderController::class, 'store']);
     Route::post('edit-order/{id}', [PlanOrderController::class, 'update']);
     Route::delete('delete-order', [PlanOrderController::class, 'destroy']);
@@ -81,10 +81,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
 	
-	Route::get('bills', [BillController::class, 'index']);
+	/*Route::get('bills', [BillController::class, 'index']);
     Route::get('bill/{id}', [BillController::class, 'show']);
     Route::post('add-bill', [BillController::class, 'store']);
-    Route::delete('delete-bill', [BillController::class, 'destroy']);
+    Route::delete('delete-bill', [BillController::class, 'destroy']);*/
 	
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 });
