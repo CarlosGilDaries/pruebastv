@@ -76,7 +76,7 @@ async function listContent() {
           },
           { data: 'gender', name: 'gender' },
           { data: 'type', name: 'type' },
-          { data: 'ppv', name: 'ppv' },
+          { data: 'pay_per_view', name: 'pay_per_view' },
           {
             data: 'duration',
             name: 'duration',
