@@ -4,7 +4,7 @@ import { storageData } from '../modules/storageData.js';
 
 async function listUsers() {
   const listUsers = document.getElementById('list-users');
-  const api = 'https://pruebastv.kmc.es/api';
+  const api = 'https://pruebastv.kmc.es/api/';
   const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-user';
   const backendURL = 'https://pruebastv.kmc.es';
   const authToken = localStorage.getItem('auth_token');
