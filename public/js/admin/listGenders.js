@@ -4,7 +4,7 @@ import { storageData } from '../modules/storageData.js';
 
 async function listGenders() {
   const listContent = document.getElementById('list-genders');
-  const backendAPI = 'https://pruebastv.kmc.es/api/genders';
+  const api = 'https://pruebastv.kmc.es/api/';
   const backendURL = 'https://pruebastv.kmc.es';
   const authToken = localStorage.getItem('auth_token');
   const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-gender';

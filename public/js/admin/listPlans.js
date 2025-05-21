@@ -4,7 +4,7 @@ import { storageData } from '../modules/storageData.js';
 
 async function listPlans() {
   const listContent = document.getElementById('list-plans');
-  const backendAPI = 'https://pruebastv.kmc.es/api/plans';
+  const api = 'https://pruebastv.kmc.es/api/';
   const backendURL = 'https://pruebastv.kmc.es';
   const authToken = localStorage.getItem('auth_token');
   const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-plan';

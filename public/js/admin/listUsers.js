@@ -4,13 +4,16 @@ import { storageData } from '../modules/storageData.js';
 
 async function listUsers() {
   const listUsers = document.getElementById('list-users');
-  const backendAPI = 'https://pruebastv.kmc.es/api/users';
+  const api = 'https://pruebastv.kmc.es/api';
   const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-user';
   const backendURL = 'https://pruebastv.kmc.es';
   const authToken = localStorage.getItem('auth_token');
 
+  // Cargar los datos al iniciar
+  loadUsersList();
+
   // Función para cargar y mostrar los datos
-  async function loadContentList() {
+  async function loadUsersList() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
@@ -43,9 +46,6 @@ async function listUsers() {
 
       // Insertar la tabla en el DOM
       listUsers.innerHTML = tableHTML;
-
-      // Insertar la tabla en el DOM
-      listContent.innerHTML = tableHTML;
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
@@ -123,9 +123,6 @@ async function listUsers() {
                 `;
     }
   }
-
-  // Cargar los datos al iniciar
-  loadContentList();
 }
 
 listUsers();
