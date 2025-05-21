@@ -1,3 +1,7 @@
+import { deleteForm } from "../modules/deleteForm.js";
+import { setUpMenuActions } from '../modules/setUpMenuActions.js';
+import { storageData } from '../modules/storageData.js';
+
 async function listOrders() {
   const listContent = document.getElementById('list-orders');
   const authToken = localStorage.getItem('auth_token');
@@ -42,7 +46,7 @@ async function listOrders() {
         processing: true,
         serverSide: true,
         ajax: {
-          url: 'orders/datatable',
+          url: api + 'orders/datatable',
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,

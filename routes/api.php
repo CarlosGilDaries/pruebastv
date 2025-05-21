@@ -67,7 +67,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('edit-gender/{id}', [GenderController::class, 'update']);
     Route::delete('delete-gender', [GenderController::class, 'destroy']);
 	
-	Route::get('orders/datatable', [PlanOrderController::class, 'index']);
+	Route::get('orders', [PlanOrderController::class, 'index']);
+	Route::get('orders/datatable', [PlanOrderController::class, 'datatable']);
     Route::post('add-order', [PlanOrderController::class, 'store']);
     Route::post('edit-order/{id}', [PlanOrderController::class, 'update']);
     Route::delete('delete-order', [PlanOrderController::class, 'destroy']);

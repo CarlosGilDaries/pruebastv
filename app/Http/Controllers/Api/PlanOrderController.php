@@ -15,6 +15,30 @@ class PlanOrderController extends Controller
 	public function index()
 	{
 		try {
+			$planOrders = PlanOrder::with(['user', 'plan'])->get();
+			$ppvOrders = PpvOrder::with(['user', 'movie'])->get();
+			
+			return response()->json([
+				'success' => true,
+				'orders' => [
+					'planOrder' => $planOrders,
+					'ppvOrder' => $ppvOrders,
+				],
+			], 200);
+
+		} catch (\Exception $e) {
+			Log::error('Error: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+		}
+	}
+	
+	public function datatable()
+	{
+		try {
 			$planOrders = PlanOrder::with(['user', 'plan'])->select('plan_orders.*');
 			$ppvOrders = PpvOrder::with(['user', 'movie'])->select('ppv_orders.*');
 			$orders = $planOrders->unionAll($ppvOrders);
