@@ -5,7 +5,7 @@ import { storageData } from '../modules/storageData.js';
 
 async function listContent() {
   const listContent = document.getElementById('list-content');
-  const backendAPI = 'https://pruebastv.kmc.es/api/content-list';
+  const api = 'https://pruebastv.kmc.es/api/';
   const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-content';
   const backendURL = 'https://pruebastv.kmc.es';
   const authToken = localStorage.getItem('auth_token');
@@ -67,11 +67,23 @@ async function listContent() {
         columns: [
           { data: 'id', name: 'id' },
           { data: 'title', name: 'title' },
-          { data: 'cover', name: 'cover' },
+          {
+            data: 'cover',
+            name: 'cover',
+            render: function (data) {
+              return `<img src="${backendURL}${data}">`;
+            },
+          },
           { data: 'gender', name: 'gender' },
           { data: 'type', name: 'type' },
           { data: 'ppv', name: 'ppv' },
-          { data: 'duration', name: 'duration' },
+          {
+            data: 'duration',
+            name: 'duration',
+            render: function (data) {
+              return formatDuration(data);
+            },
+          },
           {
             data: 'actions',
             name: 'actions',
