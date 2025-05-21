@@ -26,7 +26,7 @@ async function listContent() {
                       ¡Contenido eliminado con éxito!
                   </div>    
                     <div class="table-responsive">
-                        <table class="content-table">
+                        <table class="content-table display datatable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
