@@ -53,7 +53,7 @@ class MovieApiController extends Controller
     public function datatable()
     {
         try {
-        $movies = Movie::with('gender')->get();
+            $movies = Movie::with('gender')->get();
 
 			return DataTables::of($movies)
 				->addColumn('title', function($movie) {
