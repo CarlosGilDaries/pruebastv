@@ -9,6 +9,7 @@ use App\Models\PpvOrder;
 use Illuminate\Support\Facades\Log;
 use DataTables;
 use Illuminate\Support\Carbon;
+use App\Models\UnifiedOrder;
 
 class PlanOrderController extends Controller
 {
@@ -39,11 +40,9 @@ class PlanOrderController extends Controller
 	public function datatable()
 	{
 		try {
-			$planOrders = PlanOrder::with(['user', 'plan'])->select('plan_orders.*');
-			$ppvOrders = PpvOrder::with(['user', 'movie'])->select('ppv_orders.*');
-			$orders = $planOrders->unionAll($ppvOrders);
+			$orders = UnifiedOrder::with('user');
 
-			return DataTables::of($orders)
+			return DataTables::eloquent($orders)
 				->addColumn('reference', function($order) {
 					return $order->reference;
 				})
