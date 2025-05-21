@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -68,8 +67,8 @@ class MovieApiController extends Controller
 				->addColumn('type', function($movie) {
 					return $movie->type;
 				})
-				->addColumn('ppv', function($movie) {
-					return $movie->ppv;
+				->addColumn('pay_per_view', function($movie) {
+					return $movie->pay_per_view;
 				})
 				->addColumn('duration', function($movie) {
 					return $movie->duration;
@@ -102,24 +101,6 @@ class MovieApiController extends Controller
                     'error' => 'Película no encontrada'
                 ], 404);
             }
-			/*
-			// Generar clave temporal segura
-			$tempToken = Str::random(40);
-			
-			// Guardar en cache 5 minutos
-			Cache::put("stream_token:$tempToken", [
-				'user_id' => $user->id,
-				'movie_id' => $movie->id
-			], now()->addMinutes(5));
-			
-			if ($movie->type === 'url_hls') {
-				// Reescribir la URL del m3u8 a una ruta protegida del backend que actuará como proxy
-				$movie->url = URL::signedRoute('proxy.m3u8', [
-					'movieId' => $movie->id,
-					'userId' => $user->id,
-					'tempToken' => $tempToken,
-				], now()->addMinutes(5));
-			}*/
 			
             $plans = $movie->plans;
 

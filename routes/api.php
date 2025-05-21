@@ -23,6 +23,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('manage-devices', [UserSessionApiController::class, 'manage']);
     Route::delete('destroy-device' , [UserSessionApiController::class, 'destroy']);
 
+	Route::get('content/datatable', [MovieApiController::class, 'datatable']);
     Route::get('content/{slug}', [MovieApiController::class, 'show']); 
 	Route::get('edit-view-content/{id}', [MovieApiController::class, 'editShow']); 
     Route::get('ad/{slug}', [AdApiController::class, 'show']);
@@ -39,7 +40,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('check-active-streams', [ActiveStreamApiController::class, 'startStream']);
     Route::put('keep-alive', [ActiveStreamApiController::class, 'keepAlive']);
 
-    Route::get('content/datatable', [MovieApiController::class, 'datatable']);
     Route::get('ads-list', [AdApiController::class, 'index']);
     Route::post('add-content', [MovieApiController::class, 'store']);
     Route::delete('delete-content', [MovieApiController::class, 'destroy']);
