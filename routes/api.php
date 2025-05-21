@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MovieApiController;
 use App\Http\Controllers\Api\AdApiController;
 use App\Http\Controllers\Api\AdMovieControllerApiController;
+use App\Http\Controllers\Api\BillController;
 use App\Http\Controllers\Api\GenderController;
 use App\Http\Controllers\Api\LoginApiController;
 use App\Http\Controllers\Api\MoviePlanController;
@@ -19,11 +20,18 @@ use App\Http\Controllers\Api\CompanyDetailController;
 //use Illuminate\Support\Facades\Storage;
 
 Route::middleware(['auth:sanctum'])->group(function () {
+	Route::get('content/datatable', [MovieApiController::class, 'datatable']);
+    Route::get('orders/datatable', [PlanOrderController::class, 'datatable']);
+    Route::get('plans/datatable', [PlanController::class, 'datatable']);
+    Route::get('users/datatable', [UserApiController::class, 'datatable']);
+    Route::get('ads/datatable', [AdApiController::class, 'datatable']);
+    Route::get('genders/datatable', [GenderController::class, 'datatable']);
+    Route::get('bills/datatable', [BillController::class, 'datatable']);
+
     Route::post('new-device', [UserSessionApiController::class, 'store']);
     Route::get('manage-devices', [UserSessionApiController::class, 'manage']);
     Route::delete('destroy-device' , [UserSessionApiController::class, 'destroy']);
 
-	Route::get('content/datatable', [MovieApiController::class, 'datatable']);
     Route::get('content/{slug}', [MovieApiController::class, 'show']); 
 	Route::get('edit-view-content/{id}', [MovieApiController::class, 'editShow']); 
     Route::get('ad/{slug}', [AdApiController::class, 'show']);
@@ -68,7 +76,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('delete-gender', [GenderController::class, 'destroy']);
 	
 	Route::get('orders', [PlanOrderController::class, 'index']);
-	Route::get('orders/datatable', [PlanOrderController::class, 'datatable']);
     Route::post('add-order', [PlanOrderController::class, 'store']);
     Route::post('edit-order/{id}', [PlanOrderController::class, 'update']);
     Route::delete('delete-order', [PlanOrderController::class, 'destroy']);
@@ -78,6 +85,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('add-ppv-order', [PpvOrderController::class, 'store']);
     Route::post('edit-ppv-order/{id}', [PpvOrderController::class, 'update']);
     Route::delete('delete-ppv-order', [PpvOrderController::class, 'destroy']);
+
+    Route::delete('delete-bill', [BillController::class, 'destroy']);
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);

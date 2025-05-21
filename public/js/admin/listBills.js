@@ -1,39 +1,37 @@
 import { deleteForm } from '../modules/deleteForm.js';
-import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
+import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 
-async function listPlans() {
-  const listContent = document.getElementById('list-plans');
-  const backendAPI = 'https://pruebastv.kmc.es/api/plans';
-  const backendURL = 'https://pruebastv.kmc.es';
+async function listBills() {
+  const listContent = document.getElementById('list-bills');
+  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-bill';
+  const backendURL = 'https://pruebastv.kmc.es/';
   const authToken = localStorage.getItem('auth_token');
-  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-plan';
 
   // Cargar los datos al iniciar
-  loadPlansList();
+  loadBillsList();
 
   // Función para cargar y mostrar los datos
-  async function loadPlansList() {
+  async function loadBillsList() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-		  			<div class="add-button-container">
-                    	<h1><i class="fa-solid fa-euro-sign"></i> Lista de Planes</h1>
-						<a href="/admin/add-plan.html" class="add-button add-plan">Crear Plan</a>
-					</div>
-                    <div id="delete-plan-success-message" class="success-message" style="margin-bottom: 20px;">
-                      ¡Plan eliminado con éxito!
+                    <div class="add-button-container">
+                        <h1><i class="fa-solid fa-receipt"></i> Lista de Facturas</h1>
+                    </div>
+                    <div id="delete-bill-success-message" class="success-message" style="margin-bottom: 20px;">
+                      ¡Factura eliminada con éxito!
                     </div>    
                     <div class="table-responsive">
                         <table class="content-table display datatable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Nombre</th>
-                                    <th>Precio</th>
-                                    <th>Max Dispositivos</th>
-                                    <th>Max Streams</th>
-                                    <th>Anuncios</th>
+                                    <th>Nº Factura</th>
+                                    <th>ID Usuario</th>
+                                    <th>ID Pedido</th>
+                                    <th>Descripción</th>
+                                    <th>Fecha</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -49,8 +47,9 @@ async function listPlans() {
       const table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
+        order: [[6, 'asc']],
         ajax: {
-          url: api + 'plans/datatable',
+          url: api + 'bills/datatable',
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -64,18 +63,11 @@ async function listPlans() {
         },
         columns: [
           { data: 'id', name: 'id' },
-          { data: 'name', name: 'name' },
-          { data: 'price', name: 'price' },
-          { data: 'max_devices', name: 'max_devices' },
-          { data: 'max_streams', name: 'max_streams' },
-          {
-            data: 'ads',
-            name: 'ads',
-            render: function (data) {
-              if (data == 1) return 'Sí';
-              else return 'No';
-            },
-          },
+          { data: 'bill_number', name: 'bill_number' },
+          { data: 'user_id', name: 'user_id' },
+          { data: 'order_id', name: 'order_id' },
+          { data: 'description', name: 'description' },
+          { data: 'created_at', name: 'created_at' },
           {
             data: 'actions',
             name: 'actions',
@@ -93,30 +85,40 @@ async function listPlans() {
           links.forEach((link) => {
             link.addEventListener('click', storageData);
           });
+            
+          document.querySelectorAll('.bill-button').forEach((btn) => {
+            btn.addEventListener('click', function (e) {
+              e.preventDefault();
+              const orderId = this.dataset.id;
+
+              fetch(`/bill-path/${orderId}`)
+                .then((res) => res.json())
+                .then((data) => {
+                  if (data.path) {
+                    window.open(`/${data.path}`, '_blank');
+                  } else {
+                    alert('Factura no disponible.');
+                  }
+                });
+            });
+          });
 
           // Configurar los menús de acciones
           setUpMenuActions();
 
-          const message = document.getElementById(
-            'delete-plan-success-message'
-          );
-          deleteForm(
-            authToken,
-            '.plans-delete-form',
-            backendDeleteApi,
-            message
-          );
+          const message = document.getElementById('delete-bill-success-message');
+          deleteForm(authToken, '.bill-delete-form', backendDeleteApi, message);
         },
       });
     } catch (error) {
-      console.error('Error al cargar la lista de planes:', error);
+      console.error('Error al cargar la lista de facturas:', error);
       listContent.innerHTML = `
                     <div class="error-message">
-                        Error al cargar la lista de planes: ${error.message}
+                        Error al cargar la lista de facturas: ${error.message}
                     </div>
                 `;
     }
   }
 }
 
-listPlans();
+listBills();

@@ -9,6 +9,7 @@ use App\Models\Plan;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
+use DataTables;
 
 class UserApiController extends Controller
 {
@@ -32,6 +33,52 @@ class UserApiController extends Controller
             ], 500);
         }
 	}
+
+    public function datatable()
+    {
+        try {
+            $users = User::with('plan')->get();
+
+			return DataTables::of($users)
+				->addColumn('id', function($user) {
+					return $user->id;
+				})
+				->addColumn('full_name', function($user) {
+					return $user->name . ' ' . $user->surnames;
+				})
+				->addColumn('email', function($user) {
+					return $user->email;
+				})
+				->addColumn('city', function($user) {
+					return $user->city;
+				})
+				->addColumn('country', function($user) {
+					return $user->country;
+				})
+                ->addColumn('age', function($user) {
+					return $user->birthday;
+				})
+                ->addColumn('gender', function($user) {
+					return $user->gender;
+				})
+                ->addColumn('plan', function($user) {
+					return $user->plan->name;
+				})
+				->addColumn('actions', function($user) {
+					return $this->getActionButtons($user);
+				})
+				->rawColumns(['actions'])
+				->make(true);
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 	
 	/**
      * Display the specified resource.
@@ -157,4 +204,21 @@ class UserApiController extends Controller
             ], 500);
         }
     }
+
+    private function getActionButtons($user)
+	{
+		$id = $user->id;
+
+		return '
+			<div class="actions-container">
+				<button class="actions-button">Acciones</button>
+				<div class="actions-menu">
+					<a href="/admin/edit-user.html" class="action-item content-action edit-button" data-id="'.$id.'">Editar</a>
+                    <form class="users-delete-form" data-id="' . $id . '">
+						<input type="hidden" name="content_id" value="' . $id . '">
+						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
+					</form>
+				</div>
+			</div>';
+	}
 }

@@ -10,6 +10,7 @@ use App\Http\Requests\AdRequest;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DataTables;
 
 class AdApiController extends Controller
 {
@@ -27,6 +28,43 @@ class AdApiController extends Controller
         } catch (\Exception $e) {
             Log::error('Error al obtener anuncios: ' . $e->getMessage());
             
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function datatable()
+    {
+        try {
+            $ads = Ad::all();
+
+			return DataTables::of($ads)
+				->addColumn('id', function($ad) {
+					return $ad->id;
+				})
+				->addColumn('title', function($ad) {
+					return $ad->title;
+				})
+				->addColumn('brand', function($ad) {
+					return $ad->brand;
+				})
+				->addColumn('type', function($ad) {
+					return $ad->type;
+				})
+				->addColumn('duration', function($ad) {
+					return $ad->duration;
+				})
+				->addColumn('actions', function($movie) {
+					return $this->getActionButtons($movie);
+				})
+				->rawColumns(['actions'])
+				->make(true);
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),
@@ -254,4 +292,23 @@ class AdApiController extends Controller
             ], 500);
         }
     }
+
+    private function getActionButtons($ad)
+	{
+		$id = $ad->id;
+        $slug = $ad->slug;
+
+		return '
+			<div class="actions-container">
+				<button class="actions-button">Acciones</button>
+				<div class="actions-menu">
+                <a href="player/ad/' . $slug . '" class="action-item">Ver</a>
+					<a href="/admin/edit-content.html" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
+                    <form class="ads-delete-form" data-id="'.$id.'">
+						<input type="hidden" name="content_id" value="'.$id.'">
+						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
+					</form>
+				</div>
+			</div>';
+	}
 }

@@ -75,8 +75,27 @@ async function listContent() {
             },
           },
           { data: 'gender', name: 'gender' },
-          { data: 'type', name: 'type' },
-          { data: 'pay_per_view', name: 'pay_per_view' },
+          {
+            data: 'type',
+            name: 'type',
+            render: function (data) {
+              if (data == 'application/vnd.apple.mpegurl') return 'HLS';
+              else if (data == 'video/mp4') return 'MP4';
+              else if (data == 'audio/mpeg') return 'MP3';
+              else if (data == 'url_hls') return 'URL HLS';
+              else if (data == 'url_mp4') return 'URL MP4';
+              else if (data == 'url_mp3') return 'URL MP3';
+              else if (data == 'youtube') return 'Youtube';
+            },
+          },
+          {
+            data: 'pay_per_view',
+            name: 'pay_per_view',
+            render: function (data) {
+              if (data == 0) return 'No';
+              else return 'Sí';
+            },
+          },
           {
             data: 'duration',
             name: 'duration',

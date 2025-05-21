@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('country');
             $table->date('birthday');
             $table->enum('gender', ['man', 'woman', 'non-binary', 'others']);
-            $table->foreignId('plan_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('plan_id')->nullable()->constrained();
             $table->enum('rol', ['user', 'admin']);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

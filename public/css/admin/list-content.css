@@ -24,6 +24,7 @@
 
 .list img {
     border-radius: 4px;
+    max-height: 70px;
 }
 
 .list .dropdown-menu {
@@ -118,4 +119,18 @@
 
 #list-genders {
 	max-width: 900px;
+}
+
+.dt-length, .dt-search {
+    display: flex;
+    align-items: center;
+}
+
+.dt-length label, .dt-search label {
+    margin-right: 8px;
+    margin-bottom: 0;
+}
+
+.dt-input {
+    width: auto; /* Asegura que no ocupe el 100% */
 }

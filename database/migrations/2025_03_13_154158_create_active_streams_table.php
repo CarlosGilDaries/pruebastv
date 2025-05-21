@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('device_id');
             $table->timestamp('last_active_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
-        
             $table->foreign('device_id')->references('device_id')->on('user_sessions')->onDelete('cascade');
         });     
     }

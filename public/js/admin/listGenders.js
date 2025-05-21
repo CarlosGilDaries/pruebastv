@@ -1,37 +1,22 @@
-import { deleteForm } from "../modules/deleteForm.js";
+import { deleteForm } from '../modules/deleteForm.js';
 import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
 
 async function listGenders() {
-    const listContent = document.getElementById('list-genders');
-    const backendAPI = 'https://pruebastv.kmc.es/api/genders';
-    const backendURL = 'https://pruebastv.kmc.es';
-    const authToken = localStorage.getItem('auth_token');
-    const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-gender';
+  const listContent = document.getElementById('list-genders');
+  const backendAPI = 'https://pruebastv.kmc.es/api/genders';
+  const backendURL = 'https://pruebastv.kmc.es';
+  const authToken = localStorage.getItem('auth_token');
+  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-gender';
 
-    // Cargar los datos al iniciar
-    loadGendersList();
-	
-    // Función para cargar y mostrar los datos
-    async function loadGendersList() {
-      try {
-        const response = await fetch(backendAPI, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-            'Content-Type': 'application/json',
-          },
-        });
+  // Cargar los datos al iniciar
+  loadGendersList();
 
-        const data = await response.json();
-
-        if (!data.success) {
-          throw new Error(data.message);
-        }
-
-        const genders = data.genders;
-
-        // Generar HTML de la tabla
-        let tableHTML = `
+  // Función para cargar y mostrar los datos
+  async function loadGendersList() {
+    try {
+      // Generar HTML de la tabla
+      let tableHTML = `
 					<div class="add-button-container">
 						<h1><i class="fas fa-rocket"></i> Lista de Géneros</h1>
 						<a href="/admin/add-gender.html" class="add-button add-content">Crear Género</a>
@@ -40,7 +25,7 @@ async function listGenders() {
                       ¡Género eliminado con éxito!
                     </div>    
                     <div class="table-responsive" id="genders-table">
-                        <table class="content-table">
+                        <table class="content-table display datatable">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -48,60 +33,75 @@ async function listGenders() {
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                `;
-
-        genders.forEach((gender) => {
-          tableHTML += ` 
-                    <tr>
-                        <td>${gender.id}</td>
-                        <td>${gender.name}</td>
-                        <td>
-                            <div class="actions-container">
-                                <button class="actions-button genders-button">Acciones</button>
-                                <div class="actions-menu">
-                                    <a href="/admin/edit-gender.html" class="action-item edit-button gender-action" data-id="${gender.id}">Editar</a>
-                                    <form class="gender-delete-form" data-id="${gender.id}">
-                                    <input type="hidden" name="gender_id" value="${gender.id}">
-                                    <button class="action-item content-action delete-btn" type="submit">Eliminar</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-        });
-
-        tableHTML += `
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 `;
 
-        // Insertar la tabla en el DOM
-        listContent.innerHTML = tableHTML;
+      // Insertar la tabla en el DOM
+      listContent.innerHTML = tableHTML;
 
-		const links = document.querySelectorAll('.action-item');
-			links.forEach(link => {
-				link.addEventListener('click', storageData);
-			});
+      // Iniciando Datatable con Server-Side Processing
+      const table = $('.datatable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: api + 'genders/datatable',
+          type: 'GET',
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+          error: function (xhr) {
+            if (xhr.status === 401) {
+              alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
+              window.location.href = '/login';
+            }
+          },
+        },
+        columns: [
+          { data: 'id', name: 'id' },
+          { data: 'name', name: 'name' },
+          {
+            data: 'actions',
+            name: 'actions',
+            orderable: false,
+            searchable: false,
+          },
+        ],
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+        },
+        responsive: true,
+        drawCallback: function () {
+          // Configurar eventos después de que se dibuja la tabla
+          const links = document.querySelectorAll('.action-item');
+          links.forEach((link) => {
+            link.addEventListener('click', storageData);
+          });
 
-        // Configurar los menús de acciones
-        setUpMenuActions();
+          // Configurar los menús de acciones
+          setUpMenuActions();
 
-        const message = document.getElementById(
-          'delete-gender-success-message'
-        );
-        deleteForm(authToken, '.gender-delete-form', backendDeleteApi, message);
-      } catch (error) {
-        console.error('Error al cargar la lista de géneros:', error);
-        listContent.innerHTML = `
+          const message = document.getElementById(
+            'delete-gender-success-message'
+          );
+          deleteForm(
+            authToken,
+            '.gender-delete-form',
+            backendDeleteApi,
+            message
+          );
+        },
+      });
+    } catch (error) {
+      console.error('Error al cargar la lista de géneros:', error);
+      listContent.innerHTML = `
                     <div class="error-message">
                         Error al cargar la lista de géneros: ${error.message}
                     </div>
                 `;
-      }
     }
   }
+}
 
 listGenders();

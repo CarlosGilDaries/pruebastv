@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Bill;
-use App\Models\User;
-//use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use DataTables;
+use Illuminate\Support\Carbon;
 
 class BillController extends Controller
 {
@@ -35,48 +35,35 @@ class BillController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function datatable()
     {
         try {
-			$validated = $request->validate([
-				'user_id' => 'required|exists:users,id',
-				'order_id' => 'required|exists:orders,id'
-			]);
+            $bills = Bill::with('billable')->get();
 
-			$order = Order::find($validated['order_id']);
-			$order->paidWithRedsys();
-
-			return response()->json([
-				'success' => true,
-				'message' => 'Pedido pagado y factura generada con éxito'
-			], 200);
-
-		} catch(\Exception $e) {
-			Log::error('Error: ' . $e->getMessage());
-
-			return response()->json([
-				'success' => false,
-				'message' => 'Error: ' . $e->getMessage(),
-			], 500);
-		}
-	}
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        try {
-            $bill = Bill::where('id', $id)->first();
-
-            return response()->json([
-                'success' => true,
-                'bill' => $bill,
-                'message' => 'Factura obtenida con éxito.'
-            ]);
+			return DataTables::of($bills)
+				->addColumn('id', function($bill) {
+					return $bill->id;
+				})
+				->addColumn('bill_number', function($bill) {
+					return $bill->bill_number;
+				})
+                ->addColumn('user_id', function($bill) {
+					return $bill->user_id;
+				})
+                ->addColumn('order_id', function($bill) {
+					return $bill->billable_id;
+				})
+                ->addColumn('description', function($bill) {
+					return $bill->billable->description;
+				})
+                ->addColumn('created_at', function($bill) {
+					return Carbon::parse($bill->created_at)->format('d-m-Y');
+				})
+				->addColumn('actions', function($bill) {
+					return $this->getActionButtons($bill);
+				})
+				->rawColumns(['actions'])
+				->make(true);
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
@@ -87,29 +74,6 @@ class BillController extends Controller
             ], 500);
         }
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    /*public function update(Request $request, string $id)
-    {
-        try {
-           
-            return response()->json([
-                'success' => true,
-                'bill' => $bill,
-                'message' => 'Factura editada con éxito'
-            ], 200);
-
-        } catch(\Exception $e) {
-                        Log::error('Error: ' . $e->getMessage());
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
-            ], 500);
-        }
-    }*/
 
     /**
      * Remove the specified resource from storage.
@@ -135,4 +99,22 @@ class BillController extends Controller
             ], 500);
         }
     }
+
+    private function getActionButtons($bill)
+	{
+		$id = $bill->id;
+
+		return '
+			<div class="actions-container">
+				<button class="actions-button">Acciones</button>
+				<div class="actions-menu">
+                <button class="action-item bill-button bill-action" data-id="'.$id.'">Ver</button>
+                <button class="action-item download-button bill-action" data-id="'.$id.'">Descargar</button>
+                    <form class="bill-delete-form" data-id="' . $id . '">
+						<input type="hidden" name="content_id" value="' . $id . '">
+						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
+					</form>
+				</div>
+			</div>';
+	}
 }

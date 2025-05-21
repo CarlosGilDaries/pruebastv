@@ -13,7 +13,8 @@ return new class extends Migration
 	{
 		Schema::create('bills', function (Blueprint $table) {
 			$table->id();
-			$table->foreignId('user_id')->constrained()->onDelete('set null');
+			$table->string('bill_number')->unique();
+			$table->foreignId('user_id')->constrained();
 			$table->string('url');
 			$table->nullableMorphs('billable'); // billable_id + billable_type
 			$table->timestamps();

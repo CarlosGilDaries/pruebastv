@@ -55,6 +55,9 @@ class MovieApiController extends Controller
             $movies = Movie::with('gender')->get();
 
 			return DataTables::of($movies)
+                ->addColumn('id', function($movie) {
+                    return $movie->id;
+                })
 				->addColumn('title', function($movie) {
 					return $movie->title;
 				})
@@ -499,13 +502,13 @@ class MovieApiController extends Controller
 
 		return '
 			<div class="actions-container">
-				<button class="actions-button orders-button">Acciones</button>
+				<button class="actions-button">Acciones</button>
 				<div class="actions-menu">
-                <a href="/content/"'.$slug.'" class="action-item">Ver</a>
+                <a href="/content/' . $slug . '" class="action-item">Ver</a>
 					<a href="/admin/edit-content.html" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
 					<a href="/admin/link-content-with-ads.html" class="action-item content-action link-button" data-id="'.$id.'" data-title="'.$title.'" data-slug="'.$slug.'">Anuncios</a>
-                    <form class="content-delete-form" data-id="'.$id.'">
-						<input type="hidden" name="content_id" value="'.$id.'">
+                    <form class="content-delete-form" data-id="' . $id . '">
+						<input type="hidden" name="content_id" value="' . $id . '">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
 					</form>
 				</div>
