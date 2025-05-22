@@ -34,7 +34,9 @@ Route::get('/bills/{path}', function ($path) {
     abort(404);
 })->where('path', '.*')->name('bills.view');
 
-Route::get('bill-path/{orderId}', [BillPdfController::class, 'returnBillPath']);
+Route::get('bill-path-from-order/{orderId}', [BillPdfController::class, 'returnBillPathFromOrderId']);
+Route::get('bill-path/{billId}', [BillPdfController::class, 'returnBillPathFromBillId']);
+Route::get('/bill/{id}/download', [BillPdfController::class, 'download'])->name('bill.download');
 
 Route::get('/proxy/hls/{movieId}/{userId}', [ProxyController::class, 'proxyHLS'])
 	->name('proxy.m3u8')

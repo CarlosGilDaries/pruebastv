@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Log;
 
 class BillPdfController extends Controller
 {
-	public function returnBillPath($orderId)
+	public function returnBillPathFromOrderID($orderId)
 	{
 		try {
 			$bill = Bill::whereHasMorph(
@@ -26,6 +26,26 @@ class BillPdfController extends Controller
 			log::debug($bill->url);
 
 			
+			return response()->json([
+				'success' => true,
+				'path' => $bill->url
+			], 200);
+			
+		} catch(\Exception $e) {
+			Log::error('Error: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+		}
+	}
+
+	public function returnBillPathFromBillId($billId)
+	{
+		try {
+			$bill = Bill::where('id', $billId)->first();
+
 			return response()->json([
 				'success' => true,
 				'path' => $bill->url
@@ -91,6 +111,29 @@ class BillPdfController extends Controller
 		$bill->update(['url' => $path]);
 
 		return $bill;
+	}
+
+	public function download($id) {
+		try {
+			$bill = Bill::findOrFail($id);
+			$file = Storage::disk('private')->get($bill->url);
+			$filename = basename($bill->url);
+
+			$headers = [
+				'Content-Type' => 'application/pdf',
+				'Content-Disposition' => 'attachment; filename="'.$filename.'"',
+			];
+	
+			return response($file, 200, $headers);
+			
+		} catch(\Exception $e) {
+			Log::error('Error: ' . $e->getMessage());
+	
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+		}
 	}
 
 	protected function generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber)

@@ -89,7 +89,7 @@ async function listOrders() {
               e.preventDefault();
               const orderId = this.dataset.id;
 
-              fetch(`/bill-path/${orderId}`)
+              fetch(`/bill-path-from-order/${orderId}`)
                 .then((res) => res.json())
                 .then((data) => {
                   if (data.path) {

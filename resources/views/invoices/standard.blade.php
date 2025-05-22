@@ -138,5 +138,12 @@
     <div class="footer">
         Esta factura ha sido generada electrónicamente y no requiere firma.
     </div>
+
+    <div style="position: fixed; bottom: 20px; right: 20px;">
+        <a href="{{ route('bill.download', ['id' => $invoice['id']) }}"
+            style="background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"">
+             Descargar
+         </a>
+    </div>
 </body>
 </html>
