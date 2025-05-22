@@ -111,7 +111,7 @@ async function initPlayer() {
 
 async function playVideoWithoutAds(movie, backendURL, token, signedUrl) {
 	try {
-		let videoUrl = backendURL + movie.url;
+		let videoUrl = movie.url;
 		let type = movie.type;
 		let techOrder = 'html5';
 
@@ -139,16 +139,25 @@ async function playVideoWithoutAds(movie, backendURL, token, signedUrl) {
 		if (type === 'video/youtube') {
 			videoUrl = signedUrl;
 			techOrder = 'youtube';
-		} else if (type === 'url_mp4') {
+		} 
+		else if (type === 'url_mp4') {
 			videoUrl = signedUrl;
 			type = 'video/mp4';
-		} else if (type === 'url_hls') {
+		}
+		else if (type === 'url_mp3') {
+			videoUrl = signedUrl;
+			type = 'audio/mpeg';
+		}
+		else if (type === 'url_hls') {
 			videoUrl = signedUrl;
 			type = 'application/vnd.apple.mpegurl';
+		} else if (type == 'application/vnd.apple.mpegurl') {
+			videoUrl = signedUrl;
 		}
 
-		if (type === 'audio/mpeg') {
-			const playerElement = document.querySelector('.video-js');
+	if (type === 'audio/mpeg') {
+		videoUrl = signedUrl;
+		const playerElement = document.querySelector('.video-js');
 			if (playerElement) {
 				playerElement.style.backgroundImage = `url('${backendURL + movie.cover}')`;
 				playerElement.style.backgroundSize = 'cover';

@@ -9,7 +9,8 @@ class Bill extends Model
 {
         protected $fillable = [
         'user_id',
-		'url'
+		'url',
+		'bill_number'
     ];
 	
 	    public function user() 

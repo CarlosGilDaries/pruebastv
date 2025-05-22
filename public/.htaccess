@@ -39,7 +39,7 @@ ErrorDocument 404 /404.html
     # ----------------------------------------------------------------------
     # Bloquear acceso directo a archivos multimedia (excepto desde dominios permitidos)
     RewriteCond %{HTTP_REFERER} !^http(s)?://(pruebastv\.kmc\.es) [NC]
-    RewriteCond %{REQUEST_URI} ^/file/.*\.(mp4|mp3|m3u8|avi|mov)$ [NC]
+    RewriteCond %{REQUEST_URI} ^/file/.*\.(mpeg|mp4|mp3|m3u8|avi|mov|ts)$ [NC]
     RewriteRule ^ - [F,L]
 
 	## Bloquear acceso directo a archivos PDF (excepto desde el dominio permitido)

@@ -133,6 +133,100 @@
                             </div>
                             <div id="edit-content-trailer-error" class="error-message"></div>
                         </div>
+						
+						<!-- Checkbox para cambiar archivo de contenido -->
+                        <div class="form-group">
+                            <label class="checkbox-container">
+                            <input type="checkbox" id="change-content-file" name="change_content_file">
+                            <span class="checkmark"></span>
+                            Cambiar el archivo del contenido
+                            </label>
+                        </div>
+                        
+                        <div id="type-content" class="form-group hidden">
+                            <label for="type">Formato del contenido</label>
+                            <select id="type" name="type">
+                                <option value="" disabled selected>Selecciona un formato</option>
+                                <option value="video/mp4">MP4</option>
+                                <option value="application/vnd.apple.mpegurl">HLS</option>
+                                <option value="audio/mpeg">MP3</option>
+                                <option value="iframe">Iframe</option>
+								<option value="video/youtube">URL Youtube</option>
+								<option value="vimeo">URL Vimeo</option>
+								<option value="url_mp3">URL MP3 (Podcast)</option>
+                                <option value="url_mp4">URL MP4</option>
+								<option value="url_hls">URL HLS</option>		
+                            </select>
+                            <div id="type-error" class="error-message"></div>
+                        </div>
+
+                        <!-- Contenido normal -->
+                        <div id="single-content" class="form-group hidden">
+                            <label for="content">Archivo de contenido</label>
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="content">
+                                    <i class="fas fa-file-video"></i>
+                                    <span id="content-label-text">Seleccionar archivo...</span>
+                                </label>
+                                <input type="file" id="content" name="content" class="file-input">
+                                <div id="content-name" class="file-name"></div>
+                            </div>
+                            <div id="content-error" class="error-message"></div>
+                        </div>
+                        
+                        <!-- Contenido HLS -->
+                        <div id="hls-content" class="form-group hidden">
+                            <label>Archivos HLS</label>
+                            
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="m3u8">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span id="m3u8-label-text">Seleccionar archivo .m3u8...</span>
+                                </label>
+                                <input type="file" id="m3u8" name="m3u8" class="file-input" accept=".m3u8">
+                                <div id="m3u8-name" class="file-name"></div>
+                            </div>
+                            <div id="m3u8-error" class="error-message"></div>
+                            
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="ts1">
+                                    <i class="fas fa-file-archive"></i>
+                                    <span id="ts1-label-text">Seleccionar playlist 1 (.zip)...</span>
+                                </label>
+                                <input type="file" id="ts1" name="ts1" class="file-input" accept=".zip">
+                                <div id="ts1-name" class="file-name"></div>
+                            </div>
+                            <div id="ts1-error" class="error-message"></div>
+                            
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="ts2">
+                                    <i class="fas fa-file-archive"></i>
+                                    <span id="ts2-label-text">Seleccionar playlist 2 (.zip)...</span>
+                                </label>
+                                <input type="file" id="ts2" name="ts2" class="file-input" accept=".zip">
+                                <div id="ts2-name" class="file-name"></div>
+                            </div>
+                            <div id="ts2-error" class="error-message"></div>
+                            
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="ts3">
+                                    <i class="fas fa-file-archive"></i>
+                                    <span id="ts3-label-text">Seleccionar playlist 3 (.zip)...</span>
+                                </label>
+                                <input type="file" id="ts3" name="ts3" class="file-input" accept=".zip">
+                                <div id="ts3-name" class="file-name"></div>
+                            </div>
+                            <div id="ts3-error" class="error-message"></div>
+                        </div>
+						
+						<!-- Iframe/URL -->
+						<div id="external-content" class="form-group hidden">
+							<div class="form-group">
+								<label for="external_url">URL del contenido</label>
+								<input type="text" id="external_url" name="external_url" placeholder="https://...">
+								<div id="external_url-error" class="error-message"></div>
+							</div>
+						</div>
 
                         <!-- Planes -->
                         <div class="form-group">

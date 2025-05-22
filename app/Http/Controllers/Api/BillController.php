@@ -103,13 +103,14 @@ class BillController extends Controller
     private function getActionButtons($bill)
 	{
 		$id = $bill->id;
+		$number = $bill->bill_number;
 
 		return '
 			<div class="actions-container">
 				<button class="actions-button">Acciones</button>
 				<div class="actions-menu">
                 <button class="action-item bill-button bill-action" data-id="'.$id.'">Ver</button>
-                <button class="action-item download-button bill-action" data-id="'.$id.'">Descargar</button>
+                <button class="action-item download-button bill-action" data-id="'.$id.'" data-number="' . $number . '">Descargar</button>
                     <form class="bill-delete-form" data-id="' . $id . '">
 						<input type="hidden" name="content_id" value="' . $id . '">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>

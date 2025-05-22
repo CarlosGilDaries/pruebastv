@@ -22,13 +22,12 @@ class BillPdfController extends Controller
 					$query->where('id', $orderId);
 				}
 			)->first();
-			
-			log::debug($bill->url);
-
-			
+					
 			return response()->json([
 				'success' => true,
-				'path' => $bill->url
+				'path' => $bill->url,
+				'id' => $bill->id,
+				'number' => $bill->bill_number
 			], 200);
 			
 		} catch(\Exception $e) {
@@ -76,13 +75,17 @@ class BillPdfController extends Controller
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
 
-		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber);
+		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id);
 
 		$filename = 'factura-' . now()->format('dmY') . '-' . str_pad($bill->id, 8, '0', STR_PAD_LEFT) . '.pdf';
 		$path = "bills/user_{$order->user_id}/{$filename}";
 
 		Storage::disk('private')->put($path, $pdf->output());
-		$bill->update(['url' => $path]);
+		
+		$bill->update([
+			'url' => $path,
+			'bill_number' => $invoiceNumber
+		]);
 
 		return $bill;
 	}
@@ -102,13 +105,17 @@ class BillPdfController extends Controller
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
 
-		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber);
+		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id);
 
 		$filename = 'factura-' . now()->format('dmY') . '-' . str_pad($bill->id, 8, '0', STR_PAD_LEFT) . '.pdf';
 		$path = "bills/user_{$order->user_id}/{$filename}";
 
 		Storage::disk('private')->put($path, $pdf->output());
-		$bill->update(['url' => $path]);
+		$bill->update([
+			'url' => $path,
+			'bill_number' => $invoiceNumber
+		]);
+
 
 		return $bill;
 	}
@@ -136,7 +143,7 @@ class BillPdfController extends Controller
 		}
 	}
 
-	protected function generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber)
+	protected function generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $billId)
 	{
 		$data = [
 			'company' => [
@@ -152,6 +159,7 @@ class BillPdfController extends Controller
 				'dni' => $orderDetails['user']['dni'],
 			],
 			'invoice' => [
+				'id' => $billId,
 				'number' => $invoiceNumber,
 				'date' => now()->format('d/m/Y'),
 				'description' => $orderDetails['description'],

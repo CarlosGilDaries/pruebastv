@@ -16,8 +16,8 @@ class PlanOrderController extends Controller
 	public function index()
 	{
 		try {
-			$planOrders = PlanOrder::with(['user', 'plan'])->get();
-			$ppvOrders = PpvOrder::with(['user', 'movie'])->get();
+			$planOrders = PlanOrder::with(['user', 'plan', 'bill'])->get();
+			$ppvOrders = PpvOrder::with(['user', 'movie', 'bill'])->get();
 			
 			return response()->json([
 				'success' => true,
@@ -188,12 +188,13 @@ class PlanOrderController extends Controller
 	{
 		$type = $order instanceof PlanOrder ? 'plan' : 'ppv';
 		$id = $order->id;
-
+				
 		return '
 			<div class="actions-container">
 				<button class="actions-button orders-button">Acciones</button>
 				<div class="actions-menu">
 					<button class="action-item bill-button plan-action" data-id="'.$id.'">Factura</button>
+					<button class="action-item download-btn plan-action" data-id="'.$id.'">Descargar factura</button>
 					<form class="'.$type.'-order-delete-form" data-id="'.$id.'">
 						<input type="hidden" name="plan_id" value="'.$id.'">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>

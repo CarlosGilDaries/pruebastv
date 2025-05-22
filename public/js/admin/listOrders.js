@@ -11,7 +11,7 @@ async function listOrders() {
   loadOrdersList();
 
   async function loadOrdersList() {
-    try {
+    try {	
       // Generar HTML del contenedor de la tabla
       let tableHTML = `
                 <div class="add-button-container">
@@ -29,7 +29,7 @@ async function listOrders() {
                                 <th>Estado</th>
                                 <th>DNI Usuario</th>
                                 <th>Descripción</th>
-								                <th>Fecha</th>
+								<th>Fecha</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -100,6 +100,47 @@ async function listOrders() {
                 });
             });
           });
+			
+			document.querySelectorAll('.download-btn').forEach((btn) => {
+				btn.addEventListener('click', async function(e) {
+					e.preventDefault();
+					const orderId = this.dataset.id;
+
+					try {
+						const billResponse = await fetch(`/bill-path-from-order/${orderId}`);
+						const billData = await billResponse.json();
+
+						if (!billResponse.ok) {
+							throw new Error(billData.message || 'Error al obtener la factura');
+						}
+
+						if (!billData.path) {
+							alert('Factura no disponible');
+							return;
+						}
+
+						const downloadResponse = await fetch(`/bill/${billData.id}/download`);
+
+						if (!downloadResponse.ok) {
+							throw new Error('Error al descargar la factura');
+						}
+						
+						const blob = await downloadResponse.blob();
+						const url = window.URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = `factura-${billData.number}.pdf`;
+						console.log(`factura-${billData.number}.pdf`);
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+						window.URL.revokeObjectURL(url);
+					} catch (error) {
+						console.error('Error:', error);
+						alert(error.message);
+					}
+				});
+			});
 
           setUpMenuActions();
 

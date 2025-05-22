@@ -84,7 +84,24 @@
             font-size: 10px;
             text-align: center;
             color: #999;
-        }
+		}
+
+		.no-print {
+			display: none;
+		}
+
+		@media screen {
+			.download-button {
+				position: fixed;
+				bottom: 50px;
+				right: 20px;
+				background-color: #28a745;
+				color: white;
+				padding: 10px 20px;
+				text-decoration: none;
+				border-radius: 5px;
+			}
+		}
     </style>
 </head>
 <body>
@@ -139,11 +156,10 @@
         Esta factura ha sido generada electrónicamente y no requiere firma.
     </div>
 
-    <div style="position: fixed; bottom: 20px; right: 20px;">
-        <a href="{{ route('bill.download', ['id' => $invoice['id']) }}"
-            style="background-color: #28a745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"">
-             Descargar
-         </a>
+    <div class="download-button no-print">
+        <a href="{{ route('bill.download', ['id' => $invoice['id']]) }}">
+            Descargar
+        </a>
     </div>
 </body>
 </html>

@@ -103,6 +103,35 @@ async function listBills() {
                 });
             });
           });
+			
+		document.querySelectorAll('.download-button').forEach((btn) => {
+				btn.addEventListener('click', async function(e) {
+					e.preventDefault();
+					const id = this.dataset.id;
+					const number = this.dataset.number;
+
+					try {
+						const downloadResponse = await fetch(`/bill/${id}/download`);
+
+						if (!downloadResponse.ok) {
+							throw new Error('Error al descargar la factura');
+						}
+
+						const blob = await downloadResponse.blob();
+						const url = window.URL.createObjectURL(blob);
+						const a = document.createElement('a');
+						a.href = url;
+						a.download = `factura-${number}.pdf`;
+						document.body.appendChild(a);
+						a.click();
+						document.body.removeChild(a);
+						window.URL.revokeObjectURL(url);
+					} catch (error) {
+						console.error('Error:', error);
+						alert(error.message);
+					}
+				});
+			});
 
           // Configurar los menús de acciones
           setUpMenuActions();

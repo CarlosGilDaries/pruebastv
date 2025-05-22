@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use Illuminate\Support\Facades\Storage;
 
 class ProxyController extends Controller
 {
-	public function proxyHLS(request $request, $movieId, $userId)
+	public function proxyHLS(Request $request, $movieId, $userId)
 	{
 		if (! $request->hasValidSignature()) {
 			return response()->json(['success' => false, 'message' => 'Firma inválida'], 403);
@@ -21,31 +22,49 @@ class ProxyController extends Controller
 		try {
 			$movie = Movie::findOrFail($movieId);
 
-			// Obtener la URL original (ya codificada en la query string)
 			$realUrl = request()->query('u');
 			$url = $realUrl ? urldecode($realUrl) : $movie->url;
 
-			// Descargar el contenido del .m3u8 original
-			$response = Http::get($url);
-			if (!$response->ok()) {
-				return abort(404, 'Recurso no disponible');
+			// Detectar si es ruta interna (archivo en storage privado)
+			$isInternal = !str_starts_with($url, 'http');
+
+			if ($isInternal) {
+				// Elimina slashes iniciales y normaliza la ruta
+				$cleanPath = preg_replace('#^file/#', 'content/', ltrim($url, '/'));
+				if (!Storage::disk('private')->exists($cleanPath)) {
+					return abort(404, 'Archivo no encontrado: ' . $cleanPath);
+				}
+
+				$content = Storage::disk('private')->get($cleanPath);
+				$base = dirname($cleanPath);
+			} else {
+				// Recurso remoto
+				$response = Http::get($url);
+				if (!$response->ok()) {
+					return abort(404, 'Recurso remoto no disponible');
+				}
+
+				$content = $response->body();
+				$base = dirname($url);
 			}
 
-			$content = $response->body();
-			$base = dirname($url); // Base para rutas relativas
+			// Reescribir las líneas con enlaces .ts o .m3u8
+			$rewritten = preg_replace_callback('/^(?!#)(https?:\/\/[^\s?#]+|\S+\.(ts|m3u8))([?#][^\r\n]*)?/im', function ($matches) use ($movieId, $userId, $base, $isInternal) {
+				$path = $matches[1];
+				$extra = $matches[3] ?? '';
 
-			// Reescribir todas las líneas que apuntan a .ts o .m3u8 (relativas o absolutas)
-			$rewritten = preg_replace_callback('/^(?!#)(https?:\/\/[^\s?#]+|\S+\.(ts|m3u8))([?#][^\r\n]*)?/im', function ($matches) use ($movieId, $userId, $base) {
-				$path = $matches[1];              // Ruta relativa o absoluta
-				$extra = $matches[3] ?? '';       // Sufijos como ?token=123
+				// Resolver ruta completa
+				if (!str_starts_with($path, 'http') && !$isInternal) {
+					$fullUrl = $base . '/' . ltrim($path, '/');
+				} elseif ($isInternal) {
+					$fullUrl = $base . '/' . ltrim($path, '/');
+				} else {
+					$fullUrl = $path;
+				}
 
-				// Si es ruta relativa, combinar con la base
-				$fullUrl = str_starts_with($path, 'http') ? $path : $base . '/' . ltrim($path, '/');
-
-				// Codificar la URL para incluirla como parámetro
 				$encoded = urlencode($fullUrl);
 
-				// Redirigir según el tipo de recurso
+				// Generar ruta firmada
 				if (str_ends_with($path, '.ts')) {
 					return URL::signedRoute('proxy.ts', [
 						'movieId' => $movieId,
@@ -61,12 +80,10 @@ class ProxyController extends Controller
 				}
 			}, $content);
 
-			// Devolver el nuevo playlist con rutas reescritas
 			return response($rewritten, 200, [
 				'Content-Type' => 'application/vnd.apple.mpegurl',
 				'Cache-Control' => 'no-store',
 			]);
-
 		} catch (\Exception $e) {
 			Log::error('Error en proxyHLS: ' . $e->getMessage());
 
@@ -83,30 +100,39 @@ class ProxyController extends Controller
 		$url = urldecode($encoded);
 
 		try {
-			// Pedir el fragmento .ts como streaming
+			if (!str_starts_with($url, 'http')) {
+				$cleanPath = ltrim($url, '/');
+
+				if (!Storage::disk('private')->exists($cleanPath)) {
+					return abort(404);
+				}
+
+				$stream = Storage::disk('private')->readStream($cleanPath);
+
+				return response()->stream(function () use ($stream) {
+					fpassthru($stream);
+					fclose($stream);
+				}, 200, [
+					'Content-Type' => 'video/MP2T',
+					'Cache-Control' => 'no-store',
+				]);
+			}
+
+			// Si es remoto
 			$stream = Http::withOptions(['stream' => true])->get($url);
 			if (!$stream->ok()) return abort(404);
 
-			// Cabeceras adecuadas
-			$headers = [
-				'Content-Type' => $stream->header('Content-Type') ?? 'video/MP2T',
-				'Cache-Control' => 'no-store',
-			];
-
-			// Incluir el tamaño si está disponible
-			if ($stream->header('Content-Length')) {
-				$headers['Content-Length'] = $stream->header('Content-Length');
-			}
-
-			// Devolver el contenido del fragmento en tiempo real
 			return response()->stream(function () use ($stream) {
 				while (!$stream->getBody()->eof()) {
 					echo $stream->getBody()->read(8192);
 					ob_flush();
 					flush();
 				}
-			}, 200, $headers);
-
+			}, 200, [
+				'Content-Type' => $stream->header('Content-Type') ?? 'video/MP2T',
+				'Cache-Control' => 'no-store',
+				'Content-Length' => $stream->header('Content-Length') ?? null,
+			]);
 		} catch (\Exception $e) {
 			Log::error('Error en proxyTS: ' . $e->getMessage());
 

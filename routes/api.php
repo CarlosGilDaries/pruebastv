@@ -91,11 +91,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
 	
-	/*Route::get('bills', [BillController::class, 'index']);
-    Route::get('bill/{id}', [BillController::class, 'show']);
-    Route::post('add-bill', [BillController::class, 'store']);
-    Route::delete('delete-bill', [BillController::class, 'destroy']);*/
-	
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 });
 
