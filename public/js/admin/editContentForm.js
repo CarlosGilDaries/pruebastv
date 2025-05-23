@@ -82,6 +82,11 @@ async function editContentForm() {
       content.plans.forEach((plan) => {
         currentPlansId.push(plan.id);
       });
+		let currentCategoriesId = [];
+	content.categories.forEach((category) => {
+        currentCategoriesId.push(category.id);
+      });
+		
      const plansContainer = document.getElementById(
        'edit-content-plans-container'
      );
@@ -164,10 +169,17 @@ async function editContentForm() {
       let checkboxPlans = document.querySelectorAll(
         '#edit-content-form .plan-checkbox'
       );
+		
+	let checkboxCategories = document.querySelectorAll(
+        '#edit-content-form .category-checkbox'
+      );
 
       checkboxPlans.forEach((chbox) => {
         chbox.checked = currentPlansId.includes(Number(chbox.value));
       });
+		checkboxCategories.forEach((chbox) => {
+			chbox.checked = currentCategoriesId.includes(Number(chbox.value));
+		});
 
       document.getElementById('edit-content-gender_id').value =
         content.gender_id;
@@ -319,7 +331,7 @@ async function editContentForm() {
       }
 
       const categoryCheckboxes = document.querySelectorAll(
-        '#content-form .category-checkbox'
+        '#edit-content-form .category-checkbox'
       );
       let atLeastOneCategoryChecked = false;
 
@@ -331,7 +343,7 @@ async function editContentForm() {
       });
 
       if (!atLeastOneCategoryChecked) {
-        document.getElementById('loading').style.display = 'none';
+        document.getElementById('edit-content-loading').style.display = 'none';
         alert('Selecciona al menos una categoría');
         return;
       }

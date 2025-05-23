@@ -133,7 +133,7 @@ class MovieApiController extends Controller
 	public function editShow($id)
     {
         try {
-            $movie = Movie::where('id', $id)->with('plans')->first();
+            $movie = Movie::where('id', $id)->with('plans', 'categories')->first();
             $plans = Plan::all();
 
             if (!$movie) {
