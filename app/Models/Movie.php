@@ -43,4 +43,9 @@ class Movie extends Model
         return $this->belongsToMany(Ad::class)
             ->withPivot('type', 'midroll_time', 'skippable', 'skip_time', 'image', 'description', 'redirect_url');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 }

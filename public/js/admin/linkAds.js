@@ -1,4 +1,4 @@
-import { linkedAds, updateAvailableAds } from "./singleContentWithAds.js";
+import { linkedAds, updateAvailableAds } from "../modules/singleContentWithAds.js";
 
 async function linkAds() {
 	const backendAPI = 'https://pruebastv.kmc.es/api/';
@@ -6,211 +6,258 @@ async function linkAds() {
 	const table = document.getElementById('ads-table');
 	const unlinkMessage = document.getElementById('unlink-success-message');
 	let id = localStorage.getItem('id');      
-    let title = localStorage.getItem('title');
-    let h1Element = document.getElementById('link-movie-title');
+	let title = localStorage.getItem('title');
+	let h1Element = document.getElementById('link-movie-title');
 	h1Element.innerHTML = title;
 
-    if (!authToken) {
-      window.location.href = '/login';
-      return;
-      }
+	if (!authToken) {
+		window.location.href = '/login';
+		return;
+	}
 
-    // Cargar datos iniciales
-    loadInitialData();
-	
-	 async function loadInitialData() {
-    try {
-      const linkedAdIds = await linkedAds(id, backendAPI, authToken, table, unlinkMessage);
+	// Cargar datos iniciales
+	loadInitialData();
 
-      // Cargar anuncios
-      const adsResponse = await fetch(backendAPI + 'ads', {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-      const adsData = await adsResponse.json();
+	async function loadInitialData() {
+		try {
+			const linkedAdIds = await linkedAds(id, backendAPI, authToken, table, unlinkMessage);
 
-      if (adsData.success) {
-        const adsContainer = document.getElementById('link-ads-container');
+			// Cargar anuncios
+			const adsResponse = await fetch(backendAPI + 'ads', {
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+				},
+			});
+			const adsData = await adsResponse.json();
 
-        const unlinkedAds = adsData.data.filter(
-          (ad) => !linkedAdIds.includes(ad.id)
-        );
+			if (adsData.success) {
+				const adsContainer = document.getElementById('link-ads-container');
 
-        unlinkedAds.forEach((ad) => {
-          const adGroup = document.createElement('div');
-          adGroup.className = 'ad-group';
-          adGroup.innerHTML = `
-                            <input type="checkbox" name="ads[${ad.id}][id]" value="${ad.id}" id="ad-${ad.id}" class="ad-checkbox">
-                            <strong>${ad.title}</strong>
-                            <div class="error-message" id="ad-${ad.id}-error"></div>
-                            
-                            <select name="ads[${ad.id}][type]" class="ad-options ad-type" style="display: none;">
-                                <option value="preroll">Preroll</option>
-                                <option value="midroll">Midroll</option>
-                                <option value="postroll">Postroll</option>
-                                <option value="overlay">Overlay</option>
-                            </select>
-                            <div class="error-message type-error"></div>
-                            
-                            <input type="number" name="ads[${ad.id}][midroll_time]" class="midroll-time" placeholder="Tiempo en segundos" style="display: none;">
-                            <div class="error-message midroll_time-error"></div>
-                            
-                            <select name="ads[${ad.id}][skippable]" class="ad-options skip-option" style="display: none;">
-                                <option value="0">Saltar anuncio: No</option>
-                                <option value="1">Saltar anuncio: Sí</option>
-                            </select>
-                            <div class="error-message skippable-error"></div>
-                            
-                            <input type="number" name="ads[${ad.id}][skip_time]" class="skip-time" placeholder="Tiempo en segundos" style="display: none;">
-                            <div class="error-message skip_time-error"></div>
-                        `;
-          adsContainer.appendChild(adGroup);
+				const unlinkedAds = adsData.data.filter(
+					(ad) => !linkedAdIds.includes(ad.id)
+				);
 
-          // Event listener para mostrar/ocultar opciones cuando se selecciona un anuncio
-          document
-            .getElementById(`ad-${ad.id}`)
-            .addEventListener('change', function () {
-              const options =
-                this.closest('.ad-group').querySelectorAll('.ad-options');
-              options.forEach((option) => {
-                option.style.display = this.checked ? 'block' : 'none';
-              });
-            });
+				const table = $('#ads-datatable').DataTable({
+					responsive: true,
+					columns: [
+						{ 
+							data: null,
+							orderable: false,
+							className: 'select-checkbox',
+							defaultContent: '',
+							render: function(data, type, row) {
+								return `
+								<label class="checkbox-container-linkads">
+									<input type="checkbox" name="ads[${row.id}][id]" value="${row.id}" id="ad-${row.id}" class="ad-checkbox">
+									<span class="checkmark-linkads"></span>
+                           	 	</label>
+								`;
+							}
+						},
+						{ data: 'brand' },
+						{ data: 'title' },
+						{ 
+							data: null,
+							render: function(data, type, row) {
+								return `
+                        <select name="ads[${row.id}][type]" class="ad-options ad-type" style="display: none;">
+                            <option value="preroll">Preroll</option>
+                            <option value="midroll">Midroll</option>
+                            <option value="postroll">Postroll</option>
+                            <option value="overlay">Overlay</option>
+                        </select>
+                        <div class="error-message type-error"></div>
+                    `;
+							}
+						},
+						{ 
+							data: null,
+							render: function(data, type, row) {
+								return `
+                        <select name="ads[${row.id}][skippable]" class="ad-options skip-option" style="display: none;">
+                            <option value="0">No</option>
+                            <option value="1">Sí</option>
+                        </select>
+                        <div class="error-message skippable-error"></div>
+                    `;
+							}
+						},
+						{ 
+							data: null,
+							render: function(data, type, row) {
+								return `
+                        <input type="number" name="ads[${row.id}][midroll_time]" class="midroll-time" placeholder="Tiempo para midroll" style="display: none;">
+                        <div class="error-message midroll_time-error"></div>
+                        <input type="number" name="ads[${row.id}][skip_time]" id="skip-time-${row.id}" class="skip-time" placeholder="Tiempo para saltar" style="display: none;">
+                        <div class="error-message skip_time-error"></div>
+                    `;
+							}
+						}
+					],
+					language: {
+						url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+					},
+					data: unlinkedAds,
+					createdRow: function(row, data, dataIndex) {
+						const $row = $(row);
 
-          // Event listener para mostrar/ocultar campo según el tipo de anuncio
-          adGroup
-            .querySelector('.ad-type')
-            .addEventListener('change', function () {
-              const midrollTime =
-                this.closest('.ad-group').querySelector('.midroll-time');
-              midrollTime.style.display =
-                this.value === 'midroll' ? 'block' : 'none';
-            });
+						// Función para actualizar los campos requeridos
+						const updateRequiredFields = () => {
+							const isChecked = $row.find('.ad-checkbox').is(':checked');
+							const adType = $row.find('.ad-type').val();
+							const isSkippable = $row.find('.skip-option').val() === '1';
 
-          // Event listener para mostrar/ocultar campo según skippable
-          adGroup
-            .querySelector('.skip-option')
-            .addEventListener('change', function () {
-              const skipTime =
-                this.closest('.ad-group').querySelector('.skip-time');
-              skipTime.style.display = this.value === '1' ? 'block' : 'none';
-            });
-        });
-      }
-    } catch (error) {
-      console.error('Error cargando datos iniciales:', error);
-      const errorElement = document.getElementById('link-content_id-error');
-      if (errorElement) {
-        errorElement.textContent =
-          'Error cargando los datos. Por favor recarga la página.';
-      }
-    }
-  }
+							// Midroll Time
+							if (isChecked && adType === 'midroll') {
+								$row.find('.midroll-time').prop('required', true);
+							} else {
+								$row.find('.midroll-time').removeProp('required');
+							}
 
-    // Manejar envío del formulario
-    document
-      .getElementById('link-form')
-      .addEventListener('submit', async function (e) {
-        e.preventDefault();
+							// Skip Time
+							if (isChecked && isSkippable) {
+								$row.find('.skip-time').prop('required', true);
+							} else {
+								$row.find('.skip-time').removeProp('required');
+							}
+						};
 
-        // Resetear mensajes de error
-        document
-          .querySelectorAll('#link-form .error-message')
-          .forEach((el) => (el.textContent = ''));
-        document.getElementById('link-success-message').style.display = 'none';
+						// Checkbox change
+						$row.find('.ad-checkbox').change(function() {
+							const isChecked = $(this).is(':checked');
+							$row.find('.ad-options, .midroll-time, .skip-time').css('display', isChecked ? 'block' : 'none');
+							updateRequiredFields();
+						});
 
-        // Mostrar loader
-        document.getElementById('link-loading').style.display = 'block';
+						// Ad type change
+						$row.find('.ad-type').change(function() {
+							const isMidroll = $(this).val() === 'midroll';
+							$row.find('.midroll-time').css('display', isMidroll ? 'block' : 'none');
+							updateRequiredFields();
+						});
 
-        // Preparar datos del formulario
-        const formData = {
-          content_id: id,
-          ads: {},
-        };
+						// Skippable change
+						$row.find('.skip-option').change(function() {
+							const isSkippable = $(this).val() === '1';
+							$row.find('.skip-time').css('display', isSkippable ? 'block' : 'none');
+							updateRequiredFields();
+						});
 
-        // Recopilar anuncios seleccionados
-        document
-          .querySelectorAll('#link-form .ad-checkbox:checked')
-          .forEach((checkbox) => {
-            const adId = checkbox.value;
-            const adGroup = checkbox.closest('.ad-group');
+						// Inicializar
+						updateRequiredFields();
+					}
+				});
+			}
+		} catch (error) {
+			console.error('Error cargando datos iniciales:', error);
+			const errorElement = document.getElementById('link-content_id-error');
+			if (errorElement) {
+				errorElement.textContent =
+					'Error cargando los datos. Por favor recarga la página.';
+			}
+		}
+	}
 
-            formData.ads[adId] = {
-              id: adId,
-              type: adGroup.querySelector('.ad-type').value,
-              skippable: adGroup.querySelector('.skip-option').value,
-              skip_time: adGroup.querySelector('.skip-time').value || null,
-              midroll_time:
-                adGroup.querySelector('.midroll-time').value || null,
-            };
-          });
+	// Manejar envío del formulario
+	document
+		.getElementById('link-form')
+		.addEventListener('submit', async function (e) {
+		e.preventDefault();
 
-        try {
-          const response = await fetch(backendAPI + 'link-ads', {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(formData),
-          });
+		// Resetear mensajes de error
+		$('.error-message').text('');
+		$('#link-success-message').hide();
 
-          const data = await response.json();
+		// Mostrar loader
+		$('#link-loading').show();
 
-          if (data.success) {
-            document.getElementById('link-success-message').style.display =
-              'block';
-            document.getElementById('link-success-message').textContent =
-              data.message || 'Anuncios vinculados correctamente!';
+		// Preparar datos del formulario
+		const formData = {
+			content_id: id,
+			ads: {}
+		};
 
-            setTimeout(() => {
-              document.getElementById('link-success-message').style.display =
-                'none';
-            }, 5000);
+		// Recopilar anuncios seleccionados
+		$('#ads-datatable tbody tr').each(function() {
+			const checkbox = $(this).find('.ad-checkbox');
+			if (checkbox.is(':checked')) {
+				const adId = checkbox.val();
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            // Actualizar la tabla de anuncios vinculados
-            const linkedResponse = await linkedAds(
-              id,
-              backendAPI,
-              authToken,
-              table,
-              unlinkMessage
-            );
-            // Actualizar los checkboxes disponibles
-            await updateAvailableAds(id, authToken, backendAPI);
-            // Resetear el formulario
-            document.getElementById('link-form').reset();
-          }
-        } catch (error) {
-          console.error('Error:', error);
+				formData.ads[adId] = {
+					id: adId,
+					type: $(this).find('.ad-type').val(),
+					skippable: $(this).find('.skip-option').val(),
+					skip_time: $(this).find('.skip-time').val() || null,
+					midroll_time: $(this).find('.midroll-time').val() || null
+				};
+			}
+		});
 
-          // Mostrar error general si no es de validación
-          if (!error.message.includes('Por favor corrige')) {
-            const errorElement = document.getElementById(
-              'link-content_id-error'
-            );
-            if (errorElement) {
-              errorElement.textContent = error.message;
-            }
-          }
+		try {
+			const response = await fetch(backendAPI + 'link-ads', {
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${authToken}`,
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData),
+			});
 
-          // Manejar error de conexión
-          if (error.message.includes('Failed to fetch')) {
-            const errorElement = document.getElementById(
-              'link-content_id-error'
-            );
-            if (errorElement) {
-              errorElement.textContent =
-                'Error de conexión con el servidor. Por favor intenta nuevamente.';
-            }
-          }
-        } finally {
-          document.getElementById('link-loading').style.display = 'none';
-        }
-      });
-  }
+			const data = await response.json();
+
+			if (data.success) {
+				document.getElementById('link-success-message').style.display =
+					'block';
+				document.getElementById('link-success-message').textContent =
+					data.message || 'Anuncios vinculados correctamente!';
+
+				setTimeout(() => {
+					document.getElementById('link-success-message').style.display =
+						'none';
+				}, 5000);
+
+				window.scrollTo({ top: 0, behavior: 'smooth' });
+				// Actualizar la tabla de anuncios vinculados
+				const linkedResponse = await linkedAds(
+					id,
+					backendAPI,
+					authToken,
+					table,
+					unlinkMessage
+				);
+				// Actualizar los checkboxes disponibles
+				await updateAvailableAds(id, authToken, backendAPI);
+				// Resetear el formulario
+				document.getElementById('link-form').reset();
+			}
+		} catch (error) {
+			console.error('Error:', error);
+
+			// Mostrar error general si no es de validación
+			if (!error.message.includes('Por favor corrige')) {
+				const errorElement = document.getElementById(
+					'link-content_id-error'
+				);
+				if (errorElement) {
+					errorElement.textContent = error.message;
+				}
+			}
+
+			// Manejar error de conexión
+			if (error.message.includes('Failed to fetch')) {
+				const errorElement = document.getElementById(
+					'link-content_id-error'
+				);
+				if (errorElement) {
+					errorElement.textContent =
+						'Error de conexión con el servidor. Por favor intenta nuevamente.';
+				}
+			}
+		} finally {
+			document.getElementById('link-loading').style.display = 'none';
+		}
+	});
+}
 
 linkAds();
 

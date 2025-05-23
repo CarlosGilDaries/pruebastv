@@ -21,10 +21,7 @@ export function deleteForm(token, formClass, endpoint, message) {
                     const deleteData = await deleteResponse.json();
 
                     if (deleteData.success) {
-                        const row = form.closest('tr');
-                        if (row) {
-                            row.remove();
-                        }
+						$('.datatable').DataTable().ajax.reload(null, false);
                         message.style.display = 'block';
                         window.scrollTo({ top: 0, behavior: 'smooth' });
 
