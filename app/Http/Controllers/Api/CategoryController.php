@@ -58,6 +58,28 @@ class CategoryController extends Controller
         }
     }
 
+    public function show(string $id)
+    {
+        try {
+            $category = Category::where('id', $id)->first();
+
+            return response()->json([
+                'success' => true,
+                'category' => $category,
+                'message' => 'Categoría obtenida con éxito.'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
     public function store(Request $request)
     {
         try {

@@ -95,7 +95,6 @@ class GenderController extends Controller
     {
         try {
             $gender = Gender::where('id', $id)->first();
-            Log::debug('id: ' . $id);
 
             return response()->json([
                 'success' => true,
