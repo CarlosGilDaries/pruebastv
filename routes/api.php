@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\MovieApiController;
 use App\Http\Controllers\Api\AdApiController;
 use App\Http\Controllers\Api\AdMovieControllerApiController;
 use App\Http\Controllers\Api\BillController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CategoryMovieController;
 use App\Http\Controllers\Api\GenderController;
 use App\Http\Controllers\Api\LoginApiController;
 use App\Http\Controllers\Api\MoviePlanController;
@@ -27,16 +29,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('ads/datatable', [AdApiController::class, 'datatable']);
     Route::get('genders/datatable', [GenderController::class, 'datatable']);
     Route::get('bills/datatable', [BillController::class, 'datatable']);
+    Route::get('categories/datatable', [CategoryController::class, 'datatable']);
 
     Route::post('new-device', [UserSessionApiController::class, 'store']);
     Route::get('manage-devices', [UserSessionApiController::class, 'manage']);
     Route::delete('destroy-device' , [UserSessionApiController::class, 'destroy']);
-
-    Route::get('content/{slug}', [MovieApiController::class, 'show']); 
-	Route::get('edit-view-content/{id}', [MovieApiController::class, 'editShow']); 
-    Route::get('ad/{slug}', [AdApiController::class, 'show']);
-	Route::get('edit-view-ad/{id}', [AdApiController::class, 'editShow']); 
-    Route::get('ads/{slug}', [AdMovieControllerApiController::class, 'getAds']);
 
     Route::post('logout', [LoginApiController::class, 'logout']);
     Route::get('user', [UserApiController::class, 'getCurrentUser']);
@@ -48,26 +45,32 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('check-active-streams', [ActiveStreamApiController::class, 'startStream']);
     Route::put('keep-alive', [ActiveStreamApiController::class, 'keepAlive']);
 
-    Route::get('ads-list', [AdApiController::class, 'index']);
+    Route::get('content/{slug}', [MovieApiController::class, 'show']); 
+	Route::get('edit-view-content/{id}', [MovieApiController::class, 'editShow']); 
     Route::post('add-content', [MovieApiController::class, 'store']);
     Route::delete('delete-content', [MovieApiController::class, 'destroy']);
     Route::post('update-content/{id}', [MovieApiController::class, 'update']);
-    Route::get('content-with-ads', [AdMovieControllerApiController::class, 'index']);
-    Route::get('content-with-ads/{id}', [AdMovieControllerApiController::class, 'show']);
-    Route::post('link-content-with-plans', [MoviePlanController::class, 'store']);
-    Route::post('content-with-ads-destroy', [AdMovieControllerApiController::class, 'destroy']);
 
+    Route::get('ads-list', [AdApiController::class, 'index']);
     Route::post('add-ad', [AdApiController::class, 'store']);
-    Route::post('link-ads', [AdMovieControllerApiController::class, 'store']);
     Route::get('ads', [AdApiController::class, 'index']);
     Route::get('ad/{slug}', [AdApiController::class, 'show']);
     Route::post('update-ad/{id}', [AdApiController::class, 'update']);
     Route::delete('delete-ads', [AdApiController::class, 'destroy']);
+	Route::get('edit-view-ad/{id}', [AdApiController::class, 'editShow']); 
+
+    Route::get('content-with-ads', [AdMovieControllerApiController::class, 'index']);
+    Route::get('content-with-ads/{id}', [AdMovieControllerApiController::class, 'show']);
+    Route::post('link-ads', [AdMovieControllerApiController::class, 'store']);
+    Route::post('content-with-ads-destroy', [AdMovieControllerApiController::class, 'destroy']);
+    Route::get('ads/{slug}', [AdMovieControllerApiController::class, 'getAds']);
 
     Route::get('plan/{id}', [PlanController::class, 'show']);
     Route::post('add-plan', [PlanController::class, 'store']);
     Route::post('edit-plan/{id}', [PlanController::class, 'update']);
     Route::delete('delete-plan', [PlanController::class, 'destroy']);
+
+    Route::post('link-content-with-plans', [MoviePlanController::class, 'store']);
 
     Route::get('genders', [GenderController::class, 'index']);
     Route::get('gender/{id}', [GenderController::class, 'show']);
@@ -87,6 +90,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('delete-ppv-order', [PpvOrderController::class, 'destroy']);
 
     Route::delete('delete-bill', [BillController::class, 'destroy']);
+
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::post('add-category', [CategoryController::class, 'store']);
+    Route::post('edit-category/{id}', [CategoryController::class, 'update']);
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);

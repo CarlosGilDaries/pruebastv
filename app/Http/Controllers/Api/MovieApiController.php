@@ -26,7 +26,7 @@ class MovieApiController extends Controller
     public function index()
     {
         try {
-            $movies = Movie::with(['gender' => function($query) {
+            $movies = Movie::with(['categories', 'gender' => function($query) {
                    			$query->select('id', 'name');
                   		}])->get();;
 			$genders = Gender::all(['id', 'name']);
@@ -298,6 +298,7 @@ class MovieApiController extends Controller
             $movie->save();
 
             $movie->plans()->sync($request->input('plans'));
+            $movie->categories()->sync($request->input('categories'));
 			
 			$adminPlan = Plan::where('name', 'admin')->first();
 			DB::table('movie_plan')->insert([
@@ -434,6 +435,7 @@ class MovieApiController extends Controller
 			]);
 			
 			$plans = $request->input('plans');
+            $movie->categories()->sync($request->input('categories'));
 
 			foreach($plans as $plan) {
 				DB::table('movie_plan')->insert([

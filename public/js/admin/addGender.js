@@ -1,5 +1,4 @@
-(function () {
-  async function initAddGender() {
+async function initAddGender() {
     const backendAPI = 'https://pruebastv.kmc.es/api/';
 
     // Manejar envío del formulario
@@ -61,10 +60,4 @@
       });
   }
 
-  // Verificar si el DOM está listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAddGender);
-  } else {
-    initAddGender();
-  }
-})();
+initAddGender();
