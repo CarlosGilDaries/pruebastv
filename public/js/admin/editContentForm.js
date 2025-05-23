@@ -64,12 +64,19 @@ async function editContentForm() {
           Authorization: `Bearer ${token}`,
         },
       });
+      const categoryResponse = await fetch(backendAPI + 'categories', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       const data = await response.json();
       const content = data.data.movie; 
       const plansData = await plansResponse.json();
       const genderData = await genderResponse.json();
+      const categoryData = await categoryResponse.json();
       const plans = plansData.plans;
       const genders = genderData.genders;
+      const categories = categoryData.categories;
 
       let currentPlansId = [];
       content.plans.forEach((plan) => {
@@ -78,8 +85,12 @@ async function editContentForm() {
      const plansContainer = document.getElementById(
        'edit-content-plans-container'
      );
+     const categoriesContainer = document.getElementById(
+       'edit-content-categories-container'
+     );
      const selectGender = document.getElementById('edit-content-gender_id');
       let plansContainerTextContent = '';
+      let categoriesContainerTextContent = '';
 
      plans.forEach((plan) => {
        plansContainerTextContent += `
@@ -90,7 +101,18 @@ async function editContentForm() {
                                     </label>
                                     `;
      });
-     plansContainer.innerHTML = plansContainerTextContent;
+      plansContainer.innerHTML = plansContainerTextContent;
+      
+      categories.forEach((category) => {
+        categoriesContainerTextContent += `
+                                     <label class="checkbox-container">
+                                       <input type="checkbox" name="categories[${category.id}][id]" value="${category.id}" id="edit-content-category-${category.id}" class="category-checkbox">
+                                       <span class="checkmark"></span>
+                                         <p>${category.name}</p>
+                                     </label>
+                                     `;
+      });
+      categoriesContainer.innerHTML = categoriesContainerTextContent;
 
      genders.forEach((gender) => {
        let option = document.createElement('option');
@@ -293,6 +315,24 @@ async function editContentForm() {
       if (!atLeastOneChecked) {
         document.getElementById('edit-content-loading').style.display = 'none';
         alert('Selecciona al menos un plan');
+        return;
+      }
+
+      const categoryCheckboxes = document.querySelectorAll(
+        '#content-form .category-checkbox'
+      );
+      let atLeastOneCategoryChecked = false;
+
+      categoryCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          formData.append('categories[]', checkbox.value);
+          atLeastOneCategoryChecked = true;
+        }
+      });
+
+      if (!atLeastOneCategoryChecked) {
+        document.getElementById('loading').style.display = 'none';
+        alert('Selecciona al menos una categoría');
         return;
       }
 

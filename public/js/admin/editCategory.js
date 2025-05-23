@@ -1,5 +1,5 @@
 async function editCategoryForm() {
-  let id;
+    const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = 'https://pruebastv.kmc.es/api/';
 

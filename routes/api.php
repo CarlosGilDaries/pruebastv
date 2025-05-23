@@ -95,6 +95,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('category/{id}', [CategoryController::class, 'show']);
     Route::post('add-category', [CategoryController::class, 'store']);
     Route::post('edit-category/{id}', [CategoryController::class, 'update']);
+    Route::delete('delete-category', [CategoryController::class, 'destroy']);
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);

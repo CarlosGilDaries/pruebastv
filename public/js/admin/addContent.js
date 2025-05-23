@@ -2,14 +2,7 @@ async function initContent() {
     const backendAPI = 'https://pruebastv.kmc.es/api/';
 	const authToken = localStorage.getItem('auth_token');
 
-	setupPlansAndGenders(backendAPI, authToken);
-	
-	// Escuchar cuando se muestra el formulario
-	document
-		.getElementById('add-content')
-		.addEventListener('show', function () {
-		setupPlansAndGenders(backendAPI, authToken);
-	});
+	setupPlansGendersCategories(backendAPI, authToken);
 	
     // Mostrar nombre de archivos seleccionados
     const setupFileInput = (inputId, nameId, labelId) => {
@@ -166,10 +159,10 @@ async function initContent() {
           );
         }
 
-        const checkboxes = document.querySelectorAll('#content-form .plan-checkbox');
+        const planCheckboxes = document.querySelectorAll('#content-form .plan-checkbox');
         let atLeastOneChecked = false;
 
-        checkboxes.forEach((checkbox) => {
+        planCheckboxes.forEach((checkbox) => {
           if (checkbox.checked) {
             formData.append('plans[]', checkbox.value);
             atLeastOneChecked = true;
@@ -179,6 +172,24 @@ async function initContent() {
         if (!atLeastOneChecked) {
           document.getElementById('loading').style.display = 'none';
           alert('Selecciona al menos un plan');
+          return;
+        }
+
+        const categoryCheckboxes = document.querySelectorAll(
+          '#content-form .category-checkbox'
+        );
+        let atLeastOneCategoryChecked = false;
+
+        categoryCheckboxes.forEach((checkbox) => {
+          if (checkbox.checked) {
+            formData.append('categories[]', checkbox.value);
+            atLeastOneCategoryChecked = true;
+          }
+        });
+
+        if (!atLeastOneCategoryChecked) {
+          document.getElementById('loading').style.display = 'none';
+          alert('Selecciona al menos una categoría');
           return;
         }
 
@@ -243,21 +254,30 @@ async function initContent() {
 
 initContent();
 
-async function setupPlansAndGenders(backendAPI, authToken) {
+async function setupPlansGendersCategories(backendAPI, authToken) {
 	  try {
       const plansContainer = document.getElementById('plans-container');
       const selectGender = document.getElementById('gender_id');
+      const categoriesContainer = document.getElementById('categories-container');
       let plansContainerTextContent = '';
+      let categoriesContainerTextContent = '';
       const response = await fetch(backendAPI + 'plans');
       const genderResponse = await fetch(backendAPI + 'genders', {
         headers: {
           Authorization: `Bearer ${authToken}`,
         },
       });
+      const categoryResponse = await fetch(backendAPI + 'categories', {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
       const data = await response.json();
       const genderData = await genderResponse.json();
+      const categoryData = await categoryResponse.json();
       const plans = data.plans;
       const genders = genderData.genders;
+      const categories = categoryData.categories;
 
       plans.forEach((plan) => {
         plansContainerTextContent += `
@@ -269,6 +289,17 @@ async function setupPlansAndGenders(backendAPI, authToken) {
                                     `;
       });
       plansContainer.innerHTML = plansContainerTextContent;
+
+      categories.forEach((category) => {
+        categoriesContainerTextContent += `
+                                    <label class="checkbox-container">
+                                      <input type="checkbox" name="categories[${category.id}][id]" value="${category.id}" id="category-${category.id}" class="category-checkbox">
+                                      <span class="checkmark"></span>
+                                        <p>${category.name}</p>
+                                    </label>
+                                    `;
+      });
+      categoriesContainer.innerHTML = categoriesContainerTextContent;
 
       genders.forEach((gender) => {
         let option = document.createElement('option');
