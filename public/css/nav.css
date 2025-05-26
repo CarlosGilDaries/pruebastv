@@ -7,6 +7,7 @@
     justify-content: space-between;
     gap: 5px;
     font-size: 15px;
+	background: transparent;
     transition: background-color 0.5s ease-out;
 }
 
@@ -40,8 +41,8 @@
 }
 
 .logo {
-    width: 70px;
-    height: 45px;
+    width: 230px;
+    height: 55px;
 }
 
 .left-nav li:nth-child(2),

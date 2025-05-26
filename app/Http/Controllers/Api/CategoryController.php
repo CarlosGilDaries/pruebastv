@@ -66,7 +66,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         try {
-            $category = Category::where('id', $id)->first();
+            $category = Category::with('movies')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,

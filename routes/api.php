@@ -91,7 +91,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::delete('delete-bill', [BillController::class, 'destroy']);
 
-    Route::get('categories', [CategoryController::class, 'index']);
     Route::get('category/{id}', [CategoryController::class, 'show']);
     Route::post('add-category', [CategoryController::class, 'store']);
     Route::post('edit-category/{id}', [CategoryController::class, 'update']);
@@ -108,6 +107,7 @@ Route::post('register', [LoginApiController::class, 'register']);
 Route::post('login', [LoginApiController::class, 'login']);
 Route::get('content', [MovieApiController::class, 'index']);
 Route::get('plans', [PlanController::class, 'index']);
+Route::get('categories', [CategoryController::class, 'index']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');

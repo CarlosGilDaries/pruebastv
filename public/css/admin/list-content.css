@@ -117,7 +117,8 @@
     border-radius: 4px;
 }
 
-#list-genders {
+#list-genders,
+#list-categories {
 	max-width: 900px;
 }
 
