@@ -29,6 +29,7 @@ async function listCategories() {
                             <thead>
                                 <tr>
                                     <th>ID</th>
+                                    <th>Prioridad</th>
                                     <th>Nombre</th>
                                     <th>Acciones</th>
                                 </tr>

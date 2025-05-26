@@ -92,9 +92,17 @@ class CategoryController extends Controller
 
             $name = sanitize_html($request->input('name'));
             $category->name = $name;
-
+            $newPriority = $request->input('priority');
+            
+            // Si la prioridad ya existe, desplazar las categorías existentes
+            if (Category::where('priority', $newPriority)->exists()) {
+                Category::where('priority', '>=', $newPriority)
+                       ->increment('priority');
+            }
+            $category->priority = $newPriority;
+    
             $category->save();
-
+            
             return response()->json([
                 'success' => true,
                 'category' => $category
@@ -113,25 +121,61 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
-        $category = Category::where('id', $id)->first();
+        try {
+            $category = Category::where('id', $id)->first();
+            $name = sanitize_html($request->input('name'));
+            $category->name = $name;
+            $currentPriority = $category->priority;
+            $newPriority = $request->input('priority');
+            
+            if ($currentPriority != $newPriority) {
+                if ($newPriority < $currentPriority) {
+                    // Mover hacia arriba (prioridad más alta)
+                    Category::where('priority', '>=', $newPriority)
+                        ->where('priority', '<', $currentPriority)
+                        ->increment('priority');
+                } else {
+                    // Mover hacia abajo (prioridad más baja)
+                    Category::where('priority', '>', $currentPriority)
+                        ->where('priority', '<=', $newPriority)
+                        ->decrement('priority');
+                }
+                
+                $category->priority = $newPriority;
+            }
+    
+            $category->save();
+    
+            return response()->json([
+                'success' => true,
+                'category' => $category
+            ], 200);
 
-        $name = sanitize_html($request->input('name'));
-        $category->name = $name;
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
 
-        $category->save();
-
-        return response()->json([
-            'success' => true,
-            'category' => $category
-        ], 200);
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function destroy(Request $request)
     {
         try {
             $id = $request->input('content_id');
-            $category = Category::where('id', $id)->first();
+            $category = Category::findOrFail($id);
+            $deletedPriority = $category->priority;
+            
             $category->delete();
+            
+            // Reordenar las categorías restantes si la eliminada no era la última
+            $maxPriority = Category::max('priority') ?? 0;           
+            if ($deletedPriority < $maxPriority) {
+                Category::where('priority', '>', $deletedPriority)
+                       ->decrement('priority');
+            }
 
             return response()->json([
                 'success' => true,

@@ -2,11 +2,28 @@ async function editCategoryForm() {
     const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = 'https://pruebastv.kmc.es/api/';
+  const select = document.getElementById('edit-category-priority');
 
     loadCategoryData(id);
 
   async function loadCategoryData(id) {
     try {
+      const priorityResponse = await fetch(backendAPI + 'categories', {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      const priorityData = await priorityResponse.json();
+      const priorities = priorityData.priorities;
+
+      priorities.forEach((priority) => {
+        const option = document.createElement('option');
+        option.innerHTML = priority;
+        option.value = priority;
+        select.appendChild(option);
+      });
+      
 
       const response = await fetch(`${backendAPI}category/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -17,6 +34,8 @@ async function editCategoryForm() {
       if (data.success && data.category) {
         document.getElementById('edit-category-name').value =
           data.category.name;
+          document.getElementById('edit-category-priority').value =
+            data.category.priority;
       } else {
         console.error('Error:', data.message);
       }
@@ -40,6 +59,10 @@ async function editCategoryForm() {
         formData.append(
           'name',
           document.getElementById('edit-category-name').value
+        );
+        formData.append(
+          'priority',
+          document.getElementById('edit-category-priority').value
         );
 
         const response = await fetch(`${backendAPI}edit-category/${id}`, {

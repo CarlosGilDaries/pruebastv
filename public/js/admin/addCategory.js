@@ -1,5 +1,7 @@
 async function initAddCategory() {
   const backendAPI = 'https://pruebastv.kmc.es/api/';
+  const authToken = localStorage.getItem('auth_token');
+  const select = document.getElementById('priority');
 
   try {
     const response = await fetch(backendAPI + 'categories', {
@@ -10,9 +12,25 @@ async function initAddCategory() {
 
     const data = await response.json();
     const priorities = data.priorities;
-    priorities.map((priority) => priority).join(", ");
 
-    console.log(priorities);
+    if (priorities != null) {
+      priorities.forEach(priority => {
+        const option = document.createElement('option');
+        option.innerHTML = priority;
+        option.value = priority;
+        select.appendChild(option);
+      });
+
+      const lastOption = document.createElement('option');
+      option.innerHTML = priorities.length;
+      option.value = priorities.length;
+      select.appendChild(lastOption);
+    } else {
+      const lastOption = document.createElement('option');
+      option.innerHTML = 1;
+      option.value = 1;
+      select.appendChild(lastOption);
+    }
 
     // Manejar envío del formulario
     document
