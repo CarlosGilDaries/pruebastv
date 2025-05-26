@@ -46,6 +46,7 @@ async function listCategories() {
       const table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
+        order: [[1, 'asc']],
         ajax: {
           url: api + 'categories/datatable',
           type: 'GET',

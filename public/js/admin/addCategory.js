@@ -22,14 +22,14 @@ async function initAddCategory() {
       });
 
       const lastOption = document.createElement('option');
-      option.innerHTML = priorities.length;
-      option.value = priorities.length;
+      lastOption.innerHTML = priorities.length + 1;
+      lastOption.value = priorities.length + 1;
       select.appendChild(lastOption);
     } else {
-      const lastOption = document.createElement('option');
+      const option = document.createElement('option');
       option.innerHTML = 1;
       option.value = 1;
-      select.appendChild(lastOption);
+      select.appendChild(option);
     }
 
     // Manejar envío del formulario
@@ -60,6 +60,10 @@ async function initAddCategory() {
         formAdData.append(
           'name',
           document.getElementById('add-category-name').value
+        );
+        formAdData.append(
+          'priority',
+          document.getElementById('priority').value
         );
 
         try {
