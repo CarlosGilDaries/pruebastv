@@ -60,6 +60,7 @@ async function listCategories() {
         },
         columns: [
           { data: 'id', name: 'id' },
+          { data: 'priority', name: 'priority' },
           { data: 'name', name: 'name' },
           {
             data: 'actions',

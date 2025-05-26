@@ -134,3 +134,17 @@
 .dt-input {
     width: auto; /* Asegura que no ocupe el 100% */
 }
+
+.dt-column-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.dt-column-title {
+    order: 1 !important;
+}
+
+.dt-column-order {
+    order: 2 !important;
+}

@@ -37,7 +37,7 @@ class CategoryMovieController extends Controller
     {
         try {           
             foreach ($request->categories as $category) {
-                 if (!isset($plan['id'])){
+                 if (!isset($category['id'])){
                     continue;
                 }
 

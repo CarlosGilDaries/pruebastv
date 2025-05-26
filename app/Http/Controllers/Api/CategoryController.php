@@ -14,10 +14,12 @@ class CategoryController extends Controller
     {
         try {
             $categories = Category::with('movies')->get();
+            $priorities = $categories->sortBy('priority')->pluck('priority')->toArray();
 
             return response()->json([
                 'success' => true,
-                'categories' => $categories
+                'categories' => $categories,
+                'priorities' => $priorities
             ], 200);
 
         } catch (\Exception $e) {
@@ -38,6 +40,9 @@ class CategoryController extends Controller
 			return DataTables::of($categories)
 				->addColumn('id', function($category) {
 					return $category->id;
+				})
+                ->addColumn('priority', function($category) {
+					return $category->priority;
 				})
 				->addColumn('name', function($category) {
 					return $category->name;
