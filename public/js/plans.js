@@ -3,6 +3,7 @@ import { processRedsysPayment } from './modules/redsys.js';
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
 const neededPlans = localStorage.getItem('needed_plans');
+let userData;
 
 try {
   const response = await fetch(backendApi + 'plans');
@@ -14,7 +15,7 @@ try {
       },
     });
 
-    const userData = await userResponse.json();
+    userData = await userResponse.json();
   }
 
   const data = await response.json();
@@ -27,10 +28,10 @@ try {
   ) {
     const plans = data.plans;
     const actualPlan = userData.data.plan.name;
-    displayPlans(plans, actualPlan);
+    displayPlans(plans, actualPlan, userData.data.user.rol);
   } else if (data.success) {
     const plans = data.plans;
-    displayPlans(plans);
+    displayPlans(plans, null, userData.data.user.rol);
   }
 
   window.addEventListener('beforeunload', function () {
@@ -40,7 +41,7 @@ try {
   console.error('Error en la solicitud:', error);
 }
 
-function displayPlans(plans, actualPlan) {
+function displayPlans(plans, actualPlan, userRol) {
   const container = document.getElementById('plans-container');
   container.innerHTML = ''; // Limpiar contenedor antes de agregar planes
 

@@ -33,6 +33,7 @@ async function indexData(api, backendURL) {
     const categoriesData = await categoriesResponse.json();
     const sections = document.querySelectorAll('.content-type');
     const dropdownMenu = document.querySelector('.dropdown-menu');
+    const main = document.querySelector('main');
 
     dropdownMenu.innerHTML = '';
     categoriesData.categories.forEach((category) => {
@@ -56,7 +57,7 @@ async function indexData(api, backendURL) {
     });
 
     initPriorityBanner(categoriesData);
-    renderCategories(categoriesData, sections, backendURL);
+    renderCategories(main, categoriesData, backendURL);
   } catch (error) {
     console.log(error);
   }

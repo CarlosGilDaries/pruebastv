@@ -1,14 +1,24 @@
-import { getVideoContent } from "./getVideoContent.js";
+import { getVideoContent } from './getVideoContent.js';
 
-export async function renderCategories(categoriesData, sectionArray, backendURL) {
-    sectionArray.forEach(section => {
-        const index = section.getAttribute('data-index');
-        const category = categoriesData.categories[index - 1];
-        const title = document.getElementById(`title-${index}`);
-        title.innerHTML = category.name;
-        const node = document.getElementById(`video-content-${index}`);
+export function renderCategories(main, categoriesData, backendURL) {
+    categoriesData.categories.forEach((category) => {
         const content = category.movies;
-
-        getVideoContent(content, node, backendURL);
-    });
+    const section = document.createElement('section');
+    section.setAttribute('data-index', category.priority);
+    section.classList.add('category content-type');
+    section.innerHTML = `
+                            <h2 class="category-title" id="title-${category.priority}">${category.name}</h2>
+                            <div class="content-wrapper">
+                                <button class="scroll-left">&lt;</button>
+                                <div id="video-content-${category.priority}" class="content-container"></div>
+                                <button class="scroll-right">&gt;</button>
+                            </div>
+                            `;
+      main.appendChild(section);
+      const node = document.getElementById(
+        `video-content-${category.priority}`
+      );
+      
+    getVideoContent(content, node, backendURL);
+  });
 }

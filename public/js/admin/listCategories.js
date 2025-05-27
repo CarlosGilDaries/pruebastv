@@ -31,6 +31,7 @@ async function listCategories() {
                                     <th>ID</th>
                                     <th>Prioridad</th>
                                     <th>Nombre</th>
+                                    <th>Mostrar en Inicio</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
