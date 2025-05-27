@@ -6,17 +6,25 @@ const neededPlans = localStorage.getItem('needed_plans');
 
 try {
   const response = await fetch(backendApi + 'plans');
-  const userResponse = await fetch(backendApi + 'user', {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  
+  if (token != null) {
+    const userResponse = await fetch(backendApi + 'user', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const userData = await userResponse.json();
+  }
+
   const data = await response.json();
-  const userData = await userResponse.json();
-  
-  if (userData.success && data.success && userData.data.plan != null) {
+
+  if (
+    token != null &&
+    userData.success &&
+    data.success &&
+    userData.data.plan != null
+  ) {
     const plans = data.plans;
     const actualPlan = userData.data.plan.name;
     displayPlans(plans, actualPlan);
@@ -24,11 +32,10 @@ try {
     const plans = data.plans;
     displayPlans(plans);
   }
-	
-	window.addEventListener("beforeunload", function () {
-	  localStorage.removeItem("needed_plans"); 
-	});
 
+  window.addEventListener('beforeunload', function () {
+    localStorage.removeItem('needed_plans');
+  });
 } catch (error) {
   console.error('Error en la solicitud:', error);
 }
@@ -57,13 +64,19 @@ function displayPlans(plans, actualPlan) {
       <div class="plan-price">${formattedPrice}</div>
       <div class="plan-features">
           <div class="plan-feature">
-              <i class="fas fa-laptop"></i> ${plan.max_devices} dispositivo${plan.max_devices > 1 ? 's' : ''}
+              <i class="fas fa-laptop"></i> ${plan.max_devices} dispositivo${
+      plan.max_devices > 1 ? 's' : ''
+    }
           </div>
           <div class="plan-feature">
-              <i class="fas fa-play"></i> ${plan.max_streams} transmisión${plan.max_streams > 1 ? 'es' : ''} simultánea${plan.max_streams > 1 ? 's' : ''}
+              <i class="fas fa-play"></i> ${plan.max_streams} transmisión${
+      plan.max_streams > 1 ? 'es' : ''
+    } simultánea${plan.max_streams > 1 ? 's' : ''}
           </div>
           <div class="plan-feature">
-              <i class="fas fa-${plan.ads ? 'ad' : 'ban'}"></i> ${plan.ads ? 'Con anuncios' : 'Sin anuncios'}
+              <i class="fas fa-${plan.ads ? 'ad' : 'ban'}"></i> ${
+      plan.ads ? 'Con anuncios' : 'Sin anuncios'
+    }
           </div>
       </div>
     `;
@@ -73,42 +86,46 @@ function displayPlans(plans, actualPlan) {
     button.className = 'plan-button';
     button.id = plan.id;
 
-	  if (actualPlan) {
-		if (plan.name === actualPlan) {
-		  button.textContent = 'Plan Actual';
-		  button.disabled = true;
-			button.classList.add('actual-plan');
-		} else if (neededPlans && !neededPlans.includes(plan.name)) {
-		  button.textContent = 'No aplica'
-		  button.disabled = true;
-		  button.classList.add('disabled-plan');
-		} else {
-		  button.textContent = 'Seleccionar Plan';
-			button.classList.add('needed-plan');
-		  button.addEventListener('click', async () => {
-			await selectPlan(plan.id);
-		  });
-		}
-	  } else {
-		  if (neededPlans != null) {
-			if (!neededPlans.includes(plan.name)) {
-			  button.textContent = 'No aplica'
-			  button.disabled = true;
-			  button.classList.add('disabled-plan');
-			} else {
-			  button.textContent = 'Seleccionar Plan';
-				button.classList.add('needed-plan');
-			  button.addEventListener('click', async () => {
-				await selectPlan(plan.id);
-			  });
-			}
-		  } else {
-			button.textContent = 'Seleccionar Plan';
-			button.addEventListener('click', async () => {
-				await selectPlan(plan.id);
-			});
-		  }
-	  }
+    if (actualPlan) {
+      if (plan.name === actualPlan) {
+        button.textContent = 'Plan Actual';
+        button.disabled = true;
+        button.classList.add('actual-plan');
+      } else if (neededPlans && !neededPlans.includes(plan.name)) {
+        button.textContent = 'No aplica';
+        button.disabled = true;
+        button.classList.add('disabled-plan');
+      } else {
+        button.textContent = 'Seleccionar Plan';
+        button.classList.add('needed-plan');
+        button.addEventListener('click', async () => {
+          await selectPlan(plan.id);
+        });
+      }
+    } else {
+      if (neededPlans != null) {
+        if (!neededPlans.includes(plan.name)) {
+          button.textContent = 'No aplica';
+          button.disabled = true;
+          button.classList.add('disabled-plan');
+        } else {
+          button.textContent = 'Seleccionar Plan';
+          button.classList.add('needed-plan');
+          button.addEventListener('click', async () => {
+            await selectPlan(plan.id);
+          });
+        }
+      } else {
+        button.textContent = 'Seleccionar Plan';
+        button.addEventListener('click', async () => {
+          if (token != null) {
+            await selectPlan(plan.id);
+          } else {
+            window.location.href = '/login';
+          }
+        });
+      }
+    }
 
     card.appendChild(button);
     container.appendChild(card);

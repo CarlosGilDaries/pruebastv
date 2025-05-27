@@ -7,11 +7,18 @@
     height: 70vh;
 }
 
+.background-banner {
+	position: relative;
+	z-index: 1;
+}
+
 .banner {
 	height: 70vh;
 	position: relative;
 	z-index: 1;
 }
+
+
 
 .banner::before {
     content: "";

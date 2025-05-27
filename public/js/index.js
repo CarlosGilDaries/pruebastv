@@ -1,6 +1,3 @@
-/*import { getAudioContent } from './modules/getAudioContent.js';
-import { getVideoContent } from './modules/getVideoContent.js';
-import { addScrollFunctionality } from './modules/addScrollFunctionality.js';*/
 import { logOut } from './modules/logOut.js';
 import { initPriorityBanner } from './modules/initPriorityBanner.js';
 import { renderCategories } from './modules/renderCategories.js';
@@ -13,59 +10,68 @@ const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
 
 document.addEventListener('DOMContentLoaded', function () {
-	if (device_id == null && token != null) {
-		logOut(token);
-	}
-	const menu = document.querySelector('.menu');
+  if (device_id == null && token != null) {
+    logOut(token);
+  }
+  const menu = document.querySelector('.menu');
 
-	window.addEventListener('scroll', function () {
-		if (window.scrollY > 1) {
-			// Si se ha hecho scroll hacia abajo
-			menu.classList.add('scrolled');
-			document.body.style.paddingTop = '56px';
-		} else {
-			menu.classList.remove('scrolled');
-			document.body.style.paddingTop = '0';
-		}
-	});
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 1) {
+      // Si se ha hecho scroll hacia abajo
+      menu.classList.add('scrolled');
+      document.body.style.paddingTop = '56px';
+    } else {
+      menu.classList.remove('scrolled');
+      document.body.style.paddingTop = '0';
+    }
+  });
 });
 
 async function indexData(api, backendURL) {
-	try {
-		const categoriesResponse = await fetch(api + 'categories');
-		const categoriesData = await categoriesResponse.json();
-		const sections = document.querySelectorAll('.content-type');
-		/*const response = await fetch(api + 'content');
-		const data = await response.json();
+  try {
+    const categoriesResponse = await fetch(api + 'categories');
+    const categoriesData = await categoriesResponse.json();
+    const sections = document.querySelectorAll('.content-type');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
 
-		const audio = document.getElementById('audio-content');
-		const video = document.getElementById('video-content');
+    dropdownMenu.innerHTML = '';
+    categoriesData.categories.forEach((category) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = `#`;
+      a.textContent = category.name;
+      li.appendChild(a);
+      dropdownMenu.appendChild(li);
+    });
 
-		getAudioContent(data, audio, backendURL);
-		getVideoContent(data, video, backendURL);*/
+    // Manejar el dropdown en móviles
+    const dropdownToggle = document.querySelector('.dropdown-toggle');
+    const dropdown = document.querySelector('.dropdown');
 
-		initPriorityBanner(categoriesData);
-		renderCategories(categoriesData, sections, backendURL);
-		
+    dropdownToggle.addEventListener('click', function (e) {
+      if (window.innerWidth <= 991) {
+        e.preventDefault();
+        dropdown.classList.toggle('active');
+      }
+    });
 
-		/*addScrollFunctionality(audio, 228);
-		addScrollFunctionality(video, 228);*/
-	}
-	catch (error) {
-		console.log(error);
-	}
+    initPriorityBanner(categoriesData);
+    renderCategories(categoriesData, sections, backendURL);
+  } catch (error) {
+    console.log(error);
+  }
 }
 indexData(api, backendURL);
 
 document.addEventListener('DOMContentLoaded', async function () {
-	const userIcon = document.querySelector('.user');
-	const navRight = document.querySelector('.right-nav');
+  const userIcon = document.querySelector('.user');
+  const navRight = document.querySelector('.right-nav');
 
-	if (token == null) {
-		if (userIcon) userIcon.remove();
+  if (token == null) {
+    if (userIcon) userIcon.remove();
 
-		const loginButton = document.createElement('li');
-		loginButton.innerHTML = `<a href="/login"><button class="login-btn">Iniciar sesión</button></a>`;
-		navRight.appendChild(loginButton);
-	}
+    const loginButton = document.createElement('li');
+    loginButton.innerHTML = `<a href="/login"><button class="login-btn">Iniciar sesión</button></a>`;
+    navRight.appendChild(loginButton);
+  }
 });
