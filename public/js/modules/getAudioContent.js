@@ -1,6 +1,5 @@
 export function getAudioContent(data, node, backendURL) {
   const audios = new Set();
-	console.log(data);
 
   data.data.movies.forEach((element) => {
     if (element.type == 'audio/mpeg' || element.type == 'url_mp3') {

@@ -1,4 +1,3 @@
-import { formatDuration } from '../modules/formatDuration.js';
 import { deleteForm } from '../modules/deleteForm.js';
 import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
@@ -35,7 +34,7 @@ async function listContent() {
                                     <th>Género</th>
                                     <th>Tipo</th>
                                     <th>PPV</th>
-                                    <th>Duración</th>
+                                    <th>Subida</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -91,27 +90,21 @@ async function listContent() {
           {
             data: 'pay_per_view',
             name: 'pay_per_view',
-            render: function (data) {
-              if (data == 0) return 'No';
-              else return 'Sí';
-            },
-          },
-          {
-            data: 'duration',
-            name: 'duration',
-            render: function (data) {
-              return formatDuration(data);
-            },
-          },
-          {
-            data: 'actions',
-            name: 'actions',
-            orderable: false,
-            searchable: false,
-          },
-        ],
-        language: {
-          url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+			  render: function (data) {
+				  if (data == 0) return 'No';
+				  else return 'Sí';
+			  },
+		  },
+			{ data: 'created_at', name: 'created_at' },
+			{
+				data: 'actions',
+				name: 'actions',
+				orderable: false,
+				searchable: false,
+			},
+		],
+		  language: {
+			  url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
         },
         responsive: true,
         drawCallback: function () {

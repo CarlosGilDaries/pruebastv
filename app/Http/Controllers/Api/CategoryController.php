@@ -13,8 +13,10 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-            $categories = Category::with('movies')->get();
-            $priorities = $categories->sortBy('priority')->pluck('priority')->toArray();
+			$categories = Category::with(['movies' => function ($query) {
+				$query->orderBy('created_at', 'desc');
+			}])->get();
+			$priorities = $categories->sortBy('priority')->pluck('priority')->toArray();
 
             return response()->json([
                 'success' => true,

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use DataTables;
-
+use Illuminate\Support\Carbon;
 
 class MovieApiController extends Controller
 {
@@ -74,8 +74,8 @@ class MovieApiController extends Controller
 				->addColumn('pay_per_view', function($movie) {
 					return $movie->pay_per_view;
 				})
-				->addColumn('duration', function($movie) {
-					return $movie->duration;
+                ->addColumn('created_at', function($movie) {
+					return Carbon::parse($movie->created_at)->format('d-m-Y');
 				})
 				->addColumn('actions', function($movie) {
 					return $this->getActionButtons($movie);
@@ -474,7 +474,7 @@ class MovieApiController extends Controller
 			$movie = Movie::where('id', $id)->first();
 
 			if (Auth::check() && Auth::user()->rol == 'admin') {
-				$directory = ("content/{$movie->slug}");
+				$directory = ("content/content-{$movie->id}");
 				Storage::disk('private')->deleteDirectory($directory, true);
 				Movie::where('id', $id)->delete();
 

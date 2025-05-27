@@ -5,9 +5,9 @@ export function addScrollFunctionality(container, px) {
   const rightArrow = wrapper.querySelector('.scroll-right');
 
   function updateArrows() {
-    leftArrow.classList.toggle('hidden', container.scrollLeft <= 0);
+    leftArrow.classList.toggle('disabled', container.scrollLeft <= 0);
     rightArrow.classList.toggle(
-      'hidden',
+      'disabled',
       container.scrollLeft + container.clientWidth >= container.scrollWidth
     );
   }
