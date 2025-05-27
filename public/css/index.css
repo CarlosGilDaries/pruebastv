@@ -192,3 +192,9 @@ h1 {
 .title-transition {
 	transition: opacity 0.2s ease-in-out;
 }
+
+.play-button {
+	transform: scale(0.9);
+	transform-origin: center;
+	left: -10px;
+}

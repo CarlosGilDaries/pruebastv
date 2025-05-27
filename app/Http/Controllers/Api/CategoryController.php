@@ -15,7 +15,9 @@ class CategoryController extends Controller
         try {
 			$categories = Category::with(['movies' => function ($query) {
 				$query->orderBy('created_at', 'desc');
-			}])->get();
+			}])
+            ->orderBy('priority')
+            ->get();
 			$priorities = $categories->sortBy('priority')->pluck('priority')->toArray();
 
             return response()->json([

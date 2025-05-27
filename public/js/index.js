@@ -1,8 +1,9 @@
-import { logOut } from './modules/logOut.js';
-import { getAudioContent } from './modules/getAudioContent.js';
+/*import { getAudioContent } from './modules/getAudioContent.js';
 import { getVideoContent } from './modules/getVideoContent.js';
-import { addScrollFunctionality } from './modules/addScrollFunctionality.js';
+import { addScrollFunctionality } from './modules/addScrollFunctionality.js';*/
+import { logOut } from './modules/logOut.js';
 import { initPriorityBanner } from './modules/initPriorityBanner.js';
+import { renderCategories } from './modules/renderCategories.js';
 
 const token = localStorage.getItem('auth_token');
 const apiContent = 'https://pruebastv.kmc.es/api/content';
@@ -33,18 +34,22 @@ async function indexData(api, backendURL) {
 	try {
 		const categoriesResponse = await fetch(api + 'categories');
 		const categoriesData = await categoriesResponse.json();
-		const response = await fetch(api + 'content');
+		const sections = document.querySelectorAll('.content-type');
+		/*const response = await fetch(api + 'content');
 		const data = await response.json();
 
 		const audio = document.getElementById('audio-content');
 		const video = document.getElementById('video-content');
 
 		getAudioContent(data, audio, backendURL);
-		getVideoContent(data, video, backendURL);
-		initPriorityBanner(categoriesData);
+		getVideoContent(data, video, backendURL);*/
 
-		addScrollFunctionality(audio, 228);
-		addScrollFunctionality(video, 228);
+		initPriorityBanner(categoriesData);
+		renderCategories(categoriesData, sections, backendURL);
+		
+
+		/*addScrollFunctionality(audio, 228);
+		addScrollFunctionality(video, 228);*/
 	}
 	catch (error) {
 		console.log(error);

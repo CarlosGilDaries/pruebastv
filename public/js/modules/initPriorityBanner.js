@@ -19,18 +19,6 @@ export function initPriorityBanner(categoriesData) {
 		const movies = priorityCategory.movies;
 		let isTransitioning = false; // Bandera para evitar interrupciones
 
-		/*// Configurar transiciones CSS dinámicamente
-		const style = document.createElement('style');
-		style.textContent = `
-    .banner-transition {
-        transition: opacity 0.5s ease-in-out;
-    }
-    .title-transition {
-        transition: opacity 0.3s ease-in-out;
-    }
-`;
-		document.head.appendChild(style);*/
-
 		// Función para cargar una película con transición
 		async function loadMovie(index) {
 			if (isTransitioning) return;
