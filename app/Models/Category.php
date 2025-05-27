@@ -9,7 +9,8 @@ class Category extends Model
     protected $table = 'categories';
     protected $fillable = [
         'name',
-        'priority'
+        'priority',
+        'render_at_index'
     ]; 
 
     public function movies()

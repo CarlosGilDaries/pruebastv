@@ -16,6 +16,7 @@ class CategoryController extends Controller
 			$categories = Category::with(['movies' => function ($query) {
 				$query->orderBy('created_at', 'desc');
 			}])
+            ->where('render_at_index', 1)
             ->orderBy('priority')
             ->get();
 			$priorities = $categories->sortBy('priority')->pluck('priority')->toArray();
@@ -50,6 +51,9 @@ class CategoryController extends Controller
 				})
 				->addColumn('name', function($category) {
 					return $category->name;
+				})
+                ->addColumn('render', function($category) {
+					return $category->render_at_index;
 				})
 				->addColumn('actions', function($category) {
 					return $this->getActionButtons($category);
@@ -104,6 +108,7 @@ class CategoryController extends Controller
                        ->increment('priority');
             }
             $category->priority = $newPriority;
+            $category->render_at_index = $request->input('render_at_index');
     
             $category->save();
             
@@ -129,6 +134,7 @@ class CategoryController extends Controller
             $category = Category::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
             $category->name = $name;
+            $category->render_at_index = $request->input('render_at_index');
             $currentPriority = $category->priority;
             $newPriority = $request->input('priority');
             

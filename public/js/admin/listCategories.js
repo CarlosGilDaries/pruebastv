@@ -65,6 +65,14 @@ async function listCategories() {
           { data: 'priority', name: 'priority' },
           { data: 'name', name: 'name' },
           {
+            data: 'render',
+            name: 'render',
+            render: function (data) {
+              if (data == 0) return 'No';
+              else return 'Sí';
+            },
+          },
+          {
             data: 'actions',
             name: 'actions',
             orderable: false,
@@ -73,6 +81,12 @@ async function listCategories() {
         ],
         language: {
           url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+          paginate: {
+            first: `<span class="icon-pagination">«</span>`,
+            previous: `<span class="icon-pagination">‹</span>`,
+            next: `<span class="icon-pagination">›</span>`,
+            last: `<span class="icon-pagination">»</span>`,
+          },
         },
         responsive: true,
         drawCallback: function () {

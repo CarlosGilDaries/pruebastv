@@ -75,6 +75,12 @@ async function listOrders() {
         ],
         language: {
           url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+          paginate: {
+            first: `<span class="icon-pagination">«</span>`,
+            previous: `<span class="icon-pagination">‹</span>`,
+            next: `<span class="icon-pagination">›</span>`,
+            last: `<span class="icon-pagination">»</span>`,
+          },
         },
         responsive: true,
         drawCallback: function () {
@@ -100,47 +106,53 @@ async function listOrders() {
                 });
             });
           });
-			
-			document.querySelectorAll('.download-btn').forEach((btn) => {
-				btn.addEventListener('click', async function(e) {
-					e.preventDefault();
-					const orderId = this.dataset.id;
 
-					try {
-						const billResponse = await fetch(`/bill-path-from-order/${orderId}`);
-						const billData = await billResponse.json();
+          document.querySelectorAll('.download-btn').forEach((btn) => {
+            btn.addEventListener('click', async function (e) {
+              e.preventDefault();
+              const orderId = this.dataset.id;
 
-						if (!billResponse.ok) {
-							throw new Error(billData.message || 'Error al obtener la factura');
-						}
+              try {
+                const billResponse = await fetch(
+                  `/bill-path-from-order/${orderId}`
+                );
+                const billData = await billResponse.json();
 
-						if (!billData.path) {
-							alert('Factura no disponible');
-							return;
-						}
+                if (!billResponse.ok) {
+                  throw new Error(
+                    billData.message || 'Error al obtener la factura'
+                  );
+                }
 
-						const downloadResponse = await fetch(`/bill/${billData.id}/download`);
+                if (!billData.path) {
+                  alert('Factura no disponible');
+                  return;
+                }
 
-						if (!downloadResponse.ok) {
-							throw new Error('Error al descargar la factura');
-						}
-						
-						const blob = await downloadResponse.blob();
-						const url = window.URL.createObjectURL(blob);
-						const a = document.createElement('a');
-						a.href = url;
-						a.download = `factura-${billData.number}.pdf`;
-						console.log(`factura-${billData.number}.pdf`);
-						document.body.appendChild(a);
-						a.click();
-						document.body.removeChild(a);
-						window.URL.revokeObjectURL(url);
-					} catch (error) {
-						console.error('Error:', error);
-						alert(error.message);
-					}
-				});
-			});
+                const downloadResponse = await fetch(
+                  `/bill/${billData.id}/download`
+                );
+
+                if (!downloadResponse.ok) {
+                  throw new Error('Error al descargar la factura');
+                }
+
+                const blob = await downloadResponse.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `factura-${billData.number}.pdf`;
+                console.log(`factura-${billData.number}.pdf`);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+              } catch (error) {
+                console.error('Error:', error);
+                alert(error.message);
+              }
+            });
+          });
 
           setUpMenuActions();
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->integer('priority');
+            $table->boolean('render_at_index');
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
-@import 'commons.css';
-@import 'nav.css';
-@import 'footer.css';
+@import '/css/commons.css';
+@import '/css/nav.css';
+@import '/css/footer.css';
 
 body {
   background-color: #f4f4f4;

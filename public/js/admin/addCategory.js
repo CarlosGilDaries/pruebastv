@@ -65,6 +65,17 @@ async function initAddCategory() {
           'priority',
           document.getElementById('priority').value
         );
+        if (document.getElementById('render').checked) {
+          formAdData.append(
+            'render_at_index',
+            document.getElementById('render').value
+          );
+        } else {
+          formAdData.append(
+            'render_at_index',
+            0
+          );
+        }
 
         try {
           const response = await fetch(backendAPI + 'add-category', {

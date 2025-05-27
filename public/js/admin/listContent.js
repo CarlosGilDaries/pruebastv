@@ -90,21 +90,27 @@ async function listContent() {
           {
             data: 'pay_per_view',
             name: 'pay_per_view',
-			  render: function (data) {
-				  if (data == 0) return 'No';
-				  else return 'Sí';
-			  },
-		  },
-			{ data: 'created_at', name: 'created_at' },
-			{
-				data: 'actions',
-				name: 'actions',
-				orderable: false,
-				searchable: false,
-			},
-		],
-		  language: {
-			  url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+            render: function (data) {
+              if (data == 0) return 'No';
+              else return 'Sí';
+            },
+          },
+          { data: 'created_at', name: 'created_at' },
+          {
+            data: 'actions',
+            name: 'actions',
+            orderable: false,
+            searchable: false,
+          },
+        ],
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+          paginate: {
+            first: `<span class="icon-pagination">«</span>`,
+            previous: `<span class="icon-pagination">‹</span>`,
+            next: `<span class="icon-pagination">›</span>`,
+            last: `<span class="icon-pagination">»</span>`,
+          },
         },
         responsive: true,
         drawCallback: function () {

@@ -117,8 +117,7 @@
     border-radius: 4px;
 }
 
-#list-genders,
-#list-categories {
+#list-genders {
 	max-width: 900px;
 }
 
@@ -148,4 +147,8 @@
 
 .dt-column-order {
     order: 2 !important;
+}
+
+.icon-pagination {
+    font-size: 22px
 }

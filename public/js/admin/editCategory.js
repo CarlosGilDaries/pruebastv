@@ -36,6 +36,9 @@ async function editCategoryForm() {
           data.category.name;
           document.getElementById('edit-category-priority').value =
             data.category.priority;
+        if (data.category.render_at_index == 1) {
+          document.getElementById('edit-category-render').checked = true;
+        }
       } else {
         console.error('Error:', data.message);
       }
@@ -64,6 +67,14 @@ async function editCategoryForm() {
           'priority',
           document.getElementById('edit-category-priority').value
         );
+        if (document.getElementById('edit-category-render').checked) {
+          formData.append(
+            'render_at_index',
+            document.getElementById('edit-category-render').value
+          );
+        } else {
+          formData.append('render_at_index', 0);
+        }
 
         const response = await fetch(`${backendAPI}edit-category/${id}`, {
           method: 'POST',
