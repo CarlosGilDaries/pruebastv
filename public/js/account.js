@@ -1,4 +1,5 @@
-import { logOut } from "./modules/logOut.js";
+import { logOut } from './modules/logOut.js';
+import { dropDownMenu } from './modules/dropDownMenu.js';
 
 const token = localStorage.getItem('auth_token');
 if (token == null) {
@@ -7,14 +8,17 @@ if (token == null) {
 const button = document.querySelector('.select-plan');
 const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
+const api = 'https://pruebastv.kmc.es/api/';
 
 if (device_id == null) {
   logOut(token);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	localStorage.removeItem("needed_plans"); 
-  fetch('https://pruebastv.kmc.es/api/user', {
+  const dropDown = document.querySelector('.dropdown-menu');
+  dropDownMenu(dropDown, api);
+  localStorage.removeItem('needed_plans');
+  fetch(api + 'user', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
@@ -60,39 +64,39 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Asignar el nombre de la columna en español
                 cell1.textContent = fieldsToDisplay[key];
-                if (value == 'man' || value == 'woman' || value == 'non-binary' || value == 'others') {
+                if (
+                  value == 'man' ||
+                  value == 'woman' ||
+                  value == 'non-binary' ||
+                  value == 'others'
+                ) {
                   if (value == 'man') {
                     cell2.textContent = 'Hombre';
-                  }
-
-                  else if (value == 'woman') {
+                  } else if (value == 'woman') {
                     cell2.textContent = 'Mujer';
-                  }
-                    
-                  else if (value == 'non-binary') {
+                  } else if (value == 'non-binary') {
                     cell2.textContent = 'No binario';
-                    
                   } else {
-                      cell2.textContent = 'Sin especificar';
-                    }
+                    cell2.textContent = 'Sin especificar';
+                  }
                 } else {
                   cell2.textContent = value;
                 }
               }
             }
           }
-			
-			const plan = data.data.plan;
-			if (plan != null) {
-			  const planRow = document.createElement('tr');
-			  const planKey = document.createElement('td');
-			  planKey.innerHTML = 'Plan';
-			  const planValue = document.createElement('td');
-			  planValue.innerHTML = plan.name;
-			  tableBody.appendChild(planRow);
-			  planRow.appendChild(planKey);
-			  planRow.appendChild(planValue);
-			}
+
+          const plan = data.data.plan;
+          if (plan != null) {
+            const planRow = document.createElement('tr');
+            const planKey = document.createElement('td');
+            planKey.innerHTML = 'Plan';
+            const planValue = document.createElement('td');
+            planValue.innerHTML = plan.name;
+            tableBody.appendChild(planRow);
+            planRow.appendChild(planKey);
+            planRow.appendChild(planValue);
+          }
         }
 
         button.addEventListener('click', function () {
@@ -100,24 +104,25 @@ document.addEventListener('DOMContentLoaded', function () {
             window.location.href = '/admin/admin-panel.html';
           } else {
             window.location.href = '/plans.html';
-          } 
+          }
         });
       }
     })
-  .catch((error) => {
-    console.log(error);
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
+document
+  .getElementById('logout-button')
+  .addEventListener('click', async function (event) {
+    event.preventDefault();
+
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      console.error('No se encontró el token de autenticación');
+      return;
+    }
+
+    logOut(token);
   });
-});
-
-document.getElementById('logout-button').addEventListener('click', async function (event) {
-  event.preventDefault();
-
-  const token = localStorage.getItem('auth_token');
-  if (!token) {
-    console.error('No se encontró el token de autenticación');
-    return;
-  }
-
-  logOut(token);
-});
-

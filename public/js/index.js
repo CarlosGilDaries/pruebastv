@@ -1,9 +1,9 @@
 import { logOut } from './modules/logOut.js';
 import { initPriorityBanner } from './modules/initPriorityBanner.js';
 import { renderCategories } from './modules/renderCategories.js';
+import { dropDownMenu } from './modules/dropDownMenu.js';
 
 const token = localStorage.getItem('auth_token');
-const apiContent = 'https://pruebastv.kmc.es/api/content';
 const api = 'https://pruebastv.kmc.es/api/';
 const backendURL = 'https://pruebastv.kmc.es';
 const email = localStorage.getItem('current_user_email');
@@ -31,30 +31,10 @@ async function indexData(api, backendURL) {
   try {
     const categoriesResponse = await fetch(api + 'categories');
     const categoriesData = await categoriesResponse.json();
-    const sections = document.querySelectorAll('.content-type');
-    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const dropDown = document.querySelector('.dropdown-menu');
     const main = document.querySelector('main');
 
-    dropdownMenu.innerHTML = '';
-    categoriesData.categories.forEach((category) => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = `#`;
-      a.textContent = category.name;
-      li.appendChild(a);
-      dropdownMenu.appendChild(li);
-    });
-
-    // Manejar el dropdown en móviles
-    const dropdownToggle = document.querySelector('.dropdown-toggle');
-    const dropdown = document.querySelector('.dropdown');
-
-    dropdownToggle.addEventListener('click', function (e) {
-      if (window.innerWidth <= 991) {
-        e.preventDefault();
-        dropdown.classList.toggle('active');
-      }
-    });
+    dropDownMenu(dropDown, api);
 
     initPriorityBanner(categoriesData);
     renderCategories(main, categoriesData, backendURL);
@@ -62,6 +42,7 @@ async function indexData(api, backendURL) {
     console.log(error);
   }
 }
+
 indexData(api, backendURL);
 
 document.addEventListener('DOMContentLoaded', async function () {
@@ -71,8 +52,16 @@ document.addEventListener('DOMContentLoaded', async function () {
   if (token == null) {
     if (userIcon) userIcon.remove();
 
-    const loginButton = document.createElement('li');
-    loginButton.innerHTML = `<a href="/login"><button class="login-btn">Iniciar sesión</button></a>`;
-    navRight.appendChild(loginButton);
+    const unloggedButtonsContainer = document.createElement('li');
+    unloggedButtonsContainer.classList.add('unlogged-buttons');
+    const loginButton = document.createElement('a');
+    loginButton.href = '/login';
+    const registerButton = document.createElement('a');
+    registerButton.href = '/register.html';
+    loginButton.innerHTML = `<button class="login-btn">Iniciar sesión</button>`;
+    registerButton.innerHTML = `<button class="signup-btn">Registrarse</button>`;
+    unloggedButtonsContainer.appendChild(loginButton);
+    unloggedButtonsContainer.appendChild(registerButton);
+    navRight.appendChild(unloggedButtonsContainer);
   }
 });

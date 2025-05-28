@@ -5,7 +5,7 @@ export function renderCategories(main, categoriesData, backendURL) {
         const content = category.movies;
     const section = document.createElement('section');
     section.setAttribute('data-index', category.priority);
-    section.classList.add('category content-type');
+    section.classList.add('category', 'content-type');
     section.innerHTML = `
                             <h2 class="category-title" id="title-${category.priority}">${category.name}</h2>
                             <div class="content-wrapper">

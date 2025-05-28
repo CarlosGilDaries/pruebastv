@@ -12,8 +12,6 @@ header {
     justify-content: space-between;
     gap: 5px;
     font-size: 15px;
-	background: transparent;
-    transition: background-color 0.5s ease-out;
 }
 
 .scrolled { /*Clase a la que cambia el menu al scrollear*/
@@ -26,9 +24,7 @@ header {
     justify-content: space-between;
     gap: 5px;
     font-size: 15px;
-    background-color: black;
     z-index: 1000;
-    transition: background-color 0.5s ease-in;
 }
 
 .nav {
@@ -42,6 +38,7 @@ header {
 .left-nav {
     display: flex;
     font-size: 16px;
+    font-weight: 600;
     gap: 40px;
 }
 
@@ -154,16 +151,36 @@ body > header > div > nav:nth-child(1) > ul > li:nth-child(5):hover {
     transform: scale(1.1);
 }
 
-.login-btn {
-    border-radius: 10px;
+.unlogged-buttons {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.login-btn,
+.signup-btn {
+    border-radius: 5px;
     font-size: 16px;
     font-weight: 700;
     padding: 5px;
     cursor: pointer;
-    border: 1px solid white;
-    background-color: white;
+	min-width: 140px;
 }
 
-.login-btn:hover {
+.login-btn {
+	background: transparent;
+	border: 2px solid white;
+	color: white;
+}
+
+.signup-btn {
+	background: var(--unlink-users-btn-hover);
+	border: none;
+	color: black;
+	transform: scale(105%);
+}
+
+.login-btn:hover,
+.signup-btn:hover {
     filter: brightness(0.9);
 }

@@ -1,11 +1,13 @@
 import { getIp } from './modules/getIp.js';
 import { logOut } from './modules/logOut.js';
 import { processRedsysPayment } from './modules/redsys.js';
+import { dropDownMenu } from './modules/dropDownMenu.js';
+import { formatDuration } from './modules/formatDuration.js';
+
 const token = localStorage.getItem('auth_token');
 
 if (token == null) {
   window.location.href = '/login';
-
 }
 const pathParts = window.location.pathname.split('/');
 const movieSlug = pathParts[pathParts.length - 1]; // Extraer el último segmento de la URL
@@ -16,6 +18,12 @@ const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
 const ip = await getIp();
 const userAgent = navigator.userAgent;
+const gender = document.getElementById('gender');
+const tagline = document.getElementById('tagline');
+const duration = document.getElementById('duration');
+const overview = document.getElementById('overview-text');
+const dropDown = document.querySelector('.dropdown-menu');
+dropDownMenu(dropDown, api);
 
 if (device_id == null) {
   logOut(token);
@@ -42,88 +50,91 @@ async function fetchMovieData() {
       },
     });
 
-	if (response.status == 404) {
-		window.location.href = '/404.html';
-	}
-	  
-    const data = await response.json();	  
+    if (response.status == 404) {
+      window.location.href = '/404.html';
+    }
+
+    const data = await response.json();
     const userData = await userResponse.json();
-	const movieId = data.data.movie.id;
-	  
-	let neededPlans = [];
-	data.data.plans.forEach(plan => {
-		if (plan.name != 'Admin') {
-			neededPlans.push(plan.name);
-		}
-	});
+    const movieId = data.data.movie.id;
+
+    let neededPlans = [];
+    data.data.plans.forEach((plan) => {
+      if (plan.name != 'Admin') {
+        neededPlans.push(plan.name);
+      }
+    });
 
     if (userData.success && data.success) {
       if (userData.data.plan == null) {
-		localStorage.setItem('needed_plans', neededPlans);
+        localStorage.setItem('needed_plans', neededPlans);
         window.location.href = '/manage-plans.html';
         return;
       }
-	
-	const actualPlan = userData.data.plan.name;
+
+      const actualPlan = userData.data.plan.name;
 
       if (!neededPlans.includes(actualPlan) && actualPlan != 'Admin') {
         localStorage.setItem('actual_plan', actualPlan);
         localStorage.setItem('needed_plans', neededPlans);
         window.location.href = '/manage-plans.html';
       }
-		
-	if (data.data.movie.pay_per_view && userData.data.user.rol != 'admin') {
-		const ppvResponse = await fetch(api + 'ppv-current-user-order/' + movieId, {
-		  method: 'GET',
-		  headers: {
-			'Content-Type': 'application/json',
-			Authorization: `Bearer ${token}`,
-		  },
-		});
-		
-		const ppvData = await ppvResponse.json();
-		
-		if (!ppvData.success) {
-			play.textContent = 'Pagar para ver: ' +  data.data.movie.pay_per_view_price + ' €';
-			play.addEventListener('click', async function () {
-        		  try {
-					  const paymentResponse = await fetch(api + 'ppv-payment', {
-						  method: 'POST',
-						  headers: {
-							  'Content-Type': 'application/json',
-							  Authorization: `Bearer ${token}`,
-						  },
-						  body: JSON.stringify({
-							  content_id: movieId,
-						  }),
-					  });
 
-					  const paymentData = await paymentResponse.json();
+      if (data.data.movie.pay_per_view && userData.data.user.rol != 'admin') {
+        const ppvResponse = await fetch(
+          api + 'ppv-current-user-order/' + movieId,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-					  if (paymentData.success && paymentData.payment_required) {
-						  await processRedsysPayment(paymentData);
-						  return;
-					  } 
-					  
-				  } catch (error) {
-					  console.log(error);
-					  alert(error);
-				  }
-      		});
-		} else {
-			play.innerHTML = 'Ver Ahora';
-		
-		    play.addEventListener('click', function () {
-        		window.location.href = `/player/${movieSlug}`;
-      		});
-		}
-	} else {
-			play.innerHTML = 'Ver Ahora';
-		
-		    play.addEventListener('click', function () {
-        		window.location.href = `/player/${movieSlug}`;
-      		});
-		}
+        const ppvData = await ppvResponse.json();
+
+        if (!ppvData.success) {
+          play.textContent =
+            'Pagar para ver: ' + data.data.movie.pay_per_view_price + ' €';
+          play.addEventListener('click', async function () {
+            try {
+              const paymentResponse = await fetch(api + 'ppv-payment', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  content_id: movieId,
+                }),
+              });
+
+              const paymentData = await paymentResponse.json();
+
+              if (paymentData.success && paymentData.payment_required) {
+                await processRedsysPayment(paymentData);
+                return;
+              }
+            } catch (error) {
+              console.log(error);
+              alert(error);
+            }
+          });
+        } else {
+          play.innerHTML = 'Ver Ahora';
+
+          play.addEventListener('click', function () {
+            window.location.href = `/player/${movieSlug}`;
+          });
+        }
+      } else {
+        play.innerHTML = 'Ver Ahora';
+
+        play.addEventListener('click', function () {
+          window.location.href = `/player/${movieSlug}`;
+        });
+      }
 
       const image = document.getElementById('content-image');
       const title = document.getElementById('content-title');
@@ -135,8 +146,11 @@ async function fetchMovieData() {
       }
       image.src = backendURL + data.data.movie.cover;
       title.innerHTML = data.data.movie.title;
-      document.title = data.data.movie.title + ' - Streaming';
-
+      document.title = data.data.movie.title + ' - Pruebas TV';
+      gender.innerHTML = data.data.movie.gender.name;
+      tagline.innerHTML = data.data.movie.tagline;
+      duration.innerHTML = formatDuration(data.data.movie.duration);
+      overview.innerHTML = data.data.movie.overview;
     } else {
       console.error('Error al consultar la API: ', data.message);
     }

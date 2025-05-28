@@ -10,6 +10,61 @@ video {
     position: absolute;
 }
 
+.banner {
+    position: relative;
+    z-index: 1;
+}
+
+.banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to top right, /* Dirección diagonal */
+        rgba(0, 0, 0, 1) 0%,       /* Oscuro total en esquina inferior izquierda */
+        rgba(0, 0, 0, 0.9) 25%,     /* Transición suave */
+        rgba(0, 0, 0, 0.8) 35%,
+        rgba(0, 0, 0, 0.7) 40%,
+        rgba(0, 0, 0, 0) 45%        /* A partir de 40%, TRANSPARENTE */
+    );
+    z-index: -1;
+    pointer-events: none;
+}
+
+.details {
+    background-color: var(--color-background-dark);
+    color: var(--color-primary);
+    display: flex;
+    gap: 40px;
+    padding: 20px;
+}
+
+.details .overview,
+.details .keywords {
+    background-color: var(--text-boxes-background);
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.details h3 {
+    color: var(--color-primary);
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.details .overview {
+    width: calc(55% - 40px);
+}
+
+.details .keywords {
+    width: calc(45% - 40px);
+}
+
 #content-image {
     height: 200px;
     width: auto;
@@ -18,7 +73,85 @@ video {
 
 #content-container {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 40px;
+    width: 50%;
+    padding-top: 250px;
 }
 
+#film-info div {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#img-title {
+    display: flex;
+    gap: 20px;
+}
+
+#content-title {
+    font-weight: 800 !important;
+    font-size: 2.475rem
+}
+
+#content-info p,
+#content-info h3,
+#tagline  {
+    color: var(--color-primary);
+}
+
+#button-tagline {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.info-text {
+    color: var(--text-gray-color);
+}
+
+.details .info-text {
+    margin-bottom: 15px;
+}
+
+.details .info-text:last-child {
+    margin-bottom: 0;
+}
+
+#tagline {
+    max-width: 80%;
+}
+
+#overview-text,
+.info-text {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.play-button {
+    width: 240px;
+}
+
+#content-info a,
+.keyword-link {
+    transition: color 0.3s ease;
+}
+
+#content-info a:hover,
+.keyword-link:hover {
+    color: var(--link-names-hover);
+}
+
+@media (max-width: 768px) {
+    .details {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .details .overview,
+    .details .keywords {
+        width: 100%;
+    }
+}

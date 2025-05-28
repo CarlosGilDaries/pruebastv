@@ -4,7 +4,6 @@
 @import '/css/login.css';
 
 section {
-    min-height: 81vh;
     padding-block: 30px;
 }
 

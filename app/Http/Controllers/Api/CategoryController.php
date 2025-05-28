@@ -19,7 +19,7 @@ class CategoryController extends Controller
             ->where('render_at_index', 1)
             ->orderBy('priority')
             ->get();
-			$priorities = $categories->sortBy('priority')->pluck('priority')->toArray();
+            $priorities = Category::all()->sortBy('priority')->pluck('priority')->toArray();
 
             return response()->json([
                 'success' => true,
@@ -36,6 +36,26 @@ class CategoryController extends Controller
             ], 500);
         }
     }
+
+    public function dropDownMenu()
+	{
+		try {
+			$categories = Category::orderBy('priority')->get();
+
+			return response()->json([
+				'success' => true,
+				'categories' => $categories,
+			], 200);
+
+		} catch (\Exception $e) {
+			Log::error('Error: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error: ' . $e->getMessage(),
+			], 500);
+		}
+	}
 
     public function datatable()
     {

@@ -108,6 +108,7 @@ Route::post('login', [LoginApiController::class, 'login']);
 Route::get('content', [MovieApiController::class, 'index']);
 Route::get('plans', [PlanController::class, 'index']);
 Route::get('categories', [CategoryController::class, 'index']);
+Route::get('dropdown-categories-menu', [CategoryController::class, 'dropDownMenu']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');
