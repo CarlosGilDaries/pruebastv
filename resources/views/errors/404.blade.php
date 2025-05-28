@@ -6,28 +6,33 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/404.css">
-    <link id="favicon" rel="icon" type="image/png" href="/images/stream-word.png">
+    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <title>Página no encontrada</title>
 </head>
 <body>
-
-	<div class="menu">
-		<nav>
-			<ul class="nav left-nav">
-				<li class="logo"><a href="/"><img src="/images/stream-word.png" alt="Streaming logo"></a></li>
-				<li><a href="/">Inicio</a></li>
-				<li><a href="#">Video</a></li>
-				<li><a href="#">Audio</a></li>
-				<li><a href="#">Favoritos</a></li>
-			</ul>
-		</nav>
-		<nav>
-			<ul class="nav right-nav">
-				<li><a href="#"><img src="/images/search-icon.png" alt="Search"></a></li>
-				<li class="user"><a href="/account"><img src="/images/user-icon.png" alt="User"></a></li>
-			</ul>
-		</nav>
-	</div>
+    <header>
+        <div class="menu">
+            <nav>
+                <ul class="nav left-nav">
+                    <li class="logo"><a href="/"><img src="/images/logo.png" alt="Pruebas TV logo"></a></li>
+                    <li><a href="/">Inicio</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Categorías</a>
+                        <ul class="dropdown-menu">
+                        </ul>
+                    </li>
+                    <li><a href="#">Favoritos</a></li>
+                    <li><a href="/plans.html">Planes</a></li>
+                </ul>
+            </nav>
+            <nav>
+                <ul class="nav right-nav">
+                    <li><a href="#"><img src="/images/search-icon.png" alt="Search"></a></li>
+                    <li class="user"><a href="/account"><img src="/images/user-icon.png" alt="User"></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
 	<div class="error-container">
 		<div class="error-content">
@@ -55,9 +60,16 @@
                 <a href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
                 <a href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
                 <a href="#"><li><img src="/images/github.png" alt="Github"></li></a> 
-            </ul>
-        </div>
-    </footer>
+			</ul>
+		</div>
+	</footer>
+
+	<script type="module">
+		import { dropDownMenu } from './js/modules/dropDownMenu.js';
+		const dropDown = document.querySelector('.dropdown-menu');
+		const api = 'https://pruebastv.kmc.es/api/';
+		dropDownMenu(dropDown, api);
+	</script>
 
 </body>
 </html>

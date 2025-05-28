@@ -8,7 +8,7 @@ class Gender extends Model
 {
     protected $fillable = ['name'];
 
-    public function contents() 
+    public function movies() 
     {
         return $this->hasMany(Movie::class);
     }

@@ -19,11 +19,13 @@ export function setupPostroll(player, movieUrl, backendUrl, movieType, ads, movi
 			});
 
 			player.one('adplaying', function () {
+				document.querySelector("#my-video > div.vjs-back-button-container").style.display = 'none';
 				player.trigger('ads-ad-started');
 				skippableAd(player, postroll);
 			});
 
 			player.one('adended', function () {
+				document.querySelector("#my-video > div.vjs-back-button-container").style.display = 'flex';
 				player.ads.endLinearAdMode();
 				player.trigger('ended');
 			});

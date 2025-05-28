@@ -1,12 +1,13 @@
 import { getVideoContent } from './getVideoContent.js';
 
 export function renderCategories(main, categoriesData, backendURL) {
-    categoriesData.categories.forEach((category) => {
-        const content = category.movies;
-    const section = document.createElement('section');
-    section.setAttribute('data-index', category.priority);
-    section.classList.add('category', 'content-type');
-    section.innerHTML = `
+	categoriesData.categories.forEach((category) => {
+		if (category.priority != 1) {
+			const content = category.movies;
+			const section = document.createElement('section');
+			section.setAttribute('data-index', category.priority);
+			section.classList.add('category', 'content-type');
+			section.innerHTML = `
                             <h2 class="category-title" id="title-${category.priority}">${category.name}</h2>
                             <div class="content-wrapper">
                                 <button class="scroll-left">&lt;</button>
@@ -14,11 +15,12 @@ export function renderCategories(main, categoriesData, backendURL) {
                                 <button class="scroll-right">&gt;</button>
                             </div>
                             `;
-      main.appendChild(section);
-      const node = document.getElementById(
-        `video-content-${category.priority}`
-      );
-      
-    getVideoContent(content, node, backendURL);
-  });
+			main.appendChild(section);
+			const node = document.getElementById(
+				`video-content-${category.priority}`
+			);
+
+			getVideoContent(content, node, backendURL);
+		}
+	});
 }

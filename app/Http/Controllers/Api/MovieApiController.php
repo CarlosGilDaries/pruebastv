@@ -96,7 +96,7 @@ class MovieApiController extends Controller
     public function show($slug)
     {
         try {
-            $movie = Movie::where('slug', $slug)->first();
+            $movie = Movie::with('gender')->where('slug', $slug)->first();
 			$user = Auth::user();
 			
             if (!$movie) {
@@ -227,8 +227,8 @@ class MovieApiController extends Controller
 			
 			$content = $request->file('content');
             $hls_content = $request->file('m3u8');
-			
-            if ($content && $request->input('type') != 'application/vnd.apple.mpegurl') {
+
+            if ($content != null && $request->input('type') != 'application/vnd.apple.mpegurl') {
                 if ($movie->type == 'application/vnd.apple.mpegurl') {
                     Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.m3u8');
                     $basePath = 'content/content-' . $movie->id;
@@ -244,7 +244,7 @@ class MovieApiController extends Controller
                 $movie->url = '/file/content-' . $movie->id . '/' . $movie->slug . '.' . $contentExtension;
                 $content->storeAs('content/content-' . $movie->id, $movie->slug . '.' . $contentExtension, 'private');
             } 
-            else if ($hls_content && $request->input('type') == 'application/vnd.apple.mpegurl') {
+            else if ($hls_content != null && $request->input('type') == 'application/vnd.apple.mpegurl') {
                 if ($movie->type != 'application/vnd.apple.mpegurl') {
                     Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp4');
 					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp3');
@@ -278,7 +278,8 @@ class MovieApiController extends Controller
                     }
                 }
 			
-            } else {
+            } 
+			else if ($request->input('type') != 'video/mp4' || $request->input('type') != 'audio/mpeg' || $request->input('type') != 'application/vnd.apple.mpegurl') {
 				$movie->url = $external_url;
 
 				Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp4');

@@ -1,5 +1,4 @@
 async function editGenderForm() {
-	 id;
 	const token = localStorage.getItem('auth_token');
   const backendAPI = 'https://pruebastv.kmc.es/api/';
   let id = localStorage.getItem('id');

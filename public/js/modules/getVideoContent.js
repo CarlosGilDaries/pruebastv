@@ -21,8 +21,11 @@ export function getVideoContent(data, node, backendURL) {
 
     link.append(img);
     article.append(link);
-    node.append(article);
+	  node.append(article);
   });
 
-  addScrollFunctionality(node, 300);
+	const exampleImg = node.querySelector('img');
+	const scrollWidth = parseFloat(getComputedStyle(exampleImg).width) * 1.06;
+
+	addScrollFunctionality(node, scrollWidth);
 }

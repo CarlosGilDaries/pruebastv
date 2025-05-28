@@ -12,6 +12,7 @@ header {
     justify-content: space-between;
     gap: 5px;
     font-size: 15px;
+	 transition: background-color 0.2s ease-out;
 }
 
 .scrolled { /*Clase a la que cambia el menu al scrollear*/
@@ -24,7 +25,9 @@ header {
     justify-content: space-between;
     gap: 5px;
     font-size: 15px;
+    background-color: var(--color-background-dark);
     z-index: 1000;
+	 transition: background-color 0.2s ease-in;
 }
 
 .nav {
@@ -52,14 +55,21 @@ header {
 .left-nav li:nth-child(4),
 .left-nav li:nth-child(5) {
     display: none;
-	transition: transform 0.3s ease;
+	transition: color 0.3s ease;
 }
 
-body > header > div > nav:nth-child(1) > ul > li:nth-child(2):hover,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(3):hover,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(4):hover,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(5):hover {
-    transform: scale(1.1);
+body > header > div > nav:nth-child(1) > ul > li:nth-child(2) > a,
+body > header > div > nav:nth-child(1) > ul > li:nth-child(3) > a,
+body > header > div > nav:nth-child(1) > ul > li:nth-child(4) > a,
+body > header > div > nav:nth-child(1) > ul > li:nth-child(5) > a {
+	transition: color 0.3s ease;
+}
+
+body > header > div > nav:nth-child(1) > ul > li:nth-child(2) > a:hover,
+body > header > div > nav:nth-child(1) > ul > li:nth-child(3) > a:hover,
+body > header > div > nav:nth-child(1) > ul > li:nth-child(4) > a:hover,
+body > header > div > nav:nth-child(1) > ul > li:nth-child(5) > a:hover {
+    color: var(--unlink-users-btn-hover);
 }
 
 .dropdown {
@@ -68,6 +78,7 @@ body > header > div > nav:nth-child(1) > ul > li:nth-child(5):hover {
 
 .dropdown-menu {
     position: absolute;
+	border: 1px solid #333;
     top: 100%;
     left: 0;
     display: none;

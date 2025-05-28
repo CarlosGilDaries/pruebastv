@@ -3,6 +3,7 @@ import { logOut } from './modules/logOut.js';
 import { processRedsysPayment } from './modules/redsys.js';
 import { dropDownMenu } from './modules/dropDownMenu.js';
 import { formatDuration } from './modules/formatDuration.js';
+import { renderSimilars } from './modules/renderSimilars.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -25,8 +26,22 @@ const overview = document.getElementById('overview-text');
 const dropDown = document.querySelector('.dropdown-menu');
 dropDownMenu(dropDown, api);
 
+const menu = document.querySelector('.menu');
+
+window.addEventListener('scroll', function () {
+	if (window.scrollY > 1) {
+		// Si se ha hecho scroll hacia abajo
+		menu.classList.add('scrolled');
+		document.body.style.paddingTop = '56px';
+	} else {
+		menu.classList.remove('scrolled');
+		document.body.style.paddingTop = '0';
+	}
+});
+
+
 if (device_id == null) {
-  logOut(token);
+	logOut(token);
 }
 
 async function fetchMovieData() {
@@ -142,7 +157,7 @@ async function fetchMovieData() {
       if (data.data.movie.trailer != null) {
         trailer.src = backendURL + data.data.movie.trailer;
       } else {
-        trailer.src = '/video/background-loop.mp4';
+        trailer.poster = data.data.movie.cover;
       }
       image.src = backendURL + data.data.movie.cover;
       title.innerHTML = data.data.movie.title;
@@ -151,6 +166,8 @@ async function fetchMovieData() {
       tagline.innerHTML = data.data.movie.tagline;
       duration.innerHTML = formatDuration(data.data.movie.duration);
       overview.innerHTML = data.data.movie.overview;
+		renderSimilars(data.data.movie, api, backendURL, token);
+		
     } else {
       console.error('Error al consultar la API: ', data.message);
     }
@@ -160,3 +177,19 @@ async function fetchMovieData() {
 }
 
 fetchMovieData();
+
+const tabs = document.querySelectorAll('.tab');
+
+tabs.forEach(tab => {
+	tab.addEventListener('click', function() {
+		document.querySelectorAll('.tab').forEach(t => {
+			t.classList.remove('active')
+		});
+		document.querySelectorAll('.tab-content').forEach(c => {
+			c.classList.remove('active')
+		});
+
+		const tabId = this.getAttribute('data-tab');
+		document.getElementById(tabId).classList.add('active');
+	});
+});

@@ -57,10 +57,12 @@ export function setupMidroll(player, movieUrl, backendUrl, movieType, ads, movie
 		});
 
 		state.player.one('adplaying', function () {
+			document.querySelector("#my-video > div.vjs-back-button-container").style.display = 'none';
 			state.player.trigger('ads-ad-started');
 		});
 
 		state.player.one('adended', function () {
+			document.querySelector("#my-video > div.vjs-back-button-container").style.display = 'flex';
 			state.player.ads.endLinearAdMode();
 			state.isPlayingMidroll = false; // Permitir nuevos midrolls
 

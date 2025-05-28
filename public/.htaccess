@@ -20,7 +20,7 @@ ErrorDocument 404 /404.html
     RewriteRule ^manage-devices$ /manage-devices.html [L,QSA]
     RewriteRule ^stream-limit$ /stream-limit.html [L,QSA]
     RewriteRule ^player/([^/]+)$ /player.html [L,QSA]
-    RewriteRule ^player/ad/([^/]+)$ /admin/ad-player.html [L,QSA]
+    RewriteRule ^admin/player/ad/([^/]+)$ /admin/ad-player.html [L,QSA]
     RewriteRule ^account$ /account.html [L,QSA]
 	
     # Solo permitir si el Referer es nuestro dominio

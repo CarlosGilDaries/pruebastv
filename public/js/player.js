@@ -3,6 +3,7 @@ import { logOut } from './modules/logOut.js';
 import { loadAds } from './modules/loadAds.js';
 import { initAdPlayer } from './modules/adPlayer.js';
 import { signedUrl } from './modules/signedUrl.js';
+import { setupBackArrowAndTitle } from './modules/backArrowAndTitle.js';
 
 
 async function initPlayer() {
@@ -47,6 +48,8 @@ async function initPlayer() {
 			console.error('Error al obtener el video:', showData.message);
 			return;
 		}
+
+		
 
 		const userResponse = await fetch(`${api}user`, {
 			method: 'GET',
@@ -178,14 +181,16 @@ async function playVideoWithoutAds(movie, backendURL, token, signedUrl) {
                 }
             }
 		});
+		setupBackArrowAndTitle(player, movie);
+		player.play();
 		
-		        // Manejar errores de autenticación
+		        /*// Manejar errores de autenticación
         player.on('error', (e) => {
             if (e.code === 4) { // Error de red/autenticación
                 console.error('Error de autenticación, refrescando token...');
-                // Aquí puedes implementar lógica para refrescar el token
+                // implementar lógica para refrescar el token
             }
-        });
+        });*/
 	} catch (error) {
 		console.log(error);
 	}
@@ -207,6 +212,7 @@ async function playVideoWithAds(movieSlug, apiAds, token, movie) {
 					token
 				);
 			});
+			setupBackArrowAndTitle(player, movieData);
 		} else {
 		}
 	} catch (error) {

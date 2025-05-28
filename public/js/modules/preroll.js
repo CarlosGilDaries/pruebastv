@@ -19,12 +19,14 @@ export function setupPreroll(player, movieUrl, backendUrl, movieType, ads, movie
 
 		// Cuando el anuncio empiece, quitar el loader
 		player.one('adplaying', function () {
+			document.querySelector("#my-video > div.vjs-back-button-container").style.display = 'none';
 			player.trigger('ads-ad-started');
 			skippableAd(player, preroll);
 		});
 
 		player.one('adended', function () {
 			player.ads.endLinearAdMode();
+			document.querySelector("#my-video > div.vjs-back-button-container").style.display = 'flex';
 		});
 	});
 }
