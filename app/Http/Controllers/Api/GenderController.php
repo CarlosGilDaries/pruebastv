@@ -14,7 +14,7 @@ class GenderController extends Controller
     public function index()
     {
         try {
-        $genders = Gender::all();
+        $genders = Gender::with('movies')->get();
 
         return response()->json([
             'success' => true,

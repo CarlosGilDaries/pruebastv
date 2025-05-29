@@ -50,25 +50,16 @@ header {
     height: 55px;
 }
 
-.left-nav li:nth-child(2),
-.left-nav li:nth-child(3),
-.left-nav li:nth-child(4),
-.left-nav li:nth-child(5) {
+.left-nav-links {
     display: none;
 	transition: color 0.3s ease;
 }
 
-body > header > div > nav:nth-child(1) > ul > li:nth-child(2) > a,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(3) > a,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(4) > a,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(5) > a {
+.left-nav-links a {
 	transition: color 0.3s ease;
 }
 
-body > header > div > nav:nth-child(1) > ul > li:nth-child(2) > a:hover,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(3) > a:hover,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(4) > a:hover,
-body > header > div > nav:nth-child(1) > ul > li:nth-child(5) > a:hover {
+.left-nav-links a:hover {
     color: var(--unlink-users-btn-hover);
 }
 
@@ -101,7 +92,11 @@ body > header > div > nav:nth-child(1) > ul > li:nth-child(5) > a:hover {
 }
 
 .dropdown-menu li:hover {
-    background-color: var(--color-gray-dark);
+    background-color: var(--color-gray-dark) !important;
+}
+
+.dropdown-menu li:hover a {
+    color: var(--color-primary) !important;
 }
 
 .dropdown-menu a {

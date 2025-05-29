@@ -1,0 +1,94 @@
+@import '/css/commons.css';
+@import '/css/nav.css';
+@import '/css/footer.css';
+
+main {
+    min-height: 84vh;
+    background-color: #121212;
+    padding: 30px 50px;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin: 0 auto;
+}
+
+.box {
+    border-radius: 5px;
+    height: 160px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #ddd;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    position: relative; /* Añadir esto */
+    text-align: center; /* Añadir esto */
+    padding: 15px; /* Añadir esto para dar espacio interno */
+}
+
+.category-name,
+.gender-name {
+    /* Modificar estos estilos */
+    color: black;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0;
+    width: 100%; /* Asegurar que ocupe todo el ancho */
+    padding: 0 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word; 
+    text-align: center;
+    position: static;
+	transition: all 0.3s ease;
+}
+
+.category-box:hover {
+    transform: translateY(-5px);
+}
+
+.box:hover .category-name,
+.box:hover .gender-name{
+    transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .main-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    
+    .box {
+        height: 150px;
+    }
+    
+    .category-name,
+	.gender-name{
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 20px 15px;
+    }
+    
+    .main-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    
+    .box {
+        height: 120px;
+    }
+    
+    .category-name,
+	.gender-name{
+        font-size: 1rem;
+        bottom: 15px;
+        left: 15px;
+    }
+}
