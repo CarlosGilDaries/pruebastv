@@ -1,7 +1,7 @@
 import { logOut } from './modules/logOut.js';
 import { initPriorityBanner } from './modules/initPriorityBanner.js';
 import { renderCategories } from './modules/renderCategories.js';
-import { dropDownMenu } from './modules/dropDownMenu.js';
+import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
@@ -31,10 +31,12 @@ async function indexData(api, backendURL) {
   try {
     const categoriesResponse = await fetch(api + 'categories');
     const categoriesData = await categoriesResponse.json();
-    const dropDown = document.querySelector('.dropdown-menu');
+    const categoriesDropDown = document.getElementById('categories');
+	  const gendersDropDown = document.getElementById('genders');
     const main = document.querySelector('main');
 
-    dropDownMenu(dropDown, api);
+    dropDownTypeMenu(categoriesDropDown, 'categories');
+    dropDownTypeMenu(gendersDropDown, 'genders');
 
     initPriorityBanner(categoriesData);
     renderCategories(main, categoriesData, backendURL);

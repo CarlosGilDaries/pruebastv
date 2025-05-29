@@ -10,7 +10,7 @@ export async function renderTypeGrid(route, types, type) {
       typeBox.setAttribute('data-id', item.id);
       typeBox.classList.add(`${type}-box`, 'box');
       typeBox.innerHTML = `
-            <h2 class="category-name">${item.name}</h2>
+            <h2 class="${type}-name">${item.name}</h2>
           `;
       typeBox.addEventListener('click', () => {
         window.location.href = `/${type}-show.html?id=${item.id}`;

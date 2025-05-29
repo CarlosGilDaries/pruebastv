@@ -1,11 +1,13 @@
 import { renderTypeGrid } from './modules/renderTypeGrid.js';
-import { dropDownMenu } from './modules/dropDownMenu.js';
+import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 
-const api = 'https://pruebastv.kmc.es/api/';
+const categoriesDropDown = document.getElementById('categories');
+const gendersDropDown = document.getElementById('genders');
+
+dropDownTypeMenu(categoriesDropDown, 'categories');
+dropDownTypeMenu(gendersDropDown, 'genders');
+
 const categoriesResponse = await fetch(api + 'categories');
 const categoriesData = await categoriesResponse.json();
-const dropDown = document.querySelector('.dropdown-menu');
-
-dropDownMenu(dropDown, api);
 
 renderTypeGrid('/api/dropdown-categories-menu', 'categories', 'category');

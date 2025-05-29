@@ -1,7 +1,7 @@
 import { getIp } from './modules/getIp.js';
 import { logOut } from './modules/logOut.js';
 import { processRedsysPayment } from './modules/redsys.js';
-import { dropDownMenu } from './modules/dropDownMenu.js';
+import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { formatDuration } from './modules/formatDuration.js';
 import { renderSimilars } from './modules/renderSimilars.js';
 
@@ -23,8 +23,10 @@ const gender = document.getElementById('gender');
 const tagline = document.getElementById('tagline');
 const duration = document.getElementById('duration');
 const overview = document.getElementById('overview-text');
-const dropDown = document.querySelector('.dropdown-menu');
-dropDownMenu(dropDown, api);
+const categoriesDropDown = document.getElementById('categories');
+const gendersDropDown = document.getElementById('genders');
+dropDownTypeMenu(categoriesDropDown, 'categories');
+dropDownTypeMenu(gendersDropDown, 'genders');
 
 const menu = document.querySelector('.menu');
 

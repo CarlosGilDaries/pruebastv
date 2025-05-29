@@ -1,5 +1,5 @@
 import { logOut } from './modules/logOut.js';
-import { dropDownMenu } from './modules/dropDownMenu.js';
+import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 
 const token = localStorage.getItem('auth_token');
 if (token == null) {
@@ -15,8 +15,11 @@ if (device_id == null) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const dropDown = document.querySelector('.dropdown-menu');
-  dropDownMenu(dropDown, api);
+  const categoriesDropDown = document.getElementById('categories');
+  const gendersDropDown = document.getElementById('genders');
+  dropDownTypeMenu(categoriesDropDown, 'categories');
+  dropDownTypeMenu(gendersDropDown, 'genders');
+
   localStorage.removeItem('needed_plans');
   fetch(api + 'user', {
     headers: {

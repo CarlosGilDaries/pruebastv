@@ -72,7 +72,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('link-content-with-plans', [MoviePlanController::class, 'store']);
 
-    Route::get('genders', [GenderController::class, 'index']);
     Route::get('gender/{id}', [GenderController::class, 'show']);
     Route::post('add-gender', [GenderController::class, 'store']);
     Route::post('edit-gender/{id}', [GenderController::class, 'update']);
@@ -109,7 +108,7 @@ Route::get('content', [MovieApiController::class, 'index']);
 Route::get('plans', [PlanController::class, 'index']);
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('dropdown-categories-menu', [CategoryController::class, 'dropDownMenu']);
-Route::get('genders-grid', [GenderController::class, 'index']);
+Route::get('genders', [GenderController::class, 'index']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');

@@ -25,14 +25,13 @@ main {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-    position: relative; /* Añadir esto */
-    text-align: center; /* Añadir esto */
-    padding: 15px; /* Añadir esto para dar espacio interno */
+    position: relative;
+    text-align: center; 
+    padding: 15px; 
 }
 
 .category-name,
 .gender-name {
-    /* Modificar estos estilos */
     color: black;
     font-size: 1.4rem;
     font-weight: 600;
@@ -46,7 +45,7 @@ main {
 	transition: all 0.3s ease;
 }
 
-.category-box:hover {
+.box:hover {
     transform: translateY(-5px);
 }
 
