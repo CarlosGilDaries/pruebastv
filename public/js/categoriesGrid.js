@@ -7,6 +7,7 @@ const gendersDropDown = document.getElementById('genders');
 dropDownTypeMenu(categoriesDropDown, 'categories');
 dropDownTypeMenu(gendersDropDown, 'genders');
 
+const api = 'https://pruebastv.kmc.es/api/';
 const categoriesResponse = await fetch(api + 'categories');
 const categoriesData = await categoriesResponse.json();
 

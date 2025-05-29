@@ -8,7 +8,6 @@ use App\Http\Controllers\Api\AdApiController;
 use App\Http\Controllers\Api\AdMovieControllerApiController;
 use App\Http\Controllers\Api\BillController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\CategoryMovieController;
 use App\Http\Controllers\Api\GenderController;
 use App\Http\Controllers\Api\LoginApiController;
 use App\Http\Controllers\Api\MoviePlanController;
@@ -72,7 +71,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::post('link-content-with-plans', [MoviePlanController::class, 'store']);
 
-    Route::get('gender/{id}', [GenderController::class, 'show']);
     Route::post('add-gender', [GenderController::class, 'store']);
     Route::post('edit-gender/{id}', [GenderController::class, 'update']);
     Route::delete('delete-gender', [GenderController::class, 'destroy']);
@@ -90,7 +88,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::delete('delete-bill', [BillController::class, 'destroy']);
 
-    Route::get('category/{id}', [CategoryController::class, 'show']);
     Route::post('add-category', [CategoryController::class, 'store']);
     Route::post('edit-category/{id}', [CategoryController::class, 'update']);
     Route::delete('delete-category', [CategoryController::class, 'destroy']);
@@ -109,6 +106,8 @@ Route::get('plans', [PlanController::class, 'index']);
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('dropdown-categories-menu', [CategoryController::class, 'dropDownMenu']);
 Route::get('genders', [GenderController::class, 'index']);
+Route::get('gender/{id}', [GenderController::class, 'show']);
+Route::get('category/{id}', [CategoryController::class, 'show']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');
