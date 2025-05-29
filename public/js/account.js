@@ -17,8 +17,8 @@ if (device_id == null) {
 document.addEventListener('DOMContentLoaded', function () {
   const categoriesDropDown = document.getElementById('categories');
   const gendersDropDown = document.getElementById('genders');
-  dropDownTypeMenu(categoriesDropDown, 'categories');
-  dropDownTypeMenu(gendersDropDown, 'genders');
+dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
   localStorage.removeItem('needed_plans');
   fetch(api + 'user', {

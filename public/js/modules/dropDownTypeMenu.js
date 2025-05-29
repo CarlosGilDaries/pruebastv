@@ -1,4 +1,4 @@
-export async function dropDownTypeMenu(dropDownMenuElement, types) {
+export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
   try {
     const response = await fetch(`/api/${types}`);
     const data = await response.json();
@@ -11,7 +11,7 @@ export async function dropDownTypeMenu(dropDownMenuElement, types) {
       if (counter <= 7) {
         const li = document.createElement('li');
         const a = document.createElement('a');
-        a.href = `#`;
+        a.href = `/${type}-show.html?id=${item.id}`;
         a.textContent = item.name;
         li.appendChild(a);
         dropDownMenuElement.appendChild(li);

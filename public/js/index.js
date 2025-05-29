@@ -35,8 +35,8 @@ async function indexData(api, backendURL) {
 	  const gendersDropDown = document.getElementById('genders');
     const main = document.querySelector('main');
 
-    dropDownTypeMenu(categoriesDropDown, 'categories');
-    dropDownTypeMenu(gendersDropDown, 'genders');
+dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
     initPriorityBanner(categoriesData);
     renderCategories(main, categoriesData, backendURL);

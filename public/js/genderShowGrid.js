@@ -2,17 +2,18 @@ import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
-const pathParts = window.location.pathname.split('/');
-const genderId = pathParts[pathParts.length - 1];
+const title = document.querySelector('.grid-title');
+const urlParams = new URLSearchParams(window.location.search);
+const genderId = urlParams.get('id');
 
-dropDownTypeMenu(categoriesDropDown, 'categories');
-dropDownTypeMenu(gendersDropDown, 'genders');
+dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
 try {
-    const response = await fetch(`gender/${genderId}`);
+    const response = await fetch(`/api/gender/${genderId}`);
     const data = await response.json();
     document.title = data.gender.name;
-    console.log(data);
+    title.innerHTML = data.gender.name;
     const node = document.querySelector('.main-grid');
 
     data.gender.movies.forEach((movie) => {
@@ -23,7 +24,7 @@ try {
         link.href = `/content/${movie.slug}`;
 
         const img = document.createElement('img');
-        img.src = backendURL + movie.cover;
+        img.src = movie.cover;
 
         link.append(img);
         article.append(link);

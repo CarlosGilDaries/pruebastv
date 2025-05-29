@@ -25,8 +25,9 @@ const duration = document.getElementById('duration');
 const overview = document.getElementById('overview-text');
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
-dropDownTypeMenu(categoriesDropDown, 'categories');
-dropDownTypeMenu(gendersDropDown, 'genders');
+
+dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
 const menu = document.querySelector('.menu');
 
