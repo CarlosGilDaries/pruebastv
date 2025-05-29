@@ -1,11 +1,11 @@
 async function editContentForm() {
-	let id = localStorage.getItem('id');
-	const token = localStorage.getItem('auth_token');
-	const backendAPI = 'https://pruebastv.kmc.es/api/';
+  let id = localStorage.getItem('id');
+  const token = localStorage.getItem('auth_token');
+  const backendAPI = 'https://pruebastv.kmc.es/api/';
 
-	loadContentData(id);
-	
-	  // Manejar el checkbox para cambiar archivo de contenido
+  loadContentData(id);
+
+  // Manejar el checkbox para cambiar archivo de contenido
   const changeContentCheckbox = document.getElementById('change-content-file');
   changeContentCheckbox.addEventListener('change', function () {
     const shouldChange = this.checked;
@@ -17,11 +17,13 @@ async function editContentForm() {
     if (!shouldChange) {
       document.getElementById('single-content').classList.add('hidden');
       document.getElementById('hls-content').classList.add('hidden');
-		document.getElementById('external-content').classList.add('hidden');
+      document.getElementById('external-content').classList.add('hidden');
     } else {
       // Mostrar los campos según el tipo seleccionado
       const type = document.getElementById('type').value;
-      toggleContentFiles(type);
+      if (type) {
+        toggleContentFiles(type);
+      }
     }
   });
 
@@ -36,19 +38,19 @@ async function editContentForm() {
   function toggleContentFiles(type) {
     const singleContent = document.getElementById('single-content');
     const hlsContent = document.getElementById('hls-content');
-	  const externalUrl = document.getElementById('external-content');
+    const externalUrl = document.getElementById('external-content');
 
     singleContent.classList.add('hidden');
     hlsContent.classList.add('hidden');
-	  externalUrl.classList.add('hidden');
+    externalUrl.classList.add('hidden');
 
-    if (type === 'video/mp4') {
+    if (type === 'video/mp4' || type === 'audio/mpeg') {
       singleContent.classList.remove('hidden');
     } else if (type === 'application/vnd.apple.mpegurl') {
       hlsContent.classList.remove('hidden');
     } else {
-		externalUrl.classList.remove('hidden');
-	}
+      externalUrl.classList.remove('hidden');
+    }
   }
 
   async function loadContentData(id) {
@@ -70,7 +72,7 @@ async function editContentForm() {
         },
       });
       const data = await response.json();
-      const content = data.data.movie; 
+      const content = data.data.movie;
       const plansData = await plansResponse.json();
       const genderData = await genderResponse.json();
       const categoryData = await categoryResponse.json();
@@ -82,32 +84,32 @@ async function editContentForm() {
       content.plans.forEach((plan) => {
         currentPlansId.push(plan.id);
       });
-		let currentCategoriesId = [];
-	content.categories.forEach((category) => {
+      let currentCategoriesId = [];
+      content.categories.forEach((category) => {
         currentCategoriesId.push(category.id);
       });
-		
-     const plansContainer = document.getElementById(
-       'edit-content-plans-container'
-     );
-     const categoriesContainer = document.getElementById(
-       'edit-content-categories-container'
-     );
-     const selectGender = document.getElementById('edit-content-gender_id');
+
+      const plansContainer = document.getElementById(
+        'edit-content-plans-container'
+      );
+      const categoriesContainer = document.getElementById(
+        'edit-content-categories-container'
+      );
+      const selectGender = document.getElementById('edit-content-gender_id');
       let plansContainerTextContent = '';
       let categoriesContainerTextContent = '';
 
-     plans.forEach((plan) => {
-       plansContainerTextContent += `
+      plans.forEach((plan) => {
+        plansContainerTextContent += `
                                     <label class="checkbox-container">
                                       <input type="checkbox" name="plans[${plan.id}][id]" value="${plan.id}" id="edit-content-plan-${plan.id}" class="plan-checkbox">
                                       <span class="checkmark"></span>
                                         <p>${plan.name}</p>
                                     </label>
                                     `;
-     });
+      });
       plansContainer.innerHTML = plansContainerTextContent;
-      
+
       categories.forEach((category) => {
         categoriesContainerTextContent += `
                                      <label class="checkbox-container">
@@ -119,67 +121,81 @@ async function editContentForm() {
       });
       categoriesContainer.innerHTML = categoriesContainerTextContent;
 
-     genders.forEach((gender) => {
-       let option = document.createElement('option');
-       option.value = gender.id;
-       option.innerHTML = gender.name;
-       selectGender.appendChild(option);
-     });
+      genders.forEach((gender) => {
+        let option = document.createElement('option');
+        option.value = gender.id;
+        option.innerHTML = gender.name;
+        selectGender.appendChild(option);
+      });
 
-		// Configurar inputs de archivo para mostrar nombre
-		const setupFileInput = (inputId, nameId, labelId, currentPath = null) => {
-			const input = document.getElementById(inputId);
-			const nameElement = document.getElementById(nameId);
-			const labelElement = document.getElementById(labelId);
+      // Configurar inputs de archivo para mostrar nombre
+      const setupFileInput = (inputId, nameId, labelId, currentPath = null) => {
+        const input = document.getElementById(inputId);
+        const nameElement = document.getElementById(nameId);
+        const labelElement = document.getElementById(labelId);
 
-			if (currentPath) {
-				const fileName = currentPath.split('/').pop();
-				if (nameElement) nameElement.textContent = fileName;
-				if (labelElement) labelElement.textContent = fileName;
-			}
+        if (currentPath) {
+          const fileName = currentPath.split('/').pop();
+          if (nameElement) nameElement.textContent = fileName;
+          if (labelElement) labelElement.textContent = fileName;
+        }
 
-			if (input) {
-				input.addEventListener('change', function (e) {
-					const fileName =
-						  e.target.files[0]?.name || 'Ningún archivo seleccionado';
-					if (nameElement) nameElement.textContent = fileName;
-					if (labelElement) labelElement.textContent = fileName;
-				});
-			}
-		};
-		
-		setupFileInput('edit-content-cover', 'edit-content-cover-name', 'edit-content-cover-label-text', content.cover);
-		setupFileInput('edit-content-trailer', 'edit-content-trailer-name', 'edit-content-trailer-label-text', content.trailer);
-		setupFileInput('content', 'content-name', 'content-label-text');
-		setupFileInput('m3u8', 'm3u8-name', 'm3u8-label-text');
-		setupFileInput('ts1', 'ts1-name', 'ts1-label-text');
-		setupFileInput('ts2', 'ts2-name', 'ts2-label-text');
-		setupFileInput('ts3', 'ts3-name', 'ts3-label-text');
+        if (input) {
+          input.addEventListener('change', function (e) {
+            const fileName =
+              e.target.files[0]?.name || 'Ningún archivo seleccionado';
+            if (nameElement) nameElement.textContent = fileName;
+            if (labelElement) labelElement.textContent = fileName;
+          });
+        }
+      };
 
+      setupFileInput(
+        'edit-content-cover',
+        'edit-content-cover-name',
+        'edit-content-cover-label-text',
+        content.cover
+      );
+      setupFileInput(
+        'edit-content-trailer',
+        'edit-content-trailer-name',
+        'edit-content-trailer-label-text',
+        content.trailer
+      );
+      setupFileInput('content', 'content-name', 'content-label-text');
+      setupFileInput('m3u8', 'm3u8-name', 'm3u8-label-text');
+      setupFileInput('ts1', 'ts1-name', 'ts1-label-text');
+      setupFileInput('ts2', 'ts2-name', 'ts2-label-text');
+      setupFileInput('ts3', 'ts3-name', 'ts3-label-text');
 
       document.getElementById('edit-content-title').value = content.title;
-		
-		if (content.type =! 'video/mp4' || content.type != 'audio/mpeg' || content.type != 'application/vnd.apple.mpegurl') {
-			document.getElementById('external_url').value = content.url;
-		}
-		
+
+      if (
+        (content.type =
+          !'video/mp4' ||
+          content.type != 'audio/mpeg' ||
+          content.type != 'application/vnd.apple.mpegurl')
+      ) {
+        document.getElementById('external_url').value = content.url;
+      }
+
       CKEDITOR.instances.edit_content_tagline.setData(content.tagline);
       CKEDITOR.instances.edit_content_overview.setData(content.overview);
 
       let checkboxPlans = document.querySelectorAll(
         '#edit-content-form .plan-checkbox'
       );
-		
-	let checkboxCategories = document.querySelectorAll(
+
+      let checkboxCategories = document.querySelectorAll(
         '#edit-content-form .category-checkbox'
       );
 
       checkboxPlans.forEach((chbox) => {
         chbox.checked = currentPlansId.includes(Number(chbox.value));
       });
-		checkboxCategories.forEach((chbox) => {
-			chbox.checked = currentCategoriesId.includes(Number(chbox.value));
-		});
+      checkboxCategories.forEach((chbox) => {
+        chbox.checked = currentCategoriesId.includes(Number(chbox.value));
+      });
 
       document.getElementById('edit-content-gender_id').value =
         content.gender_id;
@@ -213,10 +229,10 @@ async function editContentForm() {
     .getElementById('edit-content-form')
     .addEventListener('submit', async function (e) {
       e.preventDefault();
-	  
-	  const shouldChangeContent = document.getElementById(
-		  'change-content-file'
-	  ).checked;
+
+      const shouldChangeContent = document.getElementById(
+        'change-content-file'
+      ).checked;
 
       document.getElementById('edit-content-loading').style.display = 'block';
 
@@ -275,22 +291,16 @@ async function editContentForm() {
         document.getElementById('edit-content-trailer').files[0]
       ) {
         formData.append(
-          'edit-content-trailer',
+          'trailer',
           document.getElementById('edit-content-trailer').files[0]
         );
       }
-	  formData.append(
-		  'external_url',
-		  document.getElementById('external_url').value
-	  );
 
-	  // Solo procesar archivos de contenido si el checkbox está marcado
+      // Solo procesar archivos de contenido si el checkbox está marcado
       if (shouldChangeContent) {
         const type = document.getElementById('type').value;
-		  formData.append(
-			  'type', type
-		  );
-        if (type === 'video/mp4') {
+        formData.append('type', type);
+        if (type === 'video/mp4' || type === 'audio/mpeg') {
           const contentInput = document.getElementById('content');
           if (contentInput.files.length > 0) {
             formData.append('content', contentInput.files[0]);
@@ -309,6 +319,11 @@ async function editContentForm() {
             formData.append('ts2', ts2Input.files[0]);
           if (ts3Input.files.length > 0)
             formData.append('ts3', ts3Input.files[0]);
+        } else if (type != null && type != '') {
+          formData.append(
+            'external_url',
+            document.getElementById('external_url').value
+          );
         }
       }
 
@@ -349,16 +364,13 @@ async function editContentForm() {
       }
 
       try {
-        const editResponse = await fetch(
-          backendAPI + `update-content/${id}`,
-          {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          }
-        );
+        const editResponse = await fetch(backendAPI + `update-content/${id}`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
         const data = await editResponse.json();
 
         if (data.success) {
@@ -386,5 +398,3 @@ async function editContentForm() {
 }
 
 editContentForm();
-
-

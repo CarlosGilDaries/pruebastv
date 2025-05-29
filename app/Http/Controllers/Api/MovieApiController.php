@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Cache;
+//use Illuminate\Support\Facades\Http;
+//use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use DataTables;
 use Illuminate\Support\Carbon;
@@ -214,82 +214,84 @@ class MovieApiController extends Controller
             $cover = $request->file('cover');
             if ($cover) {
                 $coverExtension = $cover->getClientOriginalExtension();
-				$movie->cover = '/file/content-' . $movie->id. '/' . $movie->slug . '-img.' . $coverExtension;
-				$cover->storeAs('content/content-' . $movie->id, $movie->slug . '-img.' . $coverExtension, 'private');
+				$movie->cover = '/file/content-' . $movie->id. '/' . $movie->id . '-img.' . $coverExtension;
+				$cover->storeAs('content/content-' . $movie->id, $movie->id . '-img.' . $coverExtension, 'private');
             }
 
             $trailer = $request->file('trailer');
             if ($trailer) {
                 $trailerExtension = $trailer->getClientOriginalExtension();
-                $movie->trailer = '/file/content-' . $movie->id . '/' . $movie->slug . '-trailer.' . $trailerExtension;
-                $trailer->storeAs('content/content-' . $movie->id, $movie->slug . '-trailer.' . $trailerExtension, 'private');
+                $movie->trailer = '/file/content-' . $movie->id . '/' . $movie->id . '-trailer.' . $trailerExtension;
+                $trailer->storeAs('content/content-' . $movie->id, $movie->id . '-trailer.' . $trailerExtension, 'private');
             }
 			
 			$content = $request->file('content');
             $hls_content = $request->file('m3u8');
-
-            if ($content != null && $request->input('type') != 'application/vnd.apple.mpegurl') {
-                if ($movie->type == 'application/vnd.apple.mpegurl') {
-                    Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.m3u8');
-                    $basePath = 'content/content-' . $movie->id;
-                    $subdirectories = Storage::disk('private')->directories($basePath);
-                    // Eliminar cada subdirectorio (con todo su contenido)
-                    foreach ($subdirectories as $dir) {
-                        Storage::disk('private')->deleteDirectory($dir);
-                    }
-                } 
-
-				Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp3');
-                $contentExtension = $content->getClientOriginalExtension();
-                $movie->url = '/file/content-' . $movie->id . '/' . $movie->slug . '.' . $contentExtension;
-                $content->storeAs('content/content-' . $movie->id, $movie->slug . '.' . $contentExtension, 'private');
-            } 
-            else if ($hls_content != null && $request->input('type') == 'application/vnd.apple.mpegurl') {
-                if ($movie->type != 'application/vnd.apple.mpegurl') {
-                    Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp4');
-					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp3');
-                }
-                $content = $request->file('m3u8');
-                $contentExtension = $content->getClientOriginalExtension();
-                $movie->url = '/file/content-' . $movie->id . '/' . $movie->slug . '.' . $contentExtension;
-                $content->storeAs('content/content-' . $movie->id, $movie->slug . '.' . $contentExtension, 'private');               
-                $basePath = 'content/content-' . $movie->id;
-                $subdirectories = Storage::disk('private')->directories($basePath);
-                // Eliminar cada subdirectorio (con todo su contenido)
-                foreach ($subdirectories as $dir) {
-                    Storage::disk('private')->deleteDirectory($dir);
-                }
-
-                $zips = ['ts1', 'ts2', 'ts3'];
-                $extractPath = storage_path('app/private/content/content-' . $movie->id);
-
-                if (!file_exists($extractPath)) {
-                    mkdir($extractPath, 0777, true);
-                }
-
-                foreach ($zips as $zipKey) {
-                    $zipFile = $request->file($zipKey);
-                    if ($zipFile) {
-                        $zip = new \ZipArchive;
-                        if ($zip->open($zipFile->getRealPath()) === true) {
-                            $zip->extractTo($extractPath);
-                            $zip->close();
-                        }
-                    }
-                }
 			
-            } 
-			else if ($request->input('type') != 'video/mp4' || $request->input('type') != 'audio/mpeg' || $request->input('type') != 'application/vnd.apple.mpegurl') {
-				$movie->url = $external_url;
-
-				Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp4');
-				Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->slug  . '.mp3');
-				$basePath = 'content/content-' . $movie->id;
-				$subdirectories = Storage::disk('private')->directories($basePath);
-				// Eliminar cada subdirectorio (con todo su contenido)
-				foreach ($subdirectories as $dir) {
-					Storage::disk('private')->deleteDirectory($dir);
+			if ($content != null) {
+				if ($movie->type == 'application/vnd.apple.mpegurl') {
+					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.m3u8');
+					$basePath = 'content/content-' . $movie->id;
+					$subdirectories = Storage::disk('private')->directories($basePath);
+					// Eliminar cada subdirectorio (con todo su contenido)
+					foreach ($subdirectories as $dir) {
+						Storage::disk('private')->deleteDirectory($dir);
+					}
+				} else {
+					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.mp4');
+					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.mp3');
 				}
+				$contentExtension = $content->getClientOriginalExtension();
+				$movie->url = '/file/content-' . $movie->id . '/' . $movie->id . '.' . $contentExtension;
+				$content->storeAs('content/content-' . $movie->id, $movie->id . '.' . $contentExtension, 'private');
+			}
+
+			else if ($hls_content != null) {
+				if ($movie->type == 'application/vnd.apple.mpegurl') {
+					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.m3u8');
+					$basePath = 'content/content-' . $movie->id;
+					$subdirectories = Storage::disk('private')->directories($basePath);
+					// Eliminar cada subdirectorio (con todo su contenido)
+					foreach ($subdirectories as $dir) {
+						Storage::disk('private')->deleteDirectory($dir);
+					}
+				} else {
+					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.mp4');
+					Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.mp3');
+				}
+				$new_hls_content = $request->file('m3u8');
+				$contentExtension = $new_hls_content->getClientOriginalExtension();
+				$movie->url = '/file/content-' . $movie->id . '/' . $movie->id . '.' . $contentExtension;
+				$new_hls_content->storeAs('content/content-' . $movie->id, $movie->id . '.' . $contentExtension, 'private');
+				$zips = ['ts1', 'ts2', 'ts3'];
+				$extractPath = storage_path('app/private/content/content-' . $movie->id);
+
+				if (!file_exists($extractPath)) {
+					mkdir($extractPath, 0777, true);
+				}
+
+				foreach ($zips as $zipKey) {
+					$zipFile = $request->file($zipKey);
+					if ($zipFile) {
+						$zip = new \ZipArchive;
+						if ($zip->open($zipFile->getRealPath()) === true) {
+							$zip->extractTo($extractPath);
+							$zip->close();
+						}
+					}
+				}
+
+			} else if ($external_url != null) {
+				Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.mp4');
+				Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.mp3');
+				Storage::disk('private')->delete('content/content-' . $movie->id . '/' . $movie->id  . '.m3u8');
+					$basePath = 'content/content-' . $movie->id;
+					$subdirectories = Storage::disk('private')->directories($basePath);
+					// Eliminar cada subdirectorio (con todo su contenido)
+					foreach ($subdirectories as $dir) {
+						Storage::disk('private')->deleteDirectory($dir);
+					}
+				$movie->url = $external_url;
 			}
 			
 			if ($request->input('type')) {
@@ -378,30 +380,30 @@ class MovieApiController extends Controller
 
             $cover = $request->file('cover');
             $coverExtension = $cover->getClientOriginalExtension();
-            $movie->cover = '/file/content-' . $movie->id. '/' . $slug . '-img.' . $coverExtension;
-            $cover->storeAs('content/content-' . $movie->id, $slug . '-img.' . $coverExtension, 'private');
+            $movie->cover = '/file/content-' . $movie->id. '/' . $movie->id . '-img.' . $coverExtension;
+            $cover->storeAs('content/content-' . $movie->id, $movie->id . '-img.' . $coverExtension, 'private');
 
             $trailer = $request->file('trailer');
 
             if ($trailer) {
                 $trailerExtension = $trailer->getClientOriginalExtension();
-                $movie->trailer = '/file/content-' . $movie->id . '/' . $slug . '-trailer.' . $trailerExtension;
-                $trailer->storeAs('content/content-' . $movie->id, $slug . '-trailer.' . $trailerExtension, 'private');
+                $movie->trailer = '/file/content-' . $movie->id . '/' . $movie->id . '-trailer.' . $trailerExtension;
+                $trailer->storeAs('content/content-' . $movie->id, $movie->id . '-trailer.' . $trailerExtension, 'private');
             }
 
             if ($request->input('type') != "iframe" && $request->input('type') != "url_mp4" && $request->input('type') != "url_hls" && $request->input('type') != "video/youtube" && $request->input('type') != "vimeo" && $request->input('type') != 'url_mp3') {
                 if ($request->input('type') != 'application/vnd.apple.mpegurl') {
                     $content = $request->file('content');
                     $contentExtension = $content->getClientOriginalExtension();
-					$movie->url = '/file/content-' . $movie->id . '/' . $slug . '.' . $contentExtension;
-					$content->storeAs('content/content-' . $movie->id, $slug . '.' . $contentExtension, 'private');
+					$movie->url = '/file/content-' . $movie->id . '/' . $movie->id . '.' . $contentExtension;
+					$content->storeAs('content/content-' . $movie->id, $movie->id . '.' . $contentExtension, 'private');
 				} else {
 					$content = $request->file('m3u8');
 					//$mime = $content->getMimeType();
 					//dd($mime);
 					$contentExtension = $content->getClientOriginalExtension();
-					$movie->url = '/file/content-' . $movie->id . '/' . $slug . '.' . $contentExtension;
-					$content->storeAs('content/content-' . $movie->id, $slug . '.' . $contentExtension, 'private');
+					$movie->url = '/file/content-' . $movie->id . '/' . $movie->id . '.' . $contentExtension;
+					$content->storeAs('content/content-' . $movie->id, $movie->id . '.' . $contentExtension, 'private');
 				}
 
 				$zips = ['ts1', 'ts2', 'ts3'];
@@ -634,3 +636,4 @@ class MovieApiController extends Controller
 			</div>';
 	}
 }
+

@@ -8,7 +8,7 @@ export async function dropDownMenu(dropDownMenuElement, api) {
     dropDownMenuElement.innerHTML = '';
     categories.forEach((category) => {
       counter++;
-      if (counter < 7) {
+      if (counter <= 7) {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.href = `#`;
@@ -19,7 +19,7 @@ export async function dropDownMenu(dropDownMenuElement, api) {
     });
     const seeMore = document.createElement('li');
     const seeMoreLink = document.createElement('a');
-    seeMoreLink.href = `#`;
+    seeMoreLink.href = `/categories.html`;
     seeMoreLink.textContent = 'Ver Todas';
     seeMore.appendChild(seeMoreLink);
     dropDownMenuElement.appendChild(seeMore);

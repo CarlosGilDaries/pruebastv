@@ -189,7 +189,8 @@ tabs.forEach(tab => {
 			c.classList.remove('active')
 		});
 
-		const tabId = this.getAttribute('data-tab');
-		document.getElementById(tabId).classList.add('active');
+    const tabId = this.getAttribute('data-tab');
+    document.getElementById(tabId).classList.add('active');
+    this.classList.add('active');
 	});
 });

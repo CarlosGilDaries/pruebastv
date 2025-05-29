@@ -202,7 +202,6 @@ video {
     display: flex;
 	flex-wrap: wrap;
     gap: 20px;
-	justify-content: center;
 }
 
 #details {
@@ -244,7 +243,9 @@ video {
     height: 100%;
 }
 
-
+#similar {
+	padding: 30px;
+}
 
 @media (max-width: 768px) {
 	.details .overview,

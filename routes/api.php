@@ -109,6 +109,7 @@ Route::get('content', [MovieApiController::class, 'index']);
 Route::get('plans', [PlanController::class, 'index']);
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('dropdown-categories-menu', [CategoryController::class, 'dropDownMenu']);
+Route::get('genders-grid', [GenderController::class, 'index']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');
