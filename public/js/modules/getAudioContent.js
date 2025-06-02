@@ -1,4 +1,4 @@
-export function getAudioContent(data, node, backendURL) {
+export function getAudioContent(data, node) {
   const audios = new Set();
 
   data.data.movies.forEach((element) => {
@@ -15,7 +15,7 @@ export function getAudioContent(data, node, backendURL) {
     link.href = `/content/${audio.slug}`;
 
     const img = document.createElement('img');
-    img.src = backendURL + audio.cover;
+    img.src = audio.cover;
 
     link.append(img);
     article.append(link);

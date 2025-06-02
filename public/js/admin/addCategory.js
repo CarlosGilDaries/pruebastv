@@ -1,5 +1,5 @@
 async function initAddCategory() {
-  const backendAPI = 'https://pruebastv.kmc.es/api/';
+  const backendAPI = '/api/';
   const authToken = localStorage.getItem('auth_token');
   const select = document.getElementById('priority');
 

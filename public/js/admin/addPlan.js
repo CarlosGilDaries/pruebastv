@@ -1,5 +1,5 @@
 async function initAddPlan() {
-    const backendAPI = 'https://pruebastv.kmc.es/api/';
+    const backendAPI = '/api/';
 
     // Manejar envío del formulario
     document

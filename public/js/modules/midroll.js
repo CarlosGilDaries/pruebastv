@@ -1,8 +1,8 @@
 import { skippableAd } from './skippableAd.js';
 import { getVideoSource } from './getVideoSource.js';
 
-export function setupMidroll(player, movieUrl, backendUrl, movieType, ads, movieId, token) {
-	const { type, url } = getVideoSource(movieType, movieUrl, backendUrl, movieId, token);
+export function setupMidroll(player, movieUrl, movieType, ads, movieId, token) {
+	const { type, url } = getVideoSource(movieType, movieUrl, movieId, token);
 	const state = {
 		playedMidrolls: new Set(), // Almacena los midrolls ya reproducidos
 		pendingMidrolls: [], // Almacena los midrolls que aún deben reproducirse
@@ -52,7 +52,7 @@ export function setupMidroll(player, movieUrl, backendUrl, movieType, ads, movie
 
 		state.player.ads.startLinearAdMode();
 		state.player.src({
-			src: backendUrl + midroll.src,
+			src: midroll.src,
 			type: midroll.type,
 		});
 

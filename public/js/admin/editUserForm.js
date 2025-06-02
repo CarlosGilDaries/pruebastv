@@ -1,7 +1,7 @@
 async function editUserForm() {
     let id = localStorage.getItem("id");
     const token = localStorage.getItem("auth_token");
-    const backendAPI = "https://pruebastv.kmc.es/api/";
+    const backendAPI = "/api/";
 
     loadUserData(id);
 

@@ -14,7 +14,8 @@ class CategoryController extends Controller
     {
         try {
 			$categories = Category::with(['movies' => function ($query) {
-				$query->orderBy('created_at', 'desc');
+				$query->orderBy('created_at', 'desc')
+                ->with('gender');
 			}])
             ->where('render_at_index', 1)
             ->orderBy('priority')

@@ -1,7 +1,7 @@
 async function editPlanForm() {
 	let id = localStorage.getItem('id');
 	const token = localStorage.getItem('auth_token');
-	const backendAPI = 'https://pruebastv.kmc.es/api/';
+	const backendAPI = '/api/';
 	
 	id = localStorage.getItem('id');
     loadPlanData(id);

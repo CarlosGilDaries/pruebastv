@@ -7,11 +7,19 @@ export async function renderTypeGrid(route, types, type) {
 
     items.forEach((item) => {
       const typeBox = document.createElement('div');
+      if (item.movies?.length > 0 && item.movies[0].cover) {
+        typeBox.style.backgroundImage = `url('${item.movies[0].cover}')`;
+      }
+      typeBox.style.backgroundSize = 'cover';
+      typeBox.style.backgroundPosition = 'center';
+      typeBox.style.backgroundRepeat = 'no-repeat';
       typeBox.setAttribute('data-id', item.id);
       typeBox.classList.add(`${type}-box`, 'box');
       typeBox.innerHTML = `
-            <h2 class="${type}-name">${item.name}</h2>
-          `;
+  <div class="overlay-text">
+    <h2 class="${type}-name">${item.name}</h2>
+  </div>
+`;
       typeBox.addEventListener('click', () => {
         window.location.href = `/${type}-show.html?id=${item.id}`;
       });

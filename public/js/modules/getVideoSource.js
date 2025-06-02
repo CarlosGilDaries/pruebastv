@@ -1,6 +1,6 @@
 import { signedUrl } from './signedUrl.js';
 
-export async function getVideoSource(movieType, movieUrl, backendUrl, movieId, token) {
+export async function getVideoSource(movieType, movieUrl, movieId, token) {
 	let type;
 	let url;
 
@@ -21,7 +21,7 @@ export async function getVideoSource(movieType, movieUrl, backendUrl, movieId, t
 		url = await signedUrl(token, movieId);
 	} else {
 		type = movieType;
-		url = backendUrl + movieUrl;
+		url = movieUrl;
 	}
 
 	return { type, url };

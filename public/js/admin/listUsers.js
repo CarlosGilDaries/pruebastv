@@ -4,9 +4,9 @@ import { storageData } from '../modules/storageData.js';
 
 async function listUsers() {
   const listUsers = document.getElementById('list-users');
-  const api = 'https://pruebastv.kmc.es/api/';
-  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-user';
-  const backendURL = 'https://pruebastv.kmc.es';
+  const api = '/api/';
+  const backendDeleteApi = '/api/delete-user';
+  const backendURL = '/';
   const authToken = localStorage.getItem('auth_token');
 
   // Cargar los datos al iniciar
@@ -52,7 +52,7 @@ async function listUsers() {
         processing: true,
         serverSide: true,
         ajax: {
-          url: api + 'users/datatable',
+          url: '/api/users/datatable',
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,

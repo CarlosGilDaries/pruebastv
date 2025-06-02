@@ -1,5 +1,5 @@
 async function initAddUser() {
-  const backendAPI = 'https://pruebastv.kmc.es/api/';
+  const backendAPI = '/api/';
 
   const form = document.getElementById('add-user-form');
   const planSelect = document.getElementById('add-user-plan');

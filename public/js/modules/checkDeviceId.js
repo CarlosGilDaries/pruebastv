@@ -1,4 +1,4 @@
-export function checkDeviceID(api, token) {
+export function checkDeviceID(token) {
     document.addEventListener('DOMContentLoaded', async function () { 
         // Comparar los device_ids de localstorage con los de la BD
         const allKeys = Object.keys(localStorage);
@@ -8,7 +8,7 @@ export function checkDeviceID(api, token) {
 
         if (deviceIds.length != 0 && token != null) {
             try {
-                const response = await fetch(api + 'check-device-id', {
+                const response = await fetch('/api/check-device-id', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         'Content-Type': 'application/json',

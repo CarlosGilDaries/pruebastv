@@ -1,7 +1,7 @@
 
 
-export async function renderSimilars(content, api, backendURL, token) {
-	const response = await fetch(api + `gender/${content.gender_id}`, {
+export async function renderSimilars(content, token) {
+	const response = await fetch(`/api/gender/${content.gender_id}`, {
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
@@ -19,7 +19,7 @@ export async function renderSimilars(content, api, backendURL, token) {
 			link.href = `/content/${movie.slug}`;
 
 			const img = document.createElement('img');
-			img.src = backendURL + movie.cover;
+			img.src = movie.cover;
 
 			link.append(img);
 			article.append(link);

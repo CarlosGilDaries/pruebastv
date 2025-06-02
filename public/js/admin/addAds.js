@@ -1,6 +1,6 @@
 (function () {
   async function initAddAd() {
-    const backendAPI = 'https://pruebastv.kmc.es/api/';
+    const backendAPI = '/api/';
 
     // Mostrar nombre de archivos seleccionados
     if (document.getElementById('ad-cover')) {

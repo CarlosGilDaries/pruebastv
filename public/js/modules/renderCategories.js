@@ -1,6 +1,6 @@
 import { getVideoContent } from './getVideoContent.js';
 
-export function renderCategories(main, categoriesData, backendURL) {
+export function renderCategories(main, categoriesData) {
 	categoriesData.categories.forEach((category) => {
 		if (category.priority != 1) {
 			const content = category.movies;
@@ -20,7 +20,7 @@ export function renderCategories(main, categoriesData, backendURL) {
 				`video-content-${category.priority}`
 			);
 
-			getVideoContent(content, node, backendURL);
+			getVideoContent(content, node);
 		}
 	});
 }

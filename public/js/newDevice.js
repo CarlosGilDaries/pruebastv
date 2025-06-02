@@ -12,7 +12,7 @@ document
     const deviceKey = `device_id_` + email;
 
     try {
-      const response = await fetch('https://pruebastv.kmc.es/api/new-device', {
+      const response = await fetch('/api/new-device', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -25,7 +25,7 @@ document
         }),
       });
 
-      const userResponse = await fetch('https://pruebastv.kmc.es/api/user', {
+      const userResponse = await fetch('/api/user', {
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${localStorage.getItem('auth_token')}`,

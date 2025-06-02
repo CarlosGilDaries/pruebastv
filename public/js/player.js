@@ -11,7 +11,7 @@ async function initPlayer() {
 		const pathParts = window.location.pathname.split('/');
 		const movieSlug = pathParts[pathParts.length - 1];
 		const api = 'https://pruebastv.kmc.es/api/';
-		const apiShow = `https://pruebastv.kmc.es/api/content/${movieSlug}`;
+		const apiShow = `/api/content/${movieSlug}`;
 		const apiAds = 'https://pruebastv.kmc.es/api/ads/';
 		const backendURL = 'https://pruebastv.kmc.es';
 
@@ -51,7 +51,7 @@ async function initPlayer() {
 
 		
 
-		const userResponse = await fetch(`${api}user`, {
+		const userResponse = await fetch(`/api/user`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ async function initPlayer() {
 		}
 
 		if (showData.data.movie.pay_per_view && userData.data.user.rol !== 'admin') {
-			const ppvResponse = await fetch(`${api}ppv-current-user-order/${movieId}`, {
+			const ppvResponse = await fetch(`/api/ppv-current-user-order/${movieId}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -103,16 +103,16 @@ async function initPlayer() {
 		const url = await signedUrl(token, showData.data.movie.id);
 
 		if (showData.data.ads_count === 0) {
-			await playVideoWithoutAds(showData.data.movie, backendURL, token, url);
+			await playVideoWithoutAds(showData.data.movie, token, url);
 		} else {
-			await playVideoWithAds(movieSlug, apiAds, token, showData.data.movie);
+			await playVideoWithAds(movieSlug, token, showData.data.movie);
 		}
 	} catch (error) {
 		console.error('Error en la inicialización del reproductor:', error);
 	}
 }
 
-async function playVideoWithoutAds(movie, backendURL, token, signedUrl) {
+async function playVideoWithoutAds(movie, token, signedUrl) {
 	try {
 		let videoUrl = movie.url;
 		let type = movie.type;
@@ -162,7 +162,7 @@ async function playVideoWithoutAds(movie, backendURL, token, signedUrl) {
 		videoUrl = signedUrl;
 		const playerElement = document.querySelector('.video-js');
 			if (playerElement) {
-				playerElement.style.backgroundImage = `url('${backendURL + movie.cover}')`;
+				playerElement.style.backgroundImage = `url('${movie.cover}')`;
 				playerElement.style.backgroundSize = 'cover';
 				playerElement.style.backgroundPosition = 'center';
 			}
@@ -196,16 +196,15 @@ async function playVideoWithoutAds(movie, backendURL, token, signedUrl) {
 	}
 }
 
-async function playVideoWithAds(movieSlug, apiAds, token, movie) {
+async function playVideoWithAds(movieSlug, token, movie) {
 	try {
-		const { movie: movieData, ads } = await loadAds(movieSlug, apiAds, token);
+		const { movie: movieData, ads } = await loadAds(movieSlug, token);
 
 		if (movieData.type != 'iframe') {
 			const player = videojs('my-video', {}, async function () {
 				await initAdPlayer(
 					player,
 					movieData.url,
-					'https://pruebastv.kmc.es',
 					movieData.type,
 					ads,
 					movieData.id,

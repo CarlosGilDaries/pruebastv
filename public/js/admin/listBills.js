@@ -4,10 +4,10 @@ import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 
 async function listBills() {
   const listContent = document.getElementById('list-bills');
-  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-bill';
-  const backendURL = 'https://pruebastv.kmc.es/';
+  const backendDeleteApi = '/api/delete-bill';
+  const backendURL = '/';
   const authToken = localStorage.getItem('auth_token');
-  const api = 'https://pruebastv.kmc.es/api/';
+  const api = '/api/';
 
   // Cargar los datos al iniciar
   loadBillsList();

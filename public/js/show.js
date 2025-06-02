@@ -49,7 +49,7 @@ if (device_id == null) {
 
 async function fetchMovieData() {
   try {
-    const response = await fetch(api + 'content/' + movieSlug, {
+    const response = await fetch('/api/content/' + movieSlug, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ async function fetchMovieData() {
       },
     });
 
-    const userResponse = await fetch(api + 'user', {
+    const userResponse = await fetch('/api/user', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ async function fetchMovieData() {
 
       if (data.data.movie.pay_per_view && userData.data.user.rol != 'admin') {
         const ppvResponse = await fetch(
-          api + 'ppv-current-user-order/' + movieId,
+          '/api/ppv-current-user-order/' + movieId,
           {
             method: 'GET',
             headers: {
@@ -117,7 +117,7 @@ async function fetchMovieData() {
             'Pagar para ver: ' + data.data.movie.pay_per_view_price + ' €';
           play.addEventListener('click', async function () {
             try {
-              const paymentResponse = await fetch(api + 'ppv-payment', {
+              const paymentResponse = await fetch('/api/ppv-payment', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -158,18 +158,19 @@ async function fetchMovieData() {
       const title = document.getElementById('content-title');
       const trailer = document.getElementById('trailer');
       if (data.data.movie.trailer != null) {
-        trailer.src = backendURL + data.data.movie.trailer;
+        trailer.src = data.data.movie.trailer;
       } else {
         trailer.poster = data.data.movie.cover;
       }
-      image.src = backendURL + data.data.movie.cover;
+      image.src = data.data.movie.cover;
       title.innerHTML = data.data.movie.title;
       document.title = data.data.movie.title + ' - Pruebas TV';
       gender.innerHTML = data.data.movie.gender.name;
+      gender.href = `/gender-show.html?id=${data.data.movie.gender_id}`;
       tagline.innerHTML = data.data.movie.tagline;
       duration.innerHTML = formatDuration(data.data.movie.duration);
       overview.innerHTML = data.data.movie.overview;
-		renderSimilars(data.data.movie, api, backendURL, token);
+		renderSimilars(data.data.movie, token);
 		
     } else {
       console.error('Error al consultar la API: ', data.message);

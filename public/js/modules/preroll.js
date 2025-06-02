@@ -1,9 +1,9 @@
 import { skippableAd } from './skippableAd.js';
 import { getVideoSource } from './getVideoSource.js';
 
-export function setupPreroll(player, movieUrl, backendUrl, movieType, ads, movieId, token) {
+export function setupPreroll(player, movieUrl, movieType, ads, movieId, token) {
 	const preroll = ads.find((ad) => ad.ad_movie_type === 'preroll');
-	const { type, url } = getVideoSource(movieType, movieUrl, backendUrl, movieId, token);
+	const { type, url } = getVideoSource(movieType, movieUrl, movieId, token);
 
 	if (!preroll) {
 		player.trigger('nopreroll');
@@ -13,7 +13,7 @@ export function setupPreroll(player, movieUrl, backendUrl, movieType, ads, movie
 	player.on('readyforpreroll', function () {
 		player.ads.startLinearAdMode();
 		player.src({
-			src: backendUrl + preroll.src,
+			src: preroll.src,
 			type: preroll.type,
 		});
 

@@ -4,8 +4,8 @@ import { adminCheck } from '../modules/adminCheck.js';
 
 const pathParts = window.location.pathname.split('/');
 const adSlug = pathParts[pathParts.length - 1]; // Extraer el último segmento de la URL
-const apiShow = 'https://pruebastv.kmc.es/api/ad/' + adSlug;
-const backendURL = 'https://pruebastv.kmc.es';
+const apiShow = '/api/ad/' + adSlug;
+const backendURL = '/';
 
 const token = localStorage.getItem('auth_token');
 

@@ -4,10 +4,10 @@ import { storageData } from '../modules/storageData.js';
 
 async function listCategories() {
   const listContent = document.getElementById('list-categories');
-  const api = 'https://pruebastv.kmc.es/api/';
-  const backendURL = 'https://pruebastv.kmc.es';
+  const api = '/api/';
+  const backendURL = '/';
   const authToken = localStorage.getItem('auth_token');
-  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-category';
+  const backendDeleteApi = '/api/delete-category';
 
   // Cargar los datos al iniciar
   loadCategoriesList();

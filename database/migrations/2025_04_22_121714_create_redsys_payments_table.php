@@ -50,7 +50,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('status')->default('pending');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('plan_id')->constrained()->onDelete('set null')->nullable();
+            $table->foreignId('plan_id')->nullable()->constrained()->onDelete('set null');
 			$table->string('description');
             $table->timestamps();
         });
@@ -61,7 +61,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('status')->default('pending');
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('movie_id')->constrained()->onDelete('set null')->nullable();
+            $table->foreignId('movie_id')->nullable()->constrained()->onDelete('set null');
 			$table->string('description');
             $table->timestamps();
         });

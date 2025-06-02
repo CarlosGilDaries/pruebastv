@@ -21,7 +21,7 @@ dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
   localStorage.removeItem('needed_plans');
-  fetch(api + 'user', {
+  fetch('/api/user', {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',

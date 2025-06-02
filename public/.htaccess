@@ -24,7 +24,8 @@ ErrorDocument 404 /404.html
     RewriteRule ^account$ /account.html [L,QSA]
 	
     # Solo permitir si el Referer es nuestro dominio
-    RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC]
+    #RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC,OR]
+    RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.test/ [NC]
     RewriteRule ^(secure-stream|proxy/(ts|hls))/ - [F,L]
     
     # Redirigir a show.html solo si es HTML y no API, archivo o directorio
@@ -38,12 +39,14 @@ ErrorDocument 404 /404.html
     # Reglas para el BACKEND (Laravel)
     # ----------------------------------------------------------------------
     # Bloquear acceso directo a archivos multimedia (excepto desde dominios permitidos)
-    RewriteCond %{HTTP_REFERER} !^http(s)?://(pruebastv\.kmc\.es) [NC]
+    #RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC,OR]
+    RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.test/ [NC]
     RewriteCond %{REQUEST_URI} ^/file/.*\.(mpeg|mp4|mp3|m3u8|avi|mov|ts)$ [NC]
     RewriteRule ^ - [F,L]
 
 	## Bloquear acceso directo a archivos PDF (excepto desde el dominio permitido)
-	RewriteCond %{HTTP_REFERER} !^https?://(www\.)?pruebastv\.kmc\.es [NC]
+	#RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC,OR]
+    RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.test/ [NC]
 	RewriteCond %{REQUEST_URI} \.pdf$ [NC]
 	RewriteRule ^ - [F,L]
 

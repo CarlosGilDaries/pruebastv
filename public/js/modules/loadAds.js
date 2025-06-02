@@ -1,6 +1,6 @@
-export async function loadAds(slug, api, token) {
+export async function loadAds(slug, token) {
     try {
-      const response = await fetch(api + slug, {
+      const response = await fetch('/api/ads/' + slug, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

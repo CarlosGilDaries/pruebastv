@@ -5,7 +5,7 @@ import { storageData } from '../modules/storageData.js';
 async function listOrders() {
   const listContent = document.getElementById('list-orders');
   const authToken = localStorage.getItem('auth_token');
-  const api = 'https://pruebastv.kmc.es/api/';
+  const api = '/api/';
 
   // Cargar los datos al iniciar
   loadOrdersList();

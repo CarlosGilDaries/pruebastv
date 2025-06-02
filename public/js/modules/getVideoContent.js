@@ -1,15 +1,8 @@
 import { addScrollFunctionality } from "./addScrollFunctionality.js";
 
-export function getVideoContent(data, node, backendURL) {
-  const videos = new Set();
+export function getVideoContent(data, node) {
 
-  data.forEach((element) => {
-    if (element.type != 'audio/mpeg' || element.type != 'url_mp3') {
-      videos.add(element);
-    }
-  });
-
-  videos.forEach((video) => {
+  data.forEach((video) => {
     const article = document.createElement('article');
     article.classList.add('content');
 
@@ -17,7 +10,7 @@ export function getVideoContent(data, node, backendURL) {
     link.href = `/content/${video.slug}`;
 
     const img = document.createElement('img');
-    img.src = backendURL + video.cover;
+    img.src = video.cover;
 
     link.append(img);
     article.append(link);

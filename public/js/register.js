@@ -23,7 +23,7 @@ document
       const userAgent = navigator.userAgent;
 
     try {
-      const response = await fetch('https://pruebastv.kmc.es/api/register', {
+      const response = await fetch('/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

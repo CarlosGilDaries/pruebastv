@@ -5,9 +5,9 @@ import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 
 async function listAds() {
   const listContent = document.getElementById('list-ads');
-  const api = 'https://pruebastv.kmc.es/api/';
-  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-ads';
-  const backendURL = 'https://pruebastv.kmc.es/';
+  const api = '/api/';
+  const backendDeleteApi = '/api/delete-ads';
+  const backendURL = '/';
   const authToken = localStorage.getItem('auth_token');
 
   // Cargar los datos al iniciar

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 
 		try {
-			const response = await fetch(backendAPI + url, { headers });
+			const response = await fetch('/api/' + url, { headers });
 			if (!response.ok) throw new Error('Error en la petición');
 			return await response.json();
 		} catch (error) {

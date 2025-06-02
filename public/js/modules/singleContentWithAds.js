@@ -1,6 +1,6 @@
-export async function linkedAds(id, backendAPI, token, ads_table, message) {
+export async function linkedAds(id, token, ads_table, message) {
   try {
-    const response = await fetch(backendAPI + `content-with-ads/${id}`, {
+    const response = await fetch(`/api/content-with-ads/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -11,7 +11,7 @@ export async function linkedAds(id, backendAPI, token, ads_table, message) {
       let movieId = data.data.movie.id;
       let ads = data.data.movie.ads;
       ads_table.innerHTML = generateAdsTable(ads, movieId);
-      setupUnlinkButtons(token, backendAPI, id, message);
+      setupUnlinkButtons(token, id, message);
 
       return ads.map((ad) => ad.id);
     }
@@ -69,7 +69,7 @@ function generateAdsTable(ads, movieId) {
   return tableHTML;
 }
 
-function setupUnlinkButtons(token, backendAPI, id, message) {
+function setupUnlinkButtons(token, id, message) {
   document.querySelectorAll('.unlink-btn').forEach((button) => {
     button.addEventListener('click', async function () {
       const contentId = this.getAttribute('data-content-id');
@@ -78,7 +78,7 @@ function setupUnlinkButtons(token, backendAPI, id, message) {
       if (confirm('¿Estás seguro de que deseas desvincular este anuncio?')) {
         try {
           const response = await fetch(
-            backendAPI + 'content-with-ads-destroy',
+            '/api/content-with-ads-destroy',
             {
 				method: 'POST',
 				headers: {
@@ -101,8 +101,7 @@ function setupUnlinkButtons(token, backendAPI, id, message) {
 				}, 5000);
 
 				window.scrollTo({ top: 0, behavior: 'smooth' });
-				const newResponse = await fetch(
-					backendAPI + `content-with-ads/${id}`,
+				const newResponse = await fetch(`/api/content-with-ads/${id}`,
 					{
 						headers: { Authorization: `Bearer ${token}` },
 					}
@@ -114,8 +113,8 @@ function setupUnlinkButtons(token, backendAPI, id, message) {
 						newData.data.movie.ads,
 						contentId
 					);
-					setupUnlinkButtons(token, backendAPI, id, message);
-					updateAvailableAds(id, token, backendAPI);
+					setupUnlinkButtons(token, id, message);
+					updateAvailableAds(id, token);
 				}
 			} else {
 				alert(
@@ -131,10 +130,9 @@ function setupUnlinkButtons(token, backendAPI, id, message) {
   });
 }
 
-export async function updateAvailableAds(id, token, backendAPI) {
+export async function updateAvailableAds(id, token) {
 	try {
-		const linkedResponse = await fetch(
-			backendAPI + `content-with-ads/${id}`,
+		const linkedResponse = await fetch(`/api/content-with-ads/${id}`,
 			{
 				headers: { Authorization: `Bearer ${token}` },
 			}
@@ -144,7 +142,7 @@ export async function updateAvailableAds(id, token, backendAPI) {
 		? linkedData.data.movie.ads.map((ad) => ad.id)
 		: [];
 
-		const adsResponse = await fetch(backendAPI + 'ads', {
+		const adsResponse = await fetch('/api/ads', {
 			headers: { Authorization: `Bearer ${token}` },
 		});
 		const adsData = await adsResponse.json();

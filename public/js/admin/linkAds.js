@@ -4,7 +4,7 @@ import {
 } from '../modules/singleContentWithAds.js';
 
 async function linkAds() {
-  const backendAPI = 'https://pruebastv.kmc.es/api/';
+  const backendAPI = '/api/';
   const authToken = localStorage.getItem('auth_token');
   const table = document.getElementById('ads-table');
   const unlinkMessage = document.getElementById('unlink-success-message');
@@ -25,7 +25,6 @@ async function linkAds() {
     try {
       const linkedAdIds = await linkedAds(
         id,
-        backendAPI,
         authToken,
         table,
         unlinkMessage
@@ -271,13 +270,12 @@ async function linkAds() {
           // Actualizar la tabla de anuncios vinculados
           const linkedResponse = await linkedAds(
             id,
-            backendAPI,
             authToken,
             table,
             unlinkMessage
           );
           // Actualizar los checkboxes disponibles
-          await updateAvailableAds(id, authToken, backendAPI);
+          await updateAvailableAds(id, authToken);
           // Resetear el formulario
           document.getElementById('link-form').reset();
         }

@@ -2,6 +2,7 @@ import { logOut } from './modules/logOut.js';
 import { initPriorityBanner } from './modules/initPriorityBanner.js';
 import { renderCategories } from './modules/renderCategories.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
+import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
@@ -27,9 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-async function indexData(api, backendURL) {
+async function indexData() {
   try {
-    const categoriesResponse = await fetch(api + 'categories');
+    const categoriesResponse = await fetch('/api/categories');
     const categoriesData = await categoriesResponse.json();
     const categoriesDropDown = document.getElementById('categories');
 	  const gendersDropDown = document.getElementById('genders');
@@ -39,31 +40,13 @@ dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
     initPriorityBanner(categoriesData);
-    renderCategories(main, categoriesData, backendURL);
+    renderCategories(main, categoriesData);
   } catch (error) {
     console.log(error);
   }
 }
 
-indexData(api, backendURL);
+indexData();
+setupLoginSignupButtons();
 
-document.addEventListener('DOMContentLoaded', async function () {
-  const userIcon = document.querySelector('.user');
-  const navRight = document.querySelector('.right-nav');
 
-  if (token == null) {
-    if (userIcon) userIcon.remove();
-
-    const unloggedButtonsContainer = document.createElement('li');
-    unloggedButtonsContainer.classList.add('unlogged-buttons');
-    const loginButton = document.createElement('a');
-    loginButton.href = '/login';
-    const registerButton = document.createElement('a');
-    registerButton.href = '/register.html';
-    loginButton.innerHTML = `<button class="login-btn">Iniciar sesión</button>`;
-    registerButton.innerHTML = `<button class="signup-btn">Registrarse</button>`;
-    unloggedButtonsContainer.appendChild(loginButton);
-    unloggedButtonsContainer.appendChild(registerButton);
-    navRight.appendChild(unloggedButtonsContainer);
-  }
-});

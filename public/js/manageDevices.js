@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
   try {
     // Obtener lista de dispositivos
-    const response = await fetch('https://pruebastv.kmc.es/api/manage-devices', {
+    const response = await fetch('/api/manage-devices', {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ async function handleDeleteDevice(deviceId) {
   }
 
   try {
-    const response = await fetch('https://pruebastv.kmc.es/api/destroy-device', {
+    const response = await fetch('/api/destroy-device', {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,

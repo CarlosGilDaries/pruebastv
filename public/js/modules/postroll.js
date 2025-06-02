@@ -1,9 +1,9 @@
 import { skippableAd } from './skippableAd.js';
 import { getVideoSource } from './getVideoSource.js';
 
-export function setupPostroll(player, movieUrl, backendUrl, movieType, ads, movieId, token) {
+export function setupPostroll(player, movieUrl, movieType, ads, movieId, token) {
 	const postroll = ads.find((ad) => ad.ad_movie_type === 'postroll');
-	const { type, url } = getVideoSource(movieType, movieUrl, backendUrl, movieId, token);
+	const { type, url } = getVideoSource(movieType, movieUrl, movieId, token);
 
 	if (!postroll) {
 		player.trigger('nopostroll');
@@ -14,7 +14,7 @@ export function setupPostroll(player, movieUrl, backendUrl, movieType, ads, movi
 		player.on('readyforpostroll', function () {
 			player.ads.startLinearAdMode();
 			player.src({
-				src: backendUrl + postroll.src,
+				src: postroll.src,
 				type: postroll.type,
 			});
 

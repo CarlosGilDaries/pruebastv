@@ -1,6 +1,6 @@
 export async function logOut(token) {
     try {
-        const response = await fetch('https://pruebastv.kmc.es/api/logout', {
+        const response = await fetch('/api/logout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

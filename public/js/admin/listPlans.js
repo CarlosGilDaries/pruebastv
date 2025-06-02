@@ -4,10 +4,10 @@ import { storageData } from '../modules/storageData.js';
 
 async function listPlans() {
   const listContent = document.getElementById('list-plans');
-  const api = 'https://pruebastv.kmc.es/api/';
-  const backendURL = 'https://pruebastv.kmc.es';
+  const api = '/api/';
+  const backendURL = '/';
   const authToken = localStorage.getItem('auth_token');
-  const backendDeleteApi = 'https://pruebastv.kmc.es/api/delete-plan';
+  const backendDeleteApi = '/api/delete-plan';
 
   // Cargar los datos al iniciar
   loadPlansList();

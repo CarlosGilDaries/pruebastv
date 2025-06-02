@@ -1,5 +1,5 @@
 export function adminCheck(token) {
-    const backendAPI = 'https://pruebastv.kmc.es/api/';
+    const backendAPI = '/api/';
     
     fetch(backendAPI + 'user', {
         headers: {

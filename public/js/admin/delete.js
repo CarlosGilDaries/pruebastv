@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     model = 'content';
   }
   const token = localStorage.getItem('auth_token');
-  const backendAPI = 'https://pruebastv.kmc.es/api/';
+  const backendAPI = '/api/';
   const success = document.getElementById('success-message');
   let allContents = []; // Todos los contenidos
   let currentContents = []; // Contenidos actualmente mostrados (filtrados o no)

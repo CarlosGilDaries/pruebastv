@@ -6,9 +6,9 @@ const neededPlans = localStorage.getItem('needed_plans');
 let userData;
 
 try {
-  const response = await fetch(backendApi + 'plans');
+  const response = await fetch('/api/plans');
   if (token != null) {
-    const userResponse = await fetch(backendApi + 'user', {
+    const userResponse = await fetch('/api/user', {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ function displayPlans(plans, actualPlan) {
 
 async function selectPlan(planId) {
   try {
-    const response = await fetch(backendApi + 'select-plan', {
+    const response = await fetch('/api/select-plan', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ import { adminCheck } from '../modules/adminCheck.js';
 const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
 const token = localStorage.getItem('auth_token');
-const backendAPI = 'https://pruebastv.kmc.es/api/';
+const backendAPI = '/api/';
 const logOutButton = document.getElementById('logout-button');
 const container = document.querySelector('.container');
 const links = document.querySelectorAll("body > div.admin-container > aside > ul > a > li");
