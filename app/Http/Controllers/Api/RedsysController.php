@@ -68,9 +68,14 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-                'DS_MERCHANT_MERCHANTURL' => "https://pruebastv.kmc.es/api/redsys-plan-resp",
-                'DS_MERCHANT_URLKO' => "https://pruebastv.kmc.es/unsuccessful-payment.html",
-                'DS_MERCHANT_URLOK' =>"https://pruebastv.kmc.es/successful-payment.html",
+                'DS_MERCHANT_MERCHANTURL' => 'https://eaba-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
+                'DS_MERCHANT_URLKO' =>'https://eaba-64-225-160-224.ngrok-free.app/unsuccessful-payment.html',
+                'DS_MERCHANT_URLOK' => 'https://eaba-64-225-160-224.ngrok-free.app/successful-payment.html',
+                //https://eaba-64-225-160-224.ngrok-free.app
+                /*'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
+                'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
+                'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
+                'DS_MERCHANT_URLOK' => url('/successful-payment.html'),*/
             ];
 			
 
@@ -136,9 +141,12 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-                'DS_MERCHANT_MERCHANTURL' => "https://pruebastv.kmc.es/api/redsys-ppv-resp",
-                'DS_MERCHANT_URLKO' => "https://pruebastv.kmc.es/unsuccessful-payment.html",
-                'DS_MERCHANT_URLOK' =>"https://pruebastv.kmc.es/successful-payment.html",
+                'DS_MERCHANT_MERCHANTURL' => 'https://eaba-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
+                'DS_MERCHANT_URLKO' =>'https://eaba-64-225-160-224.ngrok-free.app/unsuccessful-payment.html',
+                'DS_MERCHANT_URLOK' => 'https://eaba-64-225-160-224.ngrok-free.app/successful-payment.html',
+                /*'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
+                'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
+                'DS_MERCHANT_URLOK' => url('/successful-payment.html'),*/
             ];
 
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));

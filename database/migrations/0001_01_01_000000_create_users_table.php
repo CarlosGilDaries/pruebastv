@@ -16,12 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('surnames');
             $table->string('email')->unique();
-            $table->string('dni')->unique();
-            $table->string('address');
+            $table->string('dni')->unique()->nullable();
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
             $table->string('city');
             $table->string('country');
-            $table->date('birthday');
-            $table->enum('gender', ['man', 'woman', 'non-binary', 'others']);
+            $table->smallInteger('birth_year')->unsigned()->between(1950, date('Y') + 100);
+            $table->enum('gender', ['man', 'woman', 'others']);
             $table->foreignId('plan_id')->nullable()->constrained();
             $table->enum('rol', ['user', 'admin']);
             $table->timestamp('email_verified_at')->nullable();

@@ -100,7 +100,9 @@ function displayPlans(plans, actualPlan) {
         button.textContent = 'Seleccionar Plan';
         button.classList.add('needed-plan');
         button.addEventListener('click', async () => {
-          await selectPlan(plan.id);
+          if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+            await selectPlan(plan.id);
+          }
         });
       }
     } else {
@@ -113,16 +115,27 @@ function displayPlans(plans, actualPlan) {
           button.textContent = 'Seleccionar Plan';
           button.classList.add('needed-plan');
           button.addEventListener('click', async () => {
-            await selectPlan(plan.id);
+            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+              await selectPlan(plan.id);
+            }
           });
         }
       } else {
         button.textContent = 'Seleccionar Plan';
         button.addEventListener('click', async () => {
           if (token != null) {
-            await selectPlan(plan.id);
+            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+              await selectPlan(plan.id);
+            }
           } else {
-            window.location.href = '/login';
+            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+              localStorage.setItem('plan_id', plan.id);
+              if (plan.price == 0) {
+                window.location.href = '/short-register.html';
+              } else {
+                window.location.href = '/register.html';
+              }
+            }
           }
         });
       }

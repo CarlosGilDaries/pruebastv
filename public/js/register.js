@@ -1,5 +1,4 @@
 import { getIp } from './modules/getIp.js';
-import { generateUUID } from './modules/generateId.js';
 
 document
   .getElementById('register-form')
@@ -9,11 +8,12 @@ document
     const name = document.getElementById('name').value;
     const surnames = document.getElementById('surnames').value;
     const email = document.getElementById('email').value;
-    const address = document.getElementById('address').value;
+    const address = document.getElementById('address')?.value ?? null;
     const city = document.getElementById('city').value;
     const country = document.getElementById('country').value;
-    const birthday = document.getElementById('birthday').value;
-    const dni = document.getElementById('dni').value;
+    const birth_year = document.getElementById('birth-year').value;
+    const dni = document.getElementById('dni')?.value ?? null;
+    const phone = document.getElementById('phone')?.value ?? null;
     const gender = document.getElementById('gender').value;
     const password = document.getElementById('password').value;
     const password_confirmation = document.getElementById(
@@ -37,7 +37,8 @@ document
           address,
           city,
           country,
-          birthday,
+          birth_year,
+          phone,
           dni,
           gender,
           password,
@@ -56,7 +57,7 @@ document
 				return;
       }
 
-      window.location.href = '/plans.html';
+      //window.location.href = '/plans.html';
 		}
     } catch (error) {
       console.error('Error en la solicitud:', error);
@@ -65,3 +66,4 @@ document
       document.getElementById('error-message').style.display = 'block';
     }
   });
+  

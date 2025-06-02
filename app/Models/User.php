@@ -30,7 +30,6 @@ class User extends Authenticatable
         'gender',
         'password',
         'plan_id',
-        'rol',
     ];
 
     public function plan()

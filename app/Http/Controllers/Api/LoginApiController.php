@@ -21,10 +21,20 @@ class LoginApiController extends Controller
             $name = sanitize_html($request->name);
             $surnames = sanitize_html($request->surnames);
             $email = sanitize_html($request->email);
-            $dni = sanitize_html($request->dni);
+            if ($request->dni != null) {
+                $dni = sanitize_html($request->dni);
+            } else {
+                $dni = null;
+            }
             $address = sanitize_html($request->address);
             $city = sanitize_html($request->city);
             $country = sanitize_html($request->country);
+            if ($request->phone != null) {
+                $phone = sanitize_html($request->phone);
+            } else {
+                $phone = null;
+            }
+            $birth_year = sanitize_html($request->birth_year);
 
             $user = User::create([
                 'name' => $name,
@@ -34,7 +44,8 @@ class LoginApiController extends Controller
                 'address' => $address,
                 'city' => $city,
                 'country' => $country,
-                'birthday' => $request->birthday,
+                'birth_year' => $birth_year,
+                'phone' => $phone,
                 'gender' => $request->gender,
                 'rol' => 'user',
                 'plan_id' => null,
@@ -104,7 +115,6 @@ class LoginApiController extends Controller
 
             if ($user->rol == 'admin') {
                 $session = UserSession::where('user_id', $user->id)->first();
-
 
                 if (!$session) {
                     $deviceId = Str::uuid();
