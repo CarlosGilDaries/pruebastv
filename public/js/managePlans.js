@@ -24,14 +24,16 @@ document.addEventListener('DOMContentLoaded', async function () {
 	}
 
     neededPlans.forEach((plan) => {
-        const planElement = document.createElement('div');
-        planElement.className = 'device-item plan-item';
+        if (plan != 'admin') {
+            const planElement = document.createElement('div');
+            planElement.className = 'device-item plan-item';
 
-        const planName = document.createElement('p');
-        planName.className = 'device-name plan-name';
-        planName.textContent = plan || 'Dispositivo sin nombre';
+            const planName = document.createElement('p');
+            planName.className = 'device-name plan-name';
+            planName.textContent = plan || 'Dispositivo sin nombre';
 
-        planElement.appendChild(planName);
-        plansList.appendChild(planElement);
+            planElement.appendChild(planName);
+            plansList.appendChild(planElement);
+        }
     });
 });
