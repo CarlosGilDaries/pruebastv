@@ -1,3 +1,5 @@
+import { formatDuration } from "./formatDuration.js";
+
 export function initPriorityBanner(categoriesData) {
 	try {
 		console.log(categoriesData);
@@ -23,7 +25,10 @@ export function initPriorityBanner(categoriesData) {
       '.priority-first-movie-title'
     );
     const playButton = bannerSection.querySelector('.play-button');
-    const movieInfo = bannerSection.querySelector('.movie-info');
+		const movieInfo = bannerSection.querySelector('.movie-info');
+		const gender = document.getElementById('banner-gender');
+		const duration = document.getElementById('banner-duration');
+		
 
     let currentMovieIndex = 0;
     const movies = priorityCategory.movies;
@@ -39,13 +44,17 @@ export function initPriorityBanner(categoriesData) {
       // Fade out del contenido actual
       movieInfo.classList.add('title-transition');
       titleElement.style.opacity = '0';
-      videoElement.style.opacity = '0';
+		videoElement.style.opacity = '0';
+		gender.style.opacity = '0';
+		duration.style.opacity = '0';
 
       // Esperar a que complete la transición de salida
       await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Actualizar contenido
-      titleElement.textContent = movie.title;
+		titleElement.textContent = movie.title;
+		gender.textContent = movie.gender.name;
+		duration.textContent = formatDuration(movie.duration);
       playButton.onclick = () =>
         (window.location.href = `/content/${movie.slug}`);
 
@@ -87,7 +96,9 @@ export function initPriorityBanner(categoriesData) {
       // Fade in del nuevo contenido
       await new Promise((resolve) => setTimeout(resolve, 50)); // Pequeña pausa
       titleElement.style.opacity = '1';
-      videoElement.style.opacity = '1';
+		videoElement.style.opacity = '1';
+		gender.style.opacity = '1';
+		duration.style.opacity = '1';
 
       // Resetear estado de transición después de completar
       setTimeout(() => {
@@ -123,7 +134,9 @@ export function initPriorityBanner(categoriesData) {
 
     // Estilos iniciales para la transición
     videoElement.style.transition = 'opacity 0.5s ease-in-out';
-    titleElement.style.transition = 'opacity 0.2s ease-in-out';
+		titleElement.style.transition = 'opacity 0.2s ease-in-out';
+		gender.style.transition = 'opacity 0.2s ease-in-out';
+		duration.style.transition = 'opacity 0.2s ease-in-out';
 
     // Cargar la primera película
     loadMovie(0);

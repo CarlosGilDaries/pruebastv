@@ -1,6 +1,7 @@
 // Función para agregar funcionalidad de desplazamiento con flechas
 export function addScrollFunctionality(container, px) {
   const wrapper = container.parentElement;
+  
   const leftArrow = wrapper.querySelector('.scroll-left');
   const rightArrow = wrapper.querySelector('.scroll-right');
 

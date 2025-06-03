@@ -16,26 +16,6 @@
 	height: 70vh;
 }
 
-/*
-.banner::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-        to top right, /* Dirección diagonal */
-/*        rgba(0, 0, 0, 1) 0%,       /* Oscuro total en esquina inferior izquierda */
-/*        rgba(0, 0, 0, 0.9) 25%,
-        rgba(0, 0, 0, 0.8) 35%,
-        rgba(0, 0, 0, 0.7) 40%,
-        rgba(0, 0, 0, 0) 60%   
-    );
-    z-index: -1;
-    pointer-events: none;
-}
-*/
 .priority-first video {
 	width: 100%;
 	height: 70vh;
@@ -43,6 +23,16 @@
 	object-fit: cover;       /* Para que se vea completo sin recortar */
 	object-position: center;   /* Para centrar la imagen */
 	background-color: black;  
+}
+
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.movie-info h3 {
+    color: var(--color-primary);
 }
 
 .index-main {
@@ -55,6 +45,8 @@
     width: 95%;
     margin-inline: auto;
     margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
 }
 
 .content-type h2 {
@@ -67,21 +59,70 @@
     align-items: center;
 }
 
+
 .content-container {
     overflow-x: auto;
     display: flex;
     gap: 18px;
     scroll-behavior: smooth;
     scrollbar-width: none; /* Oculta la barra de desplazamiento en Firefox */
-    z-index: 1;
-    padding: 30px 0;
+    padding: 20px;
     margin: -30px 0; 
+    position: relative;
 }
 
 .content-container::-webkit-scrollbar {
     width: 0;
     height: 0;
 }
+
+.content {
+    position: relative;
+    max-width: 335px;
+    min-width: 335px;
+    height: 209px;
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
+
+.content:hover {
+    transform: scale(113%);
+    z-index: 11;
+}
+
+.content img {
+    border-radius: 10px;
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.content .info {
+    margin: 0;
+    padding-top: 4px;
+    position: absolute;
+    top: 109px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;;
+    border-radius: 0 0 10px 10px;
+    opacity: 0;
+    max-height: 100px;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+  }
+  
+  /* Mostrar la información al hacer hover */
+  .content:hover .info {
+    opacity: 1; /* Ajusta según necesidad */
+  }
 
 .scroll-left, 
 .scroll-right,
@@ -98,9 +139,9 @@
     cursor: pointer;
     border-radius: 50%;
     transition: 0.3s;
-	    opacity: 0;
+	opacity: 0;
     visibility: hidden;
-	    z-index: 1000;
+	z-index: 1000;
 }
 
 .scroll-left-banner,
@@ -147,30 +188,6 @@
 	cursor: default;
 }
 
-.content {
-    max-width: 340px;
-    min-width: 340px;
-    transition: 0.3s;
-    z-index: 1;
-}
-
-.content:hover {
-    transform: scale(1.1);
-    z-index: 10;
-}
-
-.content img {
-    border-radius: 10px;
-    width: 100%;
-    height: 100%;
-}
-
-.movie-info {
-	position: relative;
-	left: 80px;
-	top: 50px;
-}
-
 h1 {
 	color: white;
 }
@@ -182,6 +199,7 @@ h1 {
 
 .priority-first .priority-first-movie-title {
     transition: opacity 0.2s ease-in-out;
+    margin: 0;
 }
 
 /* Estado inicial para elementos en transición */
