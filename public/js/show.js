@@ -113,6 +113,7 @@ async function fetchMovieData() {
         const ppvData = await ppvResponse.json();
 
         if (!ppvData.success) {
+          play.classList.add('ppv-btn');
           play.textContent =
             'Pagar para ver: ' + data.data.movie.pay_per_view_price + ' €';
           play.addEventListener('click', async function () {

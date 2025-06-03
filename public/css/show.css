@@ -130,6 +130,10 @@ video {
     width: 240px;
 }
 
+.ppv-btn {
+    width: 370px
+}
+
 .keyword-link {
 	background: var(--color-gray-darker);
 	padding: 3px;
