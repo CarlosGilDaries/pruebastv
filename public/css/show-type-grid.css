@@ -37,6 +37,32 @@ main {
 
 }
 
+.content .info {
+    margin: 0;
+    padding-top: 4px;
+    position: absolute;
+    top: 80px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.85);
+    color: white;;
+    border-radius: 0 0 10px 10px;
+    opacity: 0;
+    max-height: 100px;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    justify-content: center;
+  }
+  
+  .content:hover .info {
+    opacity: 1;
+  }
+
 @media (max-width: 768px) {
     .main-grid {
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));

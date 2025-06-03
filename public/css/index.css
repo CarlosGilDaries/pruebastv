@@ -29,6 +29,9 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    position: relative;
+	left: 50px;
+	top: 50px;
 }
 
 .movie-info h3 {
@@ -58,7 +61,6 @@
     display: flex;
     align-items: center;
 }
-
 
 .content-container {
     overflow-x: auto;
@@ -119,9 +121,8 @@
     justify-content: center;
   }
   
-  /* Mostrar la información al hacer hover */
   .content:hover .info {
-    opacity: 1; /* Ajusta según necesidad */
+    opacity: 1;
   }
 
 .scroll-left, 
@@ -219,4 +220,5 @@ h1 {
 	transform: scale(0.9);
 	transform-origin: center;
 	left: -10px;
+    max-width: 250px;
 }

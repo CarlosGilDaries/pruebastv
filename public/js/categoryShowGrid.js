@@ -1,5 +1,6 @@
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+import { formatDuration } from './modules/formatDuration.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
@@ -26,9 +27,24 @@ try {
 
         const img = document.createElement('img');
         img.src = movie.cover;
-
         link.append(img);
-        article.append(link);
+
+        const info = document.createElement('a');
+        info.href = `/content/${movie.slug}`;
+        info.classList.add('info');
+
+        const title = document.createElement('h3');
+        title.textContent = movie.title;
+
+        const gender = document.createElement('p');
+        gender.textContent = `${movie.gender.name}`;
+
+        const duration = document.createElement('p');
+        const formatedDuration = formatDuration(movie.duration);
+        duration.textContent = `${formatedDuration}`;
+
+        info.append(title, gender, duration);
+        article.append(link, info);
         node.append(article);
     });
 
