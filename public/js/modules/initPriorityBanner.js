@@ -1,110 +1,133 @@
 export function initPriorityBanner(categoriesData) {
 	try {
-		// Encontrar la categoría con priority 1
-		const priorityCategory = categoriesData.categories.find(cat => cat.priority === 1);
-		if (!priorityCategory || !priorityCategory.movies || priorityCategory.movies.length === 0) {
-			console.warn('No se encontraron películas en la categoría prioritaria');
-			return;
-		}
+		console.log(categoriesData);
+    // Encontrar la categoría con priority 1
+    const priorityCategory = categoriesData.categories.find(
+      (cat) => cat.priority === 1
+    );
+    if (
+      !priorityCategory ||
+      !priorityCategory.movies ||
+      priorityCategory.movies.length === 0
+    ) {
+      console.warn('No se encontraron películas en la categoría prioritaria');
+      return;
+    }
 
-		const bannerSection = document.querySelector('.background-banner.priority-first');
-		const videoElement = bannerSection.querySelector('video');
-		const sourceElement = videoElement.querySelector('source');
-		const fallbackImg = bannerSection.querySelector('video img');
-		const titleElement = bannerSection.querySelector('.priority-first-movie-title');
-		const playButton = bannerSection.querySelector('.play-button');
-		const movieInfo = bannerSection.querySelector('.movie-info');
+    const bannerSection = document.querySelector(
+      '.background-banner.priority-first'
+    );
+    const videoElement = bannerSection.querySelector('video');
+    const sourceElement = videoElement.querySelector('source');
+    const titleElement = bannerSection.querySelector(
+      '.priority-first-movie-title'
+    );
+    const playButton = bannerSection.querySelector('.play-button');
+    const movieInfo = bannerSection.querySelector('.movie-info');
 
-		let currentMovieIndex = 0;
-		const movies = priorityCategory.movies;
-		let isTransitioning = false; // Bandera para evitar interrupciones
+    let currentMovieIndex = 0;
+    const movies = priorityCategory.movies;
+    let isTransitioning = false; // Bandera para evitar interrupciones
 
-		// Función para cargar una película con transición
-		async function loadMovie(index) {
-			if (isTransitioning) return;
-			isTransitioning = true;
+    // Función para cargar una película con transición
+    async function loadMovie(index) {
+      if (isTransitioning) return;
+      isTransitioning = true;
 
-			const movie = movies[index];
+      const movie = movies[index];
 
-			// Fade out del contenido actual
-			movieInfo.classList.add('title-transition');
-			titleElement.style.opacity = '0';
-			videoElement.style.opacity = '0';
+      // Fade out del contenido actual
+      movieInfo.classList.add('title-transition');
+      titleElement.style.opacity = '0';
+      videoElement.style.opacity = '0';
 
-			// Esperar a que complete la transición de salida
-			await new Promise(resolve => setTimeout(resolve, 200));
+      // Esperar a que complete la transición de salida
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
-			// Actualizar contenido
-			titleElement.textContent = movie.title;
-			playButton.onclick = () => window.location.href = `/content/${movie.slug}`;
+      // Actualizar contenido
+      titleElement.textContent = movie.title;
+      playButton.onclick = () =>
+        (window.location.href = `/content/${movie.slug}`);
 
-			if (movie.trailer) {
-				videoElement.poster = "";
-				sourceElement.src = movie.trailer;
-				videoElement.load();
+      if (movie.trailer) {
+        // Detener video anterior y reiniciar completamente
+        videoElement.pause();
+        videoElement.removeAttribute('poster'); // evitar parpadeo del póster anterior
+        sourceElement.removeAttribute('src');
+        videoElement.load(); // descarga el source anterior inmediatamente
 
-				// Manejar autoplay con mejor control de errores
-				const playPromise = videoElement.play();
+        // Asignar el nuevo póster inmediatamente
+        videoElement.poster = movie.cover;
 
-				if (playPromise !== undefined) {
-					playPromise.catch(e => {
-						console.log('Autoplay bloqueado:', e);
-						videoElement.poster = movie.cover;
-						videoElement.pause();
-					}).finally(() => {
-						videoElement.style.display = 'block';
-					});
-				}
-			} else {
-				videoElement.poster = movie.cover;
-				videoElement.pause();
-				sourceElement.removeAttribute('src');
-				videoElement.load();
-			}
+        // Cargar y reproducir el nuevo trailer con retraso
+        setTimeout(() => {
+          sourceElement.src = movie.trailer;
+          videoElement.load(); // carga el nuevo video
+          const playPromise = videoElement.play();
 
-			// Fade in del nuevo contenido
-			await new Promise(resolve => setTimeout(resolve, 50)); // Pequeña pausa
-			titleElement.style.opacity = '1';
-			videoElement.style.opacity = '1';
+          if (playPromise !== undefined) {
+            playPromise
+              .catch((e) => {
+                console.log('Autoplay bloqueado:', e);
+                videoElement.poster = movie.cover;
+                videoElement.pause();
+              })
+              .finally(() => {
+                videoElement.style.display = 'block';
+              });
+          }
+        }, 1500);
+      } else {
+        videoElement.poster = movie.cover;
+        videoElement.pause();
+        sourceElement.removeAttribute('src');
+        videoElement.load();
+      }
 
-			// Resetear estado de transición después de completar
-			setTimeout(() => {
-				movieInfo.classList.remove('title-transition');
-				isTransitioning = false;
-			}, 500);
-		}
+      // Fade in del nuevo contenido
+      await new Promise((resolve) => setTimeout(resolve, 50)); // Pequeña pausa
+      titleElement.style.opacity = '1';
+      videoElement.style.opacity = '1';
 
-		// Configurar flechas de navegación
-		const leftArrow = document.createElement('button');
-		leftArrow.className = 'scroll-left-banner';
-		leftArrow.innerHTML = '&lt;';
+      // Resetear estado de transición después de completar
+      setTimeout(() => {
+        movieInfo.classList.remove('title-transition');
+        isTransitioning = false;
+      }, 500);
+    }
 
-		const rightArrow = document.createElement('button');
-		rightArrow.className = 'scroll-right-banner';
-		rightArrow.innerHTML = '&gt;';
+    // Configurar flechas de navegación
+    const leftArrow = document.createElement('button');
+    leftArrow.className = 'scroll-left-banner';
+    leftArrow.innerHTML = '&lt;';
 
-		// Añadir flechas al DOM
-		bannerSection.appendChild(leftArrow);
-		bannerSection.appendChild(rightArrow);
+    const rightArrow = document.createElement('button');
+    rightArrow.className = 'scroll-right-banner';
+    rightArrow.innerHTML = '&gt;';
 
-		// Eventos de flechas con manejo de transición
-		leftArrow.addEventListener('click', () => {
-			currentMovieIndex = (currentMovieIndex - 1 + movies.length) % movies.length;
-			loadMovie(currentMovieIndex);
-		});
+    // Añadir flechas al DOM
+    bannerSection.appendChild(leftArrow);
+    bannerSection.appendChild(rightArrow);
 
-		rightArrow.addEventListener('click', () => {
-			currentMovieIndex = (currentMovieIndex + 1) % movies.length;
-			loadMovie(currentMovieIndex);
-		});
+    // Eventos de flechas con manejo de transición
+    leftArrow.addEventListener('click', () => {
+      currentMovieIndex =
+        (currentMovieIndex - 1 + movies.length) % movies.length;
+      loadMovie(currentMovieIndex);
+    });
 
-		// Estilos iniciales para la transición
-		videoElement.style.transition = 'opacity 0.5s ease-in-out';
-		titleElement.style.transition = 'opacity 0.2s ease-in-out';
+    rightArrow.addEventListener('click', () => {
+      currentMovieIndex = (currentMovieIndex + 1) % movies.length;
+      loadMovie(currentMovieIndex);
+    });
 
-		// Cargar la primera película
-		loadMovie(0);
-	} catch(error) {
-		console.log(error);
-	}
+    // Estilos iniciales para la transición
+    videoElement.style.transition = 'opacity 0.5s ease-in-out';
+    titleElement.style.transition = 'opacity 0.2s ease-in-out';
+
+    // Cargar la primera película
+    loadMovie(0);
+  } catch (error) {
+    console.log(error);
+  }
 }

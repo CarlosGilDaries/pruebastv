@@ -157,11 +157,15 @@ async function fetchMovieData() {
       const image = document.getElementById('content-image');
       const title = document.getElementById('content-title');
       const trailer = document.getElementById('trailer');
+      console.log(data);
       if (data.data.movie.trailer != null) {
-        trailer.src = data.data.movie.trailer;
-      } else {
-        trailer.poster = data.data.movie.cover;
+        trailer.classList.add('fade-out');
+        setTimeout(() => {
+          trailer.src = data.data.movie.trailer;
+          trailer.classList.remove('fade-out');
+        }, 1500);
       }
+      trailer.poster = data.data.movie.cover;
       image.src = data.data.movie.cover;
       title.innerHTML = data.data.movie.title;
       document.title = data.data.movie.title + ' - Pruebas TV';
