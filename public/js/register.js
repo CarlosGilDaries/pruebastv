@@ -1,4 +1,7 @@
 import { getIp } from './modules/getIp.js';
+import { selectPlan } from './modules/selectPlan.js';
+
+const planId = localStorage.getItem('plan_id');
 
 document
   .getElementById('register-form')
@@ -20,7 +23,14 @@ document
       'password_confirmation'
     ).value;
     const ip = await getIp();
-      const userAgent = navigator.userAgent;
+    const userAgent = navigator.userAgent;
+    
+    if (password !== password_confirmation) {
+      document.getElementById('error-message').textContent =
+        'Las contraseñas no coinciden';
+      document.getElementById('error-message').style.display = 'block';
+      return;
+    }
 
     try {
       const response = await fetch('/api/register', {
@@ -48,17 +58,15 @@ document
 
       const data = await response.json();
 
-		if(data.success) {
-			localStorage.setItem('auth_token', data.data.auth_token);
-			localStorage.setItem('current_user_email', data.data.user);
+      if (data.success) {
+        localStorage.setItem('auth_token', data.data.auth_token);
+        localStorage.setItem('current_user_email', data.data.user);
 
-			if (data.data.require_device_registration) {
-				window.location.href = '/new-device.html';
-				return;
+        if (data.data.require_device_registration) {
+          selectPlan(planId, data.data.auth_token, true);
+          return;
+        }
       }
-
-      //window.location.href = '/plans.html';
-		}
     } catch (error) {
       console.error('Error en la solicitud:', error);
       document.getElementById('error-message').textContent =
@@ -66,4 +74,3 @@ document
       document.getElementById('error-message').style.display = 'block';
     }
   });
-  

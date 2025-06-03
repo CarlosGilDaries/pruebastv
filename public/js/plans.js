@@ -1,4 +1,4 @@
-import { processRedsysPayment } from './modules/redsys.js';
+import { selectPlan } from "./modules/selectPlan.js";
 
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
@@ -42,8 +42,14 @@ try {
 }
 
 function displayPlans(plans, actualPlan) {
+  const main = document.querySelector('.main');
   const container = document.getElementById('plans-container');
   container.innerHTML = ''; // Limpiar contenedor antes de agregar planes
+  const title = document.createElement('h1');
+  title.innerHTML = "Elige uno  de nuestros planes";
+  title.style.color = 'white';
+  main.appendChild(title);
+  main.appendChild(container);
 
   plans.forEach((plan) => {
     const card = document.createElement('div');
@@ -101,7 +107,7 @@ function displayPlans(plans, actualPlan) {
         button.classList.add('needed-plan');
         button.addEventListener('click', async () => {
           if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-            await selectPlan(plan.id);
+            await selectPlan(plan.id, token);
           }
         });
       }
@@ -116,7 +122,7 @@ function displayPlans(plans, actualPlan) {
           button.classList.add('needed-plan');
           button.addEventListener('click', async () => {
             if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-              await selectPlan(plan.id);
+              await selectPlan(plan.id, token);
             }
           });
         }
@@ -125,11 +131,11 @@ function displayPlans(plans, actualPlan) {
         button.addEventListener('click', async () => {
           if (token != null) {
             if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-              await selectPlan(plan.id);
+              await selectPlan(plan.id, token);
             }
           } else {
-            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-              localStorage.setItem('plan_id', plan.id);
+            if (confirm(`Confirma que quieres el plan ${plan.name}`)) {
+              localStorage.setItem('plan_id', plan.id, true);
               if (plan.price == 0) {
                 window.location.href = '/short-register.html';
               } else {
@@ -144,33 +150,4 @@ function displayPlans(plans, actualPlan) {
     card.appendChild(button);
     container.appendChild(card);
   });
-}
-
-async function selectPlan(planId) {
-  try {
-    const response = await fetch('/api/select-plan', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        plan_id: planId,
-      }),
-    });
-
-    const data = await response.json();
-
-    if (data.success && data.payment_required) {
-      await processRedsysPayment(data);
-    } else if (data.success && !data.payment_required) {
-      window.location.href = '/';
-    } else {
-      console.error('Error al seleccionar plan:', data.message);
-      alert('Error al seleccionar el plan. Por favor, inténtalo de nuevo.');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('Ocurrió un error al procesar tu solicitud.');
-  }
 }

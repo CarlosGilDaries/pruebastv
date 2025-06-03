@@ -13,7 +13,9 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #121212;
+    background: url('/images/cine.jpg');
+    background-size: cover;
+    background-position: center;
 }
 
 /* Payment Confirmation Styles */
@@ -24,6 +26,7 @@ main {
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 .confirmation-icon {

@@ -20,6 +20,7 @@ class RedsysController extends Controller
             $user = Auth::user();
             //$planId = $request->plan_id;
             $plan = Plan::find($request->plan_id);
+            $register = $request->register;
 
             if ($user->plan_id == $plan->id) {
                 return response()->json([
@@ -50,7 +51,6 @@ class RedsysController extends Controller
                 'status' => 'pending',
 				'description' => "Suscripción {$plan->name}"
             ]);
-			
 
             $redsysRequest = $order->createRedsysRequest(
                 productDescription: "Suscripción {$plan->name}",
@@ -60,6 +60,14 @@ class RedsysController extends Controller
             // Extraer datos necesarios
             $requestParams = $redsysRequest->requestParameters;
 
+            if ($register) {
+                $urlOk = 'https://319d-64-225-160-224.ngrok-free.app/need-device-payment.html';
+                //$urlOk =  url('/need-device-payment.html');
+            } else {
+                $urlOk = 'https://319d-64-225-160-224.ngrok-free.app/successful-payment.html';
+                //$urlOk =  url('/successful-payment.html');
+            }
+
             // Crear Ds_MerchantParameters (JSON en Base64)
             $dsMerchantData = [
                 'DS_MERCHANT_AMOUNT' => strval($requestParams->amountInCents),
@@ -68,21 +76,22 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-                'DS_MERCHANT_MERCHANTURL' => 'https://eaba-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
-                'DS_MERCHANT_URLKO' =>'https://eaba-64-225-160-224.ngrok-free.app/unsuccessful-payment.html',
-                'DS_MERCHANT_URLOK' => 'https://eaba-64-225-160-224.ngrok-free.app/successful-payment.html',
-                //https://eaba-64-225-160-224.ngrok-free.app
-                /*'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
+                'DS_MERCHANT_MERCHANTURL' => 'https://319d-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
+                'DS_MERCHANT_URLKO' =>'https://319d-64-225-160-224.ngrok-free.app/unsuccessful-payment.html',
+                'DS_MERCHANT_URLOK' => strval($urlOk),
+            ];
+                /*
                 'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
                 'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
-                'DS_MERCHANT_URLOK' => url('/successful-payment.html'),*/
-            ];
-			
+                'DS_MERCHANT_URLOK' => url('/successful-payment.html'),
+                */
 
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));
 
             // Generar firma
-            $secretKey = env('REDSYS_KEY');
+            $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+            //$secretKey = env('REDSYS_KEY');
+
             $signature = generateSignature(
                 $dsMerchantParameters,
                 $ds_order,

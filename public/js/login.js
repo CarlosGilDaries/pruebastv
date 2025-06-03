@@ -56,7 +56,7 @@ document
     } catch (error) {
       console.error('Error en la solicitud:', error);
       document.getElementById('error-message').textContent =
-        error;
+        'Credenciales incorrectas';
       document.getElementById('error-message').style.display = 'block';
     }
   });

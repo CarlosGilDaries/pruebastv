@@ -104,11 +104,11 @@ h2 {
 }
 
 .remember-forgot {
-    margin: -15px 0 15px;
+    margin: -15px 0 15px 15px;
     font-size:  .9em;
     color: #fff;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 
 .remember-forgot label input {
@@ -163,6 +163,13 @@ button:hover {
 
 .new-device-box h2 {
     padding-bottom: 10px;
+}
+
+#error-message {
+    color: red; 
+    display: none;
+    font-weight: 600;
+    text-align: center;
 }
 
 @media (max-width: 360px) {
