@@ -1,3 +1,5 @@
+import { validateAddForm } from '../modules/validateAddForm.js';
+
 async function editContentForm() {
   let id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
@@ -55,18 +57,18 @@ async function editContentForm() {
 
   async function loadContentData(id) {
     try {
-      const response = await fetch(backendAPI + `edit-view-content/${id}`, {
+      const response = await fetch(`/api/edit-view-content/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const plansResponse = await fetch(backendAPI + 'plans');
-      const genderResponse = await fetch(backendAPI + 'genders', {
+      const plansResponse = await fetch('/api/plans');
+      const genderResponse = await fetch('/api/genders', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      const categoryResponse = await fetch(backendAPI + 'categories', {
+      const categoryResponse = await fetch('/api/dropdown-categories-menu', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -89,20 +91,18 @@ async function editContentForm() {
         currentCategoriesId.push(category.id);
       });
 
-      const plansContainer = document.getElementById(
-        'edit-content-plans-container'
-      );
+      const plansContainer = document.getElementById('plans-container');
       const categoriesContainer = document.getElementById(
-        'edit-content-categories-container'
+        'categories-container'
       );
-      const selectGender = document.getElementById('edit-content-gender_id');
+      const selectGender = document.getElementById('gender_id');
       let plansContainerTextContent = '';
       let categoriesContainerTextContent = '';
 
       plans.forEach((plan) => {
         plansContainerTextContent += `
                                     <label class="checkbox-container">
-                                      <input type="checkbox" name="plans[${plan.id}][id]" value="${plan.id}" id="edit-content-plan-${plan.id}" class="plan-checkbox">
+                                      <input type="checkbox" name="plans[${plan.id}][id]" value="${plan.id}" id="plan-${plan.id}" class="plan-checkbox">
                                       <span class="checkmark"></span>
                                         <p>${plan.name}</p>
                                     </label>
@@ -113,7 +113,7 @@ async function editContentForm() {
       categories.forEach((category) => {
         categoriesContainerTextContent += `
                                      <label class="checkbox-container">
-                                       <input type="checkbox" name="categories[${category.id}][id]" value="${category.id}" id="edit-content-category-${category.id}" class="category-checkbox">
+                                       <input type="checkbox" name="categories[${category.id}][id]" value="${category.id}" id="category-${category.id}" class="category-checkbox">
                                        <span class="checkmark"></span>
                                          <p>${category.name}</p>
                                      </label>
@@ -142,24 +142,29 @@ async function editContentForm() {
 
         if (input) {
           input.addEventListener('change', function (e) {
+            // Verificar primero si hay archivos seleccionados
             const fileName =
-              e.target.files[0]?.name || 'Ningún archivo seleccionado';
+              e.target.files && e.target.files.length > 0
+                ? e.target.files[0].name
+                : 'Ningún archivo seleccionado';
+
             if (nameElement) nameElement.textContent = fileName;
             if (labelElement) labelElement.textContent = fileName;
           });
         }
       };
 
+      setupFileInput('cover', 'cover-name', 'cover-label-text', content.cover);
       setupFileInput(
-        'edit-content-cover',
-        'edit-content-cover-name',
-        'edit-content-cover-label-text',
-        content.cover
+        'tall-cover',
+        'tall-cover-name',
+        'tall-cover-label-text',
+        content.tall_cover
       );
       setupFileInput(
-        'edit-content-trailer',
-        'edit-content-trailer-name',
-        'edit-content-trailer-label-text',
+        'trailer',
+        'trailer-name',
+        'trailer-label-text',
         content.trailer
       );
       setupFileInput('content', 'content-name', 'content-label-text');
@@ -168,7 +173,8 @@ async function editContentForm() {
       setupFileInput('ts2', 'ts2-name', 'ts2-label-text');
       setupFileInput('ts3', 'ts3-name', 'ts3-label-text');
 
-      document.getElementById('edit-content-title').value = content.title;
+      document.getElementById('title').value = content.title;
+      document.getElementById('duration').value = content.duration;
 
       if (
         (content.type =
@@ -179,15 +185,13 @@ async function editContentForm() {
         document.getElementById('external_url').value = content.url;
       }
 
-      CKEDITOR.instances.edit_content_tagline.setData(content.tagline);
-      CKEDITOR.instances.edit_content_overview.setData(content.overview);
+      CKEDITOR.instances.tagline.setData(content.tagline);
+      CKEDITOR.instances.overview.setData(content.overview);
 
-      let checkboxPlans = document.querySelectorAll(
-        '#edit-content-form .plan-checkbox'
-      );
+      let checkboxPlans = document.querySelectorAll('#form .plan-checkbox');
 
       let checkboxCategories = document.querySelectorAll(
-        '#edit-content-form .category-checkbox'
+        '#form .category-checkbox'
       );
 
       checkboxPlans.forEach((chbox) => {
@@ -197,103 +201,100 @@ async function editContentForm() {
         chbox.checked = currentCategoriesId.includes(Number(chbox.value));
       });
 
-      document.getElementById('edit-content-gender_id').value =
-        content.gender_id;
-      document.getElementById('edit-content-pay_per_view').checked =
+      document.getElementById('gender_id').value = content.gender_id;
+      document.getElementById('pay_per_view').checked =
         content.pay_per_view == 1;
-      document.getElementById('edit-content-pay_per_view_price').value =
+      document.getElementById('pay_per_view_price').value =
         content.pay_per_view_price;
-      document.getElementById('edit-content-start_time').value =
-        content.start_time;
-      document.getElementById('edit-content-end_time').value = content.end_time;
+      document.getElementById('start_time').value = content.start_time;
+      document.getElementById('end_time').value = content.end_time;
     } catch (error) {
       console.error('Error cargando contenido:', error);
     }
   }
 
   document
-    .getElementById('edit-content-pay_per_view')
+    .getElementById('pay_per_view')
     .addEventListener('change', function () {
-      const payPerViewFields = document.getElementById(
-        'edit-content-pay_per_view_fields'
-      );
+      const payPerViewFields = document.getElementById('pay_per_view_fields');
       if (this.checked) {
         payPerViewFields.classList.remove('hidden');
       } else {
         payPerViewFields.classList.add('hidden');
-        document.getElementById('edit-content-pay_per_view_price').value = '';
+        document.getElementById('pay_per_view_price').value = '';
       }
     });
 
   document
-    .getElementById('edit-content-form')
+    .getElementById('form')
     .addEventListener('submit', async function (e) {
       e.preventDefault();
+
+      // Validar antes de enviar
+      if (!validateAddForm()) {
+        return;
+      }
 
       const shouldChangeContent = document.getElementById(
         'change-content-file'
       ).checked;
 
-      document.getElementById('edit-content-loading').style.display = 'block';
+      document.getElementById('loading').style.display = 'block';
 
       const formData = new FormData();
-      formData.append(
-        'title',
-        document.getElementById('edit-content-title').value
-      );
-      formData.append(
-        'gender_id',
-        document.getElementById('edit-content-gender_id').value
-      );
+      formData.append('title', document.getElementById('title').value);
+      formData.append('duration', document.getElementById('duration').value);
+      formData.append('gender_id', document.getElementById('gender_id').value);
       formData.append(
         'tagline',
-        CKEDITOR.instances.edit_content_tagline.getData()
+        CKEDITOR.instances.tagline.getData()
       );
       formData.append(
         'overview',
-        CKEDITOR.instances.edit_content_overview.getData()
+        CKEDITOR.instances.overview.getData()
       );
       formData.append(
         'pay_per_view',
-        document.getElementById('edit-content-pay_per_view').checked ? '1' : '0'
+        document.getElementById('pay_per_view').checked ? '1' : '0'
       );
 
-      if (document.getElementById('edit-content-pay_per_view').value) {
+      if (document.getElementById('pay_per_view').value) {
         formData.append(
           'pay_per_view_price',
-          document.getElementById('edit-content-pay_per_view_price').value
+          document.getElementById('pay_per_view_price').value
         );
       }
 
-      if (document.getElementById('edit-content-start_time').value) {
+      if (document.getElementById('start_time').value) {
         formData.append(
           'start_time',
-          document.getElementById('edit-content-start_time').value
+          document.getElementById('start_time').value
         );
       }
 
-      if (document.getElementById('edit-content-end_time').value) {
-        formData.append(
-          'end_time',
-          document.getElementById('edit-content-end_time').value
-        );
+      if (document.getElementById('end_time').value) {
+        formData.append('end_time', document.getElementById('end_time').value);
       }
 
-      const coverInput = document.getElementById('edit-content-cover');
+      const coverInput = document.getElementById('cover');
       if (coverInput && coverInput.files.length > 0) {
         formData.append('cover', coverInput.files[0]);
       } else {
         formData.append('cover', ''); // Envía un valor vacío si no hay archivo
       }
 
+      const tallCoverInput = document.getElementById('tall-cover');
+      if (tallCoverInput && tallCoverInput.files.length > 0) {
+        formData.append('tall_cover', tallCoverInput.files[0]);
+      } else {
+        formData.append('tall_cover', ''); // Envía un valor vacío si no hay archivo
+      }
+
       if (
-        document.getElementById('edit-content-trailer') &&
-        document.getElementById('edit-content-trailer').files[0]
+        document.getElementById('trailer') &&
+        document.getElementById('trailer').files[0]
       ) {
-        formData.append(
-          'trailer',
-          document.getElementById('edit-content-trailer').files[0]
-        );
+        formData.append('trailer', document.getElementById('trailer').files[0]);
       }
 
       // Solo procesar archivos de contenido si el checkbox está marcado
@@ -327,44 +328,26 @@ async function editContentForm() {
         }
       }
 
-      const checkboxes = document.querySelectorAll(
-        '#edit-content-form .plan-checkbox'
-      );
-      let atLeastOneChecked = false;
+      const checkboxes = document.querySelectorAll('#form .plan-checkbox');
 
       checkboxes.forEach((checkbox) => {
         if (checkbox.checked) {
           formData.append('plans[]', checkbox.value);
-          atLeastOneChecked = true;
         }
       });
 
-      if (!atLeastOneChecked) {
-        document.getElementById('edit-content-loading').style.display = 'none';
-        alert('Selecciona al menos un plan');
-        return;
-      }
-
       const categoryCheckboxes = document.querySelectorAll(
-        '#edit-content-form .category-checkbox'
+        '#form .category-checkbox'
       );
-      let atLeastOneCategoryChecked = false;
 
       categoryCheckboxes.forEach((checkbox) => {
         if (checkbox.checked) {
           formData.append('categories[]', checkbox.value);
-          atLeastOneCategoryChecked = true;
         }
       });
 
-      if (!atLeastOneCategoryChecked) {
-        document.getElementById('edit-content-loading').style.display = 'none';
-        alert('Selecciona al menos una categoría');
-        return;
-      }
-
       try {
-        const editResponse = await fetch(backendAPI + `update-content/${id}`, {
+        const editResponse = await fetch(`/api/update-content/${id}`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -372,17 +355,14 @@ async function editContentForm() {
           body: formData,
         });
         const data = await editResponse.json();
+        console.log(data);
 
         if (data.success) {
           // Mostrar mensaje de éxito
-          document.getElementById(
-            'edit-content-success-message'
-          ).style.display = 'block';
+          document.getElementById('success-message').style.display = 'block';
 
           setTimeout(() => {
-            document.getElementById(
-              'edit-content-success-message'
-            ).style.display = 'none';
+            document.getElementById('success-message').style.display = 'none';
           }, 5000);
 
           window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -392,7 +372,7 @@ async function editContentForm() {
       } catch (error) {
         console.log(error);
       } finally {
-        document.getElementById('edit-content-loading').style.display = 'none';
+        document.getElementById('loading').style.display = 'none';
       }
     });
 }

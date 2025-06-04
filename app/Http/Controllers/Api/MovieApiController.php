@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use DataTables;
 use Illuminate\Support\Carbon;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class MovieApiController extends Controller
 {
@@ -168,6 +170,69 @@ class MovieApiController extends Controller
         public function update(Request $request, $id)
     {
         try {
+			$validator = Validator::make($request->all(), [
+                'title' => 'required|string|max:100',
+                'tagline' => 'required|string|max:500',
+                'overview' => 'required|string|max:1000',
+                'cover' => 'nullable|image|mimes:jpg,jpeg|dimensions:width=1024,height=768',
+				'tall_cover' => 'nullable|image|mimes:jpg,jpeg|dimensions:width=500,height=750',
+                'trailer' => 'nullable|file|mimetypes:video/mp4',
+                'content' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'video/mp4';
+                    }),
+                    'mimetypes:video/mp4'
+                ],
+                'm3u8' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:text/plain'
+                ],
+                'ts1' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:application/zip,application/x-zip-compressed'
+                ],
+                'ts2' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:application/zip,application/x-zip-compressed'
+                ],
+                'ts3' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:application/zip,application/x-zip-compressed'
+                ],
+                'gender_id' => 'required|integer|exists:genders,id',
+                'categories' => 'required|array|min:1',
+                'categories.*' => 'integer|exists:categories,id',
+                'duration' => 'required|date_format:H:i:s',
+                'type' => 'nullable|in:video/mp4,application/vnd.apple.mpegurl,url_mp3,url_hls,url_mp4',
+                'change_content_file' => 'sometimes|boolean'
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                    'message' => 'Error en la validación del formulario'
+                ], 422);
+            } 
+
             $movie = Movie::where('id', $id)->first();
             $title = sanitize_html($request->input('title'));
             $overview = sanitize_html($request->input('overview'));
@@ -216,6 +281,13 @@ class MovieApiController extends Controller
                 $coverExtension = $cover->getClientOriginalExtension();
 				$movie->cover = '/file/content-' . $movie->id. '/' . $movie->id . '-img.' . $coverExtension;
 				$cover->storeAs('content/content-' . $movie->id, $movie->id . '-img.' . $coverExtension, 'private');
+            }
+
+			$tall_cover = $request->file('tall_cover');
+            if ($tall_cover) {
+                $tallCoverExtension = $tall_cover->getClientOriginalExtension();
+				$movie->tall_cover = '/file/content-' . $movie->id. '/' . $movie->id . '-tall-img.' . $tallCoverExtension;
+				$tall_cover->storeAs('content/content-' . $movie->id, $movie->id . '-tall-img.' . $tallCoverExtension, 'private');
             }
 
             $trailer = $request->file('trailer');
@@ -332,6 +404,70 @@ class MovieApiController extends Controller
     public function store(Request $request)
     {
         try {
+
+			$validator = Validator::make($request->all(), [
+                'title' => 'required|string|max:100',
+                'tagline' => 'required|string|max:500',
+                'overview' => 'required|string|max:1000',
+                'cover' => 'required|image|mimes:jpg,jpeg|dimensions:width=1024,height=768',
+				'tall_cover' => 'required|image|mimes:jpg,jpeg|dimensions:width=500,height=750',
+                'trailer' => 'nullable|file|mimetypes:video/mp4',
+                'content' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'video/mp4';
+                    }),
+                    'mimetypes:video/mp4'
+                ],
+                'm3u8' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:text/plain'
+                ],
+                'ts1' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:application/zip,application/x-zip-compressed'
+                ],
+                'ts2' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:application/zip,application/x-zip-compressed'
+                ],
+                'ts3' => [
+                    'nullable',
+                    'file',
+                    Rule::requiredIf(function () use ($request) {
+                        return $request->input('change_content_file') && $request->input('type') === 'application/vnd.apple.mpegurl';
+                    }),
+                    'mimetypes:application/zip,application/x-zip-compressed'
+                ],
+                'gender_id' => 'required|integer|exists:genders,id',
+                'categories' => 'required|array|min:1',
+                'categories.*' => 'integer|exists:categories,id',
+                'duration' => 'required|date_format:H:i:s',
+                'type' => 'required|in:video/mp4,application/vnd.apple.mpegurl,url_mp3,url_hls,url_mp4',
+                'change_content_file' => 'sometimes|boolean'
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                    'message' => 'Error en la validación del formulario'
+                ], 422);
+            } 
+
             $title = sanitize_html($request->input('title'));
             $overview = sanitize_html($request->input('overview'));
             $tagline = sanitize_html($request->input('tagline'));
@@ -376,12 +512,18 @@ class MovieApiController extends Controller
 			
 			$movie->url = "temp";
 			$movie->cover = "temp";
+			$movie->tall_cover = "temp";
 			$movie->save();
 
             $cover = $request->file('cover');
             $coverExtension = $cover->getClientOriginalExtension();
             $movie->cover = '/file/content-' . $movie->id. '/' . $movie->id . '-img.' . $coverExtension;
             $cover->storeAs('content/content-' . $movie->id, $movie->id . '-img.' . $coverExtension, 'private');
+
+			$tall_cover = $request->file('tall_cover');
+            $tallCoverExtension = $tall_cover->getClientOriginalExtension();
+            $movie->tall_cover = '/file/content-' . $movie->id. '/' . $movie->id . '-tall-img.' . $tallCoverExtension;
+            $tall_cover->storeAs('content/content-' . $movie->id, $movie->id . '-tall-img.' . $tallCoverExtension, 'private');
 
             $trailer = $request->file('trailer');
 

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('cover')->nullable();
+            $table->string('tall_cover')->nullable();
             $table->string('trailer')->nullable();
             $table->longText('overview');
             $table->longText('tagline');

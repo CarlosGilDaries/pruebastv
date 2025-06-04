@@ -95,7 +95,7 @@
                         ¡Contenido subido con éxito!
                     </div>
                     <!-- Formulario apra añadir contenido -->
-                    <form id="content-form">
+                    <form id="form">
                         <!-- Campos básicos -->
                         <div class="form-group">
                             <label for="title">Título</label>
@@ -116,7 +116,7 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="cover">Imagen de portada</label>
+                            <label for="cover">Imagen Ancha (JPG, 1024x768)</label>
                             <div class="file-input-container">
                                 <label class="file-input-label" for="cover">
                                     <i class="fas fa-image"></i>
@@ -126,6 +126,19 @@
                                 <div id="cover-name" class="file-name"></div>
                             </div>
                             <div id="cover-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tall-cover">Imagen Alta (JPG, 500×750)</label>
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="tall-cover">
+                                    <i class="fas fa-image"></i>
+                                    <span id="tall-cover-label-text">Seleccionar archivo...</span>
+                                </label>
+                                <input type="file" id="tall-cover" name="cover" class="file-input" accept="image/*" required>
+                                <div id="tall-cover-name" class="file-name"></div>
+                            </div>
+                            <div id="tall-cover-error" class="error-message"></div>
                         </div>
                         
                         <div class="form-group">
@@ -145,14 +158,14 @@
                         <div class="form-group">
                             <label for="checkbox-container">Vincular a plan/es</label>
                             <div id="plans-container"></div>
-                            <div id="plan-error" class="error-message"></div>
+                            <div id="plans-container-error" class="error-message"></div>
                         </div>
 
                         <!-- Categorías -->
                         <div class="form-group">
                             <label for="checkbox-container">Vincular a categoría/s</label>
                             <div id="categories-container"></div>
-                            <div id="category-error" class="error-message"></div>
+                            <div id="categories-container-error" class="error-message"></div>
                         </div>
 
                         <!-- Género -->            
@@ -320,6 +333,6 @@
 
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/addContent.js"></script>
+    <script type="module" src="/js/admin/addContent.js"></script>
 </body>
 </html>
