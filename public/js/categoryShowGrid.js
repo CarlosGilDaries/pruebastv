@@ -1,6 +1,5 @@
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
-import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
-import { formatDuration } from './modules/formatDuration.js';
+import { gridShow } from './modules/gridShow.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
@@ -11,7 +10,8 @@ const categoryId = urlParams.get('id');
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
-try {
+gridShow(title, 'category', categoryId);
+/*try {
     const response = await fetch(`/api/category/${categoryId}`);
     const data = await response.json();
     title.innerHTML = data.category.name;
@@ -46,10 +46,16 @@ try {
         info.append(title, gender, duration);
         article.append(link, info);
         node.append(article);
+
+        if (movie.pay_per_view == 1) {
+          const ppv = document.createElement('p');
+          ppv.textContent = `Contenido Pay Per View: ${movie.pay_per_view_price} €`;
+          info.append(ppv);
+        }
     });
 
     setupLoginSignupButtons();
 
 } catch(error) {
     console.log(error);
-}
+}*/

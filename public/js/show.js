@@ -175,6 +175,7 @@ async function fetchMovieData() {
       tagline.innerHTML = data.data.movie.tagline;
       duration.innerHTML = formatDuration(data.data.movie.duration);
       overview.innerHTML = data.data.movie.overview;
+      
 		renderSimilars(data.data.movie, token);
 		
     } else {
