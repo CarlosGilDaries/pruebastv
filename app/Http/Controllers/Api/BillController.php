@@ -35,12 +35,64 @@ class BillController extends Controller
         }
     }
 
-    public function datatable()
+    public function datatable(Request $request)
     {
         try {
-            $bills = Bill::with('billable')->get();
+            $query = Bill::with('billable');
+			
+			// Filtrado por fecha
+            if ($request->filled('min_date')) {
+                $min = Carbon::createFromFormat('d-m-Y', $request->input('min_date'))->startOfDay();
+                $query->where('created_at', '>=', $min);
+            }
+    
+            if ($request->filled('max_date')) {
+                $max = Carbon::createFromFormat('d-m-Y', $request->input('max_date'))->endOfDay();
+                $query->where('created_at', '<=', $max);
+            }
+    
+            // Filtrado por columna específica
+            if ($request->filled('column_filter') && $request->filled('search_term')) {
+                $column = $request->input('column_filter');
+                $searchTerm = $request->input('search_term');
+                
+                // Mapear índice de columna a nombre de campo
+                $columnsMap = [
+                    0 => 'id',
+                    1 => 'bill_number',
+                    2 => 'user_id',
+                    3 => 'billable_id',
+                    4 => 'description',
+                    5 => 'created_at'
+                ];
+                
+                if (isset($columnsMap[$column])) {
+                    if ($column == 4) { // Caso especial para description
+                        $query->whereHas('order', function($q) use ($searchTerm) {
+                            $q->where('description', 'LIKE', "%{$searchTerm}%");
+                        });
+                     } else {
+                        $query->where($columnsMap[$column], 'LIKE', "%{$searchTerm}%");
+                    }
+                }
+            }
+			
+            // Búsqueda global
+            elseif ($request->filled('search_term')) {
+                $searchTerm = $request->input('search_term');
+                $query->where(function($q) use ($searchTerm) {
+                    $q->where('id', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('bill_number', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('user_id', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('billable_id', 'LIKE', "%{$searchTerm}%")
+                      ->orWhereHas('description', function($q) use ($searchTerm) {
+                          $q->where('description', 'LIKE', "%{$searchTerm}%");
+                      });
+                });
+            }    
 
-			return DataTables::of($bills)
+
+			return DataTables::of($query)
 				->addColumn('id', function($bill) {
 					return $bill->id;
 				})

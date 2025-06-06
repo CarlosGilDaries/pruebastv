@@ -166,7 +166,7 @@ async function listOrders() {
             // Redibujar la tabla
             table.draw();
 
-            // Opcional: cerrar datepicker si está abierto
+            // Cerrar datepicker si está abierto
             $('#min-date, #max-date').datepicker('hide');
           });
         },
