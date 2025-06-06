@@ -1,4 +1,4 @@
-import { deleteForm } from "../modules/deleteForm.js";
+import { deleteForm } from '../modules/deleteForm.js';
 import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
 
@@ -11,7 +11,7 @@ async function listOrders() {
   loadOrdersList();
 
   async function loadOrdersList() {
-    try {	
+    try {
       // Generar HTML del contenedor de la tabla
       let tableHTML = `
                 <div class="add-button-container">
@@ -29,7 +29,7 @@ async function listOrders() {
                                 <th>Estado</th>
                                 <th>DNI Usuario</th>
                                 <th>Descripción</th>
-								<th>Fecha</th>
+                                <th>Fecha</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -47,10 +47,26 @@ async function listOrders() {
         serverSide: true,
         order: [[5, 'asc']],
         ajax: {
-          url: api + 'orders/datatable',
+          url: '/api/orders/datatable',
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,
+          },
+          data: function (d) {
+            // Enviar todos los parámetros de filtrado al servidor
+            return {
+              ...d,
+              min_date: $('#min-date').val(),
+              max_date: $('#max-date').val(),
+              column_filter: $('#column-filter').val(),
+              search_term: $('#dt-search-0').val(),
+              column_search: $('#column-filter').val()
+                ? {
+                    index: $('#column-filter').val(),
+                    value: $('.dataTables_filter input').val(),
+                  }
+                : null,
+            };
           },
           error: function (xhr) {
             if (xhr.status === 401) {
@@ -83,7 +99,87 @@ async function listOrders() {
           },
         },
         responsive: true,
+        initComplete: function () {
+          const filterContainer = $(`<div class="filter-container"></div>`);
+
+          // Crear select de columnas para filtrar
+          const columnFilter = $(`
+            <label class="filter" style="margin-left: 20px;">
+              Campo:
+              <select class="filter-input select-filter" id="column-filter" style="width:150px;">
+                <option value="">-- Todos --</option>
+                <option value="0">Nº Pedido</option>
+                <option value="1">Cantidad</option>
+                <option value="2">Estado</option>
+                <option value="3">DNI Usuario</option>
+                <option value="4">Descripción</option>
+                <option value="5">Fecha</option>
+              </select>
+            </label>
+          `);
+
+          // Filtro de fechas
+          const dateFilter =
+            $(`<label class="filter" style="margin-left: 20px;">Desde: <input class="filter-input" type="text" id="min-date" placeholder="dd-mm-yyyy" style="width:120px;"></label>
+              <label class="filter" style="margin-left: 20px;">Hasta: <input class="filter-input" type="text" id="max-date" placeholder="dd-mm-yyyy" style="width:120px;"></label>`);
+
+          // Botón para limpiar filtros
+          const button = $(`<button class="clean-btn">Limpiar</button>`);
+
+          const topContainer = $('.dt-layout-row');
+          const searchInput = $('#dt-search-0');
+          const searchDiv = $('.dt-search');
+
+          filterContainer.append(columnFilter);
+          filterContainer.append(dateFilter);
+
+          // Insertar el filtro justo después del primer hijo
+          filterContainer.insertAfter(topContainer.children().first());
+
+          // Insertar botón después del input de búsqueda
+          button.insertAfter(searchDiv);
+
+          // Configurar datepicker para los campos de fecha
+          $('#min-date, #max-date').datepicker({
+            dateFormat: 'dd-mm-yy',
+            changeMonth: true,
+            changeYear: true,
+          });
+
+          // Manejar cambios en los filtros para redibujar automáticamente
+          $('#column-filter, #min-date, #max-date').on('change', function () {
+            table.draw();
+          });
+
+          // Evento para limpiar filtros
+          button.on('click', function () {
+            // Reiniciar valores
+            searchInput.val(''); // Input de búsqueda principal
+            $('#column-filter').val(''); // Selector de columna
+            $('#min-date').val(''); // Fecha desde
+            $('#max-date').val(''); // Fecha hasta
+
+            // Reiniciar búsquedas en DataTable
+            table.search(''); // Limpiar búsqueda global
+            table.columns().search(''); // Limpiar búsquedas por columna
+
+            // Redibujar la tabla
+            table.draw();
+
+            // Opcional: cerrar datepicker si está abierto
+            $('#min-date, #max-date').datepicker('hide');
+          });
+        },
+
         drawCallback: function () {
+          const searchInput = document.querySelector(
+            '#DataTables_Table_0_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-end > div > label'
+          );
+
+          if (searchInput) {
+            searchInput.innerHTML = 'Filtro:';
+          }
+
           // Configurar eventos después de que se dibuja la tabla
           const links = document.querySelectorAll('.action-item');
           links.forEach((link) => {
@@ -142,7 +238,6 @@ async function listOrders() {
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = `factura-${billData.number}.pdf`;
-                console.log(`factura-${billData.number}.pdf`);
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
@@ -159,18 +254,20 @@ async function listOrders() {
           const message = document.getElementById(
             'delete-order-success-message'
           );
-          deleteForm(
-            authToken,
-            '.plan-order-delete-form',
-            api + 'delete-order',
-            message
-          );
-          deleteForm(
-            authToken,
-            '.ppv-order-delete-form',
-            api + 'delete-ppv-order',
-            message
-          );
+          if (message) {
+            deleteForm(
+              authToken,
+              '.plan-order-delete-form',
+              api + 'delete-order',
+              message
+            );
+            deleteForm(
+              authToken,
+              '.ppv-order-delete-form',
+              api + 'delete-ppv-order',
+              message
+            );
+          }
         },
       });
     } catch (error) {

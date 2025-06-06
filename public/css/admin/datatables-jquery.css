@@ -1,0 +1,107 @@
+.dt-length, .dt-search {
+    display: flex;
+    align-items: center;
+}
+
+.dt-length label, .dt-search label {
+    margin-bottom: 0;
+}
+
+.dt-input {
+    width: auto; /* Asegura que no ocupe el 100% */
+}
+
+.dt-column-header {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+}
+
+.dt-column-title {
+    order: 1 !important;
+}
+
+.dt-column-order {
+    order: 2 !important;
+}
+
+.icon-pagination {
+    font-size: 22px
+}
+
+.filter {
+    margin-bottom: 0 !important;
+}
+
+.filter-input {
+    height: 35px !important;
+}
+
+.select-filter {
+    padding: 0 0 0 20px;
+}
+
+/* Mostrar x registros */
+#DataTables_Table_0_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-start {
+    margin-right: 20px !important;
+}
+
+.clean-btn {
+    width: 100px;
+    margin-left: 60px;
+    background-color: #e94560;
+	font-weight: bold;
+	height: 32px;
+	text-align: center;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+	transition: background-color 0.3s ease;
+}
+
+.clean-btn:hover {
+	background-color: #16213e;
+}
+
+/* JQuery Calendario */
+#ui-datepicker-div > table {
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    border: 1px solid black;
+}
+
+#ui-datepicker-div > table td{
+    text-align: center;
+}
+
+#ui-datepicker-div > table td a{
+    color: black;
+}
+
+/* Contenedor inicial */
+#DataTables_Table_0_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-start {
+    width: 15% !important;
+    margin-right: 0 !important;
+}
+
+/* Contenedor final */
+#DataTables_Table_0_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-end {
+    width: 30% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+}
+
+/* Contenedor de filtros propios */
+#DataTables_Table_0_wrapper > div:nth-child(1) > div.filter-container {
+    display: flex !important; 
+    justify-content: space-evenly !important;
+    width: 55%;
+}
+
+/* Contenedor input búsqueda y su label dentro del contenedor final */
+#DataTables_Table_0_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-end > div {
+    margin-right: 30px !important;
+}

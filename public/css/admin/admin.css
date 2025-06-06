@@ -3,6 +3,7 @@
 @import '/css/footer.css';
 @import '/css/admin/addForm.css';
 @import '/css/admin/list-content.css';
+@import '/css/admin/datatables-jquery.css';
 @import '/css/admin/linkAds.css';
 @import '/css/admin/single-content-with-ads.css';
 @import '/css/admin/stats.css';

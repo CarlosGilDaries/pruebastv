@@ -120,35 +120,3 @@
 #list-genders {
 	max-width: 900px;
 }
-
-.dt-length, .dt-search {
-    display: flex;
-    align-items: center;
-}
-
-.dt-length label, .dt-search label {
-    margin-right: 8px;
-    margin-bottom: 0;
-}
-
-.dt-input {
-    width: auto; /* Asegura que no ocupe el 100% */
-}
-
-.dt-column-header {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-}
-
-.dt-column-title {
-    order: 1 !important;
-}
-
-.dt-column-order {
-    order: 2 !important;
-}
-
-.icon-pagination {
-    font-size: 22px
-}
