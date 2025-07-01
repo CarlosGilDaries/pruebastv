@@ -38,8 +38,13 @@ document
       const userData = await userResponse.json();
 
       if (data.success) {
-		  localStorage.setItem(deviceKey, data.data);
+        localStorage.setItem(deviceKey, data.data);
+        if (userData.data.user.email_verified_at == null) {
+          window.location.href = '/email-verification-required.html';
+          return;
+        } else {
           window.location.href = '/';
+        }
       } 
     } catch (error) {
       console.error('Error en la solicitud:', error);

@@ -18,6 +18,10 @@ use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\PlanOrderController;
 use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
+use App\Http\Controllers\Api\EmailVerificationNotificationController;
+use App\Http\Controllers\Api\VerifyEmailController;
+use App\Http\Middleware\EnsureEmailIsVerified;
+
 //use Illuminate\Support\Facades\Storage;
 
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -44,7 +48,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('check-active-streams', [ActiveStreamApiController::class, 'startStream']);
     Route::put('keep-alive', [ActiveStreamApiController::class, 'keepAlive']);
 
-    Route::get('content/{slug}', [MovieApiController::class, 'show']); 
+    Route::get('content/{slug}', [MovieApiController::class, 'show'])
+        ->middleware(EnsureEmailIsVerified::class);
 	Route::get('edit-view-content/{id}', [MovieApiController::class, 'editShow']); 
     Route::post('add-content', [MovieApiController::class, 'store']);
     Route::delete('delete-content', [MovieApiController::class, 'destroy']);
@@ -119,3 +124,11 @@ Route::get('order/{id}', [PlanOrderController::class, 'show'])
 	->name('plan-order.show');
 Route::get('ppv-order/{id}', [PpvOrderController::class, 'show'])
 	->name('ppv-order.show');
+
+Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
+    ->middleware(['throttle:6,1'])
+    ->name('verification.verify');
+
+Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+                ->middleware(['auth:sanctum', 'throttle:6,1'])
+                ->name('verification.send');

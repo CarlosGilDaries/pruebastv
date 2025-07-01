@@ -191,15 +191,26 @@ class UserApiController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'user' => $user,
-                    'plan' => $user->plan,
-                    'suscription' => $suscription->months
-                ],
-                'message' => 'Usuario obtenido con éxito'
-            ], 200);
+            if ($suscription) {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'user' => $user,
+                        'plan' => $user->plan,
+                        'suscription' => $suscription->months
+                    ],
+                    'message' => 'Usuario obtenido con éxito'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'user' => $user,
+                        'plan' => $user->plan,
+                    ],
+                    'message' => 'Usuario obtenido con éxito'
+                ], 200);
+            }
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());

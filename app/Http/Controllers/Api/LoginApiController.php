@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\Plan;
+use Illuminate\Auth\Events\Registered;
 
 class LoginApiController extends Controller
 {
@@ -51,6 +52,8 @@ class LoginApiController extends Controller
                 'plan_id' => null,
                 'password' => Hash::make($request->password),
             ]);
+
+            event(new Registered($user));
 
             $token = $user->createToken($name . '/' . $email)->plainTextToken;
 

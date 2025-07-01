@@ -73,6 +73,11 @@ async function fetchMovieData() {
     }
 
     const data = await response.json();
+
+    if (data.redirect_url) {
+      window.location.href = data.redirect_url;
+    }
+
     const userData = await userResponse.json();
     const movieId = data.data.movie.id;
 
