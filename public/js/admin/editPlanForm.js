@@ -24,7 +24,9 @@ async function editPlanForm() {
 		const plan = data.plan;
 
 		document.getElementById('edit-plan-name').value = plan.name;
-		document.getElementById('edit-plan-price').value = plan.price;
+      document.getElementById('edit-plan-trimestral-price').value = plan.trimestral_price;
+      document.getElementById('edit-plan-anual-price').value =
+        plan.anual_price;
 		document.getElementById('edit-plan-max-devices').value = plan.max_devices;
 		document.getElementById('edit-plan-max-streams').value = plan.max_streams;
 		document.getElementById('edit-plan-ads').value = plan.ads;
@@ -46,8 +48,12 @@ async function editPlanForm() {
           document.getElementById('edit-plan-name').value
         );
         formData.append(
-          'price',
-          document.getElementById('edit-plan-price').value
+          'trimestral_price',
+          document.getElementById('edit-plan-trimestral-price').value
+        );
+        formData.append(
+          'anual_price',
+          document.getElementById('edit-plan-anual-price').value
         );
         formData.append(
           'max_devices',

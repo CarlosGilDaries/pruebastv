@@ -1,6 +1,6 @@
 import { processRedsysPayment } from "./redsys.js";
 
-export async function selectPlan(planId, token, register = false) {
+export async function selectPlan(planId, token, months = 0, register = false,) {
   try {
     const response = await fetch('/api/select-plan', {
       method: 'POST',
@@ -11,6 +11,7 @@ export async function selectPlan(planId, token, register = false) {
       body: JSON.stringify({
         plan_id: planId,
         register: register,
+        months: months
       }),
     });
 
@@ -19,7 +20,11 @@ export async function selectPlan(planId, token, register = false) {
     if (data.success && data.payment_required) {
       await processRedsysPayment(data);
     } else if (data.success && !data.payment_required) {
-      window.location.href = '/';
+      if (data.require_device_registration) {
+        window.location.href = '/new-device.html';
+      } else {
+        window.location.href = '/';
+      }
     } else {
       console.error('Error al seleccionar plan:', data.message);
       alert('Error al seleccionar el plan. Por favor, inténtalo de nuevo.');

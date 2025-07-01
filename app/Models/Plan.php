@@ -8,6 +8,8 @@ class Plan extends Model
 {
     protected $fillable = [
         'name',
+        'trimestral_price',
+        'anual_price',
         'max_devices',
         'max_streams',
         'ads'

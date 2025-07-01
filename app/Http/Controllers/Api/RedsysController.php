@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Creagia\Redsys\Enums\PayMethod;
+use Carbon\Carbon;
 
 class RedsysController extends Controller
 {
@@ -21,39 +22,54 @@ class RedsysController extends Controller
             //$planId = $request->plan_id;
             $plan = Plan::find($request->plan_id);
             $register = $request->register;
+            $months = $request->months;
 
-            if ($user->plan_id == $plan->id) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'No se puede cambiar al plan que ya se tiene.'
-                ], 422);
-            }
-
-            if ($plan->price == 0) {
+            if ($plan->trimestral_price == 0) {
                 $user->update([
                     'plan_id' => $request->plan_id
                 ]);
 
-                return response()->json([
-                    'success' => true,
-                    'payment_required' => false,
-                    'message' => 'Plan registrado con éxito.',
-                ], 200);
+                if ($register) {
+                    return response()->json([
+                        'success' => true,
+                        'payment_required' => false,
+                        'require_device_registration' => true,
+                        'message' => 'Plan registrado con éxito.',
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'success' => true,
+                        'payment_required' => false,
+                        'require_device_registration' => false,
+                        'message' => 'Plan registrado con éxito.',
+                    ], 200);
+                }
             }
 
 			$ds_order = $this->uniqueCode();
+            if ($months == 3) {
+                $price = $plan->trimestral_price;
+                $info = 'trimestral';
+            } else if ($months == 12) {
+                $price = $plan->anual_price;
+                $info = 'anual';
+            }
 			
+            Log::debug($months);
+            Log::debug($price);
+
             $order = PlanOrder::create([
                 'reference' => $ds_order,
-                'amount' => $plan->price,
+                'months' => $info,
+                'amount' => $price,
                 'user_id' => $user->id,
                 'plan_id' => $plan->id,
                 'status' => 'pending',
-				'description' => "Suscripción {$plan->name}"
+				'description' => "Suscripción {$plan->name} {$info}"
             ]);
 
             $redsysRequest = $order->createRedsysRequest(
-                productDescription: "Suscripción {$plan->name}",
+                productDescription: "Suscripción {$plan->name} {$info}",
                 payMethod: PayMethod::Card,
             );
 
@@ -61,9 +77,9 @@ class RedsysController extends Controller
             $requestParams = $redsysRequest->requestParameters;
 
             if ($register) {
-                $urlOk =  url('/need-device-payment.html');
+                $urlOk =  'https://8d40-64-225-160-224.ngrok-free.app/need-device-payment.html'/*url('/need-device-payment.html')*/;
             } else {
-                $urlOk =  url('/successful-payment.html');
+                $urlOk = 'https://8d40-64-225-160-224.ngrok-free.app/successful-payment.html' /*url('/successful-payment.html')*/;
             }
 
             // Crear Ds_MerchantParameters (JSON en Base64)
@@ -74,7 +90,8 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-                'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
+                //'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
+                'DS_MERCHANT_MERCHANTURL' => 'https://8d40-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
                 'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
                 'DS_MERCHANT_URLOK' => strval($urlOk),
             ];
@@ -82,7 +99,8 @@ class RedsysController extends Controller
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));
 
             // Generar firma
-            $secretKey = env('REDSYS_KEY');
+            //$secretKey = env('REDSYS_KEY');
+            $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
 
             $signature = generateSignature(
                 $dsMerchantParameters,
@@ -188,7 +206,8 @@ class RedsysController extends Controller
             $dsMerchantParameters = $request->input('Ds_MerchantParameters');
             $dsSignature = $request->input('Ds_Signature');
 
-            $secretKey = env('REDSYS_KEY'); // En base64
+            //$secretKey = env('REDSYS_KEY'); // En base64
+            $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
             $merchantParamsDecoded = json_decode(base64_decode($dsMerchantParameters), true);
 
             $dsOrder = $merchantParamsDecoded['Ds_Order'];
@@ -210,7 +229,9 @@ class RedsysController extends Controller
                     	]);
 					}
                     $order->paidWithRedsys();
-					
+                    $user->plan_expires_at = Carbon::now()->addMonths($order->months == 'trimestral' ? 3 : 12);
+                    $user->save();
+
                 } else {
 					Log::debug('Response:' . $intResponse);
 				}

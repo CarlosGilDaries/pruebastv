@@ -30,6 +30,11 @@ class User extends Authenticatable
         'gender',
         'password',
         'plan_id',
+        'plan_expires_at'
+    ];
+
+    protected $casts = [
+        'plan_expires_at' => 'datetime',
     ];
 
     public function plan()

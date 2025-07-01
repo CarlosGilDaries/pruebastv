@@ -47,6 +47,7 @@ return new class extends Migration
          Schema::create('plan_orders', function (Blueprint $table) {
             $table->id();
             $table->string('reference')->unique();
+            $table->enum('months', ['trimestral', 'anual']);
             $table->decimal('amount', 10, 2);
             $table->string('status')->default('pending');
             $table->foreignId('user_id')->constrained();

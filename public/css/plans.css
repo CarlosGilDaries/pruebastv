@@ -129,7 +129,10 @@ section {
 
 .actual-plan {
 	background-color: #2563eb;
-	cursor: auto;
+}
+
+.actual-plan:hover {
+    background-color: #ef4444;
 }
 
 /* Botón para planes no disponibles */

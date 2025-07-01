@@ -14,6 +14,7 @@ class PlanOrder extends Model implements RedsysPayable
 {
     protected $fillable = [
         'reference',
+        'months',
         'amount',
         'status',
         'user_id',
@@ -51,6 +52,6 @@ class PlanOrder extends Model implements RedsysPayable
             'status' => 'paid',
         ]);
 		
-		app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($this);
+		//app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($this);
 	}
 }

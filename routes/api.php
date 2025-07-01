@@ -98,7 +98,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 });
 
-//Route::get('check-device-id', [UserSessionApiController::class, 'checkDeviceId']);
+Route::get('check-device-id', [UserSessionApiController::class, 'checkDeviceId']);
 Route::post('register', [LoginApiController::class, 'register']);
 Route::post('login', [LoginApiController::class, 'login']);
 Route::get('content', [MovieApiController::class, 'index']);

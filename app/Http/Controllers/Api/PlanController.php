@@ -47,8 +47,11 @@ class PlanController extends Controller
 				->addColumn('name', function($plan) {
 					return $plan->name;
 				})
-				->addColumn('price', function($plan) {
-					return $plan->price;
+				->addColumn('trimestral_price', function($plan) {
+					return $plan->trimestral_price;
+				})
+                ->addColumn('anual_price', function($plan) {
+					return $plan->anual_price;
 				})
 				->addColumn('max_devices', function($plan) {
 					return $plan->max_devices;
@@ -83,13 +86,15 @@ class PlanController extends Controller
         try {
             $plan = new Plan();
             $name = sanitize_html($request->input('name'));
-            $price = sanitize_html($request->input('price'));
+            $trimestral_price = sanitize_html($request->input('trimestral_price'));
+            $anual_price = sanitize_html($request->input('anual_price'));
             $max_devices = sanitize_html(($request->input('max_devices')));
             $max_streams = sanitize_html(($request->input('max_streams')));
             $ads = $request->input('ads');
 
             $plan->name = $name;
-            $plan->price = $price;
+            $plan->trimestral_price = $trimestral_price;
+            $plan->anual_price = $anual_price;
             $plan->max_devices = $max_devices;
             $plan->max_streams = $max_streams;
             $plan->ads = $ads;
@@ -143,13 +148,15 @@ class PlanController extends Controller
         try {
             $plan = Plan::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
-            $price = sanitize_html($request->input('price'));
+            $trimestral_price = sanitize_html($request->input('trimestral_price'));
+            $anual_price = sanitize_html($request->input('anual_price'));
             $max_devices = sanitize_html(($request->input('max_devices')));
             $max_streams = sanitize_html(($request->input('max_streams')));
             $ads = $request->input('ads');
 
             $plan->name = $name;
-            $plan->price = $price;
+            $plan->trimestral_price = $trimestral_price;
+            $plan->anual_price = $anual_price;
             $plan->max_devices = $max_devices;
             $plan->max_streams = $max_streams;
             $plan->ads = $ads;

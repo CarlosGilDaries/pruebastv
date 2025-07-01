@@ -3,6 +3,7 @@ import { initPriorityBanner } from './modules/initPriorityBanner.js';
 import { renderCategories } from './modules/renderCategories.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+import { checkDeviceID } from './modules/checkDeviceId.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
@@ -14,6 +15,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (device_id == null && token != null) {
     logOut(token);
   }
+  
+  checkDeviceID(token);
+
   const menu = document.querySelector('.menu');
 
   window.addEventListener('scroll', function () {

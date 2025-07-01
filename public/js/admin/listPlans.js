@@ -30,7 +30,8 @@ async function listPlans() {
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
-                                    <th>Precio</th>
+                                    <th>Precio Trimestral</th>
+                                    <th>Precio Anual</th>
                                     <th>Max Dispositivos</th>
                                     <th>Max Streams</th>
                                     <th>Anuncios</th>
@@ -65,7 +66,8 @@ async function listPlans() {
         columns: [
           { data: 'id', name: 'id' },
           { data: 'name', name: 'name' },
-          { data: 'price', name: 'price' },
+          { data: 'trimestral_price', name: 'trimestral_price' },
+          { data: 'anual_price', name: 'anual_price' },
           { data: 'max_devices', name: 'max_devices' },
           { data: 'max_streams', name: 'max_streams' },
           {

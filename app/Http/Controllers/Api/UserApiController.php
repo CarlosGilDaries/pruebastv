@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Plan;
+use App\Models\PlanOrder;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -185,12 +186,17 @@ class UserApiController extends Controller
     {
         try {
             $user = Auth::user();
+            $suscription = PlanOrder::where('user_id', $user->id)
+                ->where('status', 'paid')
+                ->orderBy('created_at', 'desc')
+                ->first();
 
             return response()->json([
                 'success' => true,
                 'data' => [
                     'user' => $user,
                     'plan' => $user->plan,
+                    'suscription' => $suscription->months
                 ],
                 'message' => 'Usuario obtenido con éxito'
             ], 200);

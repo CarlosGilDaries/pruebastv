@@ -26,7 +26,11 @@ async function initAddPlan() {
         // Crear FormData
         const formAdData = new FormData();
         formAdData.append('name', document.getElementById('add-plan-name').value);
-        formAdData.append('price', document.getElementById('add-plan-price').value);
+        formAdData.append('trimestral_price', document.getElementById('add-plan-trimestral-price').value);
+        formAdData.append(
+          'anual_price',
+          document.getElementById('add-plan-anual-price').value
+        );
           formAdData.append('max_devices', document.getElementById('add-plan-max-devices').value);
           formAdData.append('max_streams', document.getElementById('add-plan-max-streams').value);
           formAdData.append('ads', document.getElementById('add-plan-ads').value);

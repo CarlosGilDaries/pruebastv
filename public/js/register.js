@@ -61,9 +61,10 @@ document
       if (data.success) {
         localStorage.setItem('auth_token', data.data.auth_token);
         localStorage.setItem('current_user_email', data.data.user);
+        const months = localStorage.getItem('months');
 
         if (data.data.require_device_registration) {
-          selectPlan(planId, data.data.auth_token, true);
+          selectPlan(planId, data.data.auth_token, months, true);
           return;
         }
       }

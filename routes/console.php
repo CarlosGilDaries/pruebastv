@@ -11,5 +11,7 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('streams:clean')->everyMinute();
+Schedule::command('app:check-plans-expire-date')->everyMinute();
+Schedule::command('app:plan-expiration-warnings')->everyMinute();
 
 // php artisan schedule:work

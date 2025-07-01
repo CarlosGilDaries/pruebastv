@@ -1,8 +1,9 @@
-import { selectPlan } from "./modules/selectPlan.js";
+import { selectPlan } from './modules/selectPlan.js';
 
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
-const neededPlans = localStorage.getItem('needed_plans');
+const neededPlansRaw = localStorage.getItem('needed_plans');
+const neededPlans = neededPlansRaw ? neededPlansRaw.split(',') : null;
 let userData;
 
 try {
@@ -26,9 +27,17 @@ try {
     data.success &&
     userData.data.plan != null
   ) {
+
+    // Generar una diferencia de 48 horas o menos para la condición de renovar
+    const now = new Date();
+    const expirationDate = new Date(userData.data.user.plan_expires_at);
+    const msDiff = expirationDate - now;
+    const hoursLeft = msDiff / (1000 * 60 * 60);
+    const canRenew = hoursLeft <= 48;
+
     const plans = data.plans;
     const actualPlan = userData.data.plan.name;
-    displayPlans(plans, actualPlan);
+    displayPlans(plans, actualPlan, canRenew);
   } else if (data.success) {
     const plans = data.plans;
     displayPlans(plans, null);
@@ -41,17 +50,18 @@ try {
   console.error('Error en la solicitud:', error);
 }
 
-function displayPlans(plans, actualPlan) {
+function displayPlans(plans, actualPlan, canRenew) {
   const main = document.querySelector('.main');
   const container = document.getElementById('plans-container');
   container.innerHTML = ''; // Limpiar contenedor antes de agregar planes
   const title = document.createElement('h1');
-  title.innerHTML = "Elige uno  de nuestros planes";
+  title.innerHTML = 'Elige uno  de nuestros planes';
   title.style.color = 'white';
   main.appendChild(title);
   main.appendChild(container);
 
   plans.forEach((plan) => {
+    console.log(plan.trimestral_price);
     const card = document.createElement('div');
     card.className = `plan-card ${plan.name.toLowerCase()}`;
 
@@ -60,87 +70,233 @@ function displayPlans(plans, actualPlan) {
       ? '<div class="ads-badge">CON ADS</div>'
       : '<div class="no-ads-badge">SIN ADS</div>';
 
-    // Formatear precio
-    const formattedPrice =
-      plan.price === 0 ? 'Gratis' : `${plan.price}€<span>/mes</span>`;
-
     // Contenido común del card
+    let price = ''
+    if (plan.trimestral_price == 0) {
+      price = '<div class="plan-feature">Gratis</div>';
+    } else {
+      price = `<div class="plan-feature">
+            Precio trimestral: ${plan.trimestral_price} €
+          </div>
+          <div class="plan-feature">
+            Precio anual: ${plan.anual_price} €
+          </div>`;
+      }
+
     card.innerHTML = `
       ${adsBadge}
       <div class="plan-name">${plan.name}</div>
-      <div class="plan-price">${formattedPrice}</div>
       <div class="plan-features">
+          ${price}
           <div class="plan-feature">
-              <i class="fas fa-laptop"></i> ${plan.max_devices} dispositivo${
-      plan.max_devices > 1 ? 's' : ''
-    }
+          ${plan.max_devices} dispositivo${plan.max_devices > 1 ? 's' : ''}
           </div>
           <div class="plan-feature">
-              <i class="fas fa-play"></i> ${plan.max_streams} transmisión${
+          ${plan.max_streams} transmisión${
       plan.max_streams > 1 ? 'es' : ''
     } simultánea${plan.max_streams > 1 ? 's' : ''}
           </div>
           <div class="plan-feature">
-              <i class="fas fa-${plan.ads ? 'ad' : 'ban'}"></i> ${
-      plan.ads ? 'Con anuncios' : 'Sin anuncios'
-    }
+          ${plan.ads ? 'Con anuncios' : 'Sin anuncios'}
           </div>
       </div>
     `;
 
     // Crear botón según condiciones
     const button = document.createElement('button');
+    button.value = 3;
+    const button2 = document.createElement('button');
+    button2.value = 12;
     button.className = 'plan-button';
-    button.id = plan.id;
+    button2.className = 'plan-button';
 
     if (actualPlan) {
       if (plan.name === actualPlan) {
-        button.textContent = 'Plan Actual';
-        button.disabled = true;
-        button.classList.add('actual-plan');
+        console.log(userData.data.user.plan_expires_at);
+        if (userData.data.suscription == 'trimestral') {
+          button.textContent = 'Renovar Plan Actual';
+          button.classList.add('actual-plan');
+          button.addEventListener('click', async () => {
+            if (canRenew) {
+              if (
+                confirm(
+                  `¿Quieres renovar el plan ${plan.name} durante 3 meses?`
+                )
+              ) {
+                await selectPlan(plan.id, token, button.value);
+              }
+            } else {
+              alert('Para poder renovar, el plan debe expirar en 48 horas o menos.')
+            }
+          });
+          button2.textContent = `${plan.name} Anual`;
+          button2.classList.add('needed-plan');
+          button2.addEventListener('click', async () => {
+            if (
+              confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)
+            ) {
+              await selectPlan(plan.id, token, button2.value);
+            }
+          });
+        }
+        else if (userData.data.suscription == 'anual') {
+          button2.textContent = 'Plan Actual';
+          button2.disabled = true;
+          button2.classList.add('actual-plan');
+          button2.addEventListener('click', async () => {
+            if (canRenew) {
+              if (
+                confirm(
+                  `¿Quieres renovar el plan ${plan.name} durante 1 año?`
+                )
+              ) {
+                await selectPlan(plan.id, token, button2.value);
+              }
+            } else {
+              alert(
+                'Para poder renovar, el plan debe expirar en 48 horas o menos.'
+              );
+            }
+          });
+          button.classList.add('needed-plan');
+          button.textContent = `${plan.name} Trimestral`;
+          button.addEventListener('click', async () => {
+            if (
+              confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
+            ) {
+              await selectPlan(plan.id, token, button.value);
+            }
+          });
+        }
       } else if (neededPlans && !neededPlans.includes(plan.name)) {
         button.textContent = 'No aplica';
         button.disabled = true;
         button.classList.add('disabled-plan');
+        if (plan.trimestral_price != 0) {
+          button2.textContent = 'No aplica';
+          button2.disabled = true;
+          button2.classList.add('disabled-plan');
+        }
       } else {
-        button.textContent = 'Seleccionar Plan';
+        if (plan.trimestral_price != 0) {
+          button.textContent = `${plan.name} Trimestral`;
+          button2.textContent = `${plan.name} Anual`;
+        } else {
+          button.textContent = `${plan.name}`;
+        }
         button.classList.add('needed-plan');
         button.addEventListener('click', async () => {
-          if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-            await selectPlan(plan.id, token);
+          if (plan.trimestral_price == 0) {
+            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+              await selectPlan(plan.id, token, button.value);
+            }
+          } else {
+            if (
+              confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
+            ) {
+              await selectPlan(plan.id, token, button.value);
+            }
+          }
+        });
+        button2.classList.add('needed-plan');
+        button2.addEventListener('click', async () => {
+          if (confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)) {
+            await selectPlan(plan.id, token, button2.value);
           }
         });
       }
     } else {
-      if (neededPlans != null) {
+      if (neededPlans) {
         if (!neededPlans.includes(plan.name)) {
           button.textContent = 'No aplica';
           button.disabled = true;
           button.classList.add('disabled-plan');
+          button2.textContent = 'No aplica';
+          button2.disabled = true;
+          button2.classList.add('disabled-plan');
         } else {
-          button.textContent = 'Seleccionar Plan';
+          if (plan.trimestral_price != 0) {
+            button.textContent = `${plan.name} Trimestral`;
+            button2.textContent = `${plan.name} Anual`;
+          } else {
+            button.textContent = `${plan.name}`;
+          }
           button.classList.add('needed-plan');
           button.addEventListener('click', async () => {
-            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-              await selectPlan(plan.id, token);
+            if (plan.trimestral_price == 0) {
+              if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+                await selectPlan(plan.id, token, button.value);
+              }
+            } else {
+              if (
+                confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
+              ) {
+                await selectPlan(plan.id, token, button.value);
+              }
+            }
+          });
+          button2.classList.add('needed-plan');
+          button2.addEventListener('click', async () => {
+            if (
+              confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)
+            ) {
+              await selectPlan(plan.id, token, button2.value);
             }
           });
         }
       } else {
-        button.textContent = 'Seleccionar Plan';
+        if (plan.trimestral_price != 0) {
+          button.textContent = `${plan.name} Trimestral`;
+          button.classList.add('needed-plan');
+          button2.textContent = `${plan.name} Anual`;
+          button2.classList.add('needed-plan');
+        } else {
+          button.textContent = `${plan.name}`;
+          button.classList.add('needed-plan');
+        }
         button.addEventListener('click', async () => {
           if (token != null) {
-            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-              await selectPlan(plan.id, token);
+            if (plan.trimestral_price == 0) {
+              if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+                await selectPlan(plan.id, token, button.value);
+              }
+            } else {
+              if (
+                confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
+              ) {
+                await selectPlan(plan.id, token, button.value);
+              }
             }
           } else {
-            if (confirm(`Confirma que quieres el plan ${plan.name}`)) {
-              localStorage.setItem('plan_id', plan.id, true);
-              if (plan.price == 0) {
+            if (plan.trimestral_price == 0) {
+              if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+                localStorage.setItem('plan_id', plan.id);
                 window.location.href = '/short-register.html';
-              } else {
+              }
+            } else {
+              if (
+                confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
+              ) {
+                localStorage.setItem('plan_id', plan.id);
+                localStorage.setItem('months', 3);
                 window.location.href = '/register.html';
               }
+            }
+          }
+        });
+
+        button2.addEventListener('click', async () => {
+          if (token != null) {
+            if (confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)) {
+              await selectPlan(plan.id, token, button2.value);
+            }
+          } else {
+            if (
+              confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)
+            ) {
+              localStorage.setItem('plan_id', plan.id);
+              localStorage.setItem('months', 12);
+              window.location.href = '/register.html';
             }
           }
         });
@@ -148,6 +304,9 @@ function displayPlans(plans, actualPlan) {
     }
 
     card.appendChild(button);
+    if (button2.textContent != "") {
+      card.appendChild(button2);
+    }
     container.appendChild(card);
   });
 }
