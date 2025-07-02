@@ -43,7 +43,7 @@ section {
     background: linear-gradient(135deg, #1e293b, #0f172a);
     border-radius: 12px;
     padding: 25px;
-    width: calc(50% - 20px);
+    width: calc(25% - 20px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
     transition: transform 0.3s ease;
     color: white;
@@ -55,7 +55,8 @@ section {
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #f8fafc;
+    color: #38bdf8;
+    text-align: center;
 }
 
 .plan-price {
@@ -80,12 +81,7 @@ section {
     margin-bottom: 10px;
     font-size: 15px;
 }
-
-.plan-feature i {
-    margin-right: 10px;
-    color: #38bdf8;
-}
-
+/*
 .ads-badge {
     position: absolute;
     top: 15px;
@@ -109,7 +105,7 @@ section {
     font-size: 12px;
     font-weight: bold;
 }
-
+*/
 .plan-button {
     width: 100%;
     padding: 12px;
@@ -121,6 +117,7 @@ section {
     cursor: pointer;
     transition: background-color 0.3s;
     margin-top: 15px;
+    min-width: 150px;
 }
 
 .needed-plan:hover {
@@ -133,6 +130,15 @@ section {
 
 .actual-plan:hover {
     background-color: #ef4444;
+}
+
+.free-button {
+    position: relative;
+    top: 30px;
+}
+
+.free-button:hover {
+    background-color: #2563eb;
 }
 
 /* Botón para planes no disponibles */

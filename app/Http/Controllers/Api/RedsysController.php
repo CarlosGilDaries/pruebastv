@@ -77,9 +77,9 @@ class RedsysController extends Controller
             $requestParams = $redsysRequest->requestParameters;
 
             if ($register) {
-                $urlOk =  'https://8d40-64-225-160-224.ngrok-free.app/need-device-payment.html'/*url('/need-device-payment.html')*/;
+                $urlOk =  'https://735e-64-225-160-224.ngrok-free.app/need-device-payment.html'/*url('/need-device-payment.html')*/;
             } else {
-                $urlOk = 'https://8d40-64-225-160-224.ngrok-free.app/successful-payment.html' /*url('/successful-payment.html')*/;
+                $urlOk = 'https://735e-64-225-160-224.ngrok-free.app/successful-payment.html' /*url('/successful-payment.html')*/;
             }
 
             // Crear Ds_MerchantParameters (JSON en Base64)
@@ -91,7 +91,7 @@ class RedsysController extends Controller
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
                 //'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
-                'DS_MERCHANT_MERCHANTURL' => 'https://8d40-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
+                'DS_MERCHANT_MERCHANTURL' => 'https://735e-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
                 'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
                 'DS_MERCHANT_URLOK' => strval($urlOk),
             ];

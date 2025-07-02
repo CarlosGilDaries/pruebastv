@@ -2,8 +2,7 @@ import { selectPlan } from './modules/selectPlan.js';
 
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
-const neededPlansRaw = localStorage.getItem('needed_plans');
-const neededPlans = neededPlansRaw ? neededPlansRaw.split(',') : null;
+const neededPlans = localStorage.getItem('needed_plans');
 let userData;
 
 try {
@@ -61,15 +60,14 @@ function displayPlans(plans, actualPlan, canRenew) {
   main.appendChild(container);
 
   plans.forEach((plan) => {
-    console.log(plan.trimestral_price);
     const card = document.createElement('div');
     card.className = `plan-card ${plan.name.toLowerCase()}`;
-
+/*
     // Badge para anuncios
     const adsBadge = plan.ads
       ? '<div class="ads-badge">CON ADS</div>'
       : '<div class="no-ads-badge">SIN ADS</div>';
-
+*/
     // Contenido común del card
     let price = ''
     if (plan.trimestral_price == 0) {
@@ -84,7 +82,7 @@ function displayPlans(plans, actualPlan, canRenew) {
       }
 
     card.innerHTML = `
-      ${adsBadge}
+
       <div class="plan-name">${plan.name}</div>
       <div class="plan-features">
           ${price}
@@ -92,9 +90,9 @@ function displayPlans(plans, actualPlan, canRenew) {
           ${plan.max_devices} dispositivo${plan.max_devices > 1 ? 's' : ''}
           </div>
           <div class="plan-feature">
-          ${plan.max_streams} transmisión${
-      plan.max_streams > 1 ? 'es' : ''
-    } simultánea${plan.max_streams > 1 ? 's' : ''}
+          ${plan.max_streams} pantalla${
+      plan.max_streams > 1 ? 's' : ''
+    }
           </div>
           <div class="plan-feature">
           ${plan.ads ? 'Con anuncios' : 'Sin anuncios'}
@@ -112,43 +110,18 @@ function displayPlans(plans, actualPlan, canRenew) {
 
     if (actualPlan) {
       if (plan.name === actualPlan) {
-        console.log(userData.data.user.plan_expires_at);
-        if (userData.data.suscription == 'trimestral') {
-          button.textContent = 'Renovar Plan Actual';
-          button.classList.add('actual-plan');
-          button.addEventListener('click', async () => {
-            if (canRenew) {
-              if (
-                confirm(
-                  `¿Quieres renovar el plan ${plan.name} durante 3 meses?`
-                )
-              ) {
-                await selectPlan(plan.id, token, button.value);
-              }
-            } else {
-              alert('Para poder renovar, el plan debe expirar en 48 horas o menos.')
-            }
-          });
-          button2.textContent = `${plan.name} Anual`;
-          button2.classList.add('needed-plan');
-          button2.addEventListener('click', async () => {
-            if (
-              confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)
-            ) {
-              await selectPlan(plan.id, token, button2.value);
-            }
-          });
+        if (plan.trimestral_price == 0) {
+          button.textContent = 'Plan Actual';
+          button.classList.add('actual-plan', 'free-button');
+          button.disabled = true;
         }
         else if (userData.data.suscription == 'anual') {
-          button2.textContent = 'Plan Actual';
-          button2.disabled = true;
+          button2.textContent = 'Renovar Plan Actual';
           button2.classList.add('actual-plan');
           button2.addEventListener('click', async () => {
             if (canRenew) {
               if (
-                confirm(
-                  `¿Quieres renovar el plan ${plan.name} durante 1 año?`
-                )
+                confirm(`¿Quieres renovar el plan ${plan.name} durante 1 año?`)
               ) {
                 await selectPlan(plan.id, token, button2.value);
               }
@@ -168,7 +141,36 @@ function displayPlans(plans, actualPlan, canRenew) {
             }
           });
         }
-      } else if (neededPlans && !neededPlans.includes(plan.name)) {
+        else if (userData.data.suscription == 'trimestral') {
+          button.textContent = 'Renovar Plan Actual';
+          button.classList.add('actual-plan');
+          button.addEventListener('click', async () => {
+            if (canRenew) {
+              if (
+                confirm(
+                  `¿Quieres renovar el plan ${plan.name} durante 3 meses?`
+                )
+              ) {
+                await selectPlan(plan.id, token, button.value);
+              }
+            } else {
+              alert(
+                'Para poder renovar, el plan debe expirar en 48 horas o menos.'
+              );
+            }
+          });
+          button2.textContent = `${plan.name} Anual`;
+          button2.classList.add('needed-plan');
+          button2.addEventListener('click', async () => {
+            if (
+              confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)
+            ) {
+              await selectPlan(plan.id, token, button2.value);
+            }
+          });
+        }
+      }
+      if (neededPlans && !neededPlans.includes(plan.name)) {
         button.textContent = 'No aplica';
         button.disabled = true;
         button.classList.add('disabled-plan');
@@ -178,32 +180,38 @@ function displayPlans(plans, actualPlan, canRenew) {
           button2.classList.add('disabled-plan');
         }
       } else {
-        if (plan.trimestral_price != 0) {
+        if (plan.trimestral_price != 0 && actualPlan != plan.name) {
           button.textContent = `${plan.name} Trimestral`;
           button2.textContent = `${plan.name} Anual`;
-        } else {
-          button.textContent = `${plan.name}`;
+        }
+        else if (plan.trimestral_price == 0) {
+          if (actualPlan != plan.name) {
+            button.textContent = `${plan.name}`;
+          }
+          button.classList.add('free-button');
         }
         button.classList.add('needed-plan');
-        button.addEventListener('click', async () => {
-          if (plan.trimestral_price == 0) {
-            if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-              await selectPlan(plan.id, token, button.value);
+        if (actualPlan != plan.name) {
+          button.addEventListener('click', async () => {
+            if (plan.trimestral_price == 0) {
+              if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
+                await selectPlan(plan.id, token, button.value);
+              }
+            } else {
+              if (
+                confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
+              ) {
+                await selectPlan(plan.id, token, button.value);
+              }
             }
-          } else {
-            if (
-              confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
-            ) {
-              await selectPlan(plan.id, token, button.value);
+          });
+          button2.classList.add('needed-plan');
+          button2.addEventListener('click', async () => {
+            if (confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)) {
+              await selectPlan(plan.id, token, button2.value);
             }
-          }
-        });
-        button2.classList.add('needed-plan');
-        button2.addEventListener('click', async () => {
-          if (confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)) {
-            await selectPlan(plan.id, token, button2.value);
-          }
-        });
+          });
+        }
       }
     } else {
       if (neededPlans) {
