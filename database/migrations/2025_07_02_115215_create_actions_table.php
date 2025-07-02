@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('text');
             $table->string('subtext')->nullable();
             $table->string('button_text');
+            $table->string('url');
             $table->timestamps();
         });
     }

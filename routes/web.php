@@ -12,6 +12,7 @@ use App\Http\Controllers\BillPdfController;
 Route::get('/file/{path}', function ($path) {
     $filePathMovie = "content/{$path}";
     $filePathAd = "ads/{$path}";
+    $filePathAction = "actions/{$path}";
 
     if (Storage::disk('private')->exists($filePathMovie)) {
         return response()->file(storage_path("app/private/{$filePathMovie}"));
@@ -19,6 +20,10 @@ Route::get('/file/{path}', function ($path) {
 
     if (Storage::disk('private')->exists($filePathAd)) {
         return response()->file(storage_path("app/private/{$filePathAd}"));
+    }
+
+    if (Storage::disk('private')->exists($filePathAction)) {
+        return response()->file(storage_path("app/private/{$filePathAction}"));
     }
 
     abort(404);

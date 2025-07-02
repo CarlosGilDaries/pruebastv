@@ -59,7 +59,7 @@
                 	</li>
 				</a>
                 <a href="/admin/list-categories.html">
-                	<li data-content="list-categories" class="active">
+                	<li data-content="list-categories">
                         <i class="fa-solid fa-layer-group"></i>
                         <span>Categorías</span>
                 	</li>
@@ -109,7 +109,7 @@
                         <div class="form-group">
                             <label for="order">Orden</label>
                             <select id="order" name="order" required>
-                                <option value="" disabled selected>Selecciona prioridad</option>
+                                <option value="" disabled selected>Selecciona oden</option>
                             </select>
                             <div id="order-error" class="error-message"></div>
                         </div>
@@ -130,6 +130,12 @@
                             <label for="button_text">Texto del botón</label>
                             <input type="text" id="button_text" name="button_text" required>
                             <div id="text-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="url">URL</label>
+                            <input type="text" id="url" name="url" required>
+                            <div id="url-error" class="error-message"></div>
                         </div>
 
                         <div class="form-group">

@@ -7,17 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\Action;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use Illuminate\Support\Facades\Storage;
 
 class ActionController extends Controller
 {
     public function index()
     {
         try {
-            $actions = Action::all();
+            $actions = Action::orderBy('order')->get();
+            $positions = Action::all()->sortBy('order')->pluck('order')->toArray();
 
             return response()->json([
                 'success' => true,
-                'actions' => $actions
+                'actions' => $actions,
+                'positions' => $positions
             ], 200);
 
         } catch (\Exception $e) {
@@ -94,6 +97,7 @@ class ActionController extends Controller
             $text = sanitize_html($request->input('text'));
             $subtext = sanitize_html($request->input('subtext'));
             $button = sanitize_html($request->input('button_text'));
+            $url = sanitize_html($request->input('url'));
 
             $action->name = $name;
             $action->text = $text;
@@ -101,13 +105,7 @@ class ActionController extends Controller
                 $action->subtext = $subtext;
             }
             $action->button_text = $button;
-
-            $picture = $request->file('picture');
-            if ($picture) {
-                $pictureExtension = $picture->getClientOriginalExtension();
-				$action->picture = '/file/action-' . $action->id. '/' . $action->id . '-img.' . $pictureExtension;
-				$picture->storeAs('actions/action-' . $action->id, $action->id . '-img.' . $pictureExtension, 'private');
-            }
+            $action->url = $url;
 
             $newPosition = $request->input('order');
             
@@ -117,6 +115,16 @@ class ActionController extends Controller
                        ->increment('order');
             }
             $action->order = $newPosition;
+
+            $action->picture = "temp";
+            $action->save();
+
+            $picture = $request->file('picture');
+            if ($picture) {
+                $pictureExtension = $picture->getClientOriginalExtension();
+				$action->picture = '/file/action-' . $action->id. '/' . $action->id . '-img.' . $pictureExtension;
+				$picture->storeAs('actions/action-' . $action->id, $action->id . '-img.' . $pictureExtension, 'private');
+            }
 
             $action->save();
             
@@ -144,6 +152,7 @@ class ActionController extends Controller
             $text = sanitize_html($request->input('text'));
             $subtext = sanitize_html($request->input('subtext'));
             $button = sanitize_html($request->input('button_text'));
+            $url = sanitize_html($request->input('url'));
 
             $action->name = $name;
             $action->text = $text;
@@ -151,6 +160,7 @@ class ActionController extends Controller
                 $action->subtext = $subtext;
             }
             $action->button_text = $button;
+            $action->url = $url;
 
             $picture = $request->file('picture');
             if ($picture) {
@@ -207,6 +217,8 @@ class ActionController extends Controller
             $deletedPosition  = $action->order;
             
             $action->delete();
+            $directory = ("actions/action-{$action->id}");
+            Storage::disk('private')->deleteDirectory($directory, true);
             
             // Reordenar las acciones restantes si la eliminada no era la última
             $maxPosition = Action::max('order') ?? 0;           

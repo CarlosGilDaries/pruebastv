@@ -12,6 +12,7 @@ class Action extends Model
         'order',
         'text',
         'subtext',
-        'button_text'
+        'button_text',
+        'url'
     ];
 }

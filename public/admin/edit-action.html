@@ -59,7 +59,7 @@
                 	</li>
 				</a>
                 <a href="/admin/list-categories.html">
-                	<li data-content="list-categories" class="active">
+                	<li data-content="list-categories">
                         <i class="fa-solid fa-layer-group"></i>
                         <span>Categorías</span>
                 	</li>
@@ -99,7 +99,7 @@
                     <div id="success-message" class="success-message">
                         Acción editada con éxito
                     </div>
-                    <form id="edit-category-form">
+                    <form id="edit-action-form">
                         <div class="form-group">
                             <label for="name">Nombre</label>
                             <input type="text" id="name" name="name" required>
@@ -133,13 +133,19 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="url">URL</label>
+                            <input type="text" id="url" name="url" required>
+                            <div id="url-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="picture">Imagen (JPG, 1024x768)</label>
                             <div class="file-input-container">
                                 <label class="file-input-label" for="picture">
                                     <i class="fas fa-image"></i>
                                     <span id="picture-label-text">Seleccionar archivo...</span>
                                 </label>
-                                <input type="file" id="picture" name="picture" class="file-input" accept="image/*" required>
+                                <input type="file" id="picture" name="picture" class="file-input" accept="image/*">
                                 <div id="picture-name" class="file-name"></div>
                             </div>
                             <div id="picture-error" class="error-message"></div>
