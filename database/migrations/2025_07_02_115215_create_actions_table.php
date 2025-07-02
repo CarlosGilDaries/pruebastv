@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('actions', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->integer('order');
             $table->string('picture');
             $table->string('text');
             $table->string('subtext')->nullable();

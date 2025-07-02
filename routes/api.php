@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ActionController;
 use App\Http\Controllers\Api\ActiveStreamApiController;
 //use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('genders/datatable', [GenderController::class, 'datatable']);
     Route::get('bills/datatable', [BillController::class, 'datatable']);
     Route::get('categories/datatable', [CategoryController::class, 'datatable']);
+    Route::get('actions/datatable', [ActionController::class, 'datatable']);
 
     Route::post('new-device', [UserSessionApiController::class, 'store']);
     Route::get('manage-devices', [UserSessionApiController::class, 'manage']);
@@ -96,6 +98,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('add-category', [CategoryController::class, 'store']);
     Route::post('edit-category/{id}', [CategoryController::class, 'update']);
     Route::delete('delete-category', [CategoryController::class, 'destroy']);
+
+    Route::get('actions', [ActionController::class, 'index']);
+    Route::get('action/{id}', [ActionController::class, 'show']);
+    Route::post('add-action', [ActionController::class, 'store']);
+    Route::post('edit-action/{id}', [ActionController::class, 'update']);
+    Route::delete('delete-action', [ActionController::class, 'destroy']);
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
