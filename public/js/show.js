@@ -90,6 +90,7 @@ async function fetchMovieData() {
 
     if (userData.success && data.success) {
       if (userData.data.plan == null) {
+        localStorage.setItem('actual_plan', 'Ninguno');
         localStorage.setItem('needed_plans', neededPlans);
         window.location.href = '/manage-plans.html';
         return;
@@ -163,7 +164,6 @@ async function fetchMovieData() {
       const image = document.getElementById('content-image');
       const title = document.getElementById('content-title');
       const trailer = document.getElementById('trailer');
-      console.log(data);
       if (data.data.movie.trailer != null) {
         trailer.classList.add('fade-out');
         setTimeout(() => {

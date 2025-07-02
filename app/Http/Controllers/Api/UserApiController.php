@@ -63,7 +63,11 @@ class UserApiController extends Controller
 					return $user->gender;
 				})
                 ->addColumn('plan', function($user) {
-					return $user->plan->name;
+                    if ($user->plan) {
+						return $user->plan->name;
+					} else {
+						return 'Sin plan';
+					}
 				})
 				->addColumn('actions', function($user) {
 					return $this->getActionButtons($user);

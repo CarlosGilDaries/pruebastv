@@ -49,11 +49,6 @@ class CheckPlansExpireDate extends Command
             // Eliminar sesiones
             UserSession::whereIn('user_id', $userIds)->delete();
 
-            // Eliminar tokens de acceso
-            PersonalAccessToken::whereIn('tokenable_id', $userIds)
-                ->where('tokenable_type', User::class)
-                ->delete();
-
             // Enviar notificaciones
             foreach ($expiredUsers as $user) {
                 $user->notify(new ExpiredPlan());
