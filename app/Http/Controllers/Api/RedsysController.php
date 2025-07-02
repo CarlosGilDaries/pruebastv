@@ -54,9 +54,6 @@ class RedsysController extends Controller
                 $price = $plan->anual_price;
                 $info = 'anual';
             }
-			
-            Log::debug($months);
-            Log::debug($price);
 
             $order = PlanOrder::create([
                 'reference' => $ds_order,
@@ -77,9 +74,9 @@ class RedsysController extends Controller
             $requestParams = $redsysRequest->requestParameters;
 
             if ($register) {
-                $urlOk =  'https://735e-64-225-160-224.ngrok-free.app/need-device-payment.html'/*url('/need-device-payment.html')*/;
+                $urlOk =  url('/need-device-payment.html');
             } else {
-                $urlOk = 'https://735e-64-225-160-224.ngrok-free.app/successful-payment.html' /*url('/successful-payment.html')*/;
+                $urlOk = url('/successful-payment.html');
             }
 
             // Crear Ds_MerchantParameters (JSON en Base64)
@@ -90,8 +87,7 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-                //'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
-                'DS_MERCHANT_MERCHANTURL' => 'https://735e-64-225-160-224.ngrok-free.app/api/redsys-plan-resp',
+                'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
                 'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
                 'DS_MERCHANT_URLOK' => strval($urlOk),
             ];
@@ -99,8 +95,8 @@ class RedsysController extends Controller
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));
 
             // Generar firma
-            //$secretKey = env('REDSYS_KEY');
-            $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+            $secretKey = env('REDSYS_KEY');
+            //$secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
 
             $signature = generateSignature(
                 $dsMerchantParameters,
@@ -197,11 +193,11 @@ class RedsysController extends Controller
     public function handlePlanRedsysResponse(Request $request) 
     {
         try {
-            Log::debug("Redsys Callback Received", [
+            /*Log::debug("Redsys Callback Received", [
                 'full_request' => $request->all(),
                 'merchant_parameters' => base64_decode($request->input('Ds_MerchantParameters')),
                 'signature' => $request->input('Ds_Signature'),
-            ]);
+            ]);*/
 
             $dsMerchantParameters = $request->input('Ds_MerchantParameters');
             $dsSignature = $request->input('Ds_Signature');
@@ -236,7 +232,7 @@ class RedsysController extends Controller
 					Log::debug('Response:' . $intResponse);
 				}
 
-                Log::debug('Firma válida. Parámetros:', $merchantParamsDecoded);
+                //Log::debug('Firma válida. Parámetros:', $merchantParamsDecoded);
 				
 				return response()->json(['success' => true]);
             } else {
@@ -256,11 +252,11 @@ class RedsysController extends Controller
 	public function handlePpvRedsysResponse(Request $request) 
     {
         try {
-            Log::debug("Redsys Callback Received", [
+            /*Log::debug("Redsys Callback Received", [
                 'full_request' => $request->all(),
                 'merchant_parameters' => base64_decode($request->input('Ds_MerchantParameters')),
                 'signature' => $request->input('Ds_Signature'),
-            ]);
+            ]);*/
 
             $dsMerchantParameters = $request->input('Ds_MerchantParameters');
             $dsSignature = $request->input('Ds_Signature');
@@ -284,7 +280,7 @@ class RedsysController extends Controller
 					Log::debug('Response:' . $intResponse);
 				}
 
-                Log::debug('Firma válida. Parámetros:', $merchantParamsDecoded);
+                //Log::debug('Firma válida. Parámetros:', $merchantParamsDecoded);
 				
 				return response()->json(['success' => true]);
             } else {
