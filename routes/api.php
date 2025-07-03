@@ -99,7 +99,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('edit-category/{id}', [CategoryController::class, 'update']);
     Route::delete('delete-category', [CategoryController::class, 'destroy']);
 
-    Route::get('actions', [ActionController::class, 'index']);
     Route::get('action/{id}', [ActionController::class, 'show']);
     Route::post('add-action', [ActionController::class, 'store']);
     Route::post('edit-action/{id}', [ActionController::class, 'update']);
@@ -121,6 +120,7 @@ Route::get('dropdown-categories-menu', [CategoryController::class, 'dropDownMenu
 Route::get('genders', [GenderController::class, 'index']);
 Route::get('gender/{id}', [GenderController::class, 'show']);
 Route::get('category/{id}', [CategoryController::class, 'show']);
+Route::get('actions', [ActionController::class, 'index']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');

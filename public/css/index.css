@@ -41,7 +41,7 @@
 .index-main {
     display: flex;
     flex-direction: column;
-    gap: 65px;
+    gap: 40px;
     padding-block: 2px;
     background-color: black;
     color: white;
@@ -228,4 +228,76 @@ h1 {
 	transform-origin: center;
 	left: -10px;
     max-width: 250px;
+}
+
+/* Estilos para las llamadas a acción */
+.action-call {
+    margin: 3rem 0;
+    padding: 0 1.5rem;
+}
+
+.action-call-content {
+    background-size: cover;
+    background-position: center;
+    height: 580px;
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.action-call-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 100%);
+}
+
+.action-call-text {
+    position: relative;
+    z-index: 1;
+    max-width: 50%;
+}
+
+.action-call-text h2 {
+    font-size: 3rem;
+    color: #fff;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.action-call-text p {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 1.5rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.action-button {
+    display: inline-block;
+    padding: 0.8rem 2rem;
+    background-color: #ff5500;
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.action-button:hover {
+    background-color: #ff6a00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
