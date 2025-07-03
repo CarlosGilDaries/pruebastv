@@ -10,7 +10,7 @@ export function getVideoContent(data, node) {
     link.href = `/content/${video.slug}`;
 
     const img = document.createElement('img');
-    img.src = video.cover;
+    img.src = video.tall_cover;
     link.append(img);
 
     const info = document.createElement('a');
@@ -31,7 +31,7 @@ export function getVideoContent(data, node) {
 
     if (video.pay_per_view == 1) {
       const ppv = document.createElement('p');
-      ppv.textContent = `Contenido Pay Per View: ${video.pay_per_view_price} €`;
+      ppv.textContent = `Pay Per View: ${video.pay_per_view_price} €`;
       info.append(ppv);
     }
 
