@@ -52,12 +52,6 @@ class MovieApiController extends Controller
         } 
     }
 
-<<<<<<< HEAD
-    public function datatable()
-    {
-        try {
-            $movies = Movie::with('gender')->get();
-=======
     public function datatable($type)
     {
         try {
@@ -72,7 +66,6 @@ class MovieApiController extends Controller
             $movies = Movie::with('gender')
                 ->whereIn('type', $filter)
                 ->get();
->>>>>>> feature/admin-panel-content
 
 			return DataTables::of($movies)
                 ->addColumn('id', function($movie) {
@@ -96,13 +89,8 @@ class MovieApiController extends Controller
                 ->addColumn('created_at', function($movie) {
 					return Carbon::parse($movie->created_at)->format('d-m-Y');
 				})
-<<<<<<< HEAD
-				->addColumn('actions', function($movie) {
-					return $this->getActionButtons($movie);
-=======
 				->addColumn('actions', function($movie) use ($type) {
 					return $this->getActionButtons($movie, $type);
->>>>>>> feature/admin-panel-content
 				})
 				->rawColumns(['actions'])
 				->make(true);
@@ -779,17 +767,11 @@ class MovieApiController extends Controller
 		}
 	}
 
-<<<<<<< HEAD
-    private function getActionButtons($movie)
-=======
     private function getActionButtons($movie, $type)
->>>>>>> feature/admin-panel-content
 	{
 		$id = $movie->id;
         $slug = $movie->slug;
         $title = $movie->title;
-<<<<<<< HEAD
-=======
         if ($type == 'local') {
             $url = 'edit-content.html';
         }
@@ -798,18 +780,13 @@ class MovieApiController extends Controller
         } else {
             $url = 'edit-stream.html';
         }
->>>>>>> feature/admin-panel-content
 
 		return '
 			<div class="actions-container">
 				<button class="actions-button">Acciones</button>
 				<div class="actions-menu">
                 <a href="/content/' . $slug . '" class="action-item">Ver</a>
-<<<<<<< HEAD
-					<a href="/admin/edit-content.html" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
-=======
 					<a href="/admin/' . $url . '" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
->>>>>>> feature/admin-panel-content
 					<a href="/admin/link-content-with-ads.html" class="action-item content-action link-button" data-id="'.$id.'" data-title="'.$title.'" data-slug="'.$slug.'">Anuncios</a>
                     <form class="content-delete-form" data-id="' . $id . '">
 						<input type="hidden" name="content_id" value="' . $id . '">

@@ -28,11 +28,7 @@ use App\Http\Middleware\EnsureEmailIsVerified;
 //use Illuminate\Support\Facades\Storage;
 
 Route::middleware(['auth:sanctum'])->group(function () {
-<<<<<<< HEAD
-	Route::get('content/datatable', [MovieApiController::class, 'datatable']);
-=======
 	Route::get('content/{type}/datatable', [MovieApiController::class, 'datatable']);
->>>>>>> feature/admin-panel-content
     Route::get('orders/datatable', [PlanOrderController::class, 'datatable']);
     Route::get('plans/datatable', [PlanController::class, 'datatable']);
     Route::get('users/datatable', [UserApiController::class, 'datatable']);

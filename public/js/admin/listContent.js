@@ -3,12 +3,6 @@ import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
 
 async function listContent() {
-<<<<<<< HEAD
-  const listContent = document.getElementById('list-content');
-  const api = '/api/';
-  const backendDeleteApi = '/api/delete-content';
-  const authToken = localStorage.getItem('auth_token');
-=======
   const listContent = document.querySelector('.list-content');
   const type = listContent.getAttribute('data-type');
   const api = '/api/';
@@ -28,7 +22,6 @@ async function listContent() {
     title = 'Streams';
     url = 'add-stream.html';
   }
->>>>>>> feature/admin-panel-content
 
   // Cargar los datos al iniciar
   loadContentList();
@@ -39,13 +32,8 @@ async function listContent() {
       // Generar HTML de la tabla
       let tableHTML = `
 					<div class="add-button-container">
-<<<<<<< HEAD
-						<h1><i class="fas fa-film"></i> Lista de Contenido</h1>
-						<a href="/admin/add-content.html" class="add-button add-content">Crear Contenido</a>
-=======
 						<h1><i class="fas fa-film"></i> Lista de ${title}</h1>
 						<a href="/admin/${url}" class="add-button add-content">Crear Contenido</a>
->>>>>>> feature/admin-panel-content
 					</div>
                     <div id="delete-content-success-message" class="success-message" style="margin-bottom: 20px;">
                       ¡Contenido eliminado con éxito!
@@ -77,11 +65,7 @@ async function listContent() {
         processing: true,
         serverSide: true,
         ajax: {
-<<<<<<< HEAD
-          url: api + 'content/datatable',
-=======
           url: api + `content/${type}/datatable`,
->>>>>>> feature/admin-panel-content
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -115,10 +99,7 @@ async function listContent() {
               else if (data == 'url_mp4') return 'URL MP4';
               else if (data == 'url_mp3') return 'URL MP3';
               else if (data == 'youtube') return 'Youtube';
-<<<<<<< HEAD
-=======
               else if (data == 'stream') return 'Stream';
->>>>>>> feature/admin-panel-content
             },
           },
           {

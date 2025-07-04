@@ -65,12 +65,8 @@ async function initContent() {
       type === 'url_hls' ||
       type === 'video/youtube' ||
       type === 'vimeo' ||
-<<<<<<< HEAD
-      type == 'url_mp3'
-=======
       type == 'url_mp3' ||
       type == 'stream'
->>>>>>> feature/admin-panel-content
     ) {
       externalContent.classList.remove('hidden');
       document.getElementById('external_url').required = true;
