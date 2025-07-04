@@ -34,10 +34,22 @@
                         <span>Estadísticas</span>
                 	</li>
 				 </a>
-				<a href="/admin/list-content.html">
-                	<li data-content="list-content" class="active">
+                 <a href="/admin/list-content.html">
+                	<li data-content="list-local-content" class="active">
                         <i class="fas fa-film"></i>
-                        <span>Contenido</span>
+                        <span>Contenido Local</span>
+                	</li>
+				 </a>
+                 <a href="/admin/list-external-content.html">
+                	<li data-content="list-external-content">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>Contenido Externo</span>
+                	</li>
+				 </a>
+                 <a href="/admin/list-streams.html">
+                	<li data-content="list-streams">
+                        <i class="fa-solid fa-tower-broadcast"></i>
+                        <span>Streams</span>
                 	</li>
 				 </a>
 				<a href="/admin/list-ads.html">
@@ -95,7 +107,11 @@
             <div id="content-area">
 
                 <div class="container" id="add-content">                    
+<<<<<<< HEAD
                     <h1><i class="fa-solid fa-upload"></i> Añadir Contenido</h1>
+=======
+                    <h1><i class="fa-solid fa-upload"></i> Añadir Contenido Local</h1>
+>>>>>>> feature/admin-panel-content
                     
                     <div id="success-message" class="success-message">
                         ¡Contenido subido con éxito!
@@ -148,7 +164,11 @@
                         </div>
                         
                         <div class="form-group">
+<<<<<<< HEAD
                             <label for="trailer">Trailer</label>
+=======
+                            <label for="trailer">Trailer (Opcional)</label>
+>>>>>>> feature/admin-panel-content
                             <div class="file-input-container">
                                 <label class="file-input-label" for="trailer">
                                     <i class="fas fa-film"></i>
@@ -189,6 +209,7 @@
                                 <option value="" disabled selected>Selecciona un formato</option>
                                 <option value="video/mp4">MP4</option>
                                 <option value="application/vnd.apple.mpegurl">HLS</option>
+<<<<<<< HEAD
                                 <option value="audio/mpeg">MP3</option>
                                 <option value="iframe">Iframe</option>
 								<option value="video/youtube">URL Youtube</option>
@@ -196,6 +217,9 @@
 								<option value="url_mp3">URL MP3 (Podcast)</option>
                                 <option value="url_mp4">URL MP4</option>
 								<option value="url_hls">URL HLS</option>		
+=======
+                                <option value="audio/mpeg">MP3</option>	
+>>>>>>> feature/admin-panel-content
                             </select>
                             <div id="type-error" class="error-message"></div>
                         </div>

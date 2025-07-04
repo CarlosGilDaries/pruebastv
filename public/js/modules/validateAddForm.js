@@ -78,7 +78,11 @@ export function validateAddForm() {
     const validImageTypes = ['image/jpeg', 'image/jpg'];
 
     if (!validImageTypes.includes(tallCoverFile.type)) {
+<<<<<<< HEAD
       showFormErrors('cover', 'La imagen debe ser un archivo JPG');
+=======
+      showFormErrors('tall-cover', 'La imagen debe ser un archivo JPG');
+>>>>>>> feature/admin-panel-content
       isValid = false;
     } else {
       // Verificar dimensiones
@@ -86,7 +90,11 @@ export function validateAddForm() {
       img.onload = function () {
         if (this.width !== 500 || this.height !== 750) {
           showFormErrors(
+<<<<<<< HEAD
             'cover',
+=======
+            'tall-cover',
+>>>>>>> feature/admin-panel-content
             'La imagen debe tener dimensiones de 500x750px'
           );
           isValid = false;

@@ -9,7 +9,7 @@
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.css"/>
-    <title>Categorías</title>
+    <title>Contenido</title>
 </head>
 <body>
     <div class="menu">
@@ -42,7 +42,7 @@
                 	</li>
 				 </a>
                  <a href="/admin/list-external-content.html">
-                	<li data-content="list-external-content">
+                	<li data-content="list-external-content" class="active">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
                         <span>Contenido Externo</span>
                 	</li>
@@ -107,18 +107,35 @@
         <main class="admin-main">
             <div id="content-area">
 
-                <div class="container list" id="list-categories">
+                <div id="list-external-content" class="list-content container list" data-type="external">
+                    <!-- Listar Contenido -->  
                 </div>
-                
+
             </div>
         </main>
 
     </div>
 
+    <!--<footer class="footer">
+        <div class="footer-container">
+            <div class="info">
+                <a href="#">Centro de ayuda</a>
+                <a href="#">¿Quiénes somos?</a>
+                <a href="#">Cambiar preferencias de cookies</a>
+            </div>
+            <ul class="icons">
+                <a href="#"><li><img src="/images/instagram-53.png" alt="Instagram"></li></a>
+                <a href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
+                <a href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
+                <a href="#"><li><img src="/images/github.png" alt="Github"></li></a> 
+            </ul>
+        </div>
+    </footer>-->
+
     <script src="/ckeditor/ckeditor.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.datatables.net/2.3.1/js/dataTables.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script type="module" src="/js/admin/listCategories.js"></script>
+    <script type="module" src="/js/admin/listContent.js"></script>
 </body>
 </html>

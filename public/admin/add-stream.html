@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/css/admin/admin.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Editar Contenido</title>
+    <title>Añadir Contenido</title>
 </head>
 <body>
     <div class="menu">
@@ -27,7 +27,7 @@
     <div class="admin-container">
 
         <aside class="admin-sidebar">
-            <ul class="admin-menu">
+       		<ul class="admin-menu">
 				<a href="/admin/admin-panel.html">
                 	<li data-content="admin-panel">
                         <i class="fa-solid fa-square-poll-vertical"></i>
@@ -35,7 +35,7 @@
                 	</li>
 				 </a>
                  <a href="/admin/list-content.html">
-                	<li data-content="list-local-content" class="active">
+                	<li data-content="list-local-content">
                         <i class="fas fa-film"></i>
                         <span>Contenido Local</span>
                 	</li>
@@ -47,7 +47,7 @@
                 	</li>
 				 </a>
                  <a href="/admin/list-streams.html">
-                	<li data-content="list-streams">
+                	<li data-content="list-streams" class="active">
                         <i class="fa-solid fa-tower-broadcast"></i>
                         <span>Streams</span>
                 	</li>
@@ -106,16 +106,13 @@
         <main class="admin-main">
             <div id="content-area">
 
-                <div id="content" class="container">
-                    <!-- Editar Contenido -->
-<<<<<<< HEAD
-                    <h1><i class="fas fa-pen"></i> Editar Contenido</h1>
-=======
-                    <h1><i class="fas fa-pen"></i> Editar Contenido Local</h1>
->>>>>>> feature/admin-panel-content
+                <div class="container" id="add-content">                    
+                    <h1><i class="fa-solid fa-upload"></i> Añadir Stream</h1>
+                    
                     <div id="success-message" class="success-message">
-                        Contenido editado con éxito
+                        ¡Contenido subido con éxito!
                     </div>
+                    <!-- Formulario apra añadir contenido -->
                     <form id="form">
                         <!-- Campos básicos -->
                         <div class="form-group">
@@ -135,7 +132,7 @@
                             <textarea id="overview" name="overview" class="ckeditor wysiwyg-textarea"></textarea>
                             <div id="overview-error" class="error-message"></div>
                         </div>
-
+                        
                         <div class="form-group">
                             <label for="cover">Imagen Ancha (JPG, 1024x768)</label>
                             <div class="file-input-container">
@@ -143,7 +140,7 @@
                                     <i class="fas fa-image"></i>
                                     <span id="cover-label-text">Seleccionar archivo...</span>
                                 </label>
-                                <input type="file" id="cover" name="cover" class="file-input" accept="image/*">
+                                <input type="file" id="cover" name="cover" class="file-input" accept="image/*" required>
                                 <div id="cover-name" class="file-name"></div>
                             </div>
                             <div id="cover-error" class="error-message"></div>
@@ -156,14 +153,14 @@
                                     <i class="fas fa-image"></i>
                                     <span id="tall-cover-label-text">Seleccionar archivo...</span>
                                 </label>
-                                <input type="file" id="tall-cover" name="tall-cover" class="file-input" accept="image/*">
+                                <input type="file" id="tall-cover" name="cover" class="file-input" accept="image/*" required>
                                 <div id="tall-cover-name" class="file-name"></div>
                             </div>
                             <div id="tall-cover-error" class="error-message"></div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="trailer">Trailer</label>
+                            <label for="trailer">Trailer (Opcional)</label>
                             <div class="file-input-container">
                                 <label class="file-input-label" for="trailer">
                                     <i class="fas fa-film"></i>
@@ -175,49 +172,47 @@
                             <div id="trailer-error" class="error-message"></div>
                         </div>
 
-                        <br>
-						
-						<!-- Checkbox para cambiar archivo de contenido -->
+                        <!-- Planes -->
                         <div class="form-group">
-                            <label class="checkbox-container">
-                            <input type="checkbox" id="change-content-file" name="change_content_file">
-                            <span class="checkmark"></span>
-                            ¿Quieres cambiar el archivo del contenido?
-                            </label>
+                            <label for="checkbox-container">Vincular a plan/es</label>
+                            <div id="plans-container"></div>
+                            <div id="plans-container-error" class="error-message"></div>
                         </div>
 
-                        <br>
+                        <!-- Categorías -->
+                        <div class="form-group">
+                            <label for="checkbox-container">Vincular a categoría/s</label>
+                            <div id="categories-container"></div>
+                            <div id="categories-container-error" class="error-message"></div>
+                        </div>
+
+                        <!-- Género -->            
+                        <div class="form-group">
+                            <label for="gender_id">Género</label>
+                            <select id="gender_id" name="gender_id" required>
+                                <option value="" disabled selected>Selecciona un género</option>
+                            </select>
+                            <div id="gender_id-error" class="error-message"></div>
+                        </div>
                         
-                        <div id="type-content" class="form-group hidden">
+                        <div class="form-group">
                             <label for="type">Formato del contenido</label>
-                            <select id="type" name="type">
+                            <select id="type" name="type" required>
                                 <option value="" disabled selected>Selecciona un formato</option>
-                                <option value="video/mp4">MP4</option>
-                                <option value="application/vnd.apple.mpegurl">HLS</option>
-<<<<<<< HEAD
-                                <option value="audio/mpeg">MP3</option>
-                                <option value="iframe">Iframe</option>
-								<option value="video/youtube">URL Youtube</option>
-								<option value="vimeo">URL Vimeo</option>
-								<option value="url_mp3">URL MP3 (Podcast)</option>
-                                <option value="url_mp4">URL MP4</option>
-								<option value="url_hls">URL HLS</option>		
-=======
-                                <option value="audio/mpeg">MP3</option>	
->>>>>>> feature/admin-panel-content
+								<option value="stream">Stream</option>		
                             </select>
                             <div id="type-error" class="error-message"></div>
                         </div>
 
                         <!-- Contenido normal -->
-                        <div id="single-content" class="form-group hidden">
+                        <div id="single-content" class="form-group">
                             <label for="content">Archivo de contenido</label>
                             <div class="file-input-container">
                                 <label class="file-input-label" for="content">
                                     <i class="fas fa-file-video"></i>
                                     <span id="content-label-text">Seleccionar archivo...</span>
                                 </label>
-                                <input type="file" id="content" name="content" class="file-input">
+                                <input type="file" id="content" name="content" class="file-input" required>
                                 <div id="content-name" class="file-name"></div>
                             </div>
                             <div id="content-error" class="error-message"></div>
@@ -267,44 +262,21 @@
                             </div>
                             <div id="ts3-error" class="error-message"></div>
                         </div>
-						
-						<!-- Iframe/URL -->
-						<div id="external-content" class="form-group hidden">
-							<div class="form-group">
-								<label for="external_url">URL del contenido</label>
-								<input type="text" id="external_url" name="external_url" placeholder="https://...">
-								<div id="external_url-error" class="error-message"></div>
-							</div>
-						</div>
-
-                        <!-- Planes -->
-                        <div class="form-group">
-                            <label for="checkbox-container">Vincular a plan/es</label>
-                            <div id="plans-container"></div>
-                            <div id="plans-container-error" class="error-message"></div>
+                        
+                        <!-- Iframe/URL -->
+                        <div id="external-content" class="form-group hidden">
+                            <div class="form-group">
+                                <label for="external_url">URL del contenido</label>
+                                <input type="text" id="external_url" name="external_url" placeholder="https://...">
+                                <div id="external_url-error" class="error-message"></div>
+                            </div>
                         </div>
-
-						<!-- Categorías -->
-						<div class="form-group">
-							<label for="checkbox-container">Vincular a categoría/s</label>
-							<div id="categories-container"></div>
-							<div id="categories-container-error" class="error-message"></div>
-						</div>
-
-                        <!-- Género -->            
-                        <div class="form-group">
-                            <label for="gender_id">Género</label>
-                            <select id="gender_id" name="gender_id" required>
-                                <option value="" disabled selected>Selecciona un género</option>
-                            </select>
-                            <div id="gender_id-error" class="error-message"></div>
-                        </div>
-
+                            
                         <div class="form-group">
                             <label for="duration">Duración</label>
                             <input type="time" name="duration" id="duration" step="1">
                             <div id="duration-error" class="error-message"></div>
-                        </div>
+                        </div>                        
                         
                         <!-- Pay Per View -->
                         <div class="form-group">
@@ -332,18 +304,18 @@
                         </div>
                         
                         <div class="form-group">
-                            <label for="nd_time">Fecha/hora de fin (opcional)</label>
+                            <label for="end_time">Fecha/hora de fin (opcional)</label>
                             <input type="datetime-local" id="end_time" name="end_time">
                             <div id="end_time-error" class="error-message"></div>
                         </div>
                         
                         <div class="loading" id="loading">
                             <div class="loading-spinner"></div>
-                            <p>Editando contenido, por favor espere...</p>
+                            <p>Subiendo contenido, por favor espere...</p>
                         </div>
                         
                         <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Editar contenido
+                            <i class="fas fa-upload"></i> Subir Contenido
                         </button>
                     </form>
                 </div>
@@ -371,6 +343,6 @@
 
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script type="module" src="/js/admin/editContentForm.js"></script>
+    <script type="module" src="/js/admin/addContent.js"></script>
 </body>
 </html>
