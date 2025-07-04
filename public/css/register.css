@@ -1,0 +1,163 @@
+@import '/css/commons.css';
+@import '/css/nav.css';
+@import '/css/footer.css';
+@import '/css/login.css';
+
+section {
+    padding-block: 30px;
+}
+
+.register-box {
+    position: relative;
+    width: 400px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.select-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    border-bottom: 2px solid #fff;
+    margin: 30px 0;
+}
+
+#gender {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-size: 1em;
+    color: #fff;
+    padding: 0 35px 0 5px;
+    appearance: none; /* Elimina el estilo por defecto del select */
+}
+
+#gender-icon {
+	bottom: -2px;
+    color: #fff;
+}
+
+#gender option {
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 10px;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+}
+
+#form-steps {
+    position: relative;
+    min-height: 300px;
+    overflow: hidden;
+}
+
+.form-step {
+    position: absolute;
+    width: 100%;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    opacity: 0;
+    transform: translateX(100%);
+    padding: 10px 0;
+}
+
+.form-step.active {
+    position: relative;
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.form-step.next {
+    transform: translateX(100%);
+}
+
+.form-step.prev {
+    transform: translateX(-100%);
+}
+
+.form-navigation {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.form-navigation button {
+    width: 48%;
+    height: 40px;
+    background: #fff;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #000;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.form-navigation button:hover {
+    filter: brightness(0.8);
+}
+
+.form-navigation button:disabled {
+    background: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: not-allowed;
+}
+
+.submit-btn {
+    width: 48% !important;
+}
+
+.login-link {
+    font-size: 0.9em;
+    color: #fff;
+    text-align: center;
+    margin: 20px 0 10px;
+}
+
+.login-link p a {
+    color: #fff;
+    font-weight: 600;
+}
+
+.login-link p a:hover {
+    text-decoration: underline;
+}
+
+#date-label {
+    position: absolute;
+    top: -10px;
+}
+
+/* Para Chrome, Safari, Edge, Opera */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Para Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+@media (max-width: 700px) {
+    .register-box {
+        max-width: 350px;
+    }
+    
+    section {
+        height: auto;
+    }
+}

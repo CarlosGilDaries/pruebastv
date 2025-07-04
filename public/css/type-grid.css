@@ -1,0 +1,109 @@
+@import '/css/commons.css';
+@import '/css/nav.css';
+@import '/css/footer.css';
+
+main {
+    min-height: 84vh;
+    background-color: #121212;
+    padding: 30px 50px;
+}
+
+.main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+    margin: 0 auto;
+}
+
+.box {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 15px;
+    border-radius: 5px;
+    height: 180px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #ddd;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+}
+
+.overlay-text {
+	background: rgba(240, 240, 240, 0.8);
+	padding: 10px 15px;
+	border-radius: 5px;
+	z-index: 1;
+}
+
+.category-name,
+.gender-name {
+    color: black;
+    z-index: 2;
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0;
+    width: 100%;
+    padding: 0 10px;
+    word-wrap: break-word;
+    overflow-wrap: break-word; 
+    text-align: center;
+    position: static;
+	transition: all 0.3s ease;
+}
+
+.box:hover {
+    transform: translateY(-5px);
+}
+
+.box:hover .category-name,
+.box:hover .gender-name{
+    transform: scale(1.05);
+}
+
+.grid-title {
+	color: var(--color-primary);
+	width: 100%;
+}
+
+@media (max-width: 768px) {
+    .main-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+    }
+    
+    .box {
+        height: 150px;
+    }
+    
+    .category-name,
+	.gender-name{
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    main {
+        padding: 20px 15px;
+    }
+    
+    .main-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+    
+    .box {
+        height: 120px;
+    }
+    
+    .category-name,
+	.gender-name{
+        font-size: 1rem;
+        bottom: 15px;
+        left: 15px;
+    }
+}

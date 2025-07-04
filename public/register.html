@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/register.css">
+    <title>Registro</title>
+</head>
+<body>
+    <header>
+        <div class="menu">
+            <nav>
+                <ul class="nav left-nav">
+                    <li class="logo"><a href="/"><img src="/images/logo.png" alt="Streaming logo"></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    
+    <section id="register-section">
+        <div class="register-box">
+            <form id="register-form">
+                <h2>Registro</h2>
+                
+                <!-- Contenedor de los pasos -->
+                <div id="form-steps">
+                    <!-- Paso 1 -->
+                    <div class="form-step active" data-step="1">
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="person"></ion-icon></span>
+                            <input type="text" id="name" required>
+                            <label>Nombre</label>
+                        </div>
+                        
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="people"></ion-icon></span>
+                            <input type="text" id="surnames" required>
+                            <label>Apellidos</label>
+                        </div>
+                        
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="mail"></ion-icon></span>
+                            <input type="email" id="email" required>
+                            <label>Email</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 2 -->
+                    <div class="form-step" data-step="2">
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="home"></ion-icon></span>
+                            <input type="text" id="address" required>
+                            <label>Dirección</label>
+                        </div>
+                        
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="business"></ion-icon></span>
+                            <input type="text" id="city" required>
+                            <label>Ciudad</label>
+                        </div>
+                        
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="earth"></ion-icon></span>
+                            <input type="text" id="country" required>
+                            <label>País</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 3 -->
+                    <div class="form-step" data-step="3">
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="card"></ion-icon></span>
+                            <input type="text" id="dni" required>
+                            <label>DNI/NIE</label>
+                        </div>
+                        
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="calendar"></ion-icon></span>
+                            <input type="number" id="birth-year" required>
+                            <label id="birth-year-label">Año de nacimiento</label>
+                        </div>
+                        
+                        <div class="input-box select-box">
+                            <span class="icon" id="gender-icon"><ion-icon name="transgender"></ion-icon></span>
+                            <select id="gender" required>
+                                <option value="" disabled selected hidden>Género</option>
+                                <option value="man">Hombre</option>
+                                <option value="woman">Mujer</option>
+                                <option value="others">Otros</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Paso 4 -->
+                    <div class="form-step" data-step="4">
+                        <div class="input-box">
+                            <span class="icon" id="phone-icon"><ion-icon name="call-outline"></ion-icon></span>
+                            <input type="number" id="phone">
+                            <label id="phone-label">Teléfono (Opcional)</label>
+                        </div>
+
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                            <input type="password" id="password" required>
+                            <label>Contraseña</label>
+                        </div>
+                        
+                        <div class="input-box">
+                            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                            <input type="password" id="password_confirmation" required>
+                            <label>Confirmar contraseña</label>
+                        </div>
+                    </div>
+                </div>
+
+                <p id="error-message" style="color: red; display: none; font-weight: bold;"></p>
+                
+                <!-- Navegación del formulario -->
+                <div class="form-navigation">
+                    <button type="button" class="prev-btn" disabled>Anterior</button>
+                    <button type="button" class="next-btn">Siguiente</button>
+                    <button type="submit" class="submit-btn" style="display: none;">Pagar Plan</button>
+                </div>
+                
+                <div class="login-link">
+                    <p>¿Ya tienes cuenta? <a href="/login">Inicia Sesión</a></p>
+                </div>
+                
+            </form>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="info">
+                <a href="#">Centro de ayuda</a>
+                <a href="#">¿Quiénes somos?</a>
+                <a href="#">Cambiar preferencias de cookies</a>
+            </div>
+            <ul class="icons">
+                <a href="#"><li><img src="/images/instagram-53.png" alt="Instagram"></li></a>
+                <a href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
+                <a href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
+                <a href="#"><li><img src="/images/github.png" alt="Github"></li></a> 
+            </ul>
+        </div>
+    </footer>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.js"></script>
+    <script src="/js/multiStepForm.js"></script>
+    <script type="module" src="/js/register.js"></script>
+</body>
+</html>

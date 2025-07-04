@@ -1,0 +1,123 @@
+@import 'commons.css';
+@import 'nav.css';
+@import 'footer.css';
+
+.menu {
+  width: 100%;
+  padding-inline: 60px;
+  background-color: black;
+}
+
+main {
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url('/images/cine.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.payment-error {
+    max-width: 600px;
+    padding: 2rem;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.error-icon {
+    margin-bottom: 1.5rem;
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0%, 100% {transform: translateX(0);}
+    20%, 60% {transform: translateX(-10px);}
+    40%, 80% {transform: translateX(10px);}
+}
+
+.payment-error h1 {
+    font-size: 2rem;
+    color: #f44336;
+    margin-bottom: 1rem;
+    font-weight: 900;
+}
+
+.error-message {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.error-details {
+    background-color: #ffeeee;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    border: 1px solid #ffdddd;
+}
+
+.error-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.error-primary-button {
+    background-color: #f44336;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: 2px solid #f44336;
+}
+
+.error-primary-button:hover {
+    background-color: #d32f2f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor:pointer;
+}
+
+.error-secondary-button {
+    background-color: transparent;
+    color: #f44336;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    border: 2px solid #f44336;
+}
+
+.error-secondary-button:hover {
+    background-color: #ffebee;
+    transform: translateY(-2px);
+}
+
+.error-primary-button:disabled:hover {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+@media (max-width: 768px) {
+    .payment-error {
+        padding: 1.5rem;
+        margin: 1rem;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+    }
+    
+    .error-primary-button, .error-secondary-button {
+        width: 100%;
+    }
+}
