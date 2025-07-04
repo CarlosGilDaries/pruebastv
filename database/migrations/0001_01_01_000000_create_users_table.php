@@ -26,6 +26,7 @@ return new class extends Migration
             $table->foreignId('plan_id')->nullable()->constrained();
             $table->timestamp('plan_expires_at')->nullable();
             $table->enum('rol', ['user', 'admin']);
+            $table->foreignId('role_id')->nullable()->constrained();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

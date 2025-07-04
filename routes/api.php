@@ -20,6 +20,8 @@ use App\Http\Controllers\Api\PlanOrderController;
 use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
+use App\Http\Controllers\Api\PermissionController;
+use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Middleware\EnsureEmailIsVerified;
 
@@ -103,6 +105,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('add-action', [ActionController::class, 'store']);
     Route::post('edit-action/{id}', [ActionController::class, 'update']);
     Route::delete('delete-action', [ActionController::class, 'destroy']);
+
+    Route::get('roles', [RoleController::class, 'index']);
+    Route::get('role/{id}', [RoleController::class, 'show']);
+    Route::post('add-role', [RoleController::class, 'store']);
+    Route::post('role/{id}/permissions', [RoleController::class, 'assignPermissions']);
+
+    Route::post('user/{id}/role', [UserApiController::class, 'setRole']);
+
+    Route::get('permissions', [PermissionController::class, 'index']);
+    Route::get('permission/{id}', [PermissionController::class, 'show']);
+    Route::post('add-permission', [PermissionController::class, 'store']);
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);

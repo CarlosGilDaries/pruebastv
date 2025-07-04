@@ -195,13 +195,20 @@ class UserApiController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->first();
 
+            if ($user->role) {
+                $permissions = $user->role->permissions->pluck('name');
+            } else {
+                $permissions = 'none';
+            }
+
             if ($suscription) {
                 return response()->json([
                     'success' => true,
                     'data' => [
                         'user' => $user,
                         'plan' => $user->plan,
-                        'suscription' => $suscription->months
+                        'suscription' => $suscription->months,
+                        'permissions' => $permissions
                     ],
                     'message' => 'Usuario obtenido con éxito'
                 ], 200);
@@ -211,12 +218,34 @@ class UserApiController extends Controller
                     'data' => [
                         'user' => $user,
                         'plan' => $user->plan,
+                        'permissions' => $permissions
                     ],
                     'message' => 'Usuario obtenido con éxito'
                 ], 200);
             }
 
         } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function setRole(Request $request, $userId)
+    {
+        try {
+            $user = User::where('id', $userId)->first();
+            $user->role_id = $request->input('role_id');
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Rol asignado con éxito',
+            ], 200);
+
+        } catch (\exception $e) {
             Log::error('Error: ' . $e->getMessage());
 
             return response()->json([

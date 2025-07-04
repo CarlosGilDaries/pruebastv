@@ -30,6 +30,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'gender',
         'password',
         'plan_id',
+        'role_id',
         'plan_expires_at',
         'email_verified_at'
     ];
@@ -71,6 +72,16 @@ class User extends Authenticatable implements MustVerifyEmail
 	    public function bills() 
     {
         return $this->hasMany(Bill::class);
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
+    }
+
+    public function permissions()
+    {
+        return $this->role->permissions();
     }
 
     /**
