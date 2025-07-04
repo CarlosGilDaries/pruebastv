@@ -37,6 +37,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('bills/datatable', [BillController::class, 'datatable']);
     Route::get('categories/datatable', [CategoryController::class, 'datatable']);
     Route::get('actions/datatable', [ActionController::class, 'datatable']);
+    Route::get('roles/datatable', [RoleController::class, 'datatable']);
 
     Route::post('new-device', [UserSessionApiController::class, 'store']);
     Route::get('manage-devices', [UserSessionApiController::class, 'manage']);
@@ -109,7 +110,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('roles', [RoleController::class, 'index']);
     Route::get('role/{id}', [RoleController::class, 'show']);
     Route::post('add-role', [RoleController::class, 'store']);
+    Route::post('edit-role/{id}', [RoleController::class, 'update']);
     Route::post('role/{id}/permissions', [RoleController::class, 'assignPermissions']);
+    Route::delete('delete-role', [RoleController::class, 'destroy']);
 
     Route::post('user/{id}/role', [UserApiController::class, 'setRole']);
 

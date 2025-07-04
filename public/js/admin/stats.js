@@ -1,5 +1,5 @@
 const token = localStorage.getItem('auth_token');
-const backendAPI = 'https://pruebastv.kmc.es/api/';
+const backendAPI = '/api/';
 
 document.addEventListener('DOMContentLoaded', function() {
   // Función para hacer peticiones con token
