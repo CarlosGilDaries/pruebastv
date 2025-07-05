@@ -75,6 +75,9 @@ async function listBills() {
             if (xhr.status === 401) {
               alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
               window.location.href = '/login';
+            } else if (xhr.status === 403) {
+              alert('No tienes los permisos necesarios.');
+              window.location.href = '/';
             }
           },
         },

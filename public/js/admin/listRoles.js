@@ -17,7 +17,7 @@ async function listRoles() {
       // Generar HTML de la tabla
       let tableHTML = `
                     <div class="add-button-container">
-                        <h1><i class="fas fa-rocket"></i> Lista de Roles</h1>
+                        <h1><i class="fa-solid fa-users"></i> Lista de Roles</h1>
                         <a href="/admin/add-role.html" class="add-button add-content">Crear Rol</a>
                     </div>
                     <div id="delete-role-success-message" class="success-message" style="margin-bottom: 20px;">
@@ -54,6 +54,9 @@ async function listRoles() {
             if (xhr.status === 401) {
               alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
               window.location.href = '/login';
+            } else if (xhr.status === 403) {
+              alert('No tienes los permisos necesarios.');
+              window.location.href = '/';
             }
           },
         },

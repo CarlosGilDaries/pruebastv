@@ -31,10 +31,10 @@ async function listUsers() {
 				  <th>ID</th>
 				  <th>Nombre Completo</th>
 				  <th>Email</th>
-				  <th>Ciudad</th>
-				  <th>País</th>
 				  <th>Edad</th>
 				  <th>Género</th>
+          <th>Tipo</th>
+				  <th>Rol</th>
 				  <th>Plan</th>
 				  <th>Acciones</th>
 				</tr>
@@ -61,6 +61,9 @@ async function listUsers() {
             if (xhr.status === 401) {
               alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
               window.location.href = '/login';
+            } else if (xhr.status === 403) {
+              alert('No tienes los permisos necesarios.');
+              window.location.href = '/';
             }
           },
         },
@@ -68,8 +71,6 @@ async function listUsers() {
           { data: 'id', name: 'id' },
           { data: 'full_name', name: 'full_name' },
           { data: 'email', name: 'email' },
-          { data: 'city', name: 'city' },
-          { data: 'country', name: 'country' },
           {
             data: 'age',
             name: 'age',
@@ -87,6 +88,8 @@ async function listUsers() {
               else return 'Otros';
             },
           },
+          { data: 'rol', name: 'rol' },
+          { data: 'role', name: 'role' },
           { data: 'plan', name: 'plan' },
           {
             data: 'actions',

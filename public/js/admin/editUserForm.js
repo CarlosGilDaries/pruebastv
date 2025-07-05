@@ -42,8 +42,8 @@ async function editUserForm() {
                 document.getElementById("edit-user-country").value
             );
             formData.append(
-                "birthday",
-                document.getElementById("edit-user-birthday").value
+                "birth_year",
+                document.getElementById("edit-user-birth-year").value
             );
             formData.append(
                 "gender",
@@ -53,14 +53,21 @@ async function editUserForm() {
                 "plan",
                 document.getElementById("edit-user-plan").value
             );
-		    formData.append(
-                "password",
-                document.getElementById("edit-user-password").value
-            );
             formData.append(
-                "password_confirmation",
-                document.getElementById("edit-user-password-confirmation").value
+              'role',
+              document.getElementById('edit-user-role').value
             );
+            if (document.getElementById('edit-user-password').value) {
+                formData.append(
+                    'password',
+                    document.getElementById('edit-user-password').value
+                );
+                formData.append(
+                  'password_confirmation',
+                  document.getElementById('edit-user-password-confirmation')
+                    .value
+                );
+            }
 
             try {
                 const editResponse = await fetch(
@@ -105,10 +112,17 @@ async function editUserForm() {
                 },
             });
 
+            const rolsResponse = await fetch('/api/roles' , {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
             const result = await response.json();
             const user = result.data.user;
             const plans = result.data.plans;
-			console.log(user);
+            const rolesData = await rolsResponse.json();
+            const roles = rolesData.roles;
 
             document.getElementById("edit-user-name").value = user.name || "";
             document.getElementById("edit-user-surnames").value =
@@ -120,8 +134,8 @@ async function editUserForm() {
             document.getElementById("edit-user-city").value = user.city || "";
             document.getElementById("edit-user-country").value =
                 user.country || "";
-            document.getElementById("edit-user-birthday").value =
-                user.birthday || "";
+            document.getElementById("edit-user-birth-year").value =
+                user.birth_year || "";
             document.getElementById("edit-user-gender").value =
                 user.gender || "";
 
@@ -139,6 +153,23 @@ async function editUserForm() {
                     option.selected = true;
                 }
                 planSelect.appendChild(option);
+            });
+
+            const roleSelect = document.getElementById('edit-user-role');
+            roleSelect.innerHTML = '';
+            const rolNulo = document.createElement('option');
+            rolNulo.value = 0;
+            rolNulo.text = 'Sin rol';
+            roleSelect.appendChild(rolNulo);
+
+            roles.forEach((role) => {
+              const option = document.createElement('option');
+              option.value = role.id;
+              option.text = role.name;
+              if (user.role?.id === role.id) {
+                option.selected = true;
+              }
+              roleSelect.appendChild(option);
             });
         } catch (error) {
             console.error("Error cargando datos del usuario:", error);

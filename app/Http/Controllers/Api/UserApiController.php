@@ -38,7 +38,7 @@ class UserApiController extends Controller
     public function datatable()
     {
         try {
-            $users = User::with('plan')->get();
+            $users = User::with('plan', 'role')->get();
 
 			return DataTables::of($users)
 				->addColumn('id', function($user) {
@@ -50,17 +50,21 @@ class UserApiController extends Controller
 				->addColumn('email', function($user) {
 					return $user->email;
 				})
-				->addColumn('city', function($user) {
-					return $user->city;
-				})
-				->addColumn('country', function($user) {
-					return $user->country;
-				})
                 ->addColumn('age', function($user) {
-					return $user->birthday;
+					return $user->birth_year;
 				})
                 ->addColumn('gender', function($user) {
 					return $user->gender;
+				})
+                ->addColumn('rol', function($user) {
+					return $user->rol;
+				})
+                ->addColumn('role', function($user) {
+                    if ($user->role) {
+                        return $user->role->name;
+                    } else {
+                        return 'N/A';
+                    }		
 				})
                 ->addColumn('plan', function($user) {
                     if ($user->plan) {
@@ -91,7 +95,7 @@ class UserApiController extends Controller
     public function show(string $id)
     {
         try {
-            $user = User::with(['plan'])
+            $user = User::with(['plan', 'role'])
                 ->where('id', $id)->first();
             $plans = Plan::all();
 
@@ -128,7 +132,9 @@ class UserApiController extends Controller
             $address = sanitize_html($request->input('address'));
             $city = sanitize_html($request->input('city'));
             $country = sanitize_html($request->input('country'));
+            if ($request->input('password')) {
             $password = sanitize_html($request->input('password'));
+            }
 			
             $user->name = $name;
             $user->surnames = $surnames;
@@ -137,12 +143,21 @@ class UserApiController extends Controller
             $user->address = $address;
             $user->city = $city;
             $user->country = $country;
-            $user->birthday = $request->input('birthday');
+            $user->birth_year = $request->input('birth_year');
 			if ($request->input('plan') != 0) {
             	$user->plan_id = $request->input('plan');
-			}
+			} 
+            if ($request->input('role') != 0) {
+            	$user->role_id = $request->input('role');
+                $user->rol = 'admin';
+			} else {
+                $user->role_id = null;
+                $user->rol = 'user';
+            }
             $user->gender = $request->input('gender');
-			$user->password = Hash::make($password);
+            if ($request->input('password')) {
+			    $user->password = Hash::make($password);
+            }
             $user->save();
 
             return response()->json([
@@ -189,7 +204,7 @@ class UserApiController extends Controller
     public function getCurrentUser(Request $request) 
     {
         try {
-            $user = Auth::user();
+            $user = Auth::user()->load('role');
             $suscription = PlanOrder::where('user_id', $user->id)
                 ->where('status', 'paid')
                 ->orderBy('created_at', 'desc')

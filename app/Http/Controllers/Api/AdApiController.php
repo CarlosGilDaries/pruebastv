@@ -303,7 +303,7 @@ class AdApiController extends Controller
 				<button class="actions-button">Acciones</button>
 				<div class="actions-menu">
                 <a href="player/ad/' . $slug . '" class="action-item">Ver</a>
-					<a href="/admin/edit-content.html" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
+					<a href="/admin/edit-ad.html" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
                     <form class="ads-delete-form" data-id="'.$id.'">
 						<input type="hidden" name="content_id" value="'.$id.'">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>

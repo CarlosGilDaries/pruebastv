@@ -100,6 +100,12 @@
                         <span>Facturas</span>
                 	</li>
 				</a>
+                <a href="/admin/list-roles.html">
+                	<li data-content="list-roles">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Roles</span>
+                	</li>
+				</a>
             </ul>
         </aside>
 
@@ -156,9 +162,9 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="edit-uder-birthday">Fecha nacimiento</label>
-                            <input type="date" id="edit-user-birthday" name="birthday" required>
-                            <div id="edit-user-birthday-error" class="error-message"></div>
+                            <label for="edit-uder-birth-year">Año de nacimiento</label>
+                            <input type="number" id="edit-user-birth-year" name="birth-year" required>
+                            <div id="edit-user-birth-year-error" class="error-message"></div>
                         </div>
 
                         <div class="form-group">
@@ -180,14 +186,21 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="edit-user-role">Rol</label>
+                            <select id="edit-user-role" name="role" required>
+                            </select>
+                            <div id="edit-user-role-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="edit-user-password">Contraseña</label>
-                            <input type="password" id="edit-user-password" name="password" required>
+                            <input type="password" id="edit-user-password" name="password">
 							<div id="edit-user-password-error" class="error-message"></div>
                         </div>
                         
                         <div class="form-group">
                             <label for="edit-user-password-confirmation">Confirmar contraseña</label>
-                            <input type="password" id="edit-user-password-confirmation" name="password_confirmation" required>
+                            <input type="password" id="edit-user-password-confirmation" name="password_confirmation">
 							<div id="edit-user-password-confirmation-error" class="error-message"></div>
                         </div>
 
