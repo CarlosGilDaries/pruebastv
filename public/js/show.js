@@ -4,12 +4,16 @@ import { processRedsysPayment } from './modules/redsys.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { formatDuration } from './modules/formatDuration.js';
 import { renderSimilars } from './modules/renderSimilars.js';
+import { clickLogOut } from './modules/clickLogOutButton.js';
 
 const token = localStorage.getItem('auth_token');
 
 if (token == null) {
   window.location.href = '/login';
 }
+
+clickLogOut();
+
 const pathParts = window.location.pathname.split('/');
 const movieSlug = pathParts[pathParts.length - 1]; // Extraer el último segmento de la URL
 const api = 'https://pruebastv.kmc.es/api/';

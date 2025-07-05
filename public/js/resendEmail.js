@@ -1,3 +1,7 @@
+import { clickLogOut } from './modules/clickLogOutButton.js';
+
+clickLogOut();
+
 const token = localStorage.getItem('auth_token');
 
 document

@@ -1,5 +1,6 @@
 import { logOut } from './modules/logOut.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
+import { clickLogOut } from './modules/clickLogOutButton.js';
 
 const token = localStorage.getItem('auth_token');
 if (token == null) {
@@ -13,6 +14,8 @@ const api = 'https://pruebastv.kmc.es/api/';
 if (device_id == null) {
   logOut(token);
 }
+
+clickLogOut();
 
 document.addEventListener('DOMContentLoaded', function () {
   const categoriesDropDown = document.getElementById('categories');

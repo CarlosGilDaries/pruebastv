@@ -4,6 +4,7 @@ import { renderCategories } from './modules/renderCategories.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 import { checkDeviceID } from './modules/checkDeviceId.js';
+import { clickLogOut } from './modules/clickLogOutButton.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
@@ -15,6 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
   if (device_id == null && token != null) {
     logOut(token);
   }
+
+  clickLogOut();
   
   checkDeviceID(token);
 

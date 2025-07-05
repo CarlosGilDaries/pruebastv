@@ -33,7 +33,16 @@
             <nav>
                 <ul class="nav right-nav">
                     <li><a href="#"><img src="/images/search-icon.png" alt="Search"></a></li>
-                    <li class="user"><a href="/account"><img src="/images/user-icon.png" alt="User"></a></li>
+                    <li class="dropdown user">
+                        <div class="dropdown-toggle"><img src="/images/user-icon.png" alt="User"></div>
+                        <ul class="dropdown-menu">
+                            <li><a href="/account">Perfil</a></li>
+                            <li><a href="/order-history.html">Historial de pedidos</a></li>
+                            <li><a href="/favorites.html">Favoritos</a></li>
+                            <li><a href="/seen.html">Vistos</a></li>
+                            <li id="logout"><a href="#">Cerrar sesión</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -73,7 +82,6 @@
             </ul>
         </div>
     </footer>
-
     <script type="module" src="/js/index.js"></script>
 </body>
 </html>
