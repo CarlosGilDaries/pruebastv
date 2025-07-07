@@ -7,6 +7,7 @@
 		<link rel="stylesheet" href="/css/normalize.css">
 		<link rel="stylesheet" href="/css/show.css">
 		<link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	</head>
 	<body>
 		<header>
@@ -25,7 +26,7 @@
 							<ul class="dropdown-menu" id="genders">
 							</ul>
 						</li>
-						<li class="left-nav-links"><a href="#">Favoritos</a></li>
+						
 						<li class="left-nav-links"><a href="/plans.html">Planes</a></li>
 					</ul>
 				</nav>
@@ -65,7 +66,13 @@
 					</div>
 					<div id="button-tagline">
 						<div class="info-text" id="tagline"></div>
-						<button class="play-button">Ver Ahora</button>
+						<div class="button-group">
+							<button class="play-button">Ver Ahora</button>
+							<button class="favorite-button" id="favorite-toggle">
+								<i class="far fa-heart"></i>
+								<i class="fas fa-heart" style="display: none;"></i>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>

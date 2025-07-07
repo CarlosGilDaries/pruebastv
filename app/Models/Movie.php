@@ -49,4 +49,14 @@ class Movie extends Model
     {
         return $this->belongsToMany(Category::class);
     }
+
+    public function usersWhoViewed()
+    {
+        return $this->belongsToMany(User::class, 'viewed_content');
+    }
+
+    public function usersWhoFavorited()
+    {
+        return $this->belongsToMany(User::class, 'favorites');
+    }
 }

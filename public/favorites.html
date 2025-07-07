@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/show-type-grid.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
-    <title></title>
+    <title>Favoritos</title>
   </head>
   <body>
     <header>
@@ -34,28 +34,24 @@
         </nav>
         <nav>
           <ul class="nav right-nav">
-            <li>
-              <a href="#"><img src="/images/search-icon.png" alt="Search" /></a>
-            </li>
+            <li><a href="#"><img src="/images/search-icon.png" alt="Search"></a></li>
             <li class="dropdown user">
-              <div class="dropdown-toggle">
-                <img src="/images/user-icon.png" alt="User" />
-              </div>
-              <ul class="dropdown-menu">
-                <li><a href="/account">Perfil</a></li>
-                <li><a href="/order-history.html">Historial de pedidos</a></li>
-                <li><a href="/favorites.html">Favoritos</a></li>
-                <li><a href="/seen.html">Vistos</a></li>
-                <li id="logout"><a href="#">Cerrar sesión</a></li>
-              </ul>
+                <div class="dropdown-toggle"><img src="/images/user-icon.png" alt="User"></div>
+                <ul class="dropdown-menu">
+                    <li><a href="/account">Perfil</a></li>
+                    <li><a href="/order-history.html">Historial de pedidos</a></li>
+                    <li><a href="/favorites.html">Favoritos</a></li>
+                    <li><a href="/seen.html">Vistos</a></li>
+                    <li id="logout"><a href="#">Cerrar sesión</a></li>
+                </ul>
             </li>
-          </ul>
+        </ul>
         </nav>
       </div>
     </header>
 
     <main>
-      <h1 class="grid-title"></h1>
+        <h1 class="grid-title">Mis Favoritos</h1>
       <div class="main-grid"></div>
     </main>
 
@@ -83,6 +79,6 @@
       </div>
     </footer>
 
-    <script type="module" src="/js/genderShowGrid.js"></script>
+    <script type="module" src="/js/favoritesGrid.js"></script>
   </body>
 </html>

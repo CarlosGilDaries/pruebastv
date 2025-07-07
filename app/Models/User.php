@@ -44,6 +44,16 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new \App\Notifications\VerifyEmail);
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(Movie::class, 'favorites');
+    }
+
+    public function viewed()
+    {
+        return $this->belongsToMany(Movie::class, 'viewed_content');
+    }
+
     public function plan()
     {
         return $this->belongsTo(Plan::class);

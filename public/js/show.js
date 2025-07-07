@@ -165,6 +165,20 @@ async function fetchMovieData() {
         });
       }
 
+      const isFavorite = await isMovieFavorite(movieId);
+      updateFavoriteButton(isFavorite);
+
+      // Evento click al botón de favoritos
+      document
+        .getElementById('favorite-toggle')
+        .addEventListener('click', async () => {
+          const currentFavoriteStatus = await isMovieFavorite(movieId);
+          const result = await toggleFavorite(movieId, currentFavoriteStatus);
+          if (result.success) {
+            updateFavoriteButton(!currentFavoriteStatus);
+          }
+        });
+
       const image = document.getElementById('content-image');
       const title = document.getElementById('content-title');
       const trailer = document.getElementById('trailer');
@@ -213,3 +227,58 @@ tabs.forEach(tab => {
     this.classList.add('active');
 	});
 });
+
+// Función para verificar si una película es favorita
+async function isMovieFavorite(movieId) {
+  try {
+    const response = await fetch('/api/favorites', {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const data = await response.json();
+      return data.favorites.some(movie => movie.id === movieId);
+  } catch (error) {
+      console.error('Error al obtener favoritos:', error);
+      return false;
+  }
+}
+
+// Función para alternar favoritos
+async function toggleFavorite(movieId, isCurrentlyFavorite) {
+  try {
+    const endpoint = isCurrentlyFavorite
+      ? `/api/quit-favorite/${movieId}`
+      : `/api/add-favorite/${movieId}`;
+
+    const response = await fetch(`${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return await response.json();
+  } catch (error) {
+    console.error('Error al alternar favorito:', error);
+    return { success: false };
+  }
+}
+
+// Función para actualizar el estado visual del botón de favoritos
+function updateFavoriteButton(isFavorite) {
+  const favoriteToggle = document.getElementById('favorite-toggle');
+  const farHeart = favoriteToggle.querySelector('.far');
+  const fasHeart = favoriteToggle.querySelector('.fas');
+  
+  if (isFavorite) {
+      farHeart.style.display = 'none';
+      fasHeart.style.display = 'block';
+      favoriteToggle.title = 'Quitar de favoritos';
+  } else {
+      farHeart.style.display = 'block';
+      fasHeart.style.display = 'none';
+      favoriteToggle.title = 'Añadir a favoritos';
+  }
+}

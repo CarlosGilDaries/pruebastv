@@ -131,6 +131,38 @@ video {
     width: 240px;
 }
 
+.button-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.favorite-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.favorite-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.favorite-button i {
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.favorite-button .fas {
+    color: #a777e3;
+}
+
 .keyword-link {
 	background: var(--color-gray-darker);
 	padding: 3px;

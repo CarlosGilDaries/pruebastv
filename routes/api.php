@@ -20,9 +20,11 @@ use App\Http\Controllers\Api\PlanOrderController;
 use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
+use App\Http\Controllers\Api\FavoritesController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
+use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\CheckPermissions;
 
@@ -62,7 +64,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('content/{slug}', [MovieApiController::class, 'show'])
-    ->middleware(EnsureEmailIsVerified::class);
+        ->middleware(EnsureEmailIsVerified::class);
+    Route::get('favorites', [FavoritesController::class, 'getFavorites']);
+    Route::post('add-favorite/{id}', [FavoritesController::class, 'addFavorite']);
+    Route::post('quit-favorite/{id}', [FavoritesController::class, 'quitFavorite']);
+    Route::get('viewed', [ViewedContentController::class, 'getViewedContent']);
+    Route::post('add-viewed/{id}', [ViewedContentController::class, 'viewed']);
 
     // Rutas de anuncios protegidas
     Route::middleware([
