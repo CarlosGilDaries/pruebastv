@@ -1,0 +1,143 @@
+@import '/css/commons.css';
+@import '/css/nav.css';
+@import '/css/footer.css';
+
+.menu {
+    width: 100%;
+    padding-inline: 60px;
+    background-color: black;
+  }
+
+body {
+    background-color: #f4f4f4;
+}
+
+main {
+    min-height: 85vh;
+}
+  
+/* Contenedor principal */
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+  
+  /* Título */
+  .container h2 {
+    color: black;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    padding-block: 1.3rem;
+    text-align: center;
+  }
+  
+  /* Contenedor de pedidos */
+  #user-orders {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+  }
+  
+  /* Tarjeta de pedido */
+  .order-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .order-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Información del pedido */
+  .order-info {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .order-info h3 {
+    margin: 0 0 0.8rem 0;
+    color: black;
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  
+  .order-info p {
+    margin: 0.5rem 0;
+    color: black;
+    font-size: 1rem;
+  }
+  
+  .order-info p strong {
+    color: #555;
+  }
+  
+  /* Botón de factura */
+  .bill-button {
+    background-color: var(--link-account-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .bill-button:hover {
+    background-color: var(--link-acount-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Versión móvil */
+  @media (max-width: 768px) {
+    .container {
+      width: 95%;
+      padding: 1.5rem 0;
+    }
+    
+    .order-card {
+      padding: 1.3rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.2rem;
+    }
+    
+    .bill-button {
+      width: 100%;
+      text-align: center;
+      padding: 0.7rem;
+    }
+    
+    .order-info h3 {
+      font-size: 1.1rem;
+    }
+    
+    .order-info p {
+      font-size: 0.95rem;
+    }
+  }
+  
+  /* Estilo para cuando no hay pedidos */
+  .no-orders {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }

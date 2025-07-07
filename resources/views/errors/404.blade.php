@@ -26,14 +26,22 @@
 							<ul class="dropdown-menu" id="genders">
 							</ul>
 						</li>
-						<li class="left-nav-links"><a href="#">Favoritos</a></li>
 						<li class="left-nav-links"><a href="/plans.html">Planes</a></li>
 					</ul>
 				</nav>
 				<nav>
 					<ul class="nav right-nav">
 						<li><a href="#"><img src="/images/search-icon.png" alt="Search"></a></li>
-						<li class="user"><a href="/account"><img src="/images/user-icon.png" alt="User"></a></li>
+						<li class="dropdown user">
+							<div class="dropdown-toggle"><img src="/images/user-icon.png" alt="User"></div>
+							<ul class="dropdown-menu">
+								<li><a href="/account">Perfil</a></li>
+								<li><a href="/favorites.html">Favoritos</a></li>
+								<li><a href="/seen.html">Vistos</a></li>
+								<li><a href="/order-history.html">Historial de pagos</a></li>
+								<li id="logout"><a href="#">Cerrar sesión</a></li>
+							</ul>
+						</li>
 					</ul>
 				</nav>
 			</div>
@@ -77,7 +85,9 @@
 
 			dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 			dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
-		</script>
 
+			import { clickLogOut } from './js/modules/clickLogOutButton.js';
+			clickLogOut();
+		</script>
 	</body>
 </html>

@@ -130,6 +130,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('edit-ppv-order/{id}', [PpvOrderController::class, 'update']);
         Route::delete('delete-ppv-order', [PpvOrderController::class, 'destroy']);
     });
+
+    Route::get('current-user-orders', [UserApiController::class, 'getOrders']);
 	
     // Rutas de facturas protegidas
     Route::middleware([

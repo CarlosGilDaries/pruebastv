@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Movie;
 use App\Models\Plan;
 use App\Models\PlanOrder;
+use App\Models\UnifiedOrder;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
@@ -239,6 +240,31 @@ class UserApiController extends Controller
                     'message' => 'Usuario obtenido con éxito'
                 ], 200);
             }
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getOrders()
+    {
+        try {
+            $user = Auth::user();
+            $orders = UnifiedOrder::where('user_id', $user->id)
+                ->where('status', 'paid')
+                ->orderBy('created_at', 'desc')
+                ->get();
+            Log::debug($orders);
+
+            return response()->json([
+                'success' => true,
+                'orders' => $orders,
+            ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
