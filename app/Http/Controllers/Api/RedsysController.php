@@ -74,9 +74,9 @@ class RedsysController extends Controller
             $requestParams = $redsysRequest->requestParameters;
 
             if ($register) {
-                $urlOk =  url('https://ffc6-64-225-160-224.ngrok-free.app/need-device-payment.html');
+                $urlOk =  url('/need-device-payment.html');
             } else {
-                $urlOk = url('https://ffc6-64-225-160-224.ngrok-free.app/successful-payment.html');
+                $urlOk = url('/successful-payment.html');
             }
 
             // Crear Ds_MerchantParameters (JSON en Base64)
@@ -87,16 +87,16 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-                'DS_MERCHANT_MERCHANTURL' => url('https://ffc6-64-225-160-224.ngrok-free.app/api/redsys-plan-resp'),
-                'DS_MERCHANT_URLKO' => url('https://ffc6-64-225-160-224.ngrok-free.app/unsuccessful-payment.html'),
+                'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
+                'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
                 'DS_MERCHANT_URLOK' => strval($urlOk),
             ];
 
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));
 
             // Generar firma
-            //$secretKey = env('REDSYS_KEY');
-            $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+            $secretKey = env('REDSYS_KEY');
+            //$secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
 
             $signature = generateSignature(
                 $dsMerchantParameters,

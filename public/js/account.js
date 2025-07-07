@@ -50,6 +50,7 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
             name: 'Nombre',
             surnames: 'Apellidos',
             email: 'Email',
+            phone: 'Teléfono',
             address: 'Dirección',
             city: 'Ciudad',
             country: 'País',
@@ -64,30 +65,33 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
               !['email_verified_at', 'created_at', 'updated_at'].includes(key)
             ) {
               if (fieldsToDisplay[key]) {
-                // Solo mostrar los campos que están en fieldsToDisplay
                 const row = tableBody.insertRow();
                 const cell1 = row.insertCell(0);
                 const cell2 = row.insertCell(1);
 
-                // Asignar el nombre de la columna en español
                 cell1.textContent = fieldsToDisplay[key];
-                if (
-                  value == 'man' ||
-                  value == 'woman' ||
-                  value == 'non-binary' ||
-                  value == 'others'
-                ) {
+
+                // Manejo especial para el campo de género
+                if (value == 'man' || value == 'woman' || value == 'others') {
                   if (value == 'man') {
                     cell2.textContent = 'Hombre';
                   } else if (value == 'woman') {
                     cell2.textContent = 'Mujer';
-                  } else if (value == 'non-binary') {
-                    cell2.textContent = 'No binario';
                   } else {
                     cell2.textContent = 'Sin especificar';
                   }
                 } else {
                   cell2.textContent = value;
+                }
+
+                // Añadir botón "Cambiar" para campos específicos
+                if (
+                  ['email', 'address', 'city', 'country', 'phone'].includes(key)
+                ) {
+                  const changeButton = document.createElement('button');
+                  changeButton.className = 'change-btn';
+                  changeButton.textContent = 'Cambiar';
+                  cell2.appendChild(changeButton);
                 }
               }
             }
@@ -95,15 +99,40 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
           const plan = data.data.plan;
           if (plan != null) {
-            const planRow = document.createElement('tr');
-            const planKey = document.createElement('td');
-            planKey.innerHTML = 'Plan';
-            const planValue = document.createElement('td');
-            planValue.innerHTML = plan.name;
-            tableBody.appendChild(planRow);
-            planRow.appendChild(planKey);
-            planRow.appendChild(planValue);
+            if (plan != null) {
+              const planRow = document.createElement('tr');
+              const planKey = document.createElement('td');
+              planKey.innerHTML = 'Plan';
+              const planValue = document.createElement('td');
+
+              // Formatear la fecha de expiración
+              const expirationDate = new Date(user.plan_expires_at);
+              const formattedDate = expirationDate.toLocaleDateString('es-ES', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              });
+
+              planValue.innerHTML = `${plan.name} (Caduca: ${formattedDate})`;
+              tableBody.appendChild(planRow);
+              planRow.appendChild(planKey);
+              planRow.appendChild(planValue);
+            }
           }
+
+          const passwordRow = tableBody.insertRow();
+          const passwordKey = passwordRow.insertCell(0);
+          const passwordValue = passwordRow.insertCell(1);
+
+          passwordKey.textContent = 'Contraseña';
+          passwordValue.textContent = '••••••••';
+
+          const changePasswordButton = document.createElement('button');
+          changePasswordButton.className = 'change-btn';
+          changePasswordButton.textContent = 'Cambiar';
+          passwordValue.appendChild(changePasswordButton);
         }
 
         button.addEventListener('click', function () {
@@ -120,16 +149,3 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
     });
 });
 
-document
-  .getElementById('logout-button')
-  .addEventListener('click', async function (event) {
-    event.preventDefault();
-
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      console.error('No se encontró el token de autenticación');
-      return;
-    }
-
-    logOut(token);
-  });

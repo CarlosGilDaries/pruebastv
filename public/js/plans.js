@@ -30,6 +30,7 @@ try {
     // Generar una diferencia de 48 horas o menos para la condición de renovar
     const now = new Date();
     const expirationDate = new Date(userData.data.user.plan_expires_at);
+    console.log(userData);
     const msDiff = expirationDate - now;
     const hoursLeft = msDiff / (1000 * 60 * 60);
     const canRenew = hoursLeft <= 48;
