@@ -72,28 +72,51 @@ function formatDate(dateString) {
   return new Date(dateString).toLocaleDateString('es-ES', options);
 }
 
-function setupDownloadButtons() {
-  document.querySelectorAll('.bill-button').forEach((btn) => {
-    btn.addEventListener('click', function (e) {
-      e.preventDefault();
-      const orderId = this.dataset.id;
+async function setupDownloadButtons() {
+  const buttons = document.querySelectorAll('.bill-button');
 
-      fetch(`/bill-path/${orderId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          if (data.path) {
-            window.open(`/${data.path}`, '_blank');
-          } else {
-            alert('Factura no disponible.');
-          }
-        })
-        .catch((error) => {
-          console.error('Error al descargar factura:', error);
-          alert('Error al intentar descargar la factura.');
-        });
+  for (const btn of buttons) {
+    const id = btn.dataset.id;
+
+    const billResponse = await fetch(`/api/get-bill/${id}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     });
-  });
+    const billData = await billResponse.json();
+    let billId = '';
+    let billNumber = '';
+    if (billData.bill != null) {
+      billId = billData.bill.id;
+      billNumber = billData.bill.bill_number;
+    }
+
+    btn.addEventListener('click', async function (e) {
+      e.preventDefault();
+
+      try {
+        const downloadResponse = await fetch(`/bill/${billId}/download`);
+
+        if (!downloadResponse.ok) {
+          throw new Error('Error al descargar la factura');
+        }
+
+        const blob = await downloadResponse.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `factura-${billNumber}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (error) {
+        console.error('Error:', error);
+        alert(error.message);
+      }
+    });
+  }
 }
 
-// Llamar a la función al cargar la página
 document.addEventListener('DOMContentLoaded', loadUserOrders);

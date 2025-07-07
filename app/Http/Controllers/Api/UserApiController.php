@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Bill;
 use App\Models\Movie;
 use App\Models\Plan;
 use App\Models\PlanOrder;
@@ -312,11 +313,33 @@ class UserApiController extends Controller
                 ->where('status', 'paid')
                 ->orderBy('created_at', 'desc')
                 ->get();
-            Log::debug($orders);
 
             return response()->json([
                 'success' => true,
                 'orders' => $orders,
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getBill(string $id)
+    {
+        try {
+            $user = Auth::user();
+            $bill = Bill::where('user_id', $user->id)
+                ->where('billable_id', $id)
+                ->first();
+
+            return response()->json([
+                'success' => true,
+                'bill' => $bill,
             ], 200);
 
         } catch (\Exception $e) {

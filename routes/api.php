@@ -134,6 +134,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('current-user-orders', [UserApiController::class, 'getOrders']);
+    Route::get('get-bill/{id}', [UserApiController::class, 'getBill']);
 	
     // Rutas de facturas protegidas
     Route::middleware([
