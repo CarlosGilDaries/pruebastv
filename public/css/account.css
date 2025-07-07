@@ -25,7 +25,7 @@ main {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 60%;
+  width: 45%;
   max-width: 1000px;
   margin-block: 20px;
   text-align: center;
@@ -42,23 +42,25 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+td {
   padding: 12px;
   border: 1px solid #ddd;
   text-align: left;
+  height: 70px;
 }
 
 th {
   background-color: #4CAF50;
   color: white;
 }
+td:nth-child(even) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #ddd;
 }
 
 .select-plan {
@@ -81,18 +83,18 @@ tr:hover {
 
 .change-btn {
   padding: 6px 12px;
-  margin-top: 8px;
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: #10b981;
+  color: white;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.3s;
+  font-weight: bold;
 }
 
 .change-btn:hover {
-  background-color: #e1e1e1;
+  background-color: #ef4444;
 }
 
 /* Ajuste responsivo */

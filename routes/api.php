@@ -36,9 +36,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::delete('destroy-device' , [UserSessionApiController::class, 'destroy']);
 
     Route::post('logout', [LoginApiController::class, 'logout']);
-    Route::get('user', [UserApiController::class, 'getCurrentUser']);
-	Route::get('users', [UserApicontroller::class, 'index']);
-	Route::get('user/{id}', [UserApiController::class, 'show']); 
 
     Route::post('check-active-streams', [ActiveStreamApiController::class, 'startStream']);
     Route::put('keep-alive', [ActiveStreamApiController::class, 'keepAlive']);
@@ -51,6 +48,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-user', [UserApiController::class, 'destroy']);
         Route::get('users/datatable', [UserApiController::class, 'datatable']);
     });  
+
+    Route::get('user', [UserApiController::class, 'getCurrentUser']);
+	Route::get('users', [UserApicontroller::class, 'index']);
+	Route::get('user/{id}', [UserApiController::class, 'show']); 
+    Route::post('current-user-edit/{id}', [UserApiController::class, 'currentUserChange']);
 
     // Rutas de contenido protegidas
     Route::middleware([

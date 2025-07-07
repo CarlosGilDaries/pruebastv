@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use DataTables;
+use Illuminate\Auth\Events\Registered;
 
 class UserApiController extends Controller
 {
@@ -169,7 +170,59 @@ class UserApiController extends Controller
             ], 200);
 
         } catch(\Exception $e) {
-                        Log::error('Error: ' . $e->getMessage());
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function currentUserChange(Request $request, string $id)
+    {
+        try {
+            $user = User::where('id', $id)->first();
+            if (!$user || !Hash::check($request->input('password'), $user->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Credenciales incorrectas'
+                ], 401);
+            }
+
+            $email = sanitize_html($request->input('email'));
+            $address = sanitize_html($request->input('address'));
+            $city = sanitize_html($request->input('city'));
+            $country = sanitize_html($request->input('country'));
+            $new_password = sanitize_html($request->input('new_password'));
+            $phone = sanitize_html($request->input('phone'));
+			
+            Log::debug($new_password);
+
+            if ($email) {
+                $user->email = $email;
+                $user->email_verified_at = null;
+                $user->save(); 
+                $user->sendEmailVerificationNotification();
+            }
+            if ($address) $user->address = $address;
+            if ($city) $user->city = $city;
+            if ($country) $user->country = $country;
+
+            if ($phone) $user->phone = $phone;
+
+            if ($new_password) $user->password = Hash::make($new_password);
+
+            $user->save();
+
+            return response()->json([
+                'success' => true,
+                'user' => $user,
+                'message' => 'Usuario editado con éxito'
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,

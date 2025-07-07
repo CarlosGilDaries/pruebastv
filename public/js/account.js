@@ -86,12 +86,27 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
                 // Añadir botón "Cambiar" para campos específicos
                 if (
-                  ['email', 'address', 'city', 'country', 'phone'].includes(key)
+                  ['email', 'address','phone'].includes(key)
                 ) {
                   const changeButton = document.createElement('button');
                   changeButton.className = 'change-btn';
                   changeButton.textContent = 'Cambiar';
                   cell2.appendChild(changeButton);
+                  if (['email'].includes(key)) {
+                    changeButton.addEventListener('click', function () {
+                      window.location.href = '/change-email.html'
+                    });
+                  }
+                  if (['address'].includes(key)) {
+                    changeButton.addEventListener('click', function () {
+                      window.location.href = '/change-address.html';
+                    });
+                  }
+                  if (['phone'].includes(key)) {
+                    changeButton.addEventListener('click', function () {
+                      window.location.href = '/change-phone.html';
+                    });
+                  }
                 }
               }
             }
@@ -115,7 +130,7 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
                 minute: '2-digit',
               });
 
-              planValue.innerHTML = `${plan.name} (Caduca: ${formattedDate})`;
+              planValue.innerHTML = `<p>${plan.name}</p><p>Caduca: ${formattedDate}</p>`;
               tableBody.appendChild(planRow);
               planRow.appendChild(planKey);
               planRow.appendChild(planValue);
@@ -133,6 +148,9 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
           changePasswordButton.className = 'change-btn';
           changePasswordButton.textContent = 'Cambiar';
           passwordValue.appendChild(changePasswordButton);
+          changePasswordButton.addEventListener('click', function () {
+            window.location.href = '/change-password.html'
+          })
         }
 
         button.addEventListener('click', function () {

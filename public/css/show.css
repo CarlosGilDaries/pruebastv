@@ -131,6 +131,15 @@ video {
     width: 240px;
 }
 
+.ppv-btn {
+    width: 270px;
+    font-size: 16px;
+}
+
+.ppv-btn::after {
+    content: "";
+}
+
 .button-group {
     display: flex;
     gap: 15px;
