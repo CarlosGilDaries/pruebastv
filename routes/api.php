@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\FavoritesController;
+use App\Http\Controllers\Api\PayPalController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
@@ -187,6 +188,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
+
+    Route::post('/paypal/create', [PayPalController::class, 'paypalCreatePlanOrder'])->name('paypal.create');
 	
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 });
@@ -221,3 +224,6 @@ Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
                 ->middleware(['auth:sanctum', 'throttle:6,1'])
                 ->name('verification.send');
+
+Route::get('/paypal/capture', [PayPalController::class, 'paypalCaptureOrder'])->name('paypal.capture');
+Route::get('/paypal/cancel', [PayPalController::class, 'paypalCancel'])->name('paypal.cancel');

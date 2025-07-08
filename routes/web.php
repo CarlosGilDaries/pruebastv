@@ -1,11 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Api\MovieApiController;
 use App\Http\Controllers\ProxyController;
-use Illuminate\Support\Facades\Artisan;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\BillPdfController;
 
@@ -58,10 +55,6 @@ Route::get('/secure-stream/{movie}/{user}', [MovieApiController::class, 'streamS
 Route::get('/test-pdf', function() {
     $pdf = Pdf::loadHTML('<h1>Test domPDF</h1>');
     return $pdf->stream();
-});
-
-Route::get('/check-pdf', function () {
-    dd(class_exists(\Barryvdh\DomPDF\Facade\Pdf::class));
 });
 
 

@@ -124,6 +124,7 @@ function displayPlans(plans, actualPlan, canRenew) {
               if (
                 confirm(`¿Quieres renovar el plan ${plan.name} durante 1 año?`)
               ) {
+                window.location.href = "/";
                 await selectPlan(plan.id, token, button2.value);
               }
             } else {
@@ -152,6 +153,10 @@ function displayPlans(plans, actualPlan, canRenew) {
                   `¿Quieres renovar el plan ${plan.name} durante 3 meses?`
                 )
               ) {
+                localStorage.setItem('id', plan.id);
+                localStorage.setItem('months', button.value);
+                window.location.href = '/payment-method.html';
+                return;
                 await selectPlan(plan.id, token, button.value);
               }
             } else {
