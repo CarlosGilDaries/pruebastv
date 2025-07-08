@@ -124,8 +124,7 @@ function displayPlans(plans, actualPlan, canRenew) {
               if (
                 confirm(`¿Quieres renovar el plan ${plan.name} durante 1 año?`)
               ) {
-                window.location.href = "/";
-                await selectPlan(plan.id, token, button2.value);
+                choosePlan(plan.id, button2.value);
               }
             } else {
               alert(
@@ -139,7 +138,7 @@ function displayPlans(plans, actualPlan, canRenew) {
             if (
               confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
             ) {
-              await selectPlan(plan.id, token, button.value);
+              choosePlan(plan.id, button.value);
             }
           });
         }
@@ -153,11 +152,7 @@ function displayPlans(plans, actualPlan, canRenew) {
                   `¿Quieres renovar el plan ${plan.name} durante 3 meses?`
                 )
               ) {
-                localStorage.setItem('id', plan.id);
-                localStorage.setItem('months', button.value);
-                window.location.href = '/payment-method.html';
-                return;
-                await selectPlan(plan.id, token, button.value);
+                choosePlan(plan.id, button.value);
               }
             } else {
               alert(
@@ -171,7 +166,7 @@ function displayPlans(plans, actualPlan, canRenew) {
             if (
               confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)
             ) {
-              await selectPlan(plan.id, token, button2.value);
+              choosePlan(plan.id, button2.value);
             }
           });
         }
@@ -207,14 +202,14 @@ function displayPlans(plans, actualPlan, canRenew) {
               if (
                 confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
               ) {
-                await selectPlan(plan.id, token, button.value);
+                choosePlan(plan.id, button.value);
               }
             }
           });
           button2.classList.add('needed-plan');
           button2.addEventListener('click', async () => {
             if (confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)) {
-              await selectPlan(plan.id, token, button2.value);
+              choosePlan(plan.id, button2.value);
             }
           });
         }
@@ -239,13 +234,13 @@ function displayPlans(plans, actualPlan, canRenew) {
           button.addEventListener('click', async () => {
             if (plan.trimestral_price == 0) {
               if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-                await selectPlan(plan.id, token, button.value);
+                choosePlan(plan.id, button.value);
               }
             } else {
               if (
                 confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
               ) {
-                await selectPlan(plan.id, token, button.value);
+                choosePlan(plan.id, button.value);
               }
             }
           });
@@ -254,7 +249,7 @@ function displayPlans(plans, actualPlan, canRenew) {
             if (
               confirm(`¿Quieres probar el plan ${plan.name} durante un año?`)
             ) {
-              await selectPlan(plan.id, token, button2.value);
+              choosePlan(plan.id, button2.value);
             }
           });
         }
@@ -272,13 +267,13 @@ function displayPlans(plans, actualPlan, canRenew) {
           if (token != null) {
             if (plan.trimestral_price == 0) {
               if (confirm(`¿Quieres probar el plan ${plan.name}?`)) {
-                await selectPlan(plan.id, token, button.value);
+                choosePlan(plan.id, button.value);
               }
             } else {
               if (
                 confirm(`¿Quieres probar el plan ${plan.name} durante 3 meses?`)
               ) {
-                await selectPlan(plan.id, token, button.value);
+                choosePlan(plan.id, button.value);
               }
             }
           } else {
@@ -323,4 +318,11 @@ function displayPlans(plans, actualPlan, canRenew) {
     }
     container.appendChild(card);
   });
+}
+
+function choosePlan(planId, buttonValue) {
+  localStorage.setItem('plan_id', planId);
+  localStorage.setItem('months', buttonValue);
+  window.location.href = '/payment-method.html';
+  return;
 }

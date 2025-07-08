@@ -190,7 +190,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
 
     Route::post('/paypal/create', [PayPalController::class, 'paypalCreatePlanOrder'])->name('paypal.create');
-	
+	Route::post('/paypal/ppv/create', [PayPalController::class, 'paypalCreatePpvOrder'])->name('paypal.ppv.create');
+
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 });
 
@@ -225,5 +226,6 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
                 ->middleware(['auth:sanctum', 'throttle:6,1'])
                 ->name('verification.send');
 
-Route::get('/paypal/capture', [PayPalController::class, 'paypalCaptureOrder'])->name('paypal.capture');
+Route::get('/paypal/capture', [PayPalController::class, 'paypalCapturePlanOrder'])->name('paypal.capture');
+Route::get('/paypal/ppv/capture', [PayPalController::class, 'paypalCapturePpvOrder'])->name('paypal.ppv.capture');
 Route::get('/paypal/cancel', [PayPalController::class, 'paypalCancel'])->name('paypal.cancel');
