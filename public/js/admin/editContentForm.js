@@ -181,8 +181,7 @@ async function editContentForm() {
       document.getElementById('duration').value = content.duration;
 
       if (
-        (content.type =
-          !'video/mp4' ||
+        (content.type != 'video/mp4' ||
           content.type != 'audio/mpeg' ||
           content.type != 'application/vnd.apple.mpegurl')
       ) {
