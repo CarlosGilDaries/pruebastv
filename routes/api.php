@@ -60,10 +60,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         CheckPermissions::class . ':contenido',
     ])->group(function () {
         Route::get('content/{type}/datatable', [MovieApiController::class, 'datatable']);
-        Route::get('edit-view-content/{id}', [MovieApiController::class, 'editShow']); 
-        Route::post('add-content', [MovieApiController::class, 'store']);
+        Route::get('edit-view-content/{id}/{type}', [MovieApiController::class, 'editShow']); 
+        Route::post('add-content/{type}', [MovieApiController::class, 'store']);
         Route::delete('delete-content', [MovieApiController::class, 'destroy']);
-        Route::post('update-content/{id}', [MovieApiController::class, 'update']);
+        Route::post('update-content/{id}/{type}', [MovieApiController::class, 'update']);
     });
 
     Route::get('content/{slug}', [MovieApiController::class, 'show'])
@@ -128,12 +128,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-order', [PlanOrderController::class, 'destroy']);
         Route::get('orders/datatable', [PlanOrderController::class, 'datatable']);
         Route::get('ppv-orders', [PpvOrderController::class, 'index']);
-        Route::get('ppv-current-user-order/{id}', [PpvOrderController::class, 'currentUserOrder']);
         Route::post('add-ppv-order', [PpvOrderController::class, 'store']);
         Route::post('edit-ppv-order/{id}', [PpvOrderController::class, 'update']);
         Route::delete('delete-ppv-order', [PpvOrderController::class, 'destroy']);
     });
 
+    Route::get('ppv-current-user-order/{id}', [PpvOrderController::class, 'currentUserOrder']);
     Route::get('current-user-orders', [UserApiController::class, 'getOrders']);
     Route::get('get-bill/{id}', [UserApiController::class, 'getBill']);
 	

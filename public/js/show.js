@@ -121,34 +121,16 @@ async function fetchMovieData() {
         );
 
         const ppvData = await ppvResponse.json();
+        console.log(ppvData);
 
         if (!ppvData.success) {
           play.classList.add('ppv-btn');
           play.textContent =
             'Pagar para ver: ' + data.data.movie.pay_per_view_price + ' €';
           play.addEventListener('click', async function () {
-            try {
-              const paymentResponse = await fetch('/api/ppv-payment', {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({
-                  content_id: movieId,
-                }),
-              });
-
-              const paymentData = await paymentResponse.json();
-
-              if (paymentData.success && paymentData.payment_required) {
-                await processRedsysPayment(paymentData);
-                return;
-              }
-            } catch (error) {
-              console.log(error);
-              alert(error);
-            }
+            localStorage.setItem('movie_id', data.data.movie.id);
+            window.location.href = '/ppv-payment-method.html';
+            return;
           });
         } else {
           play.innerHTML = 'Ver Ahora';

@@ -155,13 +155,10 @@ async function initContent() {
         formData.append('m3u8', document.getElementById('m3u8').files[0]);
         formData.append('ts1', document.getElementById('ts1').files[0]);
         formData.append('ts2', document.getElementById('ts2').files[0]);
-        formData.append('ts3', document.getElementById('ts3').files[0]);
       } else if (
-        type === 'iframe' ||
         type === 'url_mp4' ||
         type === 'url_hls' ||
-        type === 'video/youtube' ||
-        type === 'vimeo' ||
+        type === 'stream' ||
         type == 'url_mp3'
       ) {
         formData.append(
@@ -207,63 +204,74 @@ async function initContent() {
         alert('Selecciona al menos una categoría');
         return;
       }*/
-
-      try {
-        const response = await fetch('/api/add-content', {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: formData,
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          // Mostrar errores específicos si existen
-          if (data.errors) {
-            Object.entries(data.errors).forEach(([field, messages]) => {
-              const errorElement = document.getElementById(`${field}-error`);
-              if (errorElement) {
-                errorElement.textContent = messages.join(', ');
-              }
-            });
-          } else {
-            throw new Error(data.error || 'Error al subir el contenido');
-          }
-          return;
-        }
-
-        // Mostrar mensaje de éxito
-        document.getElementById('success-message').style.display = 'block';
-        document.getElementById('success-message').textContent = `${
-          data.message
-        } - ${data.movie?.title || 'Contenido subido'}`;
-
-        setTimeout(() => {
-          document.getElementById('success-message').style.display = 'none';
-        }, 5000);
-
-        // Resetear formulario
-        document.getElementById('form').reset();
-        document
-          .querySelectorAll('#form .file-name')
-          .forEach((el) => (el.textContent = ''));
-        document
-          .querySelectorAll('#form .file-input-label span')
-          .forEach((el) => {
-            el.textContent = 'Seleccionar archivo...';
-          });
-        CKEDITOR.instances.tagline.setData('');
-        CKEDITOR.instances.overview.setData('');
-        document.getElementById('pay_per_view_fields').classList.add('hidden');
-      } catch (error) {
-        console.error('Error:', error);
-        alert('Error al subir el contenido: ' + error.message);
-      } finally {
-        document.getElementById('loading').style.display = 'none';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      let permission;
+      if (type == 'video/mp4' || type == 'application/vnd.apple.mpegurl' || type == 'audio/mpeg') {
+        permission = 'local';
+      } else if (type == 'stream') {
+        permission = 'streams';
+      } else {
+        permission = 'external';
       }
+
+        try {
+          const response = await fetch(`/api/add-content/${permission}`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            // Mostrar errores específicos si existen
+            if (data.errors) {
+              Object.entries(data.errors).forEach(([field, messages]) => {
+                const errorElement = document.getElementById(`${field}-error`);
+                if (errorElement) {
+                  errorElement.textContent = messages.join(', ');
+                }
+              });
+            } else {
+              throw new Error(data.error || 'Error al subir el contenido');
+            }
+            return;
+          }
+
+          // Mostrar mensaje de éxito
+          document.getElementById('success-message').style.display = 'block';
+          document.getElementById('success-message').textContent = `${
+            data.message
+          } - ${data.movie?.title || 'Contenido subido'}`;
+
+          setTimeout(() => {
+            document.getElementById('success-message').style.display = 'none';
+          }, 5000);
+
+          // Resetear formulario
+          document.getElementById('form').reset();
+          document
+            .querySelectorAll('#form .file-name')
+            .forEach((el) => (el.textContent = ''));
+          document
+            .querySelectorAll('#form .file-input-label span')
+            .forEach((el) => {
+              el.textContent = 'Seleccionar archivo...';
+            });
+          CKEDITOR.instances.tagline.setData('');
+          CKEDITOR.instances.overview.setData('');
+          document
+            .getElementById('pay_per_view_fields')
+            .classList.add('hidden');
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error al subir el contenido: ' + error.message);
+        } finally {
+          document.getElementById('loading').style.display = 'none';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     });
 }
 

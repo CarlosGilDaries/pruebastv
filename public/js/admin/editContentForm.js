@@ -4,6 +4,7 @@ async function editContentForm() {
   let id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
+  const permission = document.getElementById('type-content').getAttribute('data-type');;
 
   loadContentData(id);
 
@@ -57,11 +58,14 @@ async function editContentForm() {
 
   async function loadContentData(id) {
     try {
-      const response = await fetch(`/api/edit-view-content/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        `/api/edit-view-content/${id}/${permission}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       const plansResponse = await fetch('/api/plans');
       const genderResponse = await fetch('/api/genders', {
         headers: {
@@ -347,13 +351,16 @@ async function editContentForm() {
       });
 
       try {
-        const editResponse = await fetch(`/api/update-content/${id}`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
+        const editResponse = await fetch(
+          `/api/update-content/${id}/${permission}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
         const data = await editResponse.json();
         console.log(data);
 

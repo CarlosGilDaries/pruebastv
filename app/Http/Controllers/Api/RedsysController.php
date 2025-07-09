@@ -156,7 +156,7 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-				'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
+				'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-ppv-resp'),
 				'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
 				'DS_MERCHANT_URLOK' => url('/successful-payment.html'),
             ];

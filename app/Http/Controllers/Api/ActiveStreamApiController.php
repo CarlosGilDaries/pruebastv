@@ -49,7 +49,7 @@ class ActiveStreamApiController extends Controller
                     'user_id' => $user->id,
                     'device_id' => $deviceId,
                 ]);
-
+                
                 return response()->json([
                     'success' => true,
                     'message' => 'Transmisión iniciada correctamente.'

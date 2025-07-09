@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class CheckPermissions
 {
@@ -30,6 +31,10 @@ class CheckPermissions
         } else {
             $permission = $basePermission;
         }
+
+        Log::debug("Type recibido: $type");
+        Log::debug("Permiso calculado: $permission");
+        Log::debug("Permisos del usuario: " . json_encode($user->role->permissions->pluck('name')));
 
         if (!$user || !$user->role || !$user->role->permissions->contains('name', $permission)) {
             return response()->json([
