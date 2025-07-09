@@ -48,7 +48,7 @@ class PpvOrder extends Model implements RedsysPayable
             'status' => 'paid',
         ]);
 		
-		//app(\App\Http\Controllers\BillPdfController::class)->generatePpvOrderInvoice($this);
+		app(\App\Http\Controllers\BillPdfController::class)->generatePpvOrderInvoice($this);
     }
 
 }
