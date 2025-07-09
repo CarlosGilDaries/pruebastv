@@ -9,7 +9,7 @@ export async function paypalPayment(planId, token, months = 0, register = false)
     };
 
     const response = await fetch(
-      'https://7689af6dd61d.ngrok-free.app/api/paypal/create',
+      '/api/paypal/create',
       {
         method: 'POST',
         headers: {

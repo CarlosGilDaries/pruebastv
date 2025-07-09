@@ -36,28 +36,6 @@ class PayPalController extends Controller
             }
             $description = 'Suscripción ' . $plan->name . ' ' . $info;
 
-            if ($plan->trimestral_price == 0) {
-                $user->update([
-                    'plan_id' => $request->plan_id
-                ]);
-
-                if ($register) {
-                    return response()->json([
-                        'success' => true,
-                        'payment_required' => false,
-                        'approval_url' => 'https://2591dce456a7.ngrok-free.app/need-device-payment.html',
-                        'message' => 'Plan registrado con éxito.',
-                    ], 200);
-                } else {
-                    return response()->json([
-                        'success' => true,
-                        'payment_required' => false,
-                        'approval_url' => 'https://2591dce456a7.ngrok-free.app/successful-payment.html',
-                        'message' => 'Plan registrado con éxito.',
-                    ], 200);
-                }
-            }
-
             // Obtener token de acceso
             $authResponse = Http::withBasicAuth($clientId, $clientSecret)
                 ->asForm()
@@ -172,9 +150,10 @@ class PayPalController extends Controller
             $order = PlanOrder::where('reference', $reference)->first();
             $userId = $request->query('user_id');
             $user = User::where('id', $userId)->first();
+            $register = $request->query('register');
             
             if (empty($orderId)) {
-                return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=error');
+                return redirect()->away('/unsuccessful-payment.html?status=error');
             }
 
             $clientId = env('PAYPAL_CLIENT_ID');
@@ -192,7 +171,7 @@ class PayPalController extends Controller
                 $order->update([
                     'status' => 'error'
                 ]);
-                return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=auth_error');
+                return redirect()->away('/unsuccessful-payment.html?status=auth_error');
             }
 
             $accessToken = $authResponse->json()['access_token'];
@@ -215,16 +194,20 @@ class PayPalController extends Controller
                 $user->plan_id = $request->query('plan_id');
                 $user->plan_expires_at = Carbon::now()->addMonths($order->months == 'trimestral' ? 3 : 12);
                 $user->save();
-                //app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($order);
-                return redirect()->away('https://2591dce456a7.ngrok-free.app/successful-payment.html?status=success&order_id=' . $orderId);
+                app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($order);
+                if (!$register) {
+                    return redirect()->away('/successful-payment.html?status=success&order_id=' . $orderId);
+                } else {
+                    return redirect()->away('/need-device-payment.html?status=success&order_id=' . $orderId);
+                }
             }
             
             Log::error('PayPal capture failed: ' . $captureResponse->body());
-            return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=capture_error');
+            return redirect()->away('/unsuccessful-payment.html?status=capture_error');
             
         } catch (\Exception $e) {
             Log::error('PayPal Capture Error: ' . $e->getMessage());
-            return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=exception');
+            return redirect()->away('/unsuccessful-payment.html?status=exception');
         }
     }
 
@@ -353,7 +336,7 @@ class PayPalController extends Controller
             $user = User::where('id', $userId)->first();
             
             if (empty($orderId)) {
-                return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=error');
+                return redirect()->away('/unsuccessful-payment.html?status=error');
             }
 
             $clientId = env('PAYPAL_CLIENT_ID');
@@ -371,7 +354,7 @@ class PayPalController extends Controller
                 $order->update([
                     'status' => 'error'
                 ]);
-                return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=auth_error');
+                return redirect()->away('/unsuccessful-payment.html?status=auth_error');
             }
 
             $accessToken = $authResponse->json()['access_token'];
@@ -391,22 +374,22 @@ class PayPalController extends Controller
                     'status' => 'paid'
                 ]);
 
-                //app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($order);
-                return redirect()->away('https://2591dce456a7.ngrok-free.app/successful-payment.html?status=success&order_id=' . $orderId);
+                app(\App\Http\Controllers\BillPdfController::class)->generatePpvOrderInvoice($order);
+                return redirect()->away('/successful-payment.html?status=success&order_id=' . $orderId);
             }
             
             Log::error('PayPal capture failed: ' . $captureResponse->body());
-            return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=capture_error');
+            return redirect()->away('/unsuccessful-payment.html?status=capture_error');
             
         } catch (\Exception $e) {
             Log::error('PayPal Capture Error: ' . $e->getMessage());
-            return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=exception');
+            return redirect()->away('/unsuccessful-payment.html?status=exception');
         }
     }
 
     public function paypalCancel()
     {
-        return redirect()->away('https://2591dce456a7.ngrok-free.app/unsuccessful-payment.html?status=cancel');
+        return redirect()->away('/unsuccessful-payment.html?status=cancel');
     }
 
     private function uniqueCode() 

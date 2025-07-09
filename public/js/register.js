@@ -1,7 +1,4 @@
 import { getIp } from './modules/getIp.js';
-import { selectPlan } from './modules/selectPlan.js';
-
-const planId = localStorage.getItem('plan_id');
 
 document
   .getElementById('register-form')
@@ -58,15 +55,13 @@ document
 
       const data = await response.json();
 
-      console.log(data);
       if (data.success) {
         localStorage.setItem('auth_token', data.data.auth_token);
         localStorage.setItem('current_user_email', data.data.user);
         const months = localStorage.getItem('months');
 
         if (data.data.require_device_registration) {
-          selectPlan(planId, data.data.auth_token, months, true);
-          return;
+          window.location.href = '/register-payment-method.html'
         }
       }
     } catch (error) {

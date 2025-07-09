@@ -7,7 +7,7 @@ export async function paypalPpvPayment(movieId, token) {
     };
 
     const response = await fetch(
-      'https://2591dce456a7.ngrok-free.app/api/paypal/ppv/create',
+      '/api/paypal/ppv/create',
       {
         method: 'POST',
         headers: {

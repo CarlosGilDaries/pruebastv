@@ -19,7 +19,6 @@ class RedsysController extends Controller
     {
         try {
             $user = Auth::user();
-            //$planId = $request->plan_id;
             $plan = Plan::find($request->plan_id);
             $register = $request->register;
             $months = $request->months;
@@ -74,9 +73,9 @@ class RedsysController extends Controller
             $requestParams = $redsysRequest->requestParameters;
 
             if ($register) {
-                $urlOk =  url('https://7689af6dd61d.ngrok-free.app/need-device-payment.html');
+                $urlOk =  url('/need-device-payment.html');
             } else {
-                $urlOk = url('https://7689af6dd61d.ngrok-free.app/successful-payment.html');
+                $urlOk = url('/successful-payment.html');
             }
 
             // Crear Ds_MerchantParameters (JSON en Base64)
@@ -87,8 +86,8 @@ class RedsysController extends Controller
                 'DS_MERCHANT_ORDER' => strval($ds_order),
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
-                'DS_MERCHANT_MERCHANTURL' => url('https://7689af6dd61d.ngrok-free.app/api/redsys-plan-resp'),
-                'DS_MERCHANT_URLKO' => url('https://7689af6dd61d.ngrok-free.app/unsuccessful-payment.html'),
+                'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
+                'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
                 'DS_MERCHANT_URLOK' => strval($urlOk),
             ];
 
@@ -137,11 +136,11 @@ class RedsysController extends Controller
                 'user_id' => $user->id,
                 'movie_id' => $movie->id,
                 'status' => 'pending',
-				'description' => "PPV {$movie->title}"
+				'description' => "Pago PPV {$movie->title}"
             ]);
 
             $redsysRequest = $order->createRedsysRequest(
-                productDescription: "PPV {$movie->title}",
+                productDescription: "Pago PPV {$movie->title}",
                 payMethod: PayMethod::Card,
             );
 
@@ -202,8 +201,8 @@ class RedsysController extends Controller
             $dsMerchantParameters = $request->input('Ds_MerchantParameters');
             $dsSignature = $request->input('Ds_Signature');
 
-            //$secretKey = env('REDSYS_KEY'); // En base64
-            $secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
+            $secretKey = env('REDSYS_KEY');
+            //$secretKey = 'sq7HjrUOBfKmC576ILgskD5srU870gJ7';
             $merchantParamsDecoded = json_decode(base64_decode($dsMerchantParameters), true);
 
             $dsOrder = $merchantParamsDecoded['Ds_Order'];
@@ -252,12 +251,6 @@ class RedsysController extends Controller
 	public function handlePpvRedsysResponse(Request $request) 
     {
         try {
-            /*Log::debug("Redsys Callback Received", [
-                'full_request' => $request->all(),
-                'merchant_parameters' => base64_decode($request->input('Ds_MerchantParameters')),
-                'signature' => $request->input('Ds_Signature'),
-            ]);*/
-
             $dsMerchantParameters = $request->input('Ds_MerchantParameters');
             $dsSignature = $request->input('Ds_Signature');
 
