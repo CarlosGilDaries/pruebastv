@@ -6,7 +6,7 @@ async function listContent() {
   const listContent = document.querySelector('.list-content');
   const type = listContent.getAttribute('data-type');
   const api = '/api/';
-  const backendDeleteApi = '/api/delete-content';
+  const backendDeleteApi = `/api/delete-content/${type}`;
   const authToken = localStorage.getItem('auth_token');
   let title;
   let url;

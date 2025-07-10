@@ -63,7 +63,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('content/{type}/datatable', [MovieApiController::class, 'datatable']);
         Route::get('edit-view-content/{id}/{type}', [MovieApiController::class, 'editShow']); 
         Route::post('add-content/{type}', [MovieApiController::class, 'store']);
-        Route::delete('delete-content', [MovieApiController::class, 'destroy']);
+        Route::delete('delete-content/{type}', [MovieApiController::class, 'destroy']);
         Route::post('update-content/{id}/{type}', [MovieApiController::class, 'update']);
     });
 
