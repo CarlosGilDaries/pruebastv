@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Movie extends Model
 {
@@ -58,5 +59,13 @@ class Movie extends Model
     public function usersWhoFavorited()
     {
         return $this->belongsToMany(User::class, 'favorites');
+    }
+
+    public function movieProgress() 
+    {
+        $user = Auth::user();
+
+        return $this->hasMany(UserMovieProgress::class)
+                ->where('user_id', $user->id);
     }
 }

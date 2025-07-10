@@ -5,12 +5,15 @@ import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 import { checkDeviceID } from './modules/checkDeviceId.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
+import { getVideoContent } from './modules/getVideoContent.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
 const backendURL = 'https://pruebastv.kmc.es';
 const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
+const keepWatching = document.getElementById('keep-watching');
+const keepWatchingVideoContent = document.getElementById('video-content-0');
 
 document.addEventListener('DOMContentLoaded', function () {
   if (device_id == null && token != null) {
@@ -37,6 +40,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function indexData() {
   try {
+    if ((device_id != null && token != null)) {
+      const progressResponse = await fetch('/api/movie-progress', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const progressData = await progressResponse.json();
+      console.log(progressData);
+      if (progressData.success) {
+        keepWatching.style.display = 'flex';
+        const content = progressData.movies;
+        console.log(content);
+        let contentArray = [];
+      content.forEach(movie => {
+        contentArray.push(movie.movie);
+      });
+      getVideoContent(contentArray, keepWatchingVideoContent);
+      }
+    }
+
     const categoriesResponse = await fetch('/api/categories');
     const categoriesData = await categoriesResponse.json();
     const categoriesDropDown = document.getElementById('categories');

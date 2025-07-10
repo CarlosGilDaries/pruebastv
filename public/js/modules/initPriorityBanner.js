@@ -2,7 +2,6 @@ import { formatDuration } from "./formatDuration.js";
 
 export function initPriorityBanner(categoriesData) {
 	try {
-		console.log(categoriesData);
     // Encontrar la categoría con priority 1
     const priorityCategory = categoriesData.categories.find(
       (cat) => cat.priority === 1

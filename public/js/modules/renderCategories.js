@@ -41,7 +41,7 @@ export async function renderCategories(main, categoriesData) {
     categoryCounter++;
 
     // Insertar acción cada 3 categorías si quedan acciones disponibles
-    if (categoryCounter % 3 === 0 && nextActionIndex < actions.length) {
+    if (categoryCounter % 2 === 0 && nextActionIndex < actions.length) {
       renderActionCall(main, actions[nextActionIndex]);
       nextActionIndex++;
     }

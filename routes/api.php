@@ -195,6 +195,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 
+    Route::get('/movie-progress', [MovieProgressController::class, 'index']);
     Route::post('/movie-progress', [MovieProgressController::class, 'store']);
     Route::get('/movie-progress/{movieId}', [MovieProgressController::class, 'show']);
     Route::delete('/movie-progress/{movieId}', [MovieProgressController::class, 'destroy']);
