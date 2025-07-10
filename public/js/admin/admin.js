@@ -22,6 +22,7 @@ const permissionToContentMap = {
   pedidos: 'list-orders',
   facturas: 'list-bills',
   roles: 'list-roles',
+  etiquetas: 'list-tags',
 };
 
 if (token == null) {
