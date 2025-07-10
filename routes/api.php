@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\PayPalController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
+use App\Http\Controllers\Api\MovieProgressController;
 use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\CheckPermissions;
@@ -193,6 +194,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::post('/paypal/ppv/create', [PayPalController::class, 'paypalCreatePpvOrder'])->name('paypal.ppv.create');
 
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
+
+    Route::post('/movie-progress', [MovieProgressController::class, 'store']);
+    Route::get('/movie-progress/{movieId}', [MovieProgressController::class, 'show']);
+    Route::delete('/movie-progress/{movieId}', [MovieProgressController::class, 'destroy']);
 });
 
 Route::get('check-device-id', [UserSessionApiController::class, 'checkDeviceId']);

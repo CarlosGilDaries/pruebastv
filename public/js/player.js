@@ -4,6 +4,7 @@ import { loadAds } from './modules/loadAds.js';
 import { initAdPlayer } from './modules/adPlayer.js';
 import { signedUrl } from './modules/signedUrl.js';
 import { setupBackArrowAndTitle } from './modules/backArrowAndTitle.js';
+import { VideoProgressTracker } from './modules/videoProgressTrackerClass.js';
 
 async function initPlayer() {
   try {
@@ -139,7 +140,7 @@ async function playVideoWithoutAds(movie, token, signedUrl) {
     let techOrder = 'html5';
 
     document.title = movie.title;
-
+/*
     if (type === 'iframe') {
       const video = document.querySelector('video');
       if (video) video.remove();
@@ -158,10 +159,10 @@ async function playVideoWithoutAds(movie, token, signedUrl) {
 									`;
       return;
     }
-
-    if (type === 'video/youtube') {
+*/
+    if (type === 'stream') {
       videoUrl = signedUrl;
-      techOrder = 'youtube';
+      type = 'application/vnd.apple.mpegurl';
     } else if (type === 'url_mp4') {
       videoUrl = signedUrl;
       type = 'video/mp4';
@@ -200,16 +201,10 @@ async function playVideoWithoutAds(movie, token, signedUrl) {
         },
       },
     });
+
+    new VideoProgressTracker(movie.id, player, token);
     setupBackArrowAndTitle(player, movie);
     player.play();
-
-    /*// Manejar errores de autenticación
-        player.on('error', (e) => {
-            if (e.code === 4) { // Error de red/autenticación
-                console.error('Error de autenticación, refrescando token...');
-                // implementar lógica para refrescar el token
-            }
-        });*/
   } catch (error) {
     console.log(error);
   }
@@ -221,24 +216,42 @@ async function playVideoWithAds(movieSlug, token, movie) {
 
     if (movieData.type != 'iframe') {
       const player = videojs('my-video', {}, async function () {
+        const savedTime = await this.getSavedProgress(movieData.id, token);
+
         await initAdPlayer(
           player,
           movieData.url,
           movieData.type,
           ads,
           movieData.id,
-          token
+          token,
+          savedTime
         );
+        new VideoProgressTracker(movieData.id, player, token);
       });
+
+      player.getSavedProgress = async (movieId, token) => {
+        try {
+          const response = await fetch(`/api/movie-progress/${movieId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          return response.ok ? await response.json() : 0;
+        } catch (error) {
+          console.error('Error fetching progress:', error);
+          return 0;
+        }
+      };
+
       setupBackArrowAndTitle(player, movieData);
-    } else {
     }
   } catch (error) {
     console.error('Error al cargar anuncios:', error);
   }
 }
 
-// Initialize the player
 document.addEventListener('DOMContentLoaded', initPlayer);
 /*
 document.addEventListener('contextmenu', function (event) {

@@ -44,6 +44,7 @@ export function skippableAd(player, currentAd, midrollState) {
       skipButton.remove();
       clearInterval(countdownInterval);
       player.ads.endLinearAdMode();
+      document.querySelector("#my-video > div.vjs-back-button-container").style.display = 'flex';
       
       if (midrollState) {
         midrollState.isPlayingMidroll = false;
