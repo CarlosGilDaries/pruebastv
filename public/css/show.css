@@ -184,11 +184,11 @@ video {
 	background: var(--unlink-users-btn-hover);
 }
 
-#content-info a {
+#content-info a, #tags {
     transition: color 0.3s ease;
 }
 
-#content-info a:hover {
+#content-info a:hover, #tags:hover {
     color: var(--unlink-users-btn-hover);
 }
 
