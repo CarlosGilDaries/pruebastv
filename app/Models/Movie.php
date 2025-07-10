@@ -68,4 +68,9 @@ class Movie extends Model
         return $this->hasMany(UserMovieProgress::class)
                 ->where('user_id', $user->id);
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

@@ -82,6 +82,16 @@ async function fetchMovieData() {
       window.location.href = data.redirect_url;
     }
 
+    const tags = data.data.movie.tags;
+    const tagsContainer = document.querySelector('.keyword-links');
+    tags.forEach(tag => {
+      const link = document.createElement('a');
+      link.href = `/tag-show.html?id=${tag.id}`;
+      link.classList.add('keyword-link');
+      link.innerHTML = tag.name;
+      tagsContainer.appendChild(link);
+    })
+
     const userData = await userResponse.json();
     const movieId = data.data.movie.id;
 

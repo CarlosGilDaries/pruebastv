@@ -138,6 +138,7 @@ textarea {
     padding-left: 35px;
     cursor: pointer;
     user-select: none;
+    width: calc(15% - 20px);
 }
 
 .checkbox-container input {
@@ -203,4 +204,10 @@ textarea {
     background: #f5f5f5 !important;
     border-top: 1px solid #ddd !important;
     border-radius: 0 0 4px 4px !important;
+}
+
+#tags-container, #categories-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }

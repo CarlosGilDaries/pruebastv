@@ -67,6 +67,7 @@ async function editContentForm() {
         }
       );
       const plansResponse = await fetch('/api/plans');
+      const tagsResponse = await fetch('/api/tags');
       const genderResponse = await fetch('/api/genders', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -82,6 +83,8 @@ async function editContentForm() {
       const plansData = await plansResponse.json();
       const genderData = await genderResponse.json();
       const categoryData = await categoryResponse.json();
+      const tagsData = await tagsResponse.json();
+      const tags = tagsData.tags;
       const plans = plansData.plans;
       const genders = genderData.genders;
       const categories = categoryData.categories;
@@ -94,14 +97,22 @@ async function editContentForm() {
       content.categories.forEach((category) => {
         currentCategoriesId.push(category.id);
       });
+      let currentTagsId = [];
+      content.tags.forEach((tag) => {
+        currentTagsId.push(tag.id);
+      });
 
       const plansContainer = document.getElementById('plans-container');
       const categoriesContainer = document.getElementById(
         'categories-container'
       );
+      const tagsContainer = document.getElementById(
+        'tags-container'
+      );
       const selectGender = document.getElementById('gender_id');
       let plansContainerTextContent = '';
       let categoriesContainerTextContent = '';
+      let tagsContainerTextContent = '';
 
       plans.forEach((plan) => {
         plansContainerTextContent += `
@@ -124,6 +135,17 @@ async function editContentForm() {
                                      `;
       });
       categoriesContainer.innerHTML = categoriesContainerTextContent;
+
+      tags.forEach((tag) => {
+        tagsContainerTextContent += `
+                                     <label class="checkbox-container">
+                                       <input type="checkbox" name="tags[${tag.id}][id]" value="${tag.id}" id="tag-${tag.id}" class="tag-checkbox">
+                                       <span class="checkmark"></span>
+                                         <p>${tag.name}</p>
+                                     </label>
+                                     `;
+      });
+      tagsContainer.innerHTML = tagsContainerTextContent;
 
       genders.forEach((gender) => {
         let option = document.createElement('option');
@@ -197,11 +219,18 @@ async function editContentForm() {
         '#form .category-checkbox'
       );
 
+      let checkboxTags = document.querySelectorAll(
+        '#form .tag-checkbox'
+      );
+
       checkboxPlans.forEach((chbox) => {
         chbox.checked = currentPlansId.includes(Number(chbox.value));
       });
       checkboxCategories.forEach((chbox) => {
         chbox.checked = currentCategoriesId.includes(Number(chbox.value));
+      });
+      checkboxTags.forEach((chbox) => {
+        chbox.checked = currentTagsId.includes(Number(chbox.value));
       });
 
       document.getElementById('gender_id').value = content.gender_id;
@@ -346,6 +375,16 @@ async function editContentForm() {
       categoryCheckboxes.forEach((checkbox) => {
         if (checkbox.checked) {
           formData.append('categories[]', checkbox.value);
+        }
+      });
+
+      const tagCheckboxes = document.querySelectorAll(
+        '#form .tag-checkbox'
+      );
+
+      tagCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          formData.append('tags[]', checkbox.value);
         }
       });
 

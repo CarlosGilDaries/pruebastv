@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-//use Illuminate\Support\Facades\Http;
-//use Illuminate\Support\Facades\Cache;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use DataTables;
 use Illuminate\Support\Carbon;
@@ -108,7 +106,7 @@ class MovieApiController extends Controller
     public function show($slug)
     {
         try {
-            $movie = Movie::with('gender')->where('slug', $slug)->first();
+            $movie = Movie::with('gender', 'tags')->where('slug', $slug)->first();
 			$user = Auth::user();
 			
             if (!$movie) {
@@ -145,7 +143,7 @@ class MovieApiController extends Controller
 	public function editShow($id)
     {
         try {
-            $movie = Movie::where('id', $id)->with('plans', 'categories')->first();
+            $movie = Movie::where('id', $id)->with('plans', 'categories', 'tags')->first();
             $plans = Plan::all();
 
             if (!$movie) {
@@ -384,6 +382,7 @@ class MovieApiController extends Controller
 
             $movie->plans()->sync($request->input('plans'));
             $movie->categories()->sync($request->input('categories'));
+            $movie->tags()->sync($request->input('tags'));
 			
 			$adminPlan = Plan::where('name', 'admin')->first();
 			DB::table('movie_plan')->insert([
@@ -591,6 +590,7 @@ class MovieApiController extends Controller
 			
 			$plans = $request->input('plans');
             $movie->categories()->sync($request->input('categories'));
+            $movie->tags()->sync($request->input('tags'));
 
 			foreach($plans as $plan) {
 				DB::table('movie_plan')->insert([

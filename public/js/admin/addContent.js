@@ -4,7 +4,7 @@ async function initContent() {
   const backendAPI = '/api/';
   const authToken = localStorage.getItem('auth_token');
 
-  setupPlansGendersCategories(authToken);
+  setupPlansGendersCategoriesTags(authToken);
 
   // Mostrar nombre de archivos seleccionados
   const setupFileInput = (inputId, nameId, labelId) => {
@@ -172,38 +172,32 @@ async function initContent() {
       const planCheckboxes = document.querySelectorAll(
         '#form .plan-checkbox'
       );
-      //let atLeastOneChecked = false;
 
       planCheckboxes.forEach((checkbox) => {
         if (checkbox.checked) {
           formData.append('plans[]', checkbox.value);
-          //atLeastOneChecked = true;
         }
       });
-
-      /*if (!atLeastOneChecked) {
-        document.getElementById('loading').style.display = 'none';
-        alert('Selecciona al menos un plan');
-        return;
-      }*/
 
       const categoryCheckboxes = document.querySelectorAll(
         '#form .category-checkbox'
       );
-      //let atLeastOneCategoryChecked = false;
 
       categoryCheckboxes.forEach((checkbox) => {
         if (checkbox.checked) {
           formData.append('categories[]', checkbox.value);
-          //atLeastOneCategoryChecked = true;
         }
       });
 
-      /*if (!atLeastOneCategoryChecked) {
-        document.getElementById('loading').style.display = 'none';
-        alert('Selecciona al menos una categoría');
-        return;
-      }*/
+      const tagCheckboxes = document.querySelectorAll(
+        '#form .tag-checkbox'
+      );
+
+      tagCheckboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+          formData.append('tags[]', checkbox.value);
+        }
+      });
       
       let permission;
       if (type == 'video/mp4' || type == 'application/vnd.apple.mpegurl' || type == 'audio/mpeg') {
@@ -277,14 +271,17 @@ async function initContent() {
 
 initContent();
 
-async function setupPlansGendersCategories(authToken) {
+async function setupPlansGendersCategoriesTags(authToken) {
 	  try {
       const plansContainer = document.getElementById('plans-container');
       const selectGender = document.getElementById('gender_id');
       const categoriesContainer = document.getElementById('categories-container');
+      const tagsContainer = document.getElementById('tags-container');
       let plansContainerTextContent = '';
       let categoriesContainerTextContent = '';
+      let tagsContainerTextContent = '';
       const response = await fetch('/api/plans');
+      const tagsResponse = await fetch('/api/tags');
       const genderResponse = await fetch('/api/genders', {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -298,9 +295,11 @@ async function setupPlansGendersCategories(authToken) {
       const data = await response.json();
       const genderData = await genderResponse.json();
       const categoryData = await categoryResponse.json();
+      const tagsData = await tagsResponse.json();
       const plans = data.plans;
       const genders = genderData.genders;
       const categories = categoryData.categories;
+      const tags = tagsData.tags;
 
       plans.forEach((plan) => {
         plansContainerTextContent += `
@@ -323,6 +322,17 @@ async function setupPlansGendersCategories(authToken) {
                                     `;
       });
       categoriesContainer.innerHTML = categoriesContainerTextContent;
+
+      tags.forEach((tag) => {
+        tagsContainerTextContent += `
+                                    <label class="checkbox-container">
+                                      <input type="checkbox" name="tags[${tag.id}][id]" value="${tag.id}" id="tag-${tag.id}" class="tag-checkbox">
+                                      <span class="checkmark"></span>
+                                        <p>${tag.name}</p>
+                                    </label>
+                                    `;
+      });
+      tagsContainer.innerHTML = tagsContainerTextContent;
 
       genders.forEach((gender) => {
         let option = document.createElement('option');

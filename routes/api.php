@@ -26,6 +26,7 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Api\MovieProgressController;
+use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\CheckPermissions;
@@ -183,6 +184,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('roles', [RoleController::class, 'index']);
     Route::get('role/{id}', [RoleController::class, 'show']);
 
+    // Rutas de Etiquetas protegidas
+    Route::middleware([
+        CheckPermissions::class . ':etiquetas',
+    ])->group(function () {
+        Route::get('tags/datatable', [TagController::class, 'datatable']);
+        Route::post('add-tag', [TagController::class, 'store']);
+        Route::post('edit-tag/{id}', [TagController::class, 'update']);
+        Route::delete('delete-tag', [TagController::class, 'destroy']);
+    });
+
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);
     Route::post('add-permission', [PermissionController::class, 'store']);
@@ -212,6 +223,8 @@ Route::get('genders', [GenderController::class, 'index']);
 Route::get('gender/{id}', [GenderController::class, 'show']);
 Route::get('category/{id}', [CategoryController::class, 'show']);
 Route::get('actions', [ActionController::class, 'index']);
+Route::get('tags', [TagController::class, 'index']);
+Route::get('tag/{id}', [TagController::class, 'show']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');
