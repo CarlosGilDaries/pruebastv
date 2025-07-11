@@ -47,9 +47,9 @@ async function editWebSettingsForm() {
           details.favicon
         );
         setupFileInput(
-          'logo',
-          'logo-name',
-          'logo-label-text',
+          'logo_input',
+          'logo_input-name',
+          'logo_input-label-text',
           details.logo
         );
 
@@ -111,7 +111,7 @@ async function editWebSettingsForm() {
         formData.append('favicon', ''); // Envía un valor vacío si no hay archivo
       }
 
-      const logoInput = document.getElementById('logo');
+      const logoInput = document.getElementById('logo_input');
       if (logoInput && logoInput.files.length > 0) {
         formData.append('logo', logoInput.files[0]);
       } else {
