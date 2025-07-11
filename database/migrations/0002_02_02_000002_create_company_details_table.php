@@ -17,11 +17,13 @@ return new class extends Migration
             $table->string('fiscal_address');
             $table->string('nif_cif');
 			$table->string('email')->nullable();
-			$table->string('phone_number')->nullable();
+            $table->longtext('commercial_registry_text');
+            $table->longtext('lopd_text');
+            $table->string('favicon')->nullable();
+            $table->string('logo')->nullable();
 			$table->string('facebook')->nullable();
 			$table->string('instagram')->nullable();
 			$table->string('twitter')->nullable();
-			$table->string('github')->nullable();
             $table->timestamps();
         });
     }
