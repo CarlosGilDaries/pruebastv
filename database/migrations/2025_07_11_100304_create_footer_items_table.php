@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('footer_items', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->string('logo');
 			$table->string('url');
             $table->string('description')->nullable();

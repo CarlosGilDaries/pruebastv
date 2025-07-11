@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\FavoritesController;
+use App\Http\Controllers\Api\FooterItemController;
 use App\Http\Controllers\Api\PayPalController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
@@ -201,6 +202,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('edit-company-details', [CompanyDetailController::class, 'update']);
     });
 
+        // Rutas de Footer Items protegidas
+    Route::middleware([
+        CheckPermissions::class . ':footer_items',
+    ])->group(function () {
+        Route::get('footer-items/datatable', [FooterItemController::class, 'datatable']);
+        Route::get('footer-item/{id}', [FooterItemController::class, 'show']);
+        Route::post('add-footer-item', [FooterItemController::class, 'store']);
+        Route::post('edit-footer-item/{id}', [FooterItemController::class, 'update']);
+        Route::delete('delete-footer-item', [FooterItemController::class, 'destroy']);
+    });
+
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);
     Route::post('add-permission', [PermissionController::class, 'store']);
@@ -232,6 +244,7 @@ Route::get('category/{id}', [CategoryController::class, 'show']);
 Route::get('actions', [ActionController::class, 'index']);
 Route::get('tags', [TagController::class, 'index']);
 Route::get('tag/{id}', [TagController::class, 'show']);
+Route::get('footer-items', [FooterItemController::class, 'index']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');

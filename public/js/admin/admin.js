@@ -24,6 +24,7 @@ const permissionToContentMap = {
   roles: 'list-roles',
   etiquetas: 'list-tags',
   ajustes_web: 'web-config',
+  footer_items: 'list-footer-items'
 };
 
 if (token == null) {
