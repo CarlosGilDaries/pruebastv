@@ -10,6 +10,7 @@ Route::get('/file/{path}', function ($path) {
     $filePathMovie = "content/{$path}";
     $filePathAd = "ads/{$path}";
     $filePathAction = "actions/{$path}";
+    $filePathSettings = "settings/{$path}";
 
     if (Storage::disk('private')->exists($filePathMovie)) {
         return response()->file(storage_path("app/private/{$filePathMovie}"));
@@ -21,6 +22,10 @@ Route::get('/file/{path}', function ($path) {
 
     if (Storage::disk('private')->exists($filePathAction)) {
         return response()->file(storage_path("app/private/{$filePathAction}"));
+    }
+    
+    if (Storage::disk('private')->exists($filePathSettings)) {
+        return response()->file(storage_path("app/private/{$filePathSettings}"));
     }
 
     abort(404);

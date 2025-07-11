@@ -11,10 +11,12 @@ class CompanyDetail extends Model
         'fiscal_address',
         'nif_cif',
         'email',
-        'phone_number',
+        'commercial_registry_text',
+        'lopd_text',
+        'favicon',
+        'logo',
         'facebook',
-		'instagram',
-		'twitter',
-		'github',
+        'instagram',
+        'twitter',
     ];
 }

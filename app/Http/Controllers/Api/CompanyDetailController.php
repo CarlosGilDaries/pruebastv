@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\CompanyDetail;
 //use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Artisan;
 
 class CompanyDetailController extends Controller
 {
@@ -45,23 +46,43 @@ class CompanyDetailController extends Controller
             $fiscal_address = sanitize_html($request->input('fiscal_address'));
             $nif_cif = sanitize_html($request->input('nif_cif'));
             $email = sanitize_html($request->input('email'));
-            $phone_number = sanitize_html($request->input('phone_number'));
+            $lopd_text = sanitize_html($request->input('lopd_text'));
+            $commercial_registry_text = sanitize_html($request->input('commercial_registry_text'));
+            $favicon = sanitize_html($request->input('favicon'));
+            $logo = sanitize_html($request->input('logo'));
 			$facebook = sanitize_html($request->input('facebook'));
 			$instagram = sanitize_html($request->input('instagram'));
 			$twitter = sanitize_html($request->input('twitter'));
-			$github = sanitize_html($request->input('github'));
 
             $details->name = $name;
 			$details->fiscal_address = $fiscal_address;
 			$details->nif_cif = $nif_cif;
 			$details->email = $email;
-			$details->phone_number = $phone_number;
+            $details->commercial_registry_text = $commercial_registry_text;
+			$details->lopd_text = $lopd_text;
+            $details->logo = $logo;
+            $details->favicon = $favicon;
 			$details->facebook = $facebook;
 			$details->instagram = $instagram;
 			$details->twitter = $twitter;
-			$details->github = $github;
 			
 			$details->save();
+
+            $logo = $request->file('logo');
+            if ($logo) {
+                $logoExtension = $logo->getClientOriginalExtension();
+				$details->logo = '/file/logo.' . $logoExtension;
+				$logo->storeAs('settings/','logo.' . $logoExtension, 'private');
+            }
+
+            $favicon = $request->file('favicon');
+            if ($favicon) {
+                $faviconExtension = $favicon->getClientOriginalExtension();
+				$details->favicon = '/file/favicon.' . $faviconExtension;
+				$favicon->storeAs('settings/','favicon.' . $faviconExtension, 'private');
+            }
+
+            $details->save();
 
             return response()->json([
                 'success' => true,

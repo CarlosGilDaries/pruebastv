@@ -23,6 +23,7 @@ const permissionToContentMap = {
   facturas: 'list-bills',
   roles: 'list-roles',
   etiquetas: 'list-tags',
+  ajustes_web: 'web-config',
 };
 
 if (token == null) {

@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/404.css">
-    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
+    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" id="favicon">
     <title>Página no encontrada</title>
 </head>
 <body>
@@ -15,7 +15,7 @@
         <div class="menu">
             <nav>
                 <ul class="nav left-nav">
-                    <li class="logo"><a href="/"><img src="/images/logo.png" alt="Pruebas TV logo"></a></li>
+                    <li class="logo"><a href="/"><img id="logo" src="/images/logo.png" alt="Pruebas TV logo"></a></li>
                     <li class="left-nav-links"><a href="/">Inicio</a></li>
 					<li class="dropdown left-nav-links">
                         <a href="/categories.html" class="dropdown-toggle">Categorías</a>
@@ -83,5 +83,6 @@
         import { clickLogOut } from './js/modules/clickLogOutButton.js';
         clickLogOut();
     </script>
+    <script src="/js/webSettings.js"></script>
 </body>
 </html>

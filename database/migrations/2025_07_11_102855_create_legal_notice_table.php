@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('legal_notice', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('subtitle')->nullable();
             $table->longtext('text');
             $table->timestamps();
         });

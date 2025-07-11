@@ -8,8 +8,7 @@
     <link rel="stylesheet" href="/css/admin/admin.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.css"/>
-    <title>Llamadas a la Acción</title>
+    <title>Configuración Web</title>
 </head>
 <body>
     <div class="menu">
@@ -107,7 +106,7 @@
                         <span>Facturas</span>
                 	</li>
 				</a>
-                <a href="/admin/web-config.html">
+				<a href="/admin/web-config.html">
                 	<li data-content="web-config">
                         <i class="fa-solid fa-globe"></i>
                         <span>Configuración Web</span>
@@ -143,19 +142,112 @@
         <main class="admin-main">
             <div id="content-area">
 
-                <div class="container list" id="list-roles">
+                <div class="container" id="web-config">
+                    <!-- Editar Ajustes Web -->
+                    <h1><i class="fa-solid fa-globe"></i> Editar Ajustes Web</h1>
+                    <div id="success-message" class="success-message">
+                        Ajustes Web editados con éxito
+                    </div>
+                    <form id="web-form">
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" id="name" name="name" required>
+                            <div id="name-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fiscal_address">Dirección Fiscal</label>
+                            <input type="text" id="fiscal_address" name="fiscal_address" required>
+                            <div id="fiscal_address-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nif_cif">NIF</label>
+                            <input type="text" id="nif_cif" name="nif_cif" required>
+                            <div id="nif_cif-error" class="error-message"></div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                            <div id="email-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="commercial_registry_text">Texto Registro Mercantil</label>
+                            <textarea id="commercial_registry_text" name="commercial_registry_text" class="ckeditor wysiwyg-textarea" required></textarea>
+                            <div id="commercial_registry_text-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lopd_text">Texto LOPD</label>
+                            <textarea id="lopd_text" name="lopd_text" class="ckeditor wysiwyg-textarea" required></textarea>
+                            <div id="lopd_text-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="favicon_input">Favicon (PNG)</label>
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="favicon_input">
+                                    <i class="fas fa-image"></i>
+                                    <span id="favicon_input-label-text">Seleccionar archivo...</span>
+                                </label>
+                                <input type="file" id="favicon_input" name="favicon_input" class="file-input" accept="image/*">
+                                <div id="favicon_input-name" class="file-name"></div>
+                            </div>
+                            <div id="favicon_input-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="logo">Logo (PNG)</label>
+                            <div class="file-input-container">
+                                <label class="file-input-label" for="logo">
+                                    <i class="fas fa-image"></i>
+                                    <span id="logo-label-text">Seleccionar archivo...</span>
+                                </label>
+                                <input type="file" id="logo" name="logo" class="file-input" accept="image/*">
+                                <div id="logo-name" class="file-name"></div>
+                            </div>
+                            <div id="logo-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="instagram">Instagram</label>
+                            <input type="text" id="instagram" name="instagram" required>
+                            <div id="instagram-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="facebook">Facebook</label>
+                            <input type="text" id="facebook" name="facebook" required>
+                            <div id="facebook-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="twitter">Twitter</label>
+                            <input type="text" id="twitter" name="twitter" required>
+                            <div id="twitter-error" class="error-message"></div>
+                        </div>
+
+                        <div class="loading" id="loading">
+                            <div class="loading-spinner"></div>
+                            <p>Editando ajustes web, por favor espere...</p>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-upload"></i> Editar
+                        </button>
+                    </form>
                 </div>
-                
+
             </div>
         </main>
 
     </div>
 
     <script src="/ckeditor/ckeditor.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/2.3.1/js/dataTables.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script type="module" src="/js/admin/listRoles.js"></script>
+    <script src="/js/admin/editWebSettings.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

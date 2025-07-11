@@ -14,7 +14,7 @@
     <div class="menu">
         <nav>
             <ul class="nav left-nav">
-                <li class="logo"><a href="/"><img src="/images/logo.png" alt="Streaming logo"></a></li>
+                <li class="logo"><a href="/"><img id="logo" src="/images/logo.png" alt="Streaming logo"></a></li>
             </ul>
         </nav>
         <nav>
@@ -106,6 +106,30 @@
                         <span>Facturas</span>
                 	</li>
 				</a>
+                <a href="/admin/web-config.html">
+                	<li data-content="web-config">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Configuración Web</span>
+                	</li>
+				</a>
+                <a href="/admin/mail-config.html">
+                	<li data-content="mail-config">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Configuración Mail</span>
+                	</li>
+				</a>
+                <a href="/admin/list-legal-notices.html">
+                	<li data-content="list-legal-notices">
+                        <i class="fa-solid fa-gavel"></i>
+                        <span>Aviso Legal</span>
+                	</li>
+				</a>
+                <a href="/admin/list-footer-items.html">
+                	<li data-content="list-footer-items">
+                        <i class="fa-solid fa-shoe-prints"></i>
+                        <span>Items Footer</span>
+                	</li>
+				</a>
                 <a href="/admin/list-roles.html">
                 	<li data-content="list-roles">
                         <i class="fa-solid fa-users"></i>
@@ -166,5 +190,6 @@
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
     <script src="/js/admin/addGender.js"></script>
+    <script src="/js/webSettings.js"></script>
 </body>
 </html>

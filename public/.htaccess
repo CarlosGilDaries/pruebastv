@@ -27,6 +27,11 @@ ErrorDocument 404 /404.html
     RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC]
     RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.test/ [NC]
     RewriteRule ^(secure-stream|proxy/(ts|hls))/ - [F,L]
+
+    # Facturas
+    RewriteCond %{REQUEST_URI} ^/bill/[^/]+/download$
+    RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC]
+    RewriteRule ^ - [F,L]
     
     # Redirigir a show.html solo si es HTML y no API, archivo o directorio
     RewriteCond %{HTTP_ACCEPT} text/html

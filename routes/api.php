@@ -194,6 +194,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-tag', [TagController::class, 'destroy']);
     });
 
+    // Rutas de Ajustes Web protegidas
+    Route::middleware([
+        CheckPermissions::class . ':ajustes_web',
+    ])->group(function () {
+        Route::post('edit-company-details', [CompanyDetailController::class, 'update']);
+    });
+
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);
     Route::post('add-permission', [PermissionController::class, 'store']);

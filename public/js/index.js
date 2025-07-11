@@ -48,11 +48,9 @@ async function indexData() {
         },
       });
       const progressData = await progressResponse.json();
-      console.log(progressData);
       if (progressData.success) {
         keepWatching.style.display = 'flex';
         const content = progressData.movies;
-        console.log(content);
         let contentArray = [];
       content.forEach(movie => {
         contentArray.push(movie.movie);
