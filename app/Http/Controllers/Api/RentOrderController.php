@@ -12,7 +12,7 @@ class RentOrderController extends Controller
         public function show(string $id)
     {
         try {
-            $order = RentOrder::with(['user', 'plan'])
+            $order = RentOrder::with(['user'])
 				->where('id', $id)->first();
 
             return response()->json([

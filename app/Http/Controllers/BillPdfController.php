@@ -121,7 +121,7 @@ class BillPdfController extends Controller
 		return $bill;
 	}
 
-		public function generateRentOrderInvoice(RentOrder $order)
+	public function generateRentOrderInvoice(RentOrder $order)
 	{
 		$companyResponse = Http::get(route('company-details'));
 		$orderResponse = Http::get(route('rent-order.show', $order->id));

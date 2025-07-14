@@ -104,6 +104,26 @@ async function initPlayer() {
       }
     }
 
+    if (
+      showData.data.movie.rent &&
+      userData.data.user.rol !== 'admin'
+    ) {
+      const rentResponse = await fetch('/api/check-if-rented/' + movieId, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const rentData = await rentResponse.json();
+
+      if (!rentData.success && rentResponse.status == 404) {
+        window.location.href = `/content/${showData.data.movie.slug}`;
+        return;
+      }
+    }
+
     const url = await signedUrl(token, showData.data.movie.id);
 
     if (showData.data.ads_count === 0) {
