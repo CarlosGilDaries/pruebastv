@@ -7,15 +7,14 @@ use Creagia\LaravelRedsys\Concerns\CanCreateRedsysRequests;
 use Creagia\LaravelRedsys\Contracts\RedsysPayable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
-class PlanOrder extends Model implements RedsysPayable
+class RentOrder extends Model implements RedsysPayable
 {
     protected $fillable = [
         'reference',
-        'months',
         'amount',
         'status',
         'user_id',
-        'plan_id',
+        'movie_id',
 		'description',
         'payment_method'
     ];
@@ -27,9 +26,9 @@ class PlanOrder extends Model implements RedsysPayable
         return $this->belongsTo(User::class);
     }
 
-        public function plan()
+    public function movie()
     {
-        return $this->belongsTo(Plan::class);
+        return $this->belongsTo(Movie::class);
     }
 	
     public function bill(): MorphOne
@@ -50,6 +49,6 @@ class PlanOrder extends Model implements RedsysPayable
             'status' => 'paid',
         ]);
 		
-		app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($this);
-	}
+		//app(\App\Http\Controllers\BillPdfController::class)->generateRentOrderInvoice($this);
+    }
 }

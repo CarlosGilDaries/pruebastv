@@ -7,7 +7,6 @@ use App\Models\UserSession;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use App\Notifications\ExpiredPlan;
-use Laravel\Sanctum\PersonalAccessToken;
 
 class CheckPlansExpireDate extends Command
 {
