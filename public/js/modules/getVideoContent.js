@@ -35,6 +35,12 @@ export function getVideoContent(data, node) {
       info.append(ppv);
     }
 
+    if (video.rent == 1) {
+      const rent = document.createElement('p');
+      rent.textContent = `Alquiler: ${video.rent_price} €`;
+      info.append(rent);
+    }
+
     article.append(link, info);
     node.append(article);
   });

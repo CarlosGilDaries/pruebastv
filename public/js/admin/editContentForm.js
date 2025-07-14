@@ -238,6 +238,12 @@ async function editContentForm() {
         content.pay_per_view == 1;
       document.getElementById('pay_per_view_price').value =
         content.pay_per_view_price;
+      document.getElementById('rent').checked =
+        content.rent == 1;
+      document.getElementById('rent_price').value =
+        content.rent_price;
+      document.getElementById('rent_days').value =
+        content.rent_days;
       document.getElementById('start_time').value = content.start_time;
       document.getElementById('end_time').value = content.end_time;
     } catch (error) {
@@ -254,6 +260,19 @@ async function editContentForm() {
       } else {
         payPerViewFields.classList.add('hidden');
         document.getElementById('pay_per_view_price').value = '';
+      }
+    });
+  
+  document
+    .getElementById('rent')
+    .addEventListener('change', function () {
+      const rentFields = document.getElementById('rent_fields');
+      if (this.checked) {
+        rentFields.classList.remove('hidden');
+      } else {
+        rentFields.classList.add('hidden');
+        document.getElementById('rent_price').value = '';
+        document.getElementById('rent_days').value = '';
       }
     });
 
@@ -294,6 +313,22 @@ async function editContentForm() {
         formData.append(
           'pay_per_view_price',
           document.getElementById('pay_per_view_price').value
+        );
+      }
+
+      formData.append(
+        'rent',
+        document.getElementById('rent').checked ? '1' : '0'
+      );
+
+      if (document.getElementById('rent').value) {
+        formData.append(
+          'rent_price',
+          document.getElementById('rent_price').value
+        );
+        formData.append(
+          'rent_days',
+          document.getElementById('rent_days').value
         );
       }
 

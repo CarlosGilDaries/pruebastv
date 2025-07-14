@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\PlanOrder;
 use App\Models\PpvOrder;
 use App\Models\Bill;
+use App\Models\RentOrder;
 use Illuminate\Support\Facades\Http;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -17,7 +18,7 @@ class BillPdfController extends Controller
 		try {
 			$bill = Bill::whereHasMorph(
 				'billable', 
-				[PlanOrder::class, PpvOrder::class],
+				[PlanOrder::class, PpvOrder::class, RentOrder::class],
 				function ($query) use ($orderId) {
 					$query->where('id', $orderId);
 				}
@@ -94,6 +95,36 @@ class BillPdfController extends Controller
 	{
 		$companyResponse = Http::get(route('company-details'));
 		$orderResponse = Http::get(route('ppv-order.show', $order->id));
+
+		$companyDetails = $companyResponse->json()['details'];
+		$orderDetails = $orderResponse->json()['order'];
+
+		$bill = $order->bill()->create([
+			'user_id' => $order->user_id,
+			'url' => ''
+		]);
+
+		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
+
+		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id);
+
+		$filename = 'factura-' . now()->format('dmY') . '-' . str_pad($bill->id, 8, '0', STR_PAD_LEFT) . '.pdf';
+		$path = "bills/user_{$order->user_id}/{$filename}";
+
+		Storage::disk('private')->put($path, $pdf->output());
+		$bill->update([
+			'url' => $path,
+			'bill_number' => $invoiceNumber
+		]);
+
+
+		return $bill;
+	}
+
+		public function generateRentOrderInvoice(RentOrder $order)
+	{
+		$companyResponse = Http::get(route('company-details'));
+		$orderResponse = Http::get(route('rent-order.show', $order->id));
 
 		$companyDetails = $companyResponse->json()['details'];
 		$orderDetails = $orderResponse->json()['order'];

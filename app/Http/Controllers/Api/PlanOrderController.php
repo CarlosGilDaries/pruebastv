@@ -236,7 +236,13 @@ class PlanOrderController extends Controller
 
 	private function getActionButtons($order)
 	{
-		$type = $order instanceof PlanOrder ? 'plan' : 'ppv';
+		if ($order instanceof PlanOrder) {
+            $type = 'plan';
+        } else if ($order instanceof PpvOrder) {
+            $type = 'ppv';
+        } else {
+            $type = 'rent';
+        }
 		$id = $order->id;
 				
 		return '

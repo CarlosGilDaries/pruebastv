@@ -9,6 +9,7 @@ use App\Models\Movie;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\PpvOrder;
+use App\Models\RentOrder;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -389,6 +390,191 @@ class PayPalController extends Controller
         }
     }
 
+        public function paypalCreateRentOrder(Request $request)
+    {
+        try {
+            $clientId = env('PAYPAL_CLIENT_ID');
+            $clientSecret = env('PAYPAL_CLIENT_SECRET');
+
+            $user = Auth::user();
+            $movie = Movie::find($request->input('data.movieId'));
+            $description = 'Alquiler ' . $movie->title;
+
+            // Obtener token de acceso
+            $authResponse = Http::withBasicAuth($clientId, $clientSecret)
+                ->asForm()
+                ->post('https://api-m.sandbox.paypal.com/v1/oauth2/token', [
+                    'grant_type' => 'client_credentials',
+                ]);
+    
+            if (!$authResponse->successful()) {
+                return response()->json(['error' => 'Failed to get access token'], 500);
+            }
+    
+            $accessToken = $authResponse->json()['access_token'];
+            $paypalRequestId = uniqid(); // ID único
+            $reference = $this->uniqueCode();
+    
+            $invoiceId = uniqid();
+            $currency = 'EUR';
+            $value = $movie->rent_price;
+    
+            // Convertir los items en formato PayPal
+            $paypalItems = [
+                    "name" => $description,
+                    "description" => $description ?? '',
+                    "unit_amount" => [
+                        "currency_code" => $currency,
+                        "value" => number_format((float) $value, 2, '.', '')
+                    ],
+                    "quantity" => '1',
+                    "category" => "DIGITAL_GOODS"
+                ];
+    
+            // Construir payload
+            $payload = [
+                "intent" => "CAPTURE",
+                "purchase_units" => [[
+                    "invoice_id" => $invoiceId,
+                    "amount" => [
+                        "currency_code" => $currency,
+                        "value" => number_format((float) $value, 2, '.', ''),
+                        "breakdown" => [
+                            "item_total" => [
+                                "currency_code" => $currency,
+                                "value" => number_format((float) $value, 2, '.', '')
+                            ]
+                        ]
+                    ],
+                    "items" => [$paypalItems]
+                ]],
+                "application_context" => [
+                    "return_url" => route('paypal.rent.capture', [
+                        'paypalRequestId' => $paypalRequestId,
+                        'reference' => $reference,
+                        'user_id' => $user->id,
+                        'movie_id' => $movie->id
+                    ]),
+                    "cancel_url" => route('paypal.cancel'),
+                    "brand_name" => env('APP_NAME'),
+                    "landing_page" => "LOGIN",
+                    "user_action" => "PAY_NOW"
+                ]
+            ];            
+    
+            // Crear orden en PayPal
+            $orderResponse = Http::withToken($accessToken)
+                ->withHeaders([
+                    'PayPal-Request-Id' => $paypalRequestId,
+                ])
+                ->post('https://api-m.sandbox.paypal.com/v2/checkout/orders', $payload);
+    
+            if ($orderResponse->successful()) {
+                $links = $orderResponse->json()['links'];
+                $approvalUrl = collect($links)->firstWhere('rel', 'approve')['href'];
+
+                $order = RentOrder::create([
+                    'reference' => $reference,
+                    'amount' => $movie->rent_price,
+                    'user_id' => $user->id,
+                    'movie_id' => $movie->id,
+                    'status' => 'pending',
+                    'description' => $description,
+                    'payment_method' => 'PayPal'
+                ]);
+    
+                return response()->json([
+                    'status' => 'success',
+                    'approval_url' => $approvalUrl
+                ]);
+            }
+    
+            return response()->json([
+                'status' => 'error',
+                'details' => $orderResponse->body()
+            ], $orderResponse->status());
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+
+    }
+
+    public function paypalCaptureRentOrder(Request $request)
+    {
+        try {
+            $orderId = $request->query('token');
+            $reference = $request->query('reference');
+            $order = RentOrder::where('reference', $reference)->first();
+            $userId = $request->query('user_id');
+            $user = User::where('id', $userId)->first();
+            
+            if (empty($orderId)) {
+                return redirect()->away('/unsuccessful-payment.html?status=error');
+            }
+
+            $clientId = env('PAYPAL_CLIENT_ID');
+            $clientSecret = env('PAYPAL_CLIENT_SECRET');
+
+            // Obtener token de acceso
+            $authResponse = Http::withBasicAuth($clientId, $clientSecret)
+                ->asForm()
+                ->post('https://api-m.sandbox.paypal.com/v1/oauth2/token', [
+                    'grant_type' => 'client_credentials',
+                ]);
+
+            if (!$authResponse->successful()) {
+                Log::error('PayPal auth failed on capture: ' . $authResponse->body());
+                $order->update([
+                    'status' => 'error'
+                ]);
+                return redirect()->away('/unsuccessful-payment.html?status=auth_error');
+            }
+
+            $accessToken = $authResponse->json()['access_token'];
+
+            // Capturar el pago - FORMA CORRECTA de enviar body vacío
+            $captureResponse = Http::withToken($accessToken)
+                ->withHeaders([
+                    'Content-Type' => 'application/json',
+                    'PayPal-Request-Id' => uniqid(),
+                    'Prefer' => 'return=representation',
+                ])
+                ->withBody('{}', 'application/json')
+                ->post("https://api-m.sandbox.paypal.com/v2/checkout/orders/{$orderId}/capture");
+
+            if ($captureResponse->successful()) {
+                $order->update([
+                    'status' => 'paid'
+                ]);
+
+                $response = Http::post(route('rent.create', [
+                    'userId' => $order->user_id,
+                    'movieId' => $order->movie_id
+                ]));
+                /*$response = Http::withoutVerifying()->post(route('rent.create', [
+                    'userId' => $order->user_id,
+                    'movieId' => $order->movie_id
+                ]));*/
+
+                app(\App\Http\Controllers\BillPdfController::class)->generateRentOrderInvoice($order);
+                return redirect()->away('/successful-payment.html?status=success&order_id=' . $orderId);
+            }
+            
+            Log::error('PayPal capture failed: ' . $captureResponse->body());
+            return redirect()->away('/unsuccessful-payment.html?status=capture_error');
+            
+        } catch (\Exception $e) {
+            Log::error('PayPal Capture Error: ' . $e->getMessage());
+            return redirect()->away('/unsuccessful-payment.html?status=exception');
+        }
+    }
+
     public function paypalCancel()
     {
         return redirect()->away('/unsuccessful-payment.html?status=cancel');
@@ -398,7 +584,7 @@ class PayPalController extends Controller
 	{
 		do {
 			$reference = str_pad(mt_rand(0, 999999999999), 12, '0', STR_PAD_LEFT);
-		} while (PlanOrder::where('reference', $reference)->exists() || PpvOrder::where('reference', $reference)->exists());
+		} while (PlanOrder::where('reference', $reference)->exists() || PpvOrder::where('reference', $reference)->exists() || RentOrder::where('reference', $reference)->exists());
 
 		return $reference;
 	}

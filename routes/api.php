@@ -27,6 +27,8 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Api\MovieProgressController;
+use App\Http\Controllers\Api\RentController;
+use App\Http\Controllers\Api\RentOrderController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
@@ -219,9 +221,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
+    Route::post('rent-payment', [RedsysController::class, 'rentPayment']);
 
     Route::post('/paypal/create', [PayPalController::class, 'paypalCreatePlanOrder'])->name('paypal.create');
 	Route::post('/paypal/ppv/create', [PayPalController::class, 'paypalCreatePpvOrder'])->name('paypal.ppv.create');
+    Route::post('/paypal/rent/create', [PayPalController::class, 'paypalCreateRentOrder'])->name('paypal.rent.create');
 
 	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
 
@@ -229,6 +233,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/movie-progress', [MovieProgressController::class, 'store']);
     Route::get('/movie-progress/{movieId}', [MovieProgressController::class, 'show']);
     Route::delete('/movie-progress/{movieId}', [MovieProgressController::class, 'destroy']);
+
+    Route::get('check-if-rented/{movieId}', [RentController::class, 'show']);
 });
 
 Route::get('check-device-id', [UserSessionApiController::class, 'checkDeviceId']);
@@ -251,11 +257,14 @@ Route::get('company-details', [CompanyDetailController::class, 'show'])
 
 Route::post('redsys-plan-resp', [RedsysController::class, 'handlePlanRedsysResponse']);
 Route::post('redsys-ppv-resp', [RedsysController::class, 'handlePpvRedsysResponse']);
+Route::post('redsys-rent-resp', [RedsysController::class, 'handleRentRedsysResponse']);
 
 Route::get('order/{id}', [PlanOrderController::class, 'show'])
 	->name('plan-order.show');
 Route::get('ppv-order/{id}', [PpvOrderController::class, 'show'])
 	->name('ppv-order.show');
+Route::get('rent-order/{id}', [RentOrderController::class, 'show'])
+	->name('rent-order.show');
 
 Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
     ->middleware(['throttle:6,1'])
@@ -267,4 +276,7 @@ Route::post('/email/verification-notification', [EmailVerificationNotificationCo
 
 Route::get('/paypal/capture', [PayPalController::class, 'paypalCapturePlanOrder'])->name('paypal.capture');
 Route::get('/paypal/ppv/capture', [PayPalController::class, 'paypalCapturePpvOrder'])->name('paypal.ppv.capture');
+Route::get('/paypal/rent/capture', [PayPalController::class, 'paypalCaptureRentOrder'])->name('paypal.rent.capture');
 Route::get('/paypal/cancel', [PayPalController::class, 'paypalCancel'])->name('paypal.cancel');
+
+Route::post('rent/{userId}/{movieId}', [RentController::class, 'store'])->name('rent.create');

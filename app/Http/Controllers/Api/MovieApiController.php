@@ -247,6 +247,8 @@ class MovieApiController extends Controller
             $tagline = sanitize_html($request->input('tagline'));
             $external_url = sanitize_html($request->input('external_url'));
             $price = sanitize_html($request->input('pay_per_view_price'));
+            $rent_price = sanitize_html($request->input('rent_price'));
+            $rent_days = sanitize_html($request->input('rent_days'));
             $start_time = sanitize_html($request->input('start_time'));
             $end_time = sanitize_html($request->input('end_time'));
             $duration = sanitize_html($request->input('duration'));
@@ -266,10 +268,15 @@ class MovieApiController extends Controller
             $movie->overview = $overview;
             $movie->tagline = $tagline;
             $movie->gender_id = $request->input('gender_id');
-            $movie->pay_per_view = $request->input('pay_per_view');
+            $movie->rent = $request->input('rent');
 
             if ($price) {
                 $movie->pay_per_view_price = $price;
+            }
+
+            if ($rent_price) {
+                $movie->rent_price = $rent_price;
+                $movie->rent_days = $rent_days;
             }
 
             if ($start_time) {
@@ -482,6 +489,8 @@ class MovieApiController extends Controller
             $tagline = sanitize_html($request->input('tagline'));
             $external_url = sanitize_html($request->input('external_url'));
             $price = sanitize_html($request->input('pay_per_view_price'));
+            $rent_price = sanitize_html($request->input('rent_price'));
+            $rent_days = sanitize_html($request->input('rent_days'));
             $start_time = sanitize_html($request->input('start_time'));
             $end_time = sanitize_html($request->input('end_time'));
             $duration = sanitize_html($request->input('duration'));
@@ -493,9 +502,15 @@ class MovieApiController extends Controller
             $movie->tagline = $tagline;
             $movie->gender_id = $request->input('gender_id');
             $movie->pay_per_view = $request->input('pay_per_view');
+            $movie->rent = $request->input('rent');
 
             if ($price) {
                 $movie->pay_per_view_price = $price;
+            }
+
+            if ($rent_price) {
+                $movie->rent_price = $rent_price;
+                $movie->rent_days = $rent_days;
             }
 
             if ($start_time) {

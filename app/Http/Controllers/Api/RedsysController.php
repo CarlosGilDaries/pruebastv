@@ -7,11 +7,13 @@ use App\Models\PlanOrder;
 use App\Models\Plan;
 use App\Models\PpvOrder;
 use App\Models\Movie;
+use App\Models\RentOrder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Creagia\Redsys\Enums\PayMethod;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class RedsysController extends Controller
 {
@@ -291,12 +293,130 @@ class RedsysController extends Controller
             ], 500);
         }
     }
+
+    public function rentPayment(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $movie = Movie::find($request->content_id);
+
+			$ds_order = $this->uniqueCode();
+			
+            $order = RentOrder::create([
+                'reference' => $ds_order,
+                'amount' => $movie->rent_price,
+                'user_id' => $user->id,
+                'movie_id' => $movie->id,
+                'status' => 'pending',
+				'description' => "Alquiler {$movie->title}",
+                'payment_method' => 'Redsys'
+            ]);
+
+            $redsysRequest = $order->createRedsysRequest(
+                productDescription: "Alquiler {$movie->title}",
+                payMethod: PayMethod::Card,
+            );
+
+            // Extraer datos necesarios
+            $requestParams = $redsysRequest->requestParameters;
+
+            // Crear Ds_MerchantParameters (JSON en Base64)
+            $dsMerchantData = [
+                'DS_MERCHANT_AMOUNT' => strval($requestParams->amountInCents),
+                'DS_MERCHANT_CURRENCY' => strval($requestParams->currency->value),
+                'DS_MERCHANT_MERCHANTCODE' => strval($requestParams->merchantCode),
+                'DS_MERCHANT_ORDER' => strval($ds_order),
+                'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
+                'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
+				'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-rent-resp'),
+				'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
+				'DS_MERCHANT_URLOK' => url('/successful-payment.html'),
+            ];
+
+            $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));
+
+            // Generar firma
+            $secretKey = env('REDSYS_KEY');
+            $signature = generateSignature(
+                $dsMerchantParameters,
+                $ds_order,
+                $secretKey
+            );
+
+            return response()->json([
+                'success' => true,
+                'payment_required' => true,
+                'sinbase64' => $dsMerchantData,
+                'objeto_original' => $requestParams,
+                'Ds_MerchantParameters' => $dsMerchantParameters,
+                'Ds_Signature' => $signature,
+                'Ds_SignatureVersion' => 'HMAC_SHA256_V1', // Versión de firma requerida por Redsys
+            ]);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function handleRentRedsysResponse(Request $request) 
+    {
+        try {
+            $dsMerchantParameters = $request->input('Ds_MerchantParameters');
+            $dsSignature = $request->input('Ds_Signature');
+
+            $secretKey = env('REDSYS_KEY'); // En base64
+            $merchantParamsDecoded = json_decode(base64_decode($dsMerchantParameters), true);
+
+            $dsOrder = $merchantParamsDecoded['Ds_Order'];
+            $dsResponse = $merchantParamsDecoded['Ds_Response'];
+			$intResponse = intval($dsResponse);
+
+            $mySignature = generateSignature($dsMerchantParameters, $dsOrder, $secretKey);
+            $mySignature = strtr($mySignature, '+/', '-_');
+
+            if (hash_equals($mySignature, $dsSignature)) {
+                if ($intResponse < 100 && $intResponse >= 0) {
+                    $order = RentOrder::where('reference', $dsOrder)->first();
+                    $order->paidWithRedsys();
+                    $response = Http::post(route('rent.create', [
+                        'userId' => $order->user_id,
+                        'movieId' => $order->movie_id
+                    ]));
+                    /*$response = Http::withoutVerifying()->post(route('rent.create', [
+                        'userId' => $order->user_id,
+                        'movieId' => $order->movie_id
+                    ]));*/
+					
+                } else {
+					Log::debug('Response:' . $intResponse);
+				}
+
+                //Log::debug('Firma válida. Parámetros:', $merchantParamsDecoded);
+				
+				return response()->json(['success' => true]);
+            } else {
+                Log::warning('Firma inválida. Firma esperada: ' . $mySignature . ' | Firma recibida: ' . $dsSignature);
+            }
+
+        } catch (\Exception $e) {
+			Log::error('Error: ' . $e->getMessage());
+			
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
 	
 	private function uniqueCode() 
 	{
 		do {
 			$reference = str_pad(mt_rand(0, 999999999999), 12, '0', STR_PAD_LEFT);
-		} while (PlanOrder::where('reference', $reference)->exists() || PpvOrder::where('reference', $reference)->exists());
+		} while (PlanOrder::where('reference', $reference)->exists() || PpvOrder::where('reference', $reference)->exists() || RentOrder::where('reference', $reference)->exists());
 
 		return $reference;
 	}

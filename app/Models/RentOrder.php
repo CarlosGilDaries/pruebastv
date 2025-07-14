@@ -49,6 +49,6 @@ class RentOrder extends Model implements RedsysPayable
             'status' => 'paid',
         ]);
 		
-		//app(\App\Http\Controllers\BillPdfController::class)->generateRentOrderInvoice($this);
+		app(\App\Http\Controllers\BillPdfController::class)->generateRentOrderInvoice($this);
     }
 }

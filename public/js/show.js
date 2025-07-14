@@ -118,6 +118,38 @@ async function fetchMovieData() {
         window.location.href = '/manage-plans.html';
       }
 
+      if (data.data.movie.rent && userData.data.user.rol != 'admin') {
+        const rentResponse = await fetch(
+          '/api/check-if-rented/' + movieId,
+          {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const rentData = await rentResponse.json();
+
+        if (!rentData.success && rentResponse.status == 404) {
+          play.classList.add('rent-btn');
+          play.textContent =
+            `Alquilar ${data.data.movie.rent_days} días: ` + data.data.movie.rent_price + ' €';
+          play.addEventListener('click', async function () {
+            localStorage.setItem('movie_id', data.data.movie.id);
+            window.location.href = '/rent-payment-method.html';
+            return;
+          });
+        } else if (rentData.success) {
+          play.innerHTML = 'Ver Ahora';
+
+          play.addEventListener('click', function () {
+            window.location.href = `/player/${movieSlug}`;
+          });
+        }
+      }
+
       if (data.data.movie.pay_per_view && userData.data.user.rol != 'admin') {
         const ppvResponse = await fetch(
           '/api/ppv-current-user-order/' + movieId,
@@ -131,7 +163,6 @@ async function fetchMovieData() {
         );
 
         const ppvData = await ppvResponse.json();
-        console.log(ppvData);
 
         if (!ppvData.success) {
           play.classList.add('ppv-btn');
@@ -150,11 +181,13 @@ async function fetchMovieData() {
           });
         }
       } else {
-        play.innerHTML = 'Ver Ahora';
+        if (!data.data.movie.rent) {
+          play.innerHTML = 'Ver Ahora';
 
-        play.addEventListener('click', function () {
-          window.location.href = `/player/${movieSlug}`;
-        });
+          play.addEventListener('click', function () {
+            window.location.href = `/player/${movieSlug}`;
+          });
+        }
       }
 
       const isFavorite = await isMovieFavorite(movieId);

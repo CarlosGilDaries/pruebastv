@@ -131,12 +131,14 @@ video {
     width: 240px;
 }
 
-.ppv-btn {
+.ppv-btn,
+.rent-btn {
     width: 270px;
     font-size: 16px;
 }
 
-.ppv-btn::after {
+.ppv-btn::after,
+.rent-btn::after {
     content: "";
 }
 

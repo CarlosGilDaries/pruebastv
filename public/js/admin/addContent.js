@@ -41,6 +41,20 @@ async function initContent() {
       }
     });
 
+  // Toggle campos Alquiler
+  document
+    .getElementById('rent')
+    .addEventListener('change', function () {
+      const RentFields = document.getElementById('rent_fields');
+      if (this.checked) {
+        RentFields.classList.remove('hidden');
+      } else {
+        RentFields.classList.add('hidden');
+        document.getElementById('rent_price').value = '';
+        document.getElementById('rent_days').value = '';
+      }
+    });
+
   // Mostrar/ocultar campos según tipo de contenido
   document.getElementById('type').addEventListener('change', function () {
     const type = this.value;
@@ -75,7 +89,6 @@ async function initContent() {
       document.getElementById('content').required = true;
     }
   });
-
 
   // Manejar envío del formulario
   document
@@ -120,6 +133,22 @@ async function initContent() {
         );
       }
 
+      formData.append(
+        'rent',
+        document.getElementById('rent').checked ? '1' : '0'
+      );
+
+      if (document.getElementById('rent').checked) {
+        formData.append(
+          'rent_price',
+          document.getElementById('rent_price').value
+        );
+        formData.append(
+          'rent_days',
+          document.getElementById('rent_days').value
+        );
+      }
+
       if (document.getElementById('start_time').value) {
         formData.append(
           'start_time',
@@ -140,7 +169,10 @@ async function initContent() {
       }
 
       if (document.getElementById('tall-cover')) {
-        formData.append('tall_cover', document.getElementById('tall-cover').files[0]);
+        formData.append(
+          'tall_cover',
+          document.getElementById('tall-cover').files[0]
+        );
       }
 
       if (
@@ -169,9 +201,7 @@ async function initContent() {
         formData.append('content', document.getElementById('content').files[0]);
       }
 
-      const planCheckboxes = document.querySelectorAll(
-        '#form .plan-checkbox'
-      );
+      const planCheckboxes = document.querySelectorAll('#form .plan-checkbox');
 
       planCheckboxes.forEach((checkbox) => {
         if (checkbox.checked) {
@@ -189,18 +219,20 @@ async function initContent() {
         }
       });
 
-      const tagCheckboxes = document.querySelectorAll(
-        '#form .tag-checkbox'
-      );
+      const tagCheckboxes = document.querySelectorAll('#form .tag-checkbox');
 
       tagCheckboxes.forEach((checkbox) => {
         if (checkbox.checked) {
           formData.append('tags[]', checkbox.value);
         }
       });
-      
+
       let permission;
-      if (type == 'video/mp4' || type == 'application/vnd.apple.mpegurl' || type == 'audio/mpeg') {
+      if (
+        type == 'video/mp4' ||
+        type == 'application/vnd.apple.mpegurl' ||
+        type == 'audio/mpeg'
+      ) {
         permission = 'local';
       } else if (type == 'stream') {
         permission = 'streams';
@@ -208,64 +240,63 @@ async function initContent() {
         permission = 'external';
       }
 
-        try {
-          const response = await fetch(`/api/add-content/${permission}`, {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
-            body: formData,
-          });
+      try {
+        const response = await fetch(`/api/add-content/${permission}`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: formData,
+        });
 
-          const data = await response.json();
+        const data = await response.json();
 
-          if (!response.ok) {
-            // Mostrar errores específicos si existen
-            if (data.errors) {
-              Object.entries(data.errors).forEach(([field, messages]) => {
-                const errorElement = document.getElementById(`${field}-error`);
-                if (errorElement) {
-                  errorElement.textContent = messages.join(', ');
-                }
-              });
-            } else {
-              throw new Error(data.error || 'Error al subir el contenido');
-            }
-            return;
-          }
-
-          // Mostrar mensaje de éxito
-          document.getElementById('success-message').style.display = 'block';
-          document.getElementById('success-message').textContent = `${
-            data.message
-          } - ${data.movie?.title || 'Contenido subido'}`;
-
-          setTimeout(() => {
-            document.getElementById('success-message').style.display = 'none';
-          }, 5000);
-
-          // Resetear formulario
-          document.getElementById('form').reset();
-          document
-            .querySelectorAll('#form .file-name')
-            .forEach((el) => (el.textContent = ''));
-          document
-            .querySelectorAll('#form .file-input-label span')
-            .forEach((el) => {
-              el.textContent = 'Seleccionar archivo...';
+        if (!response.ok) {
+          // Mostrar errores específicos si existen
+          if (data.errors) {
+            Object.entries(data.errors).forEach(([field, messages]) => {
+              const errorElement = document.getElementById(`${field}-error`);
+              if (errorElement) {
+                errorElement.textContent = messages.join(', ');
+              }
             });
-          CKEDITOR.instances.tagline.setData('');
-          CKEDITOR.instances.overview.setData('');
-          document
-            .getElementById('pay_per_view_fields')
-            .classList.add('hidden');
-        } catch (error) {
-          console.error('Error:', error);
-          alert('Error al subir el contenido: ' + error.message);
-        } finally {
-          document.getElementById('loading').style.display = 'none';
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            throw new Error(data.error || 'Error al subir el contenido');
+          }
+          return;
         }
+
+        // Mostrar mensaje de éxito
+        document.getElementById('success-message').style.display = 'block';
+        document.getElementById('success-message').textContent = `${
+          data.message
+        } - ${data.movie?.title || 'Contenido subido'}`;
+
+        setTimeout(() => {
+          document.getElementById('success-message').style.display = 'none';
+        }, 5000);
+
+        // Resetear formulario
+        document.getElementById('form').reset();
+        document
+          .querySelectorAll('#form .file-name')
+          .forEach((el) => (el.textContent = ''));
+        document
+          .querySelectorAll('#form .file-input-label span')
+          .forEach((el) => {
+            el.textContent = 'Seleccionar archivo...';
+          });
+        CKEDITOR.instances.tagline.setData('');
+        CKEDITOR.instances.overview.setData('');
+        document.getElementById('pay_per_view_fields').classList.add('hidden');
+        document.getElementById('rent_fields').classList.add('hidden');
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al subir el contenido: ' + error.message);
+      } finally {
+        document.getElementById('loading').style.display = 'none';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
     });
 }
 

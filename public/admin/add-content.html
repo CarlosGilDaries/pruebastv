@@ -340,6 +340,30 @@
                                 <div id="pay_per_view_price-error" class="error-message"></div>
                             </div>
                         </div>
+
+                        <!-- Alquiler -->
+                        <div class="form-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="rent" name="rent">
+                                <span class="checkmark"></span>
+                                <p>¿Es contenido en Alquiler?</p>
+                            </label>
+                            <div id="rent-error" class="error-message"></div>
+                        </div>
+                        
+                        <div id="rent_fields" class="form-group hidden">
+                            <div class="form-group">
+                                <label for="rent_price">Precio (€)</label>
+                                <input type="number" id="rent_price" name="rent_price" min="0" step="0.01" placeholder="0.00">
+                                <div id="rent_price-error" class="error-message"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="rent_days">Días de alquiler</label>
+                                <input type="number" id="rent_days" name="rent_days" min="1">
+                                <div id="rent_days-error" class="error-message"></div>
+                            </div>
+                        </div>
                         
                         <!-- Disponibilidad -->
                         <div class="form-group">
