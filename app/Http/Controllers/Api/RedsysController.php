@@ -61,7 +61,8 @@ class RedsysController extends Controller
                 'user_id' => $user->id,
                 'plan_id' => $plan->id,
                 'status' => 'pending',
-				'description' => "Suscripción {$plan->name} {$info}"
+				'description' => "Suscripción {$plan->name} {$info}",
+                'payment_method' => 'Redsys'
             ]);
 
             $redsysRequest = $order->createRedsysRequest(
@@ -136,7 +137,8 @@ class RedsysController extends Controller
                 'user_id' => $user->id,
                 'movie_id' => $movie->id,
                 'status' => 'pending',
-				'description' => "Pago PPV {$movie->title}"
+				'description' => "Pago PPV {$movie->title}",
+                'payment_method' => 'Redsys'
             ]);
 
             $redsysRequest = $order->createRedsysRequest(

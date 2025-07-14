@@ -53,6 +53,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('plan_id')->nullable()->constrained()->onDelete('set null');
 			$table->string('description');
+            $table->enum('payment_method', ['paypal', 'redsys']);
             $table->timestamps();
         });
 		
@@ -64,6 +65,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('movie_id')->nullable()->constrained()->onDelete('set null');
 			$table->string('description');
+            $table->enum('payment_method', ['PayPal', 'Redsys']);
             $table->timestamps();
         });
     }

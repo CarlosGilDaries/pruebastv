@@ -117,7 +117,8 @@ class PayPalController extends Controller
                     'user_id' => $user->id,
                     'plan_id' => $plan->id,
                     'status' => 'pending',
-                    'description' => $description
+                    'description' => $description,
+                    'payment_method' => 'PayPal'
                 ]);
     
                 return response()->json([
@@ -300,7 +301,8 @@ class PayPalController extends Controller
                     'user_id' => $user->id,
                     'movie_id' => $movie->id,
                     'status' => 'pending',
-                    'description' => $description
+                    'description' => $description,
+                    'payment_method' => 'PayPal'
                 ]);
     
                 return response()->json([

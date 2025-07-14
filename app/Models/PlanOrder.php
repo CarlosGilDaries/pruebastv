@@ -20,6 +20,7 @@ class PlanOrder extends Model implements RedsysPayable
         'user_id',
         'plan_id',
 		'description',
+        'payment_method'
     ];
 
     use CanCreateRedsysRequests;

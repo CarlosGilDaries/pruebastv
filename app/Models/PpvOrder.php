@@ -16,6 +16,7 @@ class PpvOrder extends Model implements RedsysPayable
         'user_id',
         'movie_id',
 		'description',
+        'payment_method'
     ];
 
     use CanCreateRedsysRequests;

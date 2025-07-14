@@ -149,7 +149,9 @@ class BillPdfController extends Controller
 			'company' => [
 				'name' => $companyDetails['name'],
 				'address' => $companyDetails['fiscal_address'],
-				'cif' => $companyDetails['nif_cif']
+				'cif' => $companyDetails['nif_cif'],
+				'lopd' => $companyDetails['lopd_text'],
+				'commercial_registry_text' => $companyDetails['commercial_registry_text']
 			],
 			'client' => [
 				'name' => $orderDetails['user']['name'] . ' ' . $orderDetails['user']['surnames'],
@@ -165,6 +167,8 @@ class BillPdfController extends Controller
 				'description' => $orderDetails['description'],
 				'amount' => number_format($orderDetails['amount'], 2) . ' €',
 				'iva' => number_format($orderDetails['amount'] * 0.21, 2) . ' €',
+				'iva_percentage' => '21 %',
+				'payment_method' => $orderDetails['payment_method'],
 			]
 		];
 
