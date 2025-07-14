@@ -41,7 +41,7 @@
         <tbody>
             <tr>
                 <td>{{ $invoice['description'] }}</td>
-                <td>{{ $invoice['paymet_method'] }}</td>
+                <td>{{ $invoice['payment_method'] }}</td>
                 <td>{{ $invoice['amount'] }}</td>
             </tr>
         </tbody>
