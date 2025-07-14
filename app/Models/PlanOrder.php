@@ -53,6 +53,6 @@ class PlanOrder extends Model implements RedsysPayable
             'status' => 'paid',
         ]);
 		
-		//app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($this);
+		app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($this);
 	}
 }
