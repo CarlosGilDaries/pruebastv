@@ -132,7 +132,7 @@ table.totals tr:last-child td {
     padding-top: 10px;
 }
 
-/* Mejoras para cantidades monetarias */
+/* Cantidades monetarias */
 td:last-child {
     text-align: right;
     font-family: 'Courier New', monospace;
