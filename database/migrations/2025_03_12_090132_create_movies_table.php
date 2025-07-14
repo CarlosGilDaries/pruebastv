@@ -24,6 +24,9 @@ return new class extends Migration
             $table->string('url');
             $table->boolean('pay_per_view');
             $table->decimal('pay_per_view_price', 5, 2)->nullable();
+            $table->boolean('rent');
+            $table->integer('rent_days')->nullable();
+            $table->decimal('rent_price', 5, 2)->nullable();
             $table->datetime('start_time')->nullable();
             $table->datetime('end_time')->nullable();
             $table->time('duration')->nullable();
