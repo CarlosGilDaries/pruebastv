@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{{ asset('css/invoice.css') }}">
+    <link rel="stylesheet" href="/css/invoice.css">
     <title>Factura #{{ $invoice['number'] }}</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
     </div>
 
     <div class="vertical-text">
-        {{ $company['commercial_registry_text'] }}
+        {!! $company['commercial_registry_text'] !!}
     </div>
 
     <div class="info-block company-info">
@@ -64,7 +64,7 @@
 
 	<div class="footer-spacer"></div>
     <div class="footer">
-        {{ $company['lopd'] }}
+        {!! $company['lopd'] !!}
     </div>
 </body>
 </html>
