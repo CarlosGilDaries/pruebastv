@@ -14,7 +14,7 @@
     </div>
 
     <div class="vertical-text">
-        {{ $invoice['commercial_registry_text'] }}
+        {{ $company['commercial_registry_text'] }}
     </div>
 
     <div class="info-block company-info">
