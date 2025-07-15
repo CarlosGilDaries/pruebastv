@@ -607,7 +607,6 @@ class PayPalController extends Controller
         ) {
             $nextId++;
         }
-
         return $nextId;
     }
     

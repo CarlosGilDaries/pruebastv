@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class RentOrder extends Model implements RedsysPayable
 {
+    public $incrementing = false; // Deshabilita el autoincremento
+    
     protected $fillable = [
         'reference',
         'amount',
