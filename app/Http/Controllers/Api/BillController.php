@@ -89,7 +89,27 @@ class BillController extends Controller
                           $q->where('description', 'LIKE', "%{$searchTerm}%");
                       });
                 });
-            }    
+            }   
+            
+            // Ordenamiento
+            if ($request->has('order')) {
+                $orderColumnIndex = $request->input('order.0.column');
+                $orderDirection = $request->input('order.0.dir');
+                $columns = $request->input('columns');
+
+                if (isset($columns[$orderColumnIndex])) {
+                    $orderColumnName = $columns[$orderColumnIndex]['data'];
+
+                    if ($orderColumnName === 'billable_description') {
+                        // Asegúrate de que la relación y columnas existen
+                        $query->join('billables', 'billables.id', '=', 'bills.billable_id')
+                            ->orderBy('billables.description', $orderDirection)
+                            ->select('bills.*');
+                    } elseif (!in_array($orderColumnName, ['actions'])) {
+                        $query->orderBy($orderColumnName, $orderDirection);
+                    }
+                }
+            }
 
 
 			return DataTables::of($query)

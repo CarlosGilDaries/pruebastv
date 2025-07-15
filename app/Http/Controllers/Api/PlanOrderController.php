@@ -43,7 +43,38 @@ class PlanOrderController extends Controller
     public function datatable(Request $request)
     {
         try {
-            $query = UnifiedOrder::with('user')->orderBy('created_at', 'asc');
+            $query = UnifiedOrder::with('user');
+
+            // Obtener parámetros de DataTables
+            $orderColumn = $request->input('order.0.column'); // Índice de la columna a ordenar
+            $orderDirection = $request->input('order.0.dir'); // Dirección (asc/desc)
+
+            // Mapear índice de columna a nombre de campo
+            $columnsMap = [
+                0 => 'reference',
+                1 => 'amount',
+                2 => 'status',
+                3 => 'user_dni',
+                4 => 'description',
+                5 => 'created_at'
+            ];
+
+            // Aplicar ordenamiento si existe
+            if ($request->has('order')) {
+                $columnName = $columnsMap[$orderColumn] ?? 'created_at';
+                
+                // Caso especial para user_dni (relación)
+                if ($columnName === 'user_dni') {
+                    $query->join('users', 'unified_orders.user_id', '=', 'users.id')
+                        ->orderBy('users.dni', $orderDirection)
+                        ->select('unified_orders.*');
+                } else {
+                    $query->orderBy($columnName, $orderDirection);
+                }
+            } else {
+                // Orden por defecto
+                $query->orderBy('created_at', 'asc');
+            }
                     
             // Filtrado por fecha
             if ($request->filled('min_date')) {
@@ -60,16 +91,6 @@ class PlanOrderController extends Controller
             if ($request->filled('column_filter') && $request->filled('search_term')) {
                 $column = $request->input('column_filter');
                 $searchTerm = $request->input('search_term');
-                
-                // Mapear índice de columna a nombre de campo
-                $columnsMap = [
-                    0 => 'reference',
-                    1 => 'amount',
-                    2 => 'status',
-                    3 => 'user_dni',
-                    4 => 'description',
-                    5 => 'created_at'
-                ];
                 
                 if (isset($columnsMap[$column])) {
                     if ($column == 3) { // Caso especial para user_dni
@@ -93,7 +114,7 @@ class PlanOrderController extends Controller
                           $q->where('dni', 'LIKE', "%{$searchTerm}%");
                       });
                 });
-            }    
+            }
 
 			return DataTables::of($query)
 				->addColumn('reference', function($order) {
