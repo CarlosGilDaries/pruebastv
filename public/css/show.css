@@ -96,7 +96,8 @@ video {
 #content-info p,
 #content-info h3,
 #tagline,
-#content-title {
+#content-title,
+.start-time-container {
     color: var(--color-primary);
 }
 
@@ -121,7 +122,8 @@ video {
 
 #overview-text,
 .info-text,
-.keywords {
+.keywords,
+.start-time-container {
     font-size: 16px;
     font-weight: 600;
     line-height: 1.5;
@@ -138,7 +140,8 @@ video {
 }
 
 .ppv-btn::after,
-.rent-btn::after {
+.rent-btn::after,
+.disabled-btn::after {
     content: "";
 }
 
@@ -172,6 +175,10 @@ video {
 
 .favorite-button .fas {
     color: #a777e3;
+}
+
+.start-time-container {
+    display: none;
 }
 
 .keyword-link {

@@ -1,6 +1,6 @@
 import { getIp } from './modules/getIp.js';
 import { logOut } from './modules/logOut.js';
-import { processRedsysPayment } from './modules/redsys.js';
+import { hasEnded, hasStarted } from './modules/compareDateTime.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { formatDuration } from './modules/formatDuration.js';
 import { renderSimilars } from './modules/renderSimilars.js';
@@ -29,6 +29,9 @@ const duration = document.getElementById('duration');
 const overview = document.getElementById('overview-text');
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
+const startTimeContainer = document.querySelector('.start-time-container');
+const startTimeDateTime = document.getElementById('date-time-text');
+const startTimeText = document.getElementById('start-time-text');
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
@@ -182,11 +185,53 @@ async function fetchMovieData() {
         }
       } else {
         if (!data.data.movie.rent) {
-          play.innerHTML = 'Ver Ahora';
+          if (data.data.movie.start_time) {
+            if (!hasStarted(data.data.movie.start_time)) {
+              play.innerHTML =
+                dateTimeIntoDate(data.data.movie.start_time) +
+                ' ' +
+                dateTimeIntoTime(data.data.movie.start_time);
+              play.classList.add('disabled-btn');
+              startTimeContainer.style.display = 'block';
+              startTimeText.innerHTML = 'El contenido no ha empezado todavía.'
+              startTimeDateTime.innerHTML = 'Fecha de inicio: ' + 
+                dateTimeIntoDate(data.data.movie.start_time) +
+                ' a las ' +
+                dateTimeIntoTime(data.data.movie.start_time);
+            } else if (hasEnded(data.data.movie.end_time)) {
+              const response = await fetch(
+                `/api/movie-progress/${data.data.movie.id}`,
+                {
+                  method: 'DELETE',
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                  },
+                }
+              );
+              play.innerHTML = "Finalizado";
+              play.classList.add('disabled-btn');
+              startTimeContainer.style.display = 'block';
+              startTimeText.innerHTML = 'El contenido ya ha terminado.';
+              startTimeDateTime.innerHTML =
+                'Fecha de fin: ' +
+                dateTimeIntoDate(data.data.movie.end_time) +
+                ' a las ' +
+                dateTimeIntoTime(data.data.movie.end_time);
+            } else if (hasStarted(data.data.movie.start_time) && !hasEnded(data.data.movie.end_time)) {
+              play.innerHTML = 'Ver Ahora';
 
-          play.addEventListener('click', function () {
-            window.location.href = `/player/${movieSlug}`;
-          });
+              play.addEventListener('click', function () {
+                window.location.href = `/player/${movieSlug}`;
+              });
+            }
+          } else {
+            play.innerHTML = 'Ver Ahora';
+
+            play.addEventListener('click', function () {
+              window.location.href = `/player/${movieSlug}`;
+            });
+          }
         }
       }
 
@@ -306,4 +351,27 @@ function updateFavoriteButton(isFavorite) {
       fasHeart.style.display = 'none';
       favoriteToggle.title = 'Añadir a favoritos';
   }
+}
+
+function dateTimeIntoDate(dateTime) {
+  const fecha = new Date(dateTime.replace(' ', 'T'));
+
+  const dia = String(fecha.getDate()).padStart(2, '0');
+  const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Mes: 0 = enero
+  const anio = fecha.getFullYear();
+
+  const resultado = `${dia}/${mes}/${anio}`;
+
+  return resultado;
+}
+
+function dateTimeIntoTime(dateTime) {
+  const fecha = new Date(dateTime.replace(' ', 'T'));
+
+  const horas = String(fecha.getHours()).padStart(2, '0');
+  const minutos = String(fecha.getMinutes()).padStart(2, '0');
+
+  const resultado = `${horas}:${minutos}`;
+
+  return resultado;
 }

@@ -229,7 +229,7 @@ class MovieApiController extends Controller
                 'categories' => 'required|array|min:1',
                 'categories.*' => 'integer|exists:categories,id',
                 'duration' => 'required|date_format:H:i:s',
-                'type' => 'nullable|in:video/mp4,application/vnd.apple.mpegurl,url_mp3,url_hls,url_mp4',
+                'type' => 'nullable|in:stream,video/mp4,application/vnd.apple.mpegurl,url_mp3,url_hls,url_mp4',
                 'change_content_file' => 'sometimes|boolean'
             ]);
             
@@ -472,7 +472,7 @@ class MovieApiController extends Controller
                 'categories' => 'required|array|min:1',
                 'categories.*' => 'integer|exists:categories,id',
                 'duration' => 'required|date_format:H:i:s',
-                'type' => 'required|in:video/mp4,application/vnd.apple.mpegurl,url_mp3,url_hls,url_mp4',
+                'type' => 'required|in:stream,video/mp4,application/vnd.apple.mpegurl,url_mp3,url_hls,url_mp4',
                 'change_content_file' => 'sometimes|boolean'
             ]);
             
@@ -557,7 +557,7 @@ class MovieApiController extends Controller
                 $trailer->storeAs('content/content-' . $movie->id, $movie->id . '-trailer.' . $trailerExtension, 'private');
             }
 
-            if ($request->input('type') != "iframe" && $request->input('type') != "url_mp4" && $request->input('type') != "url_hls" && $request->input('type') != "video/youtube" && $request->input('type') != "vimeo" && $request->input('type') != 'url_mp3') {
+            if ($request->input('type') != "url_mp4" && $request->input('type') != "url_hls" && $request->input('type') != 'url_mp3' && $request->input('type') != 'stream') {
                 if ($request->input('type') != 'application/vnd.apple.mpegurl') {
                     $content = $request->file('content');
                     $contentExtension = $content->getClientOriginalExtension();
@@ -754,7 +754,7 @@ class MovieApiController extends Controller
 
 			$movie = Movie::where('id', $movieId)->first();
 
-			if ($movie->type == 'url_hls' || $movie->type == 'application/vnd.apple.mpegurl') {
+			if ($movie->type == 'url_hls' || $movie->type == 'application/vnd.apple.mpegurl' || $movie->type == 'stream') {
 				$signedUrl = URL::signedRoute('proxy.m3u8', [
 					'movieId' => $movie->id,
 					'userId' => $user->id,

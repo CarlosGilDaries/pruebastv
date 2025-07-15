@@ -5,6 +5,7 @@ import { initAdPlayer } from './modules/adPlayer.js';
 import { signedUrl } from './modules/signedUrl.js';
 import { setupBackArrowAndTitle } from './modules/backArrowAndTitle.js';
 import { VideoProgressTracker } from './modules/videoProgressTrackerClass.js';
+import { hasStarted, hasEnded } from './modules/compareDateTime.js';
 
 async function initPlayer() {
   try {
@@ -119,6 +120,27 @@ async function initPlayer() {
       const rentData = await rentResponse.json();
 
       if (!rentData.success && rentResponse.status == 404) {
+        window.location.href = `/content/${showData.data.movie.slug}`;
+        return;
+      }
+    }
+
+    if (showData.data.movie.start_time) {
+      if (!hasStarted(showData.data.movie.start_time)) {
+        window.location.href = `/content/${showData.data.movie.slug}`;
+        return;
+      }
+      if (hasEnded(showData.data.movie.end_time)) {
+        const response = await fetch(
+          `/api/movie-progress/${showData.data.movie.id}`,
+          {
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }
+        );
         window.location.href = `/content/${showData.data.movie.slug}`;
         return;
       }
