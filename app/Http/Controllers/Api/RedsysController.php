@@ -57,6 +57,7 @@ class RedsysController extends Controller
             }
 
             $order = PlanOrder::create([
+                'id' => $this->uniqueId(),
                 'reference' => $ds_order,
                 'months' => $info,
                 'amount' => $price,
@@ -134,6 +135,7 @@ class RedsysController extends Controller
 			$ds_order = $this->uniqueCode();
 			
             $order = PpvOrder::create([
+                'id' => $this->uniqueId(),
                 'reference' => $ds_order,
                 'amount' => $movie->pay_per_view_price,
                 'user_id' => $user->id,
@@ -303,6 +305,7 @@ class RedsysController extends Controller
 			$ds_order = $this->uniqueCode();
 			
             $order = RentOrder::create([
+                'id' => $this->uniqueId(),
                 'reference' => $ds_order,
                 'amount' => $movie->rent_price,
                 'user_id' => $user->id,
@@ -420,4 +423,23 @@ class RedsysController extends Controller
 
 		return $reference;
 	}
+
+    private function uniqueId()
+    {
+        $maxRentId = RentOrder::max('id') ?? 0;
+        $maxPlanId = PlanOrder::max('id') ?? 0;
+        $maxPpvId = PpvOrder::max('id') ?? 0;
+
+        $nextId = max($maxRentId, $maxPlanId, $maxPpvId) + 1;
+
+        while (
+            RentOrder::where('id', $nextId)->exists() ||
+            PlanOrder::where('id', $nextId)->exists() ||
+            PpvOrder::where('id', $nextId)->exists()
+        ) {
+            $nextId++;
+        }
+
+        return $nextId;
+    }
 }

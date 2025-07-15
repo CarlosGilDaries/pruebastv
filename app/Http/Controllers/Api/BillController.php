@@ -68,7 +68,7 @@ class BillController extends Controller
                 
                 if (isset($columnsMap[$column])) {
                     if ($column == 4) { // Caso especial para description
-                        $query->whereHas('order', function($q) use ($searchTerm) {
+                        $query->whereHas('billable', function($q) use ($searchTerm) {
                             $q->where('description', 'LIKE', "%{$searchTerm}%");
                         });
                      } else {
@@ -85,7 +85,7 @@ class BillController extends Controller
                       ->orWhere('bill_number', 'LIKE', "%{$searchTerm}%")
                       ->orWhere('user_id', 'LIKE', "%{$searchTerm}%")
                       ->orWhere('billable_id', 'LIKE', "%{$searchTerm}%")
-                      ->orWhereHas('description', function($q) use ($searchTerm) {
+                      ->orWhereHas('billable', function($q) use ($searchTerm) {
                           $q->where('description', 'LIKE', "%{$searchTerm}%");
                       });
                 });

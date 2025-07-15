@@ -102,6 +102,12 @@ async function listOrders() {
           },
         },
         responsive: true,
+        layout: {
+          topStart: 'pageLength',
+          topEnd: ['search','buttons'],
+          bottomStart: 'info',
+          bottomEnd: 'paging',
+        },
         initComplete: function () {
           const filterContainer = $(`<div class="filter-container"></div>`);
 
@@ -131,7 +137,7 @@ async function listOrders() {
 
           const topContainer = $('.dt-layout-row');
           const searchInput = $('#dt-search-0');
-          const searchDiv = $('.dt-search');
+          const excelButton = $('.dt-buttons');
 
           filterContainer.append(columnFilter);
           filterContainer.append(dateFilter);
@@ -139,8 +145,7 @@ async function listOrders() {
           // Insertar el filtro justo después del primer hijo
           filterContainer.insertAfter(topContainer.children().first());
 
-          // Insertar botón después del input de búsqueda
-          button.insertAfter(searchDiv);
+          button.insertAfter(excelButton.children().first());
 
           // Configurar datepicker para los campos de fecha
           $('#min-date, #max-date').datepicker({
@@ -173,6 +178,20 @@ async function listOrders() {
             $('#min-date, #max-date').datepicker('hide');
           });
         },
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-success',
+            exportOptions: {
+              modifier: {
+                search: 'applied',
+                order: 'applied',
+              },
+              columns: ':not(:last-child)', // Excluye la columna de acciones
+            },
+          },
+        ],
 
         drawCallback: function () {
           const searchInput = document.querySelector(

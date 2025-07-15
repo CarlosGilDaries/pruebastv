@@ -3,6 +3,11 @@
     align-items: center;
 }
 
+.dt-layout-row:nth-child(1) {
+    width: 90% !important;
+    display: none;
+}
+
 .dt-length label, .dt-search label {
     margin-bottom: 0;
 }
@@ -46,9 +51,15 @@
     margin-right: 20px !important;
 }
 
-.clean-btn {
+.dt-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.clean-btn,
+button.dt-button.buttons-excel.buttons-html5.btn.btn-success {
     width: 100px;
-    margin-left: 60px;
+    margin-left: 30px;
     background-color: #e94560;
 	font-weight: bold;
 	height: 32px;
@@ -61,7 +72,12 @@
 	transition: background-color 0.3s ease;
 }
 
-.clean-btn:hover {
+button.dt-button.buttons-excel.buttons-html5.btn.btn-success {
+    margin: 0;
+}
+
+.clean-btn:hover,
+button.dt-button.buttons-excel.buttons-html5.btn.btn-success:hover {
 	background-color: #16213e;
 }
 

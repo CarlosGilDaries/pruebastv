@@ -112,6 +112,7 @@ class PayPalController extends Controller
                 $approvalUrl = collect($links)->firstWhere('rel', 'approve')['href'];
 
                 $order = PlanOrder::create([
+                    'id' => $this->uniqueId(),
                     'reference' => $reference,
                     'months' => $info,
                     'amount' => $payload['purchase_units'][0]['amount']['value'],
@@ -297,6 +298,7 @@ class PayPalController extends Controller
                 $approvalUrl = collect($links)->firstWhere('rel', 'approve')['href'];
 
                 $order = PpvOrder::create([
+                    'id' => $this->uniqueId(),
                     'reference' => $reference,
                     'amount' => $movie->pay_per_view_price,
                     'user_id' => $user->id,
@@ -474,6 +476,7 @@ class PayPalController extends Controller
                 $approvalUrl = collect($links)->firstWhere('rel', 'approve')['href'];
 
                 $order = RentOrder::create([
+                    'id' => $this->uniqueId(),
                     'reference' => $reference,
                     'amount' => $movie->rent_price,
                     'user_id' => $user->id,
@@ -588,6 +591,25 @@ class PayPalController extends Controller
 
 		return $reference;
 	}
+
+    private function uniqueId()
+    {
+        $maxRentId = RentOrder::max('id') ?? 0;
+        $maxPlanId = PlanOrder::max('id') ?? 0;
+        $maxPpvId = PpvOrder::max('id') ?? 0;
+
+        $nextId = max($maxRentId, $maxPlanId, $maxPpvId) + 1;
+
+        while (
+            RentOrder::where('id', $nextId)->exists() ||
+            PlanOrder::where('id', $nextId)->exists() ||
+            PpvOrder::where('id', $nextId)->exists()
+        ) {
+            $nextId++;
+        }
+
+        return $nextId;
+    }
     
 }
 

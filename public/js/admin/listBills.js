@@ -48,7 +48,7 @@ async function listBills() {
       const table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
-        order: [[6, 'asc']],
+        order: [[5, 'asc']],
         ajax: {
           url: api + 'bills/datatable',
           type: 'GET',
@@ -105,6 +105,12 @@ async function listBills() {
           },
         },
         responsive: true,
+        layout: {
+          topStart: 'pageLength',
+          topEnd: ['search', 'buttons'],
+          bottomStart: 'info',
+          bottomEnd: 'paging',
+        },
         initComplete: function () {
           const filterContainer = $(`<div class="filter-container"></div>`);
 
@@ -134,7 +140,7 @@ async function listBills() {
 
           const topContainer = $('.dt-layout-row');
           const searchInput = $('#dt-search-0');
-          const searchDiv = $('.dt-search');
+          const excelButton = $('.dt-buttons');
 
           filterContainer.append(columnFilter);
           filterContainer.append(dateFilter);
@@ -142,8 +148,7 @@ async function listBills() {
           // Insertar el filtro justo después del primer hijo
           filterContainer.insertAfter(topContainer.children().first());
 
-          // Insertar botón después del input de búsqueda
-          button.insertAfter(searchDiv);
+          button.insertAfter(excelButton.children().first());
 
           // Configurar datepicker para los campos de fecha
           $('#min-date, #max-date').datepicker({
@@ -176,6 +181,20 @@ async function listBills() {
             $('#min-date, #max-date').datepicker('hide');
           });
         },
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-success',
+            exportOptions: {
+              modifier: {
+                search: 'applied',
+                order: 'applied',
+              },
+              columns: ':not(:last-child)', // Excluye la columna de acciones
+            },
+          },
+        ],
         drawCallback: function () {
           const searchInput = document.querySelector(
             '#DataTables_Table_0_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-end > div > label'
