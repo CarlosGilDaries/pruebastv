@@ -145,6 +145,10 @@ video {
     content: "";
 }
 
+.disabled-btn:hover {
+    cursor: auto;
+}
+
 .button-group {
     display: flex;
     gap: 15px;
