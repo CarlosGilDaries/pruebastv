@@ -165,9 +165,9 @@ button:hover {
     padding-bottom: 10px;
 }
 
-#error-message {
+#error-message,
+.error-message {
     color: red; 
-    display: none;
     font-weight: 600;
     text-align: center;
 }

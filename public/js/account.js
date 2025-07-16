@@ -113,6 +113,7 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
           }
 
           const plan = data.data.plan;
+          console.log(plan);
           if (plan != null) {
             if (plan != null) {
               const planRow = document.createElement('tr');
@@ -129,8 +130,11 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
                 hour: '2-digit',
                 minute: '2-digit',
               });
-
-              planValue.innerHTML = `<p>${plan.name}</p><p>Caduca: ${formattedDate}</p>`;
+              if (plan.trimestral_price == 0) {
+                planValue.innerHTML = `<p>${plan.name}</p>`;
+              } else {
+                planValue.innerHTML = `<p>${plan.name}</p><p>Caduca: ${formattedDate}</p>`;
+              }
               tableBody.appendChild(planRow);
               planRow.appendChild(planKey);
               planRow.appendChild(planValue);

@@ -11,12 +11,81 @@ use App\Models\UserSession;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rule;
 
 class LoginApiController extends Controller
 {
     public function register(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:50'],
+                'surnames' => ['required', 'string', 'max:100'],
+                'email' => ['required', 'string', 'email', 'max:200', 'unique:users,email'],
+                'dni' => [
+                    Rule::requiredIf(fn () => $request->plan_type !== 'free'),
+                    'nullable',
+                    'regex:/^\d{8}[A-Za-z]$/',
+                    'unique:users,dni',
+                    function ($attribute, $value, $fail) {
+                        if ($value) {
+                            if (!preg_match('/^(\d{8})([A-Za-z])$/', $value, $matches)) {
+                                return; // ya lo manejará la regex
+                            }
+
+                            $numero = (int) $matches[1];
+                            $letraIngresada = strtoupper($matches[2]);
+                            $letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+                            $letraCorrecta = $letras[$numero % 23];
+
+                            if ($letraIngresada !== $letraCorrecta) {
+                                $fail("La letra del DNI no es válida.");
+                            }
+                        }
+                    }
+                ],
+
+                'address' => [
+                    Rule::requiredIf(fn () => $request->plan_type !== 'free'),
+                    'nullable',
+                    'string',
+                    'max:200',
+                ],
+                'city' => [
+                    'required',
+                    'string',
+                    'max:50',
+                ],
+                'country' => [
+                    'required',
+                    'string',
+                    'max:50',
+                ],
+                'phone' => ['nullable', 'string', 'max:15'],
+                'birth_year' => [
+                    'required',
+                    'integer',
+                    'digits:4',
+                    'between:1950,' . now()->year
+                ],
+
+                'gender' => [
+                    'required',
+                    Rule::in(['man', 'woman', 'other']),
+                ],
+
+                'password' => ['required', 'string', 'min:6', 'same:password_confirmation'],
+                'password_confirmation' => ['required', 'string', 'min:6'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                    'message' => 'Error en la validación del formulario'
+                ], 422);
+            } 
+
             $name = sanitize_html($request->name);
             $surnames = sanitize_html($request->surnames);
             $email = sanitize_html($request->email);
@@ -33,7 +102,9 @@ class LoginApiController extends Controller
             } else {
                 $phone = null;
             }
+            $gender = sanitize_html($request->gender);
             $birth_year = sanitize_html($request->birth_year);
+            $plan_type = sanitize_html($request->plan_type);
 
             $user = User::create([
                 'name' => $name,
@@ -45,7 +116,7 @@ class LoginApiController extends Controller
                 'country' => $country,
                 'birth_year' => $birth_year,
                 'phone' => $phone,
-                'gender' => $request->gender,
+                'gender' => $gender,
                 'rol' => 'user',
                 'plan_id' => null,
                 'password' => Hash::make($request->password),
@@ -55,15 +126,27 @@ class LoginApiController extends Controller
 
             $token = $user->createToken($name . '/' . $email)->plainTextToken;
 
-            return response()->json([
-                'success' => true,
-                'data' => [
-                    'auth_token' => $token,
-                    'user' => $user->email,
-                    'require_device_registration' => true,
-                ],
-                'message' => 'Usuario registrado exitosamente'
-            ], 201);
+            if ($plan_type != 'free') {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'auth_token' => $token,
+                        'user' => $user->email,
+                        'require_payment' => true,
+                        ],
+                    'message' => 'Usuario registrado exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'data' => [
+                        'auth_token' => $token,
+                        'user' => $user->email,
+                        'require_device_registration' => true,
+                        ],
+                    'message' => 'Usuario registrado exitosamente'
+                ], 201);
+            }
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());

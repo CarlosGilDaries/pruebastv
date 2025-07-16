@@ -23,7 +23,7 @@
     
     <section id="register-section">
         <div class="register-box">
-            <form id="register-form">
+            <form id="register-form" data-plan="not-free">
                 <h2>Registro</h2>
                 
                 <!-- Contenedor de los pasos -->
@@ -34,18 +34,21 @@
                             <span class="icon"><ion-icon name="person"></ion-icon></span>
                             <input type="text" id="name" required>
                             <label>Nombre</label>
+                            <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box">
                             <span class="icon"><ion-icon name="people"></ion-icon></span>
                             <input type="text" id="surnames" required>
                             <label>Apellidos</label>
+                            <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box">
                             <span class="icon"><ion-icon name="mail"></ion-icon></span>
                             <input type="email" id="email" required>
                             <label>Email</label>
+                            <p class="error-message"></p>
                         </div>
                     </div>
                     
@@ -55,18 +58,21 @@
                             <span class="icon"><ion-icon name="home"></ion-icon></span>
                             <input type="text" id="address" required>
                             <label>Dirección</label>
+                            <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box">
                             <span class="icon"><ion-icon name="business"></ion-icon></span>
                             <input type="text" id="city" required>
                             <label>Ciudad</label>
+                            <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box">
                             <span class="icon"><ion-icon name="earth"></ion-icon></span>
                             <input type="text" id="country" required>
                             <label>País</label>
+                            <p class="error-message"></p>
                         </div>
                     </div>
                     
@@ -76,12 +82,14 @@
                             <span class="icon"><ion-icon name="card"></ion-icon></span>
                             <input type="text" id="dni" required>
                             <label>DNI/NIE</label>
+                            <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box">
                             <span class="icon"><ion-icon name="calendar"></ion-icon></span>
                             <input type="number" id="birth-year" required>
                             <label id="birth-year-label">Año de nacimiento</label>
+                            <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box select-box">
@@ -92,6 +100,7 @@
                                 <option value="woman">Mujer</option>
                                 <option value="others">Otros</option>
                             </select>
+                            <p class="error-message"></p>
                         </div>
                     </div>
                     
@@ -101,18 +110,21 @@
                             <span class="icon" id="phone-icon"><ion-icon name="call-outline"></ion-icon></span>
                             <input type="number" id="phone">
                             <label id="phone-label">Teléfono (Opcional)</label>
+                            <p class="error-message"></p>
                         </div>
 
                         <div class="input-box">
                             <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
                             <input type="password" id="password" required>
                             <label>Contraseña</label>
+                            <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box">
                             <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
                             <input type="password" id="password_confirmation" required>
                             <label>Confirmar contraseña</label>
+                            <p class="error-message"></p>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 import { getIp } from './modules/getIp.js';
+import { selectPlan } from './modules/selectPlan.js';
 
 document
   .getElementById('register-form')
@@ -28,6 +29,7 @@ document
       document.getElementById('error-message').style.display = 'block';
       return;
     }
+    const plan_type = document.getElementById('register-form').getAttribute('data-plan');
 
     try {
       const response = await fetch('/api/register', {
@@ -50,18 +52,22 @@ document
           gender,
           password,
           password_confirmation,
+          plan_type
         }),
       });
 
       const data = await response.json();
-
+      console.log(data);
       if (data.success) {
         localStorage.setItem('auth_token', data.data.auth_token);
         localStorage.setItem('current_user_email', data.data.user);
-        const months = localStorage.getItem('months');
 
-        if (data.data.require_device_registration) {
+        if (data.data.require_payment) {
           window.location.href = '/register-payment-method.html'
+        }
+        if (data.data.require_device_registration) {
+          const plan_id = localStorage.getItem('plan_id');
+          selectPlan(plan_id, localStorage.getItem('auth_token'));
         }
       }
     } catch (error) {
