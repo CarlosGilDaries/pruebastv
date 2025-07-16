@@ -1,5 +1,20 @@
 import { getIp } from "./modules/getIp.js";
 
+document.addEventListener('DOMContentLoaded', function () {
+  const passwordInput = document.getElementById('password');
+  const emailInput = document.getElementById('email');
+
+  passwordInput.addEventListener('focus', function () {
+    document.getElementById('error-message').textContent = '';
+    document.getElementById('error-message').style.display = 'none';
+  });
+
+  emailInput.addEventListener('focus', function () {
+    document.getElementById('error-message').textContent = '';
+    document.getElementById('error-message').style.display = 'none';
+  });
+})
+
 document
   .getElementById('login-form')
   .addEventListener('submit', async function (event) {

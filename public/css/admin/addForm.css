@@ -211,3 +211,16 @@ textarea {
     flex-wrap: wrap;
     gap: 20px;
 }
+
+.phone-div {
+    display: flex;
+    gap: 10px;
+}
+
+#country-code {
+    width: 20%;
+}
+
+#phone {
+    width: 80%;
+}

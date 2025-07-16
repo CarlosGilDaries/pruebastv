@@ -6,7 +6,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Bill;
-use App\Models\Movie;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use App\Models\Plan;
 use App\Models\PlanOrder;
 use App\Models\UnifiedOrder;
@@ -128,10 +129,80 @@ class UserApiController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:50'],
+                'surnames' => ['required', 'string', 'max:100'],
+                'email' => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
+                'dni' => [
+                    Rule::requiredIf(fn () => $request->plan_type !== 'free'),
+                    'nullable',
+                    'regex:/^\d{8}[A-Za-z]$/',
+                    'unique:users,dni',
+                    function ($attribute, $value, $fail) {
+                        if ($value) {
+                            if (!preg_match('/^(\d{8})([A-Za-z])$/', $value, $matches)) {
+                                return; // ya lo manejará la regex
+                            }
+
+                            $numero = (int) $matches[1];
+                            $letraIngresada = strtoupper($matches[2]);
+                            $letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+                            $letraCorrecta = $letras[$numero % 23];
+
+                            if ($letraIngresada !== $letraCorrecta) {
+                                $fail("La letra del DNI no es válida.");
+                            }
+                        }
+                    }
+                ],
+
+                'address' => [
+                    Rule::requiredIf(fn () => $request->plan_type !== 'free'),
+                    'nullable',
+                    'string',
+                    'max:200',
+                ],
+                'city' => [
+                    'required',
+                    'string',
+                    'max:50',
+                ],
+                'country' => [
+                    'required',
+                    'string',
+                    'max:50',
+                ],
+                'phone' => ['nullable', 'string', 'max:15'],
+                'birth_year' => [
+                    'required',
+                    'integer',
+                    'digits:4',
+                    'between:1950,' . now()->year
+                ],
+
+                'gender' => [
+                    'required',
+                    Rule::in(['man', 'woman', 'other']),
+                ],
+
+                'password' => ['required', 'string', 'min:6', 'same:password_confirmation'],
+                'password_confirmation' => ['required', 'string', 'min:6'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                    'message' => 'Error en la validación del formulario'
+                ], 422);
+            } 
+
             $user = User::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
             $surnames = sanitize_html($request->input('surnames'));
             $email = sanitize_html($request->input('email'));
+            $phone = sanitize_html($request->input('phone'));
+            $phone_code = sanitize_html($request->input('phone_code'));
             $dni = sanitize_html($request->input('dni'));
             $address = sanitize_html($request->input('address'));
             $city = sanitize_html($request->input('city'));
@@ -145,6 +216,8 @@ class UserApiController extends Controller
             $user->email = $email;
             $user->dni = $dni;
             $user->address = $address;
+            $user->phone = $phone;
+            $user->phone_code = $phone_code;
             $user->city = $city;
             $user->country = $country;
             $user->birth_year = $request->input('birth_year');
@@ -183,6 +256,33 @@ class UserApiController extends Controller
     public function currentUserChange(Request $request, string $id)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'email' => ['string', 'email', 'max:100', 'unique:users,email'],
+                'address' => [
+                    'string',
+                    'max:200',
+                ],
+                'city' => [
+                    'string',
+                    'max:50',
+                ],
+                'country' => [
+                    'string',
+                    'max:50',
+                ],
+                'phone' => ['string', 'max:15'],
+                'password' => ['required', 'string', 'min:6', 'same:password_confirmation'],
+                'password_confirmation' => ['required', 'string', 'min:6'],
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'errors' => $validator->errors(),
+                    'message' => 'Error en la validación del formulario'
+                ], 422);
+            } 
+
             $user = User::where('id', $id)->first();
             if (!$user || !Hash::check($request->input('password'), $user->password)) {
                 return response()->json([
@@ -197,8 +297,7 @@ class UserApiController extends Controller
             $country = sanitize_html($request->input('country'));
             $new_password = sanitize_html($request->input('new_password'));
             $phone = sanitize_html($request->input('phone'));
-			
-            Log::debug($new_password);
+            $phone_code = sanitize_html($request->input('phone_code'));
 
             if ($email) {
                 $user->email = $email;
@@ -211,6 +310,7 @@ class UserApiController extends Controller
             if ($country) $user->country = $country;
 
             if ($phone) $user->phone = $phone;
+            if ($phone_code) $user->phone_code = $phone_code;
 
             if ($new_password) $user->password = Hash::make($new_password);
 

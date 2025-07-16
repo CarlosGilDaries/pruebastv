@@ -252,6 +252,9 @@ Route::get('tags', [TagController::class, 'index']);
 Route::get('tag/{id}', [TagController::class, 'show']);
 Route::get('footer-items', [FooterItemController::class, 'index']);
 
+Route::get('check-email/{email}', [LoginApiController::class, 'checkEmail']);
+Route::get('check-dni/{dni}', [LoginApiController::class, 'checkDni']);
+
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');
 

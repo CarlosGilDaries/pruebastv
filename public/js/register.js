@@ -14,7 +14,14 @@ document
     const country = document.getElementById('country').value;
     const birth_year = document.getElementById('birth-year').value;
     const dni = document.getElementById('dni')?.value ?? null;
-    const phone = document.getElementById('phone')?.value ?? null;
+    const phoneNumber = document.getElementById('phone').value;
+    const countryCode = document.getElementById('country-code').value;
+    let phone = null;
+    let phone_code = null;
+    if (phoneNumber != "") {
+      phone = phoneNumber;
+      phone_code = countryCode;
+    }
     const gender = document.getElementById('gender').value;
     const password = document.getElementById('password').value;
     const password_confirmation = document.getElementById(
@@ -48,6 +55,7 @@ document
           country,
           birth_year,
           phone,
+          phone_code,
           dni,
           gender,
           password,

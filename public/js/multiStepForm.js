@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', async function () {
   const form = document.getElementById('register-form');
   const steps = document.querySelectorAll('.form-step');
   const prevBtn = document.querySelector('.prev-btn');
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Validaciones específicas para cada campo
-  function validateField(field) {
+  async function validateField(field) {
     const value = field.value.trim();
     const errorElement = field
       .closest('.input-box')
@@ -67,8 +67,17 @@ document.addEventListener('DOMContentLoaded', function () {
           showError(field, 'El email es obligatorio');
           return false;
         }
+        if (value.length > 100) {
+          showError(field, 'No puede exceder los 100 caracteres');
+          return false;
+        }
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
           showError(field, 'Por favor ingresa un email válido');
+          return false;
+        }
+        const validEmail = await checkEmailsFromDB(value);
+        if (!validEmail) {
+          showError(field, 'El email ya está registrado.');
           return false;
         }
         break;
@@ -90,6 +99,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (letraIngresada !== letraCorrecta) {
           showError(field, `Por favor ingresa un DNI válido.`);
+          return false;
+        }
+        const validDni = await checkDnisFromDB(value);
+        if (!validDni) {
+          showError(field, 'El DNI ya está registrado.');
           return false;
         }
         break;
@@ -126,7 +140,14 @@ document.addEventListener('DOMContentLoaded', function () {
           return false;
         }
         break;
-
+      
+      case 'phone':
+        if (value.length > 15) {
+          showError(field, 'No puede exceder los 15 dígitos');
+          return false;
+        }
+        break;
+      
       case 'birth-year':
         if (!value) {
           showError(field, 'El año es obligatorio.');
@@ -149,12 +170,14 @@ document.addEventListener('DOMContentLoaded', function () {
           return false;
         }
         break;
+      
       case 'gender':
         if (!value) {
           showError(field, 'El género es obligatorio.');
           return false;
         }
         break;
+      
       case 'password':
         if (!value) {
           showError(field, 'La contraseña es obligatoria.');
@@ -165,6 +188,7 @@ document.addEventListener('DOMContentLoaded', function () {
           return false;
         }
         break;
+      
       case 'password_confirmation':
         if (!value) {
           showError(field, 'La confirmación es obligatoria.');
@@ -193,25 +217,25 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Validar todos los campos del paso actual
-  function validateCurrentStep() {
+  async function validateCurrentStep() {
     const currentFields = steps[currentStep].querySelectorAll(
       'input[required], select[required], input:not([type="file"]), select, input[type="file"]'
     );
 
     let isValid = true;
 
-    currentFields.forEach((field) => {
-      if (!validateField(field)) {
-        isValid = false;
-      }
-    });
+    for (const field of currentFields) {
+      const valid = await validateField(field);
+      if (!valid) isValid = false;
+    }
 
     return isValid;
   }
 
   // Siguiente paso con validación
-  nextBtn.addEventListener('click', function () {
-    if (validateCurrentStep()) {
+  nextBtn.addEventListener('click', async function () {
+    const isValid = await validateCurrentStep();
+    if (isValid) {
       if (currentStep < steps.length - 1) {
         currentStep++;
         showStep(currentStep);
@@ -248,3 +272,25 @@ document.addEventListener('DOMContentLoaded', function () {
   // Inicializar
   showStep(0);
 });
+
+async function checkEmailsFromDB(email) {
+  const response = await fetch(`/api/check-email/${email}`);
+  const data = await response.json();
+
+  if (data.success) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async function checkDnisFromDB(dni) {
+  const response = await fetch(`/api/check-dni/${dni}`);
+  const data = await response.json();
+
+  if (data.success) {
+    return true;
+  } else {
+    return false;
+  }
+}

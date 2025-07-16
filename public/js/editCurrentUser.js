@@ -1,3 +1,5 @@
+import { validateUserForm } from "./modules/validateUserForm.js";
+
 async function editUserForm() {
     const token = localStorage.getItem('auth_token');
     const backendAPI = '/api/';
@@ -19,30 +21,29 @@ async function editUserForm() {
       e.preventDefault();
       document.getElementById('loading').style.display = 'block';
 
-        const formData = new FormData();
-        
-        if (document.getElementById('email')) {
-            formData.append('email', document.getElementById('email').value);
-        }
+      // Validar antes de enviar
+      const validatedForm = await validateUserForm();
+      if (!validatedForm) {
+        document.getElementById('loading').style.display = 'none';
+        return;
+      }
 
-        if (document.getElementById('address')) {
-            formData.append(
-              'address',
-              document.getElementById('address').value
-            );
-            formData.append('city', document.getElementById('city').value);
-            formData.append(
-              'country',
-              document.getElementById('country').value
-            );
-        }
+      const formData = new FormData();
 
-        if (document.getElementById('phone')) {
-            formData.append(
-              'phone',
-              document.getElementById('phone').value
-            );
-        }
+      if (document.getElementById('email')) {
+        formData.append('email', document.getElementById('email').value);
+      }
+
+      if (document.getElementById('address')) {
+        formData.append('address', document.getElementById('address').value);
+        formData.append('city', document.getElementById('city').value);
+        formData.append('country', document.getElementById('country').value);
+      }
+
+      if (document.getElementById('phone')) {
+        formData.append('phone', document.getElementById('phone').value);
+        formData.append('phone_code', document.getElementById('country-code').value);
+      }
       if (document.getElementById('new-password')) {
         formData.append(
           'new_password',
@@ -54,29 +55,34 @@ async function editUserForm() {
         );
       }
 
+      formData.append('password', document.getElementById('password').value);
+
       formData.append(
-        'password',
-        document.getElementById('password').value
-        );
-        
-        formData.append(
-          'password_confirmation',
-          document.getElementById('password-confirmation').value
-        );
+        'password_confirmation',
+        document.getElementById('password-confirmation').value
+      );
       try {
-        const editResponse = await fetch(backendAPI + `current-user-edit/${id}`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
+        const editResponse = await fetch(
+          backendAPI + `current-user-edit/${id}`,
+          {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formData,
+          }
+        );
 
         const data = await editResponse.json();
 
-          if (data.success) {
-              window.location.href = '/account';
-              return;
+        if (data.success) {
+          window.location.href = '/account';
+          return;
+        } else if (!data.success && editResponse.status == 401) {
+          document.getElementById('form-error').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('form-error').style.display = 'none';
+          }, 2500);
         } else {
           console.error('Error al editar:', data.message);
         }
@@ -120,7 +126,8 @@ async function editUserForm() {
         }
 
         if (document.getElementById('phone')) {
-            document.getElementById('phone').value = user.phone || '';
+          document.getElementById('phone').value = user.phone || '';
+          document.getElementById('country-code').value = user.phone_code || '';
         }
     } catch (error) {
       console.error('Error cargando datos del usuario:', error);
