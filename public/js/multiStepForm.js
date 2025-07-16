@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
           showError(field, 'Por favor ingresa un DNI válido');
           return false;
         }
+        const match = value.match(/^(\d{8})([A-Za-z])$/);
         const numero = parseInt(match[1], 10);
         const letraIngresada = match[2].toUpperCase();
         const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';

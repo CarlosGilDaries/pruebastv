@@ -67,7 +67,7 @@ document
         }
         if (data.data.require_device_registration) {
           const plan_id = localStorage.getItem('plan_id');
-          selectPlan(plan_id, localStorage.getItem('auth_token'));
+          selectPlan(plan_id, localStorage.getItem('auth_token'), 0, true);
         }
       }
     } catch (error) {
@@ -76,4 +76,19 @@ document
         'Credenciales incorrectas';
       document.getElementById('error-message').style.display = 'block';
     }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document
+      .getElementById('password')
+      .addEventListener('focus', function () {
+        document.getElementById('error-message').textContent = '';
+        document.getElementById('error-message').style.display = 'none';
+      });
+    document
+      .getElementById('password_confirmation')
+      .addEventListener('focus', function () {
+        document.getElementById('error-message').textContent = '';
+        document.getElementById('error-message').style.display = 'none';
+      });
   });
