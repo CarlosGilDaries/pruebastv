@@ -8,7 +8,7 @@ async function editPrivacyPoliticForm() {
 
   async function loadPrivacyPoliticData(id) {
     try {
-      const response = await fetch(`${backendAPI}legal-notice/${id}`, {
+      const response = await fetch(`${backendAPI}privacy-politic/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -29,7 +29,7 @@ async function editPrivacyPoliticForm() {
 
   // Manejar el envío del formulario
   document
-    .getElementById('legal-notice-form')
+    .getElementById('privacy-politic-form')
     .addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -44,7 +44,7 @@ async function editPrivacyPoliticForm() {
           'text',
           CKEDITOR.instances.text.getData()
         );
-        const response = await fetch(`${backendAPI}edit-legal-notice/${id}`, {
+        const response = await fetch(`${backendAPI}edit-privacy-politic/${id}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
           body: formData,
