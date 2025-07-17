@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('legal_notice', function (Blueprint $table) {
+        Schema::create('legal_notices', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->longtext('text');
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('legal_notice');
+        Schema::dropIfExists('legal_notices');
     }
 };

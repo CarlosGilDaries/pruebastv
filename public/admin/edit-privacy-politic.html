@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/admin/admin.css">
+    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Editar Política de Privacidad</title>
+</head>
+<body>
+    <div class="menu">
+        <nav>
+            <ul class="nav left-nav">
+                <li class="logo"><a href="/"><img id="logo" src="/images/logo.png" alt="Streaming logo"></a></li>
+            </ul>
+        </nav>
+        <nav>
+            <ul class="nav right-nav">
+                <a id="logout-button"><button class="login-btn">Cerrar sesión</button></a>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="admin-container">
+
+        <aside class="admin-sidebar">
+        	<ul class="admin-menu">
+				<a href="/admin/admin-panel.html">
+                	<li data-content="admin-panel">
+                        <i class="fa-solid fa-square-poll-vertical"></i>
+                        <span>Estadísticas</span>
+                	</li>
+				 </a>
+                 <a href="/admin/list-content.html">
+                	<li data-content="list-local-content">
+                        <i class="fas fa-film"></i>
+                        <span>Contenido Local</span>
+                	</li>
+				 </a>
+                 <a href="/admin/list-external-content.html">
+                	<li data-content="list-external-content">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        <span>Contenido Externo</span>
+                	</li>
+				 </a>
+                 <a href="/admin/list-streams.html">
+                	<li data-content="list-streams">
+                        <i class="fa-solid fa-tower-broadcast"></i>
+                        <span>Streams</span>
+                	</li>
+				 </a>
+				<a href="/admin/list-ads.html">
+                	<li data-content="list-ads">
+                        <i class="fas fa-ad"></i>
+                        <span>Anuncios</span>
+					</li>
+				</a>
+				<a href="/admin/list-plans.html">
+                	<li data-content="list-plans">
+                        <i class="fa-solid fa-euro-sign"></i>
+                        <span>Planes</span>
+                	</li>
+				</a>
+				<a href="/admin/list-genders.html">
+                	<li data-content="list-genders">
+                        <i class="fa-solid fa-rocket"></i>
+                        <span>Géneros</span>
+                	</li>
+				</a>
+                <a href="/admin/list-categories.html">
+                	<li data-content="list-categories">
+                        <i class="fa-solid fa-layer-group"></i>
+                        <span>Categorías</span>
+                	</li>
+				</a>
+                <a href="/admin/list-tags.html">
+                	<li data-content="list-tags">
+                        <i class="fa-solid fa-tag"></i>
+                        <span>Etiquetas</span>
+                	</li>
+				</a>
+                <a href="/admin/list-actions.html">
+                	<li data-content="list-actions">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <span>LLamadas a Acción</span>
+                	</li>
+				</a>
+				<a href="/admin/list-users.html">
+                	<li data-content="list-users">
+                        <i class="fas fa-user"></i>
+                        <span>Usuarios</span>
+                	</li>
+				</a>
+				<a href="/admin/list-orders.html">
+                	<li data-content="list-orders">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <span>Pedidos</span>
+                	</li>
+				</a>
+                <a href="/admin/list-bills.html">
+                	<li data-content="list-bills">
+                        <i class="fa-solid fa-receipt"></i>
+                        <span>Facturas</span>
+                	</li>
+				</a>
+                <a href="/admin/web-config.html">
+                	<li data-content="web-config">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Configuración Web</span>
+                	</li>
+				</a>
+                <a href="/admin/mail-config.html">
+                	<li data-content="mail-config">
+                        <i class="fa-solid fa-envelope"></i>
+                        <span>Configuración Mail</span>
+                	</li>
+				</a>
+                <a href="/admin/list-privacy-politics.html">
+                	<li data-content="list-privacy-politics">
+                        <i class="fa-solid fa-gavel"></i>
+                        <span>Aviso Legal</span>
+                	</li>
+				</a>
+                <a href="/admin/list-privacy-politics.html">
+                	<li data-content="list-privacy-politics" class="active">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Política de Privacidad</span>
+                	</li>
+				</a>
+                <a href="/admin/list-footer-items.html">
+                	<li data-content="list-footer-items">
+                        <i class="fa-solid fa-shoe-prints"></i>
+                        <span>Items Footer</span>
+                	</li>
+				</a>
+                <a href="/admin/list-roles.html">
+                	<li data-content="list-roles">
+                        <i class="fa-solid fa-users"></i>
+                        <span>Roles</span>
+                	</li>
+				</a>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <div id="content-area">
+
+                <div class="container" id="privacy-politic">
+                    <!-- Añadir Política de Privacidad -->
+                    <h1><i class="fa-solid fa-gavel"></i> Editar Política de Privacidad</h1>
+                    <div id="success-message" class="success-message">
+                        Política de Privacidad editado con éxito
+                    </div>
+                    <form id="privacy-politic-form">
+                        <div class="form-group">
+                            <label for="edit-title">Título</label>
+                            <input type="text" id="edit-title" name="edit-title" required>
+                            <div id="edit-title-error" class="error-message"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="text">Contenido</label>
+                            <textarea id="text" name="text" class="ckeditor wysiwyg-textarea"></textarea>
+                            <div id="text-error" class="error-message"></div>
+                        </div>
+
+                        <div class="loading" id="loading">
+                            <div class="loading-spinner"></div>
+                            <p>Editando Política de Privacidad, por favor espere...</p>
+                        </div>
+                        
+                        <button type="submit" class="btn">
+                            <i class="fas fa-upload"></i> Editar Política de Privacidad
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <!--<footer class="footer">
+        <div class="footer-container">
+            <div class="info">
+                <a href="#">Centro de ayuda</a>
+                <a href="#">¿Quiénes somos?</a>
+                <a href="#">Cambiar preferencias de cookies</a>
+            </div>
+            <ul class="icons">
+                <a href="#"><li><img src="/images/instagram-53.png" alt="Instagram"></li></a>
+                <a href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
+                <a href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
+                <a href="#"><li><img src="/images/github.png" alt="Github"></li></a> 
+            </ul>
+        </div>
+    </footer>-->
+
+    <script src="/ckeditor/ckeditor.js"></script>
+    <script type="module" src="/js/admin/admin.js"></script>
+    <script src="/js/admin/editPrivacyPolitic.js"></script>
+    <script src="/js/webSettings.js"></script>
+</body>
+</html>

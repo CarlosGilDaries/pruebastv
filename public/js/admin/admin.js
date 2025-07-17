@@ -24,7 +24,9 @@ const permissionToContentMap = {
   roles: 'list-roles',
   etiquetas: 'list-tags',
   ajustes_web: 'web-config',
-  footer_items: 'list-footer-items'
+  footer_items: 'list-footer-items',
+  aviso_legal: 'list-legal-notices',
+  politica_privacidad: 'list-privacy-politics'
 };
 
 if (token == null) {

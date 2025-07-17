@@ -47,7 +47,7 @@ class FooterItemController extends Controller
 					return $footerItem->logo;
 				})
                 ->addColumn('url', function($footerItem) {
-					return $footerItem->logo;
+					return $footerItem->url;
 				})
 				->addColumn('actions', function($footerItem) {
 					return $this->getActionButtons($footerItem);

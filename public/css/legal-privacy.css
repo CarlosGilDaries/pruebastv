@@ -1,0 +1,44 @@
+@import '/css/commons.css';
+@import '/css/nav.css';
+@import '/css/footer.css';
+
+main {
+    min-height: 75vh;
+    padding: 2rem;
+    background-color: #f5f5f5;
+}
+
+.container,
+#content-area  {
+	width: 80%;
+    margin: 0 auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.container {
+    width: 60%;
+}
+
+.title {
+    margin-bottom: 20px;
+}
+
+p {
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+#legal-notice {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+h3 {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+}

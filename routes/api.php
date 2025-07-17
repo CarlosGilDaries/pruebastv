@@ -19,14 +19,17 @@ use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\PlanOrderController;
 use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
+use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\FavoritesController;
 use App\Http\Controllers\Api\FooterItemController;
+use App\Http\Controllers\Api\LegalNoticeController;
 use App\Http\Controllers\Api\PayPalController;
 use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Api\MovieProgressController;
+use App\Http\Controllers\Api\PrivacyPoliticController;
 use App\Http\Controllers\Api\RentController;
 use App\Http\Controllers\Api\RentOrderController;
 use App\Http\Controllers\Api\TagController;
@@ -215,6 +218,28 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-footer-item', [FooterItemController::class, 'destroy']);
     });
 
+    // Rutas de Aviso Legal protegidas
+    Route::middleware([
+        CheckPermissions::class . ':aviso_legal',
+    ])->group(function () {
+        Route::get('legal-notice/datatable', [LegalNoticeController::class, 'datatable']);
+        Route::get('legal-notice/{id}', [LegalNoticeController::class, 'show']);
+        Route::post('add-legal-notice', [LegalNoticeController::class, 'store']);
+        Route::post('edit-legal-notice/{id}', [LegalNoticeController::class, 'update']);
+        Route::delete('delete-legal-notice', [LegalNoticeController::class, 'destroy']);
+    });
+
+    // Rutas de Polítiva de Privacidad protegidas
+    Route::middleware([
+        CheckPermissions::class . ':politica_privacidad',
+    ])->group(function () {
+        Route::get('privacy-politic/datatable', [PrivacyPoliticController::class, 'datatable']);
+        Route::get('privacy-politic/{id}', [PrivacyPoliticController::class, 'show']);
+        Route::post('add-privacy-politic', [PrivacyPoliticController::class, 'store']);
+        Route::post('edit-privacy-politic/{id}', [PrivacyPoliticController::class, 'update']);
+        Route::delete('delete-privacy-politic', [PrivacyPoliticController::class, 'destroy']);
+    });
+
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);
     Route::post('add-permission', [PermissionController::class, 'store']);
@@ -251,9 +276,12 @@ Route::get('actions', [ActionController::class, 'index']);
 Route::get('tags', [TagController::class, 'index']);
 Route::get('tag/{id}', [TagController::class, 'show']);
 Route::get('footer-items', [FooterItemController::class, 'index']);
+Route::get('legal-notice', [LegalNoticeController::class, 'index']);
+Route::get('privacy-politic', [PrivacyPoliticController::class, 'index']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');
+Route::post('/send-contact-email', [ContactController::class, 'sendEmail']);
 
 Route::post('redsys-plan-resp', [RedsysController::class, 'handlePlanRedsysResponse']);
 Route::post('redsys-ppv-resp', [RedsysController::class, 'handlePpvRedsysResponse']);
