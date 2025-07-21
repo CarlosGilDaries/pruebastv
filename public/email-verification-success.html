@@ -32,7 +32,15 @@
             </nav>
             <nav>
                 <ul class="nav right-nav">
-                    <li><a href="#"><img src="/images/search-icon.png" alt="Search"></a></li>
+                                <li class="search-container">
+                <div class="search-icon">
+                    <img src="/images/search-icon.png" alt="Search" id="searchToggle">
+                </div>
+                <div class="search-box" id="searchBox">
+                    <input type="text" id="searchInput" placeholder="Buscar contenido...">
+                    <div class="search-results" id="searchResults"></div>
+                </div>
+            </li>
                     <li class="dropdown user">
                         <div class="dropdown-toggle"><img src="/images/user-icon.png" alt="User"></div>
                         <ul class="dropdown-menu">
@@ -91,5 +99,6 @@
         clickLogOut();
     </script>
     <script src="/js/webSettings.js"></script>
+    <script src="/js/searchInput.js"></script>
 </body>
 </html>
