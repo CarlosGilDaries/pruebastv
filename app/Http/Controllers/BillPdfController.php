@@ -6,6 +6,7 @@ use App\Models\PlanOrder;
 use App\Models\PpvOrder;
 use App\Models\Bill;
 use App\Models\RentOrder;
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
@@ -13,16 +14,10 @@ use Illuminate\Support\Facades\Log;
 
 class BillPdfController extends Controller
 {
-	public function returnBillPathFromOrderID($orderId)
+	public function returnBillPathFromReference($reference)
 	{
 		try {
-			$bill = Bill::whereHasMorph(
-				'billable', 
-				[PlanOrder::class, PpvOrder::class, RentOrder::class],
-				function ($query) use ($orderId) {
-					$query->where('id', $orderId);
-				}
-			)->first();
+			$bill = Bill::where('billable_reference', $reference)->first();
 					
 			return response()->json([
 				'success' => true,
@@ -65,13 +60,26 @@ class BillPdfController extends Controller
 	{
 		$companyResponse = Http::get(route('company-details'));
 		$orderResponse = Http::get(route('plan-order.show', $order->id));
+		/*$companyResponse = Http::withOptions([
+			'verify' => false
+			])->get(route('company-details'));
+		$orderResponse = Http::withOptions([
+    		'verify' => false
+			])->get(route('plan-order.show', $order->id));*/
 
 		$companyDetails = $companyResponse->json()['details'];
 		$orderDetails = $orderResponse->json()['order'];
 
+		$user = User::where('id', $order->user_id)->first();
+
+		Log::debug($user);
+		Log::debug($order);
 		$bill = $order->bill()->create([
-			'user_id' => $order->user_id,
-			'url' => ''
+			'user_dni' => $user->dni,
+			'url' => '',
+			'amount' => $order->amount,
+			'payment_method' => $order->payment_method,
+			'bill_number' => ''
 		]);
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
@@ -98,10 +106,15 @@ class BillPdfController extends Controller
 
 		$companyDetails = $companyResponse->json()['details'];
 		$orderDetails = $orderResponse->json()['order'];
+		
+		$user = User::where('id', $order->user_id)->first();
 
 		$bill = $order->bill()->create([
-			'user_id' => $order->user_id,
-			'url' => ''
+			'user_dni' => $user->dni,
+			'url' => '',
+			'amount' => $order->amount,
+			'payment_method' => $order->payment_method,
+			'bill_number' => ''
 		]);
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
@@ -129,9 +142,14 @@ class BillPdfController extends Controller
 		$companyDetails = $companyResponse->json()['details'];
 		$orderDetails = $orderResponse->json()['order'];
 
+		$user = User::where('id', $order->user_id)->first();
+
 		$bill = $order->bill()->create([
-			'user_id' => $order->user_id,
-			'url' => ''
+			'user_dni' => $user->dni,
+			'url' => '',
+			'amount' => $order->amount,
+			'payment_method' => $order->payment_method,
+			'bill_number' => ''
 		]);
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);

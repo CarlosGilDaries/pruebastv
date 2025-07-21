@@ -14,9 +14,14 @@ return new class extends Migration
 		Schema::create('bills', function (Blueprint $table) {
 			$table->id();
 			$table->string('bill_number')->unique();
-			$table->foreignId('user_id')->constrained();
+			$table->string('user_dni');
+			$table->foreign('user_dni')->references('dni')->on('users');
 			$table->string('url');
-			$table->nullableMorphs('billable'); // billable_id + billable_type
+			$table->string('billable_reference'); 
+			$table->string('billable_type');
+			$table->decimal('amount', 10, 2); 
+			$table->enum('payment_method', ['PayPal', 'Redsys']);
+			$table->index(['billable_reference', 'billable_type']);
 			$table->timestamps();
 		});
 	}

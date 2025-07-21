@@ -60,14 +60,16 @@ class BillController extends Controller
                 $columnsMap = [
                     0 => 'id',
                     1 => 'bill_number',
-                    2 => 'user_id',
-                    3 => 'billable_id',
-                    4 => 'description',
-                    5 => 'created_at'
+                    2 => 'user_dni',
+                    3 => 'billable_reference',
+                    4 => 'amount',
+                    5 => 'payment_method',
+                    6 => 'description',
+                    7 => 'created_at'
                 ];
                 
                 if (isset($columnsMap[$column])) {
-                    if ($column == 4) { // Caso especial para description
+                    if ($column == 6) { // Caso especial para description
                         $query->whereHas('billable', function($q) use ($searchTerm) {
                             $q->where('description', 'LIKE', "%{$searchTerm}%");
                         });
@@ -83,8 +85,10 @@ class BillController extends Controller
                 $query->where(function($q) use ($searchTerm) {
                     $q->where('id', 'LIKE', "%{$searchTerm}%")
                       ->orWhere('bill_number', 'LIKE', "%{$searchTerm}%")
-                      ->orWhere('user_id', 'LIKE', "%{$searchTerm}%")
-                      ->orWhere('billable_id', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('user_dni', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('billable_reference', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('amount', 'LIKE', "%{$searchTerm}%")
+                      ->orWhere('payment_method', 'LIKE', "%{$searchTerm}%")
                       ->orWhereHas('billable', function($q) use ($searchTerm) {
                           $q->where('description', 'LIKE', "%{$searchTerm}%");
                       });
@@ -119,11 +123,17 @@ class BillController extends Controller
 				->addColumn('bill_number', function($bill) {
 					return $bill->bill_number;
 				})
-                ->addColumn('user_id', function($bill) {
-					return $bill->user_id;
+                ->addColumn('user_dni', function($bill) {
+					return $bill->user_dni;
 				})
-                ->addColumn('order_id', function($bill) {
-					return $bill->billable_id;
+                ->addColumn('order_reference', function($bill) {
+					return $bill->billable_reference;
+				})
+                ->addColumn('amount', function($bill) {
+					return $bill->amount;
+				})
+                ->addColumn('payment_method', function($bill) {
+					return $bill->payment_method;
 				})
                 ->addColumn('description', function($bill) {
 					return $bill->billable->description;

@@ -34,7 +34,7 @@ class PlanOrder extends Model implements RedsysPayable
 	
     public function bill(): MorphOne
     {
-        return $this->morphOne(Bill::class, 'billable');
+        return $this->morphOne(Bill::class, 'billable', 'billable_type', 'billable_reference', 'reference');
     }
 
     public function getTotalAmount(): int

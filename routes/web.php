@@ -41,7 +41,7 @@ Route::get('/bills/{path}', function ($path) {
     abort(404);
 })->where('path', '.*')->name('bills.view');
 
-Route::get('bill-path-from-order/{orderId}', [BillPdfController::class, 'returnBillPathFromOrderId']);
+Route::get('bill-path-from-order/{reference}', [BillPdfController::class, 'returnBillPathFromReference']);
 Route::get('bill-path/{billId}', [BillPdfController::class, 'returnBillPathFromBillId']);
 Route::get('/bill/{id}/download', [BillPdfController::class, 'download'])->name('bill.download');
 

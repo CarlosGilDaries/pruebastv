@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Bill extends Model
 {
         protected $fillable = [
-        'user_id',
+        'user_dni',
+        'amount',
+        'payment_method',
 		'url',
 		'bill_number'
     ];
@@ -20,6 +22,6 @@ class Bill extends Model
 	
     public function billable(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo(null, 'billable_type', 'billable_reference', 'reference');
     }
 }
