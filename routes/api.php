@@ -140,7 +140,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('ppv-current-user-order/{id}', [PpvOrderController::class, 'currentUserOrder']);
     Route::get('current-user-orders', [UserApiController::class, 'getOrders']);
-    Route::get('get-bill/{id}', [UserApiController::class, 'getBill']);
+    Route::get('get-bill/{reference}', [UserApiController::class, 'getBill']);
 	
     // Rutas de facturas protegidas
     Route::middleware([

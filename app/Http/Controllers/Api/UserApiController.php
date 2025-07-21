@@ -329,12 +329,12 @@ class UserApiController extends Controller
         }
     }
 
-    public function getBill(string $id)
+    public function getBill($reference)
     {
         try {
             $user = Auth::user();
-            $bill = Bill::where('user_id', $user->id)
-                ->where('billable_id', $id)
+            $bill = Bill::where('user_dni', $user->dni)
+                ->where('billable_reference', $reference)
                 ->first();
 
             return response()->json([

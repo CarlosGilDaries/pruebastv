@@ -10,9 +10,6 @@ use Illuminate\Support\Facades\Log;
 use DataTables;
 use Illuminate\Support\Carbon;
 use App\Models\UnifiedOrder;
-use Yajra\DataTables\Html\Builder;
-use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
 
 class PlanOrderController extends Controller
 {
@@ -267,14 +264,15 @@ class PlanOrderController extends Controller
         } else {
             $type = 'rent';
         }
-		$id = $order->id;
+		$reference= $order->reference;
+        $id = $order->id;
 				
 		return '
 			<div class="actions-container">
 				<button class="actions-button orders-button">Acciones</button>
 				<div class="actions-menu">
-					<button class="action-item bill-button plan-action" data-id="'.$id.'">Factura</button>
-					<button class="action-item download-btn plan-action" data-id="'.$id.'">Descargar factura</button>
+					<button class="action-item bill-button plan-action" data-id="'.$reference.'">Factura</button>
+					<button class="action-item download-btn plan-action" data-id="'.$reference.'">Descargar factura</button>
 					<form class="'.$type.'-order-delete-form" data-id="'.$id.'">
 						<input type="hidden" name="plan_id" value="'.$id.'">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>

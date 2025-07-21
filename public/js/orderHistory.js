@@ -51,7 +51,7 @@ function displayOrders(orders) {
           <p>${formatDate(order.created_at)}</p>
         </div>
         <button class="bill-button" data-id="${
-          order.id
+          order.reference
         }">Descargar factura</button>
       </div>
     `

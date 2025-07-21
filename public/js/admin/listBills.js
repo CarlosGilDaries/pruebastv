@@ -29,8 +29,10 @@ async function listBills() {
                                 <tr>
                                     <th>ID</th>
                                     <th>Nº Factura</th>
-                                    <th>ID Usuario</th>
-                                    <th>ID Pedido</th>
+                                    <th>DNI Usuario</th>
+                                    <th>Reference Pedido</th>
+                                    <th>Cantidad</th>
+                                    <th>Método de pago</th>
                                     <th>Descripción</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
@@ -84,8 +86,10 @@ async function listBills() {
         columns: [
           { data: 'id', name: 'id' },
           { data: 'bill_number', name: 'bill_number' },
-          { data: 'user_id', name: 'user_id' },
-          { data: 'order_id', name: 'order_id' },
+          { data: 'user_dni', name: 'user_dni' },
+          { data: 'order_reference', name: 'order_reference' },
+          { data: 'amount', name: 'amount' },
+          { data: 'payment_method', name: 'payment_method' },
           { data: 'description', name: 'description' },
           { data: 'created_at', name: 'created_at' },
           {
@@ -122,10 +126,12 @@ async function listBills() {
                 <option value="">-- Todos --</option>
                 <option value="0">ID</option>
                 <option value="1">Nº Factura</option>
-                <option value="2">ID Usuario</option>
-                <option value="3">ID Pedido</option>
-                <option value="4">Descripción</option>
-                <option value="5">Fecha</option>
+                <option value="2">DNI Usuario</option>
+                <option value="3">Reference Pedido</option>
+                <option value="4">Cantidad</option>
+                <option value="5">Método de pago</option>
+                <option value="6">Descripción</option>
+                <option value="7">Fecha</option>
               </select>
             </label>
           `);
