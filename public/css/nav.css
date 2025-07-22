@@ -37,7 +37,15 @@ header {
     padding-block: 10px;
 }
 
+.nav-link {
+    color: white;
+}
+
 /*LEFT MENU*/
+.collapsed{
+    color: black;
+}
+
 .left-nav {
     display: flex;
     font-size: 16px;
@@ -46,20 +54,23 @@ header {
 }
 
 .logo {
-    width: 230px;
+    width: 180px;
     height: 55px;
 }
 
-.left-nav-links {
-    display: none;
+.left-nav-links,
+#user-link  {
+    /*display: none;*/
 	transition: color 0.3s ease;
 }
 
-.left-nav-links a {
+.left-nav-links a,
+#user-link {
 	transition: color 0.3s ease;
 }
 
-.left-nav-links a:hover {
+.left-nav-links a:hover,
+#user-link:hover  {
     color: var(--unlink-users-btn-hover);
 }
 
@@ -76,14 +87,9 @@ header {
     flex-direction: column;
     background-color: var(--color-background-dark);
     min-width: 200px;
-    padding: 10px 0;
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1002;
-}
-
-.dropdown:hover .dropdown-menu {
-    display: flex;
 }
 
 .dropdown-menu li {
@@ -91,7 +97,7 @@ header {
     transition: background-color 0.3s ease;
 }
 
-.dropdown-menu li:hover {
+.dropdown-item:hover {
     background-color: var(--color-gray-dark) !important;
 }
 
@@ -128,12 +134,12 @@ header {
         display: flex;
     }
 }
-
+/*
 @media (min-width: 992px) {
     .left-nav-links {
         display: flex;
     }
-}
+}*/
 
 /*RIGHT MENU*/
 .right-nav {
@@ -141,22 +147,13 @@ header {
     gap: 40px;
 }
 
+#user-link {
+    font-weight: 600;
+} 
+
 #searchToggle {
     width: 32px;  
 	transition: transform 0.3s ease;
-}
-
-.user {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background-color: var(--color-primary);
-	transition: all 0.3s ease;
-    cursor: pointer;
-}
-
-.user:hover {
-    transform: scale(1.1);
 }
 
 .unlogged-buttons {
@@ -208,6 +205,7 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
 .search-icon {
     cursor: pointer;
     transition: transform 0.3s ease;
+    margin-left: 30px;
 }
 
 .search-icon:hover {
@@ -270,10 +268,71 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
     color: var(--color-primary);
 }
 
+.navbar-nav .nav-link.active, .navbar-nav .nav-link.show {
+    color: var(--unlink-users-btn-hover)
+}
+
+.nav-link:focus {
+    color: var(--color-primary);
+}
+
 /* Para pantallas pequeñas */
 @media (max-width: 768px) {
     .search-box {
         width: 250px;
         right: -50px;
     }
+}
+
+@media (max-width: 460px) {
+    .search-box {
+        width: 150px;
+        right: -50px;
+    }
+    .search-icon img,
+    .navbar-toggler-icon {
+        width:20px;
+        height:20px;
+        object-fit: contain;
+    }
+    .logo {
+        width:100px;
+        height:40px;
+        object-fit: contain;
+    }
+    .menu {
+        padding-inline: 0;
+    }
+}
+
+@media (max-width: 991px) {
+  #mainNavbar {
+    width: 70%;
+    max-width: 400px;
+    position: absolute;
+    top: 80%;
+    left: 0;
+    background-color: var(--color-background-dark);
+    border: 1px solid var(--color-gray-dark);
+    border-radius: 5px;
+    z-index: 1002;
+    padding: 15px;
+  }
+  #dropdown-user {
+    position: absolute;
+    top: 90%;
+    left: 0;
+  }
+    #user-link {
+        margin-top: 30px;
+    }
+    .login-btn {
+        margin-top: 30px;
+    } 
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  #mainNavbar {
+    width: 30%;
+  }
 }

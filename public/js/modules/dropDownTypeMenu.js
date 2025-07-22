@@ -11,6 +11,7 @@ export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
       if (counter <= 7) {
         const li = document.createElement('li');
         const a = document.createElement('a');
+        a.classList.add('dropdown-item');
         a.href = `/${type}-show.html?id=${item.id}`;
         a.textContent = item.name;
         li.appendChild(a);
@@ -19,6 +20,7 @@ export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
     });
     const seeMore = document.createElement('li');
     const seeMoreLink = document.createElement('a');
+    seeMoreLink.classList.add('dropdown-item');
     seeMoreLink.href = `/${types}.html`;
     seeMoreLink.textContent = 'Ver Más';
     seeMore.appendChild(seeMoreLink);

@@ -5,16 +5,19 @@ export function setupLoginSignupButtons() {
     if (token == null) {
       if (userIcon) userIcon.remove();
 
-      const unloggedButtonsContainer = document.createElement('li');
-      unloggedButtonsContainer.classList.add('unlogged-buttons');
+      const loginButtonContainer = document.createElement('li');
+      const signButtonContainer = document.createElement('li');
+      loginButtonContainer.classList.add('nav-item');
+      signButtonContainer.classList.add('nav-item');
       const loginButton = document.createElement('a');
       loginButton.href = '/login';
       const registerButton = document.createElement('a');
       registerButton.href = '/plans.html';
-      loginButton.innerHTML = `<button class="login-btn">Iniciar sesión</button>`;
-      registerButton.innerHTML = `<button class="signup-btn">Registrarse</button>`;
-      unloggedButtonsContainer.appendChild(loginButton);
-      unloggedButtonsContainer.appendChild(registerButton);
-      navRight.appendChild(unloggedButtonsContainer);
+      loginButton.innerHTML = `<button class="login-btn nav-link">Iniciar sesión</button>`;
+      registerButton.innerHTML = `<button class="signup-btn nav-link">Registrarse</button>`;
+      loginButtonContainer.appendChild(loginButton);
+      signButtonContainer.appendChild(registerButton);
+      navRight.appendChild(loginButtonContainer);
+      navRight.appendChild(signButtonContainer);
     }
 }

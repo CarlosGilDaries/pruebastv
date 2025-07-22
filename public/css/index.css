@@ -30,7 +30,7 @@
     flex-direction: column;
     gap: 15px;
     position: relative;
-	left: 50px;
+	left: -250px;
 	top: 50px;
 }
 
@@ -301,4 +301,175 @@ h1 {
     background-color: #ff6a00;
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+@media (max-width: 1650px) {
+    .movie-info {
+        left: 0;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .movie-info {
+        left: 0;
+        top: 130px;
+        padding-inline: 15px;
+        text-align: center;
+        align-items: center;
+    }
+    .play-button {
+        margin-inline: auto;
+        max-width: 200px;
+        font-size: 14px;
+        padding: 10px 32px;
+        left: 0px;
+    }
+    h1 {
+        font-size: 1.7em;
+    }
+    #banner-gender {
+        font-size: 0.8em;
+    }
+    #banner-duration,
+    #point {
+        display: none;
+    }
+    .scroll-left-banner,
+    .scroll-right-banner {
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 24px;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px;
+        z-index: 2;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .scroll-left-banner {
+        left: 10px;
+        position: absolute;
+    }
+
+    .scroll-right-banner {
+        right: 10px;
+        position: absolute;
+    }
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 1024px) {
+    .content {
+        max-width: 160px;
+        min-width: 160px;
+        height: 260px;
+    }
+
+    .content .info {
+        top: 180px;
+    }
+
+    .content-type h2 {
+        font-size: 24px;
+    }
+
+    .action-call-content {
+        height: 400px;
+    }
+
+    .action-call-text h2 {
+        font-size: 2.2rem;
+    }
+
+    .action-call-text p {
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        max-width: 130px;
+        min-width: 130px;
+        height: 220px;
+    }
+
+    .content .info {
+        font-size: 0.75rem;
+        top: 160px;
+    }
+
+    .content-type h2 {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    .scroll-left,
+    .scroll-right {
+        font-size: 28px;
+        padding: 8px;
+    }
+
+    .action-call-content {
+        height: 300px;
+    }
+
+    .action-call-text {
+        max-width: 90%;
+    }
+
+    .action-call-text h2 {
+        font-size: 1.6rem;
+    }
+
+    .action-call-text p {
+        font-size: 1.1rem;
+    }
+
+    .action-button {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .index-main {
+        gap: 20px;
+        padding-bottom: 60px;
+    }
+
+    .content {
+        max-width: 100px;
+        min-width: 100px;
+        height: 180px;
+    }
+
+    .content .info {
+        top: 130px;
+        font-size: 0.7rem;
+    }
+
+    .scroll-left,
+    .scroll-right {
+        font-size: 24px;
+        padding: 6px;
+    }
+
+    .action-call-content {
+        height: 240px;
+    }
+
+    .action-call-text h2 {
+        font-size: 1.3rem;
+    }
+
+    .action-call-text p {
+        font-size: 0.8rem;
+    }
+
+    .action-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
 }
