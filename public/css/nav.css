@@ -156,12 +156,6 @@ header {
 	transition: transform 0.3s ease;
 }
 
-.unlogged-buttons {
-	display: flex;
-	align-items: center;
-	gap: 15px;
-}
-
 .login-btn,
 .signup-btn {
     border-radius: 5px;
@@ -335,4 +329,18 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
   #mainNavbar {
     width: 30%;
   }
+}
+
+@media (max-width: 1200px) {
+    .left-nav {
+        display: flex;
+        font-size: 14px;
+        font-weight: 600;
+        gap: 20px;
+    }
+    .login-btn,
+    .signup-btn {
+        font-size: 14px;
+        min-width: 120px;
+    }
 }
