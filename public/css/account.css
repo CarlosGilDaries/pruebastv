@@ -25,10 +25,6 @@ main {
     border-bottom: 1px solid #dee2e6;
 }
 
-#user-table tbody tr:last-child {
-    border-bottom: none;
-}
-
 #user-table td {
     padding: 1rem;
     vertical-align: middle;

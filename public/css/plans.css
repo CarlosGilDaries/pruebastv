@@ -161,6 +161,17 @@ section {
     }
 
     .plan-card {
-        width: 90%;
+        width: 90% !important;
+    }
+
+    .free-button {
+        position: relative;
+        top: -10px;
+    }
+}
+
+@media (max-width: 991px) {
+    .plan-card {
+        width: calc(50% - 20px);
     }
 }

@@ -1,10 +1,9 @@
-@import '/css/admin/addForm.css';
 @import '/css/commons.css';
 @import '/css/nav.css';
 @import '/css/footer.css';
 
 body {
-    background-color: #f4f4f4;
+    background-color: white;
 }
 
 main {
@@ -19,31 +18,70 @@ main {
     background-color: black;
 }
 
-.container {
-	width: 60%;
-    margin: 0 auto;
-    padding: 2rem;
-    background: white;
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    border-bottom: 0px;
+}
+
+.form-control {
+    padding: 12px;
     border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ced4da;
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-h2 {
-    text-align: center;
+.form-control:focus {
+    border-color: #e94560;
+    box-shadow: 0 0 0 0.25rem rgba(233, 69, 96, 0.25);
 }
 
-.textarea {
-    height: 300px;
+.btn-danger {
+    background-color: #e94560;
+    border: none;
+    padding: 12px;
+    font-size: 1rem;
+    transition: all 0.3s;
 }
 
-/* Para Chrome, Safari, Edge, Opera */
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+.btn-danger:hover {
+    background-color: #d33a54;
+    transform: translateY(-2px);
 }
 
-/* Para Firefox */
-input[type=number] {
-  -moz-appearance: textfield;
+.invalid-feedback {
+    font-weight: 500;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 576px) {
+    .card {
+        box-shadow: none;
+        border-radius: 0;
+    }
+    
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    .form-control {
+        padding: 10px;
+    }
+    
+    .btn-danger {
+        padding: 10px;
+    }
+}
+
+/* Animación para el mensaje de éxito */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.alert-success {
+    animation: fadeIn 0.5s ease-out;
 }
