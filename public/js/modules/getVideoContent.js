@@ -15,7 +15,7 @@ export function getVideoContent(data, node) {
 
     const info = document.createElement('a');
     info.href = `/content/${video.slug}`;
-    info.classList.add('info');
+    info.classList.add('miniature-info');
 
     const title = document.createElement('h3');
     title.textContent = video.title;

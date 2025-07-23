@@ -41,3 +41,15 @@
   .content:hover .info {
     opacity: 1;
   }
+
+    .content .info p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+  }
+
+    .content .info h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+  }

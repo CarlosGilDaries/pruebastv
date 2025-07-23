@@ -7,7 +7,7 @@ export async function renderSimilars(content, token) {
     },
   });
   const data = await response.json();
-  const similars = document.getElementById('similar');
+  const similars = document.getElementById('similars');
 
   // Filtrar las películas para excluir la película actual
   const filteredContents = data.gender.movies.filter(

@@ -77,61 +77,80 @@
             </div>
         </nav>
     </header>
-		<section class="background-banner">
-			<video muted autoplay loop poster="" id="trailer">
-				<source src="" type="video/mp4">
-				<img src="" alt="Background image">
-			</video>
+    <section class="background-banner position-relative">
+        <video muted autoplay loop poster="" id="trailer" class="w-100 h-100 object-fit-cover position-absolute">
+            <source src="" type="video/mp4">
+            <img src="" alt="Background image">
+        </video>
 
-			<div class="banner">
-				<div class="content-banner">
-					<div id="content-container">
-						<div id="img-title">
-							<img id="content-image">
-							<div id="content-info">
-								<h1 id="content-title"></h1>
-								<h3 class="info-text"><a id="gender"></a> · <span id="duration"></span></h3>
-							</div>
-						</div>
-					</div>
-					<div id="button-tagline">
-						<div class="info-text" id="tagline"></div>
-						<div class="button-group">
-							<button class="play-button">Ver Ahora</button>
-							<button class="favorite-button" id="favorite-toggle">
-								<i class="far fa-heart"></i>
-								<i class="fas fa-heart" style="display: none;"></i>
-							</button>
-						</div>
-					</div>
-					<div class="start-time-container">
-						<p id="start-time-text"></p>
-						<p id="date-time-text"></p>
-					</div>
-				</div>
-			</div>
-		</section>
+        <div class="banner position-absolute w-100 h-100 d-flex">
+            <div class="content-banner container-fluid px-5 px-xl-6 d-flex flex-column justify-content-end align-items-start gap-3 pb-5">
+                <div id="content-container" class="row w-100">
+                    <div id="img-title" class="col-12 col-md-8 col-lg-6 d-flex flex-column flex-md-row gap-3 gap-md-4">
+                        <img id="content-image" class="img-fluid rounded-2" style="max-height: 150px; width: auto;">
+                        <div id="content-info" class="d-flex flex-column justify-content-center">
+                            <h1 id="content-title" class="text-white display-4 fw-bold mb-2" style="white-space: nowrap;"></h1>
+                            <p class="info-text text-white mb-0"><a id="gender" class="text-decoration-none text-white"></a><span style="font-weight: bold;"> · </span><span id="duration"></span></p>
+                        </div>
+                    </div>
+                </div>
+                <div id="button-tagline" class="row w-100">
+                    <div class="col-12 col-lg-8 col-xl-6">
+                        <div class="info-text text-white mb-3" id="tagline"></div>
+                        <div class="button-group d-flex gap-3">
+                            <button class="play-button btn btn-primary px-4 py-2 rounded-2 fw-bold">Ver Ahora</button>
+                            <button class="favorite-button btn btn-outline-secondary rounded-circle p-0 d-flex align-items-center justify-content-center" id="favorite-toggle" style="width: 50px; height: 50px;">
+                                <i class="far fa-heart"></i>
+                                <i class="fas fa-heart"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="start-time-container d-none">
+                    <p id="start-time-text" class="text-white mb-0"></p>
+                    <p id="date-time-text" class="text-white mb-0"></p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-		<div class="tabs-container">
-			<ul class="tabs">
-				<li class="tab active" data-tab="details">Detalles</li>
-				<li class="tab" data-tab="similar">Similares</li>
-			</ul>
+		<div class="tabs-container-fluid bg-black mt-5" id="tabs-container-id">
+            <div class="container-fluid">
+                <ul class="tabs nav nav-tabs border-0">
+                    <li class="tab nav-item" data-tab="details">
+                        <button class="nav-link text-secondary fw-bold active" data-bs-toggle="tab" data-bs-target="#details-tab">Detalles</button>
+                    </li>
+                    <li class="tab nav-item" data-tab="similar">
+                        <button class="nav-link text-secondary fw-bold" data-bs-toggle="tab" data-bs-target="#similar-tab">Similares</button>
+                    </li>
+                </ul>
+            </div>
 		</div>
 
-		<section id="details" class="tab-content active">
-			<div class="overview">
-				<h3>Descripción</h3>
-				<div id="overview-text"></div>
-			</div>
-			<div class="keywords">
-				<h3><a href="/tags.html" id="tags">Etiquetas</a></h3>
-				<div class="keyword-links">
-				</div>
-			</div>
-		</section>
+    <div class="tab-content bg-black py-4 mb-5" id="prueba">
+        <div id="details-tab" class="tab-pane container-fluid active show">
+            <div class="row g-4">
+                <div class="col-12 col-lg-7">
+                    <div class="overview bg-secondary bg-opacity-10 rounded-3 p-4">
+                        <h3 class="text-white border-bottom border-secondary pb-2 mb-3">Descripción</h3>
+                        <div id="overview-text" class="text-white"></div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    <div class="keywords bg-secondary bg-opacity-10 rounded-3 p-4">
+                        <h3 class="text-white border-bottom border-secondary pb-2 mb-3">
+                            <a href="/tags.html" id="tags" class="text-decoration-none text-white">Etiquetas</a>
+                        </h3>
+                        <div class="keyword-links d-flex flex-wrap gap-3 pt-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<section id="similar" class="tab-content"></section>
+        <div class="tab-pane container-fluid" id="similar-tab">
+            <div class="row g-4" id="similars"></div>
+        </div>
+    </div>
 
     <footer class="footer mt-auto">
     <div class="container-fluid py-4 px-3">

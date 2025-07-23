@@ -107,7 +107,7 @@
     display: block;
 }
 
-.content .info {
+.content .miniature-info {
     margin: 0;
     padding-top: 4px;
     position: absolute;
@@ -127,9 +127,22 @@
     flex-direction: column;
     gap: 5px;
     justify-content: center;
+    text-align: center;
+  }
+
+  .content .miniature-info p {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+  }
+
+    .content .miniature-info h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
   }
   
-  .content:hover .info {
+  .content:hover .miniature-info {
     opacity: 1;
   }
 
@@ -367,7 +380,7 @@ h1 {
         height: 260px;
     }
 
-    .content .info {
+    .content .miniature-info {
         top: 180px;
     }
 
@@ -395,7 +408,7 @@ h1 {
         height: 220px;
     }
 
-    .content .info {
+    .content .miniature-info {
         font-size: 0.75rem;
         top: 160px;
     }
@@ -445,7 +458,7 @@ h1 {
         height: 180px;
     }
 
-    .content .info {
+    .content .miniature-info {
         top: 130px;
         font-size: 0.7rem;
     }

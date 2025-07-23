@@ -281,7 +281,7 @@ async function fetchMovieData() {
 
 fetchMovieData();
 
-const tabs = document.querySelectorAll('.tab');
+/*const tabs = document.querySelectorAll('.tab');
 
 tabs.forEach(tab => {
 	tab.addEventListener('click', function() {
@@ -296,7 +296,7 @@ tabs.forEach(tab => {
     document.getElementById(tabId).classList.add('active');
     this.classList.add('active');
 	});
-});
+});*/
 
 // Función para verificar si una película es favorita
 async function isMovieFavorite(movieId) {
