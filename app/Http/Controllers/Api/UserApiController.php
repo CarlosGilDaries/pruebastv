@@ -253,7 +253,7 @@ class UserApiController extends Controller
         }
     }
 
-    public function currentUserChange(Request $request, string $id)
+    public function currentUserChange(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
@@ -283,7 +283,7 @@ class UserApiController extends Controller
                 ], 422);
             } 
 
-            $user = User::where('id', $id)->first();
+            $user = Auth::user();
             if (!$user || !Hash::check($request->input('password'), $user->password)) {
                 return response()->json([
                     'success' => false,

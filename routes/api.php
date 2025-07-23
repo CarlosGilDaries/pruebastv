@@ -58,7 +58,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('user', [UserApiController::class, 'getCurrentUser']);
 	Route::get('users', [UserApicontroller::class, 'index']);
 	Route::get('user/{id}', [UserApiController::class, 'show']); 
-    Route::post('current-user-edit/{id}', [UserApiController::class, 'currentUserChange']);
+    Route::post('current-user-edit', [UserApiController::class, 'currentUserChange']);
 
     // Rutas de contenido protegidas
     Route::middleware([

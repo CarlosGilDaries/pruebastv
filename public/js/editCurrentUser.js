@@ -63,7 +63,7 @@ async function editUserForm() {
       );
       try {
         const editResponse = await fetch(
-          backendAPI + `current-user-edit/${id}`,
+          backendAPI + `current-user-edit`,
           {
             method: 'POST',
             headers: {
