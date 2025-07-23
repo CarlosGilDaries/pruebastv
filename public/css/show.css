@@ -205,12 +205,13 @@
     .play-button {
         font-size: 14px;
         width: 160px;
+		height: 45px;
         padding: 0 !important;
     }
 
     .content {
-        height: 80px;
-        width: 150px;
+        height: 105px;
+        width: 190px;
         transition: transform 0.3s ease;
         z-index: 1;
     }
