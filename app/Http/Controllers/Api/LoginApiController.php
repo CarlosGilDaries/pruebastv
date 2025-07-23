@@ -11,6 +11,7 @@ use App\Models\UserSession;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class LoginApiController extends Controller
@@ -21,7 +22,7 @@ class LoginApiController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:50'],
                 'surnames' => ['required', 'string', 'max:100'],
-                'email' => ['required', 'string', 'email', 'max:200', 'unique:users,email'],
+                'email' => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
                 'dni' => [
                     Rule::requiredIf(fn () => $request->plan_type !== 'free'),
                     'nullable',
@@ -99,6 +100,7 @@ class LoginApiController extends Controller
             $country = sanitize_html($request->country);
             if ($request->phone != null) {
                 $phone = sanitize_html($request->phone);
+                $phone_code = sanitize_html(($request->phone_code));
             } else {
                 $phone = null;
             }
@@ -116,6 +118,7 @@ class LoginApiController extends Controller
                 'country' => $country,
                 'birth_year' => $birth_year,
                 'phone' => $phone,
+                'phone_code' => $phone_code,
                 'gender' => $gender,
                 'rol' => 'user',
                 'plan_id' => null,
@@ -176,11 +179,12 @@ class LoginApiController extends Controller
             }
 
             $email = sanitize_html($request->email);
+            $password = sanitize_html($request->password);
 
             $user = User::where('email', $email)->first();
             $plan = $user->plan;
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user || !Hash::check($password, $user->password)) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Credenciales incorrectas'
@@ -320,6 +324,70 @@ class LoginApiController extends Controller
                 'message' => 'Sesión cerrada exitosamente'
             ], 200);
             
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function checkEmail($email)
+    {
+        try {
+            $emailSanitized = sanitize_html($email);
+            $exists = User::where('email', $emailSanitized)->exists();
+            $user = Auth::user();
+
+            if ($user && $email == $user->email) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El email no ha cambiado.'
+                ]);
+            }
+
+            if ($exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El email ya existe en la Base de Datos.'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'El email no existe en la Base de Datos.'
+                ]);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function checkDni($dni)
+    {
+        try {
+            $dniSanitized = sanitize_html($dni);
+            $exists = User::where('dni', $dniSanitized)->exists();
+
+            if ($exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'El dni ya existe en la Base de Datos.'
+                ]);
+            } else {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'El dni no existe en la Base de Datos.'
+                ]);
+            }
+
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
 

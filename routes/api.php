@@ -61,7 +61,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('user', [UserApiController::class, 'getCurrentUser']);
 	Route::get('users', [UserApicontroller::class, 'index']);
 	Route::get('user/{id}', [UserApiController::class, 'show']); 
-    Route::post('current-user-edit/{id}', [UserApiController::class, 'currentUserChange']);
+    Route::post('current-user-edit', [UserApiController::class, 'currentUserChange']);
 
     // Rutas de contenido protegidas
     Route::middleware([
@@ -278,6 +278,9 @@ Route::get('tag/{id}', [TagController::class, 'show']);
 Route::get('footer-items', [FooterItemController::class, 'index']);
 Route::get('legal-notice', [LegalNoticeController::class, 'index']);
 Route::get('privacy-politic', [PrivacyPoliticController::class, 'index']);
+
+Route::get('check-email/{email}', [LoginApiController::class, 'checkEmail']);
+Route::get('check-dni/{dni}', [LoginApiController::class, 'checkDni']);
 
 Route::get('company-details', [CompanyDetailController::class, 'show'])
 	->name('company-details');
