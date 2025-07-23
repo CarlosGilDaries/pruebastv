@@ -381,7 +381,7 @@ h1 {
     }
 
     .content .miniature-info {
-        top: 180px;
+        display: none;
     }
 
     .content-type h2 {
@@ -406,11 +406,6 @@ h1 {
         max-width: 130px;
         min-width: 130px;
         height: 220px;
-    }
-
-    .content .miniature-info {
-        font-size: 0.75rem;
-        top: 160px;
     }
 
     .content-type h2 {
@@ -456,11 +451,6 @@ h1 {
         max-width: 100px;
         min-width: 100px;
         height: 180px;
-    }
-
-    .content .miniature-info {
-        top: 130px;
-        font-size: 0.7rem;
     }
 
     .scroll-left,
