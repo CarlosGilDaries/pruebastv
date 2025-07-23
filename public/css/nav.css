@@ -317,14 +317,14 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
     left: 0;
   }
     #user-link {
-        margin-top: 30px;
+        margin-top: 10px;
     }
     .login-btn {
         margin-top: 30px;
     } 
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 576px) and (max-width: 991px) {
   #mainNavbar {
     width: 30%;
   }

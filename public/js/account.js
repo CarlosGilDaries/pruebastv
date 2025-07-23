@@ -20,8 +20,8 @@ clickLogOut();
 document.addEventListener('DOMContentLoaded', function () {
   const categoriesDropDown = document.getElementById('categories');
   const gendersDropDown = document.getElementById('genders');
-dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
-dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+  dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+  dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
   localStorage.removeItem('needed_plans');
   fetch('/api/user', {
@@ -32,7 +32,6 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       if (data.success) {
         const user = data.data.user;
 
@@ -45,7 +44,6 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
             .getElementById('user-table')
             .getElementsByTagName('tbody')[0];
 
-          // Definir los campos que quieres mostrar
           const fieldsToDisplay = {
             name: 'Nombre',
             surnames: 'Apellidos',
@@ -58,9 +56,7 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
             gender: 'Sexo',
           };
 
-          // Filtrar los datos para que solo se muestren los campos relevantes
           for (const [key, value] of Object.entries(user)) {
-            // Excluir los campos no deseados
             if (
               !['email_verified_at', 'created_at', 'updated_at'].includes(key)
             ) {
@@ -70,104 +66,117 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
                 const cell2 = row.insertCell(1);
 
                 cell1.textContent = fieldsToDisplay[key];
+                cell1.classList.add('fw-bold');
 
                 // Manejo especial para el campo de género
                 if (value == 'man' || value == 'woman' || value == 'others') {
-                  if (value == 'man') {
-                    cell2.textContent = 'Hombre';
-                  } else if (value == 'woman') {
-                    cell2.textContent = 'Mujer';
-                  } else {
-                    cell2.textContent = 'Sin especificar';
-                  }
+                  cell2.textContent =
+                    value == 'man'
+                      ? 'Hombre'
+                      : value == 'woman'
+                      ? 'Mujer'
+                      : 'Sin especificar';
                 } else {
-                  cell2.textContent = value;
+                  cell2.textContent = value || 'No especificado';
                 }
 
                 // Añadir botón "Cambiar" para campos específicos
-                if (
-                  ['email', 'address','phone'].includes(key)
-                ) {
+                if (['email', 'address', 'phone'].includes(key)) {
                   const changeButton = document.createElement('button');
-                  changeButton.className = 'change-btn';
-                  changeButton.textContent = 'Cambiar';
+                  changeButton.className = 'btn change-btn ms-2';
+                  changeButton.innerHTML =
+                    'Cambiar';
+                  cell2.classList.add(
+                    'd-flex',
+                    'justify-content-between',
+                    'align-items-center'
+                  );
+
+                  const valueContainer = document.createElement('span');
+                  valueContainer.textContent = cell2.textContent;
+                  cell2.textContent = '';
+                  cell2.appendChild(valueContainer);
                   cell2.appendChild(changeButton);
-                  if (['email'].includes(key)) {
-                    changeButton.addEventListener('click', function () {
-                      window.location.href = '/change-email.html'
-                    });
-                  }
-                  if (['address'].includes(key)) {
-                    changeButton.addEventListener('click', function () {
+
+                  changeButton.addEventListener('click', function () {
+                    if (key === 'email')
+                      window.location.href = '/change-email.html';
+                    if (key === 'address')
                       window.location.href = '/change-address.html';
-                    });
-                  }
-                  if (['phone'].includes(key)) {
-                    changeButton.addEventListener('click', function () {
+                    if (key === 'phone')
                       window.location.href = '/change-phone.html';
-                    });
-                  }
+                  });
                 }
               }
             }
           }
 
           const plan = data.data.plan;
-          console.log(plan);
-          if (plan != null) {
-            if (plan != null) {
-              const planRow = document.createElement('tr');
-              const planKey = document.createElement('td');
-              planKey.innerHTML = 'Plan';
-              const planValue = document.createElement('td');
+          if (plan) {
+            const planRow = tableBody.insertRow();
+            const planKey = planRow.insertCell(0);
+            const planValue = planRow.insertCell(1);
 
-              // Formatear la fecha de expiración
-              const expirationDate = new Date(user.plan_expires_at);
-              const formattedDate = expirationDate.toLocaleDateString('es-ES', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              });
-              if (plan.trimestral_price == 0) {
-                planValue.innerHTML = `<p>${plan.name}</p>`;
-              } else {
-                planValue.innerHTML = `<p>${plan.name}</p><p>Caduca: ${formattedDate}</p>`;
-              }
-              tableBody.appendChild(planRow);
-              planRow.appendChild(planKey);
-              planRow.appendChild(planValue);
+            planKey.textContent = 'Plan';
+            planKey.classList.add('fw-bold');
+
+            const expirationDate = new Date(user.plan_expires_at);
+            const formattedDate = expirationDate.toLocaleDateString('es-ES', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            });
+
+            const planInfo = document.createElement('div');
+            planInfo.innerHTML = `<div class="fw-bold">${plan.name}</div>`;
+
+            if (plan.trimestral_price != 0) {
+              planInfo.innerHTML += `<small class="text-muted">Caduca: ${formattedDate}</small>`;
             }
+
+            planValue.appendChild(planInfo);
           }
 
+          // Contraseña
           const passwordRow = tableBody.insertRow();
           const passwordKey = passwordRow.insertCell(0);
           const passwordValue = passwordRow.insertCell(1);
 
           passwordKey.textContent = 'Contraseña';
+          passwordKey.classList.add('fw-bold');
           passwordValue.textContent = '••••••••';
 
           const changePasswordButton = document.createElement('button');
-          changePasswordButton.className = 'change-btn';
-          changePasswordButton.textContent = 'Cambiar';
+          changePasswordButton.className = 'btn change-btn ms-2';
+          changePasswordButton.innerHTML =
+            'Cambiar';
+          passwordValue.classList.add(
+            'd-flex',
+            'justify-content-between',
+            'align-items-center'
+          );
+
+          const passwordContainer = document.createElement('span');
+          passwordContainer.textContent = passwordValue.textContent;
+          passwordValue.textContent = '';
+          passwordValue.appendChild(passwordContainer);
           passwordValue.appendChild(changePasswordButton);
+
           changePasswordButton.addEventListener('click', function () {
-            window.location.href = '/change-password.html'
-          })
+            window.location.href = '/change-password.html';
+          });
         }
 
         button.addEventListener('click', function () {
-          if (user.rol == 'admin') {
-            window.location.href = '/admin/admin-panel.html';
-          } else {
-            window.location.href = '/plans.html';
-          }
+          window.location.href =
+            user.rol == 'admin' ? '/admin/admin-panel.html' : '/plans.html';
         });
       }
     })
     .catch((error) => {
-      console.log(error);
+      console.error('Error:', error);
     });
 });
 
