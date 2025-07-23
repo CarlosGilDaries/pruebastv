@@ -14,7 +14,14 @@ document
     const country = document.getElementById('country').value;
     const birth_year = document.getElementById('birth-year').value;
     const dni = document.getElementById('dni')?.value ?? null;
-    const phone = document.getElementById('phone')?.value ?? null;
+    const phoneNumber = document.getElementById('phone').value;
+    const countryCode = document.getElementById('country-code').value;
+    let phone = null;
+    let phone_code = null;
+    if (phoneNumber != "") {
+      phone = phoneNumber;
+      phone_code = countryCode;
+    }
     const gender = document.getElementById('gender').value;
     const password = document.getElementById('password').value;
     const password_confirmation = document.getElementById(
@@ -48,6 +55,7 @@ document
           country,
           birth_year,
           phone,
+          phone_code,
           dni,
           gender,
           password,
@@ -67,7 +75,7 @@ document
         }
         if (data.data.require_device_registration) {
           const plan_id = localStorage.getItem('plan_id');
-          selectPlan(plan_id, localStorage.getItem('auth_token'));
+          selectPlan(plan_id, localStorage.getItem('auth_token'), 0, true);
         }
       }
     } catch (error) {
@@ -76,4 +84,19 @@ document
         'Credenciales incorrectas';
       document.getElementById('error-message').style.display = 'block';
     }
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document
+      .getElementById('password')
+      .addEventListener('focus', function () {
+        document.getElementById('error-message').textContent = '';
+        document.getElementById('error-message').style.display = 'none';
+      });
+    document
+      .getElementById('password_confirmation')
+      .addEventListener('focus', function () {
+        document.getElementById('error-message').textContent = '';
+        document.getElementById('error-message').style.display = 'none';
+      });
   });

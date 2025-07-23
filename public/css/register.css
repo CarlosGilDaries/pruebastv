@@ -152,6 +152,38 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+/* Estilos para el campo de teléfono con prefijo */
+.phone-input .phone-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.country-code-select {
+    width: 90px;
+    height: 50px;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #fff;
+    font-size: 1em;
+    padding-left: 5px;
+    margin-right: 10px;
+    appearance: none;
+    cursor: pointer;
+}
+
+.country-code-select option {
+    background: rgba(0, 0, 0, 0.9);
+    color: #fff;
+    padding: 10px;
+}
+
+/* Asegurar que el label se mueva correctamente */
+#phone-label{
+    top: -5px;
+}
+
 @media (max-width: 700px) {
     .register-box {
         max-width: 350px;
