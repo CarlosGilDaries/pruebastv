@@ -79,12 +79,14 @@ async function editUserForm() {
           window.location.href = '/account';
           return;
         } else if (!data.success && editResponse.status == 401) {
-          document.getElementById('form-error').style.display = 'block';
-          setTimeout(() => {
-            document.getElementById('form-error').style.display = 'none';
-          }, 2500);
+              const errorElement = document.getElementById('form-error');
+              errorElement.classList.remove('d-none');
+
+              setTimeout(() => {
+                errorElement.classList.add('d-none');
+              }, 2500);
         } else {
-          console.error('Error al editar:', data.message);
+          console.error('Error al editar:', data.errors);
         }
       } catch (error) {
         console.error('Error:', error);

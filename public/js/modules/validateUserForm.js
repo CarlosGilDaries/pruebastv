@@ -56,8 +56,10 @@ export async function validateUserForm() {
     const password = document.getElementById('password').value.trim();
     const passwordConfirm = document.getElementById('password-confirmation').value.trim();
     if (password != passwordConfirm) {
-      showFormErrors('password-confirmation', 'Las contraseñas no coinciden.');
       showFormErrors('password', 'Las contraseñas no coinciden.');
+      isValid = false;
+    } else if (password.length < 6) {
+      showFormErrors('password', 'Mínimo 6 caracteres.');
       isValid = false;
     }
   }

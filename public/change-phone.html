@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/edit-user.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
-    <title>Cambiar Email</title>
+    <title>Cambiar Teléfono</title>
   </head>
   <body>
     <header>
@@ -78,105 +78,108 @@
         </nav>
     </header>
 
-    <main>
-      <div class="container">
-        <h2>Cambiar Teléfono</h2>
-        <div class="container" id="edit-user">
-          <div id="success-message" class="success-message">
-            Teléfono cambiado con éxito
-          </div>
-          <form id="form">
+    <main class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+                <div class="card">
+                    <div class="card-header bg-white text-center py-3">
+                        <h2 class="mb-0">Cambiar Teléfono</h2>
+                    </div>
+                    <div class="card-body">
+                        <div id="success-message" class="alert alert-success d-none">
+                            Teléfono cambiado con éxito
+                        </div>
+                        
+                        <form id="form">
+                            <div class="mb-4">
+                                <label for="phone" class="form-label fw-bold">Teléfono</label>
+                                <div class="input-group">
+                                    <select id="country-code" class="form-select" style="max-width: 120px;">
+                                        <option value="+34">+34 (ES)</option>
+                                        <option value="+43">+43 (AT)</option>
+                                        <option value="+375">+375 (BY)</option>
+                                        <option value="+32">+32 (BE)</option>
+                                        <option value="+387">+387 (BA)</option>
+                                        <option value="+359">+359 (BG)</option>
+                                        <option value="+385">+385 (HR)</option>
+                                        <option value="+357">+357 (CY)</option>
+                                        <option value="+420">+420 (CZ)</option>
+                                        <option value="+45">+45 (DK)</option>
+                                        <option value="+372">+372 (EE)</option>
+                                        <option value="+358">+358 (FI)</option>
+                                        <option value="+33">+33 (FR)</option>
+                                        <option value="+49">+49 (DE)</option>
+                                        <option value="+30">+30 (GR)</option>
+                                        <option value="+36">+36 (HU)</option>
+                                        <option value="+354">+354 (IS)</option>
+                                        <option value="+353">+353 (IE)</option>
+                                        <option value="+39">+39 (IT)</option>
+                                        <option value="+371">+371 (LV)</option>
+                                        <option value="+370">+370 (LT)</option>
+                                        <option value="+352">+352 (LU)</option>
+                                        <option value="+356">+356 (MT)</option>
+                                        <option value="+373">+373 (MD)</option>
+                                        <option value="+377">+377 (MC)</option>
+                                        <option value="+382">+382 (ME)</option>
+                                        <option value="+31">+31 (NL)</option>
+                                        <option value="+47">+47 (NO)</option>
+                                        <option value="+48">+48 (PL)</option>
+                                        <option value="+351">+351 (PT)</option>
+                                        <option value="+40">+40 (RO)</option>
+                                        <option value="+7">+7 (RU)</option>
+                                        <option value="+381">+381 (RS)</option>
+                                        <option value="+421">+421 (SK)</option>
+                                        <option value="+386">+386 (SI)</option>
+                                        <option value="+46">+46 (SE)</option>
+                                        <option value="+41">+41 (CH)</option>
+                                        <option value="+380">+380 (UA)</option>
+                                        <option value="+44">+44 (UK)</option>
+                                        <option value="+90">+90 (TR)</option>
+                                        <option value="+423">+423 (LI)</option>
+                                        <option value="+378">+378 (SM)</option>
+                                        <option value="+356">+356 (MT)</option>
+                                        <option value="+379">+379 (VA)</option>
+                                        <option value="+298">+298 (FO)</option>
+                                        <option value="+299">+299 (GL)</option>
+                                    </select>
+                                    <input type="tel" class="form-control" id="phone" name="phone" required>
+                                    </div>
+                                    <div id="phone-error" class="invalid-feedback"></div>
+                                </div>
 
-            <div class="form-group">
-                <label for="password">Teléfono</label>
-                <div class="phone-div">
-                  <select id="country-code" class="country-code-select">
-                    <option value="+34">+34 (ES)</option>
-                    <option value="+43">+43 (AT)</option>
-                    <option value="+375">+375 (BY)</option>
-                    <option value="+32">+32 (BE)</option>
-                    <option value="+387">+387 (BA)</option>
-                    <option value="+359">+359 (BG)</option>
-                    <option value="+385">+385 (HR)</option>
-                    <option value="+357">+357 (CY)</option>
-                    <option value="+420">+420 (CZ)</option>
-                    <option value="+45">+45 (DK)</option>
-                    <option value="+372">+372 (EE)</option>
-                    <option value="+358">+358 (FI)</option>
-                    <option value="+33">+33 (FR)</option>
-                    <option value="+49">+49 (DE)</option>
-                    <option value="+30">+30 (GR)</option>
-                    <option value="+36">+36 (HU)</option>
-                    <option value="+354">+354 (IS)</option>
-                    <option value="+353">+353 (IE)</option>
-                    <option value="+39">+39 (IT)</option>
-                    <option value="+371">+371 (LV)</option>
-                    <option value="+370">+370 (LT)</option>
-                    <option value="+352">+352 (LU)</option>
-                    <option value="+356">+356 (MT)</option>
-                    <option value="+373">+373 (MD)</option>
-                    <option value="+377">+377 (MC)</option>
-                    <option value="+382">+382 (ME)</option>
-                    <option value="+31">+31 (NL)</option>
-                    <option value="+47">+47 (NO)</option>
-                    <option value="+48">+48 (PL)</option>
-                    <option value="+351">+351 (PT)</option>
-                    <option value="+40">+40 (RO)</option>
-                    <option value="+7">+7 (RU)</option>
-                    <option value="+381">+381 (RS)</option>
-                    <option value="+421">+421 (SK)</option>
-                    <option value="+386">+386 (SI)</option>
-                    <option value="+46">+46 (SE)</option>
-                    <option value="+41">+41 (CH)</option>
-                    <option value="+380">+380 (UA)</option>
-                    <option value="+44">+44 (UK)</option>
-                    <option value="+90">+90 (TR)</option>
-                    <option value="+423">+423 (LI)</option>
-                    <option value="+378">+378 (SM)</option>
-                    <option value="+356">+356 (MT)</option>
-                    <option value="+379">+379 (VA)</option>
-                    <option value="+298">+298 (FO)</option>
-                    <option value="+299">+299 (GL)</option>
-                  </select>
-                  <input type="number" id="phone" name="phone" />
+                                <div class="mb-4">
+                                    <label for="password" class="form-label fw-bold">Contraseña</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <div id="password-error" class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="password-confirmation" class="form-label fw-bold">Confirmar Contraseña</label>
+                                    <input type="password" class="form-control" id="password-confirmation" name="password_confirmation" required>
+                                    <div id="password-confirmation-error" class="invalid-feedback"></div>
+                                </div>
+
+                                <div id="form-error" class="alert alert-danger d-none text-center mb-4">
+                                    Contraseña incorrecta
+                                </div>
+
+                                <div class="d-flex justify-content-center mb-3 d-none" id="loading">
+                                    <div class="spinner-border text-danger" role="status">
+                                        <span class="visually-hidden">Cargando...</span>
+                                    </div>
+                                    <p class="ms-3 mb-0">Editando teléfono, por favor espere...</p>
+                                </div>
+
+                                <button type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                                    <i class="fas fa-save me-2"></i> Cambiar Teléfono
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div id="phone-error" class="error-message"></div>
-              </div>
-
-            <div class="form-group">
-              <label for="password">Contraseña</label>
-              <input type="password" id="password" name="password" />
-              <div id="password-error" class="error-message"></div>
             </div>
-
-            <div class="form-group">
-              <label for="password-confirmation"
-                >Confirmar contraseña</label
-              >
-              <input
-                type="password"
-                id="password-confirmation"
-                name="password_confirmation"
-              />
-              <div
-                id="password-confirmation-error"
-                class="error-message"
-              ></div>
-            </div>
-
-            <div id="form-error" class="error-message" style="display: none; text-align: center;">Contraseña incorrecta.</div>
-
-            <div class="loading" id="loading">
-              <div class="loading-spinner"></div>
-              <p>Editando teléfono, por favor espere...</p>
-            </div>
-
-            <button type="submit" class="btn">
-              <i class="fas fa-upload"></i> Editar Teléfono
-            </button>
-          </form>
         </div>
-      </div>
     </main>
 
     <footer class="footer mt-auto">
