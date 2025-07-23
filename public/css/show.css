@@ -148,6 +148,14 @@
             margin-inline: 80px;
     }
 }
+
+@media (max-width: 1400px) {
+    .content {
+        height: 140px;
+        width: 260px;
+    }
+}
+
 @media (max-width: 768px) {
     .background-banner, .banner {
         height: 70vh;
@@ -198,6 +206,13 @@
         font-size: 14px;
         width: 160px;
         padding: 0 !important;
+    }
+
+    .content {
+        height: 80px;
+        width: 150px;
+        transition: transform 0.3s ease;
+        z-index: 1;
     }
 }
 
