@@ -17,32 +17,36 @@ async function listUsers() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-			<div class="add-button-container">
-		 		<h1><i class="fas fa-user"></i> Lista de Usuarios</h1>
-				<a href="/admin/add-user.html" class="add-button add-user">Crear Usuario</a>
-			</div>
-		  <div id="delete-user-success-message" class="success-message" style="margin-bottom: 20px;">
-			¡Usuario eliminado con éxito!
-		  </div>    
-		  <div class="table-responsive">
-			<table class="content-table display datatable">
-			  <thead>
-				<tr>
-				  <th>ID</th>
-				  <th>Nombre Completo</th>
-				  <th>Email</th>
-				  <th>Edad</th>
-				  <th>Género</th>
-          <th>Tipo</th>
-				  <th>Rol</th>
-				  <th>Plan</th>
-				  <th>Acciones</th>
-				</tr>
-			  </thead>
-			  <tbody></tbody>
-			</table>
-		  </div>
-		`;
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                          <h2 class="h5 mb-0"><i class="fas fa-user me-2"></i> Lista de Usuarios</h2>
+                          <a href="/admin/add-user.html" class="add-button">Crear Usuario</a>
+                          </div>
+                      <div class="card-body">
+                          <div id="delete-user-success-message" class="alert alert-success d-none mb-3"></div>
+                          
+                          <div class="table-responsive">
+                              <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
+                                  <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre Completo</th>
+                                    <th>Email</th>
+                                    <th>DNI</th>
+                                    <th>Edad</th>
+                                    <th>Género</th>
+                                    <th>Tipo</th>
+                                    <th>Rol</th>
+                                    <th>Plan</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        </div>
+                      </div>
+                    </div>
+                `;
 
       // Insertar la tabla en el DOM
       listUsers.innerHTML = tableHTML;
@@ -71,6 +75,7 @@ async function listUsers() {
           { data: 'id', name: 'id' },
           { data: 'full_name', name: 'full_name' },
           { data: 'email', name: 'email' },
+          { data: 'dni', name: 'dni' },
           {
             data: 'age',
             name: 'age',
@@ -81,12 +86,6 @@ async function listUsers() {
           {
             data: 'gender',
             name: 'gender',
-            render: function (data) {
-              if (data == 'man') return 'Hombre';
-              else if (data == 'woman') return 'Mujer';
-              else if (data == 'non-binary') return 'No binario';
-              else return 'Otros';
-            },
           },
           { data: 'rol', name: 'rol' },
           { data: 'role', name: 'role' },
@@ -108,6 +107,26 @@ async function listUsers() {
           },
         },
         responsive: true,
+        layout: {
+          topStart: 'pageLength',
+          topEnd: ['search', 'buttons'],
+          bottomStart: 'info',
+          bottomEnd: 'paging',
+        },
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-success',
+            exportOptions: {
+              modifier: {
+                search: 'applied',
+                order: 'applied',
+              },
+              columns: ':not(:last-child)', // Excluye la columna de acciones
+            },
+          },
+        ],
         drawCallback: function () {
           const links = document.querySelectorAll('.action-item');
           links.forEach((link) => {
@@ -126,33 +145,20 @@ async function listUsers() {
     } catch (error) {
       console.error('Error al cargar la lista de usuarios:', error);
       listContent.innerHTML = `
-                    <div class="error-message">
-                        Error al cargar la lista de usuarios: ${error.message}
+                    <div class="alert alert-danger">
+                        Error al cargar la lista de Acciones: ${error.message}
                     </div>
-                `;
+                  `;
     }
   }
 }
 
 listUsers();
 
-function calculateAge(birthday) {
+function calculateAge(birthYear) {
   const today = new Date();
-  const birth = new Date(birthday);
 
-  let age = today.getFullYear() - birth.getFullYear();
-
-  const actualMonth = today.getMonth();
-  const actualDay = today.getDate();
-  const birthMonth = birth.getMonth();
-  const birthdayDay = birth.getDate();
-
-  if (
-    actualMonth < birthMonth ||
-    (actualMonth === birthMonth && actualDay < birthdayDay)
-  ) {
-    age--;
-  }
+  let age = today.getFullYear() - birthYear;
 
   return age;
 }

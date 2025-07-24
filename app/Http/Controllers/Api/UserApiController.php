@@ -55,6 +55,9 @@ class UserApiController extends Controller
 				->addColumn('email', function($user) {
 					return $user->email;
 				})
+                ->addColumn('dni', function($user) {
+					return $user->dni;
+				})
                 ->addColumn('age', function($user) {
 					return $user->birth_year;
 				})

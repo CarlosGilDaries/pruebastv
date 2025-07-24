@@ -184,3 +184,9 @@ button:hover {
         width: 290px;
     }
 }
+
+@media (max-width: 576px) {
+    .menu {
+        padding-inline: 0;
+    }
+}

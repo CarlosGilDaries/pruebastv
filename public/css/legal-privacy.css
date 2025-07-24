@@ -42,3 +42,9 @@ h3 {
     font-size: 1.3em;
     margin-bottom: 10px;
 }
+
+@media (max-width: 576px) {
+    .menu {
+        padding-inline: 0;
+    }
+}

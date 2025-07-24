@@ -141,3 +141,9 @@ section {
         width: 100%;
     }
 }
+
+@media (max-width: 576px) {
+    .menu {
+        padding-inline: 0;
+    }
+}

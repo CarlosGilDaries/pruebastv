@@ -74,6 +74,10 @@ main {
     .btn-danger {
         padding: 10px;
     }
+
+    .menu {
+        padding-inline: 0;
+    }
 }
 
 /* Animación para el mensaje de éxito */

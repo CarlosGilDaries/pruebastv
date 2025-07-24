@@ -16,16 +16,17 @@ async function listLegalNotices() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-					<div class="add-button-container">
-						<h1><i class="fas fa-rocket"></i> Lista de Avisos Legales</h1>
-						<a href="/admin/add-legal-notice.html" class="add-button add-content">Crear Aviso Legal</a>
-					</div>
-                    <div id="delete-legal-notice-success-message" class="success-message" style="margin-bottom: 20px;">
-                      ¡Aviso Legal eliminado con éxito!
-                    </div>    
-                    <div class="table-responsive" id="legal-notices-table">
-                        <table class="content-table display datatable">
-                            <thead>
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-gavel me-2"></i> Lista de Avisos Legales</h2>
+                          <a href="/admin/add-legal-notice.html" class="add-button">Crear Aviso</a>
+                          </div>
+                      <div class="card-body">
+                          <div id="delete-legal-notice-success-message" class="alert alert-success d-none mb-3"></div>
+                          
+                          <div class="table-responsive">
+                              <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
+                                  <thead class="table-dark">
                                 <tr>
                                     <th>ID</th>
                                     <th>Título</th>
@@ -34,6 +35,8 @@ async function listLegalNotices() {
                             </thead>
                             <tbody></tbody>
                         </table>
+                        </div>
+                      </div>
                     </div>
                 `;
 
@@ -80,6 +83,28 @@ async function listLegalNotices() {
           },
         },
         responsive: true,
+        scrollX: true,
+        scrollY: true,
+        layout: {
+          topStart: 'pageLength',
+          topEnd: ['search', 'buttons'],
+          bottomStart: 'info',
+          bottomEnd: 'paging',
+        },
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-success',
+            exportOptions: {
+              modifier: {
+                search: 'applied',
+                order: 'applied',
+              },
+              columns: ':not(:last-child)', // Excluye la columna de acciones
+            },
+          },
+        ],
         drawCallback: function () {
           // Configurar eventos después de que se dibuja la tabla
           const links = document.querySelectorAll('.action-item');
@@ -104,10 +129,10 @@ async function listLegalNotices() {
     } catch (error) {
       console.error('Error al cargar la lista de Aviso Legals:', error);
       listContent.innerHTML = `
-                    <div class="error-message">
-                        Error al cargar la lista de Aviso Legals: ${error.message}
+                    <div class="alert alert-danger">
+                        Error al cargar la lista de Avisos: ${error.message}
                     </div>
-                `;
+                  `;
     }
   }
 }

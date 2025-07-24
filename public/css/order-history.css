@@ -131,6 +131,12 @@ main {
       font-size: 0.95rem;
     }
   }
+
+@media (max-width: 576px) {
+    .menu {
+        padding-inline: 0;
+    }
+}
   
   /* Estilo para cuando no hay pedidos */
   .no-orders {

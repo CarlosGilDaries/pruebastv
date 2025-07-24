@@ -99,7 +99,7 @@ logOutButton.addEventListener('click', function() {
 document.addEventListener('DOMContentLoaded', function () {
   links.forEach((link) => {
     const li = link.closest('li');
-    if (li && li.getAttribute('data-content') == container.id) {
+    if (container && li && li.getAttribute('data-content') == container.id) {
       link.classList.add('active');
     }
   });

@@ -23,12 +23,11 @@ async function listActions() {
                           <a href="/admin/add-action.html" class="add-button">Crear Acción</a>
                           </div>
                       <div class="card-body">
-                          <div id="delete-bill-success-message" class="alert alert-success d-none mb-3"></div>
+                          <div id="delete-action-success-message" class="alert alert-success d-none mb-3"></div>
                           
                           <div class="table-responsive">
                               <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
                                   <thead class="table-dark">
-                            <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Orden</th>
@@ -49,6 +48,7 @@ async function listActions() {
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
+        responsive: true,
         scrollX: true,
         scrollY: true,
         processing: true,
@@ -97,7 +97,6 @@ async function listActions() {
             last: `<span class="icon-pagination">»</span>`,
           },
         },
-        responsive: true,
         drawCallback: function () {
           // Configurar eventos después de que se dibuja la tabla
           const links = document.querySelectorAll('.action-item');

@@ -18,16 +18,17 @@ async function listAds() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-					<div class="add-button-container">
-						<h1><i class="fas fa-ad"></i> Lista de Anuncios</h1>
-						<a href="/admin/add-ad.html" class="add-button add-ad">Crear Anuncio</a>
-					</div>
-                    <div id="delete-ad-success-message" class="success-message" style="margin-bottom: 20px;">
-                      ¡Anuncio eliminado con éxito!
-                    </div>    
-                    <div class="table-responsive">
-                        <table class="content-table display datatable">
-                            <thead>
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                          <h2 class="h5 mb-0"><i class="fas fa-ad me-2"></i> Lista de Anuncios</h2>
+                          <a href="/admin/add-ad.html" class="add-button">Crear Anuncio</a>
+                          </div>
+                      <div class="card-body">
+                          <div id="delete-ad-success-message" class="alert alert-success d-none mb-3"></div>
+                          
+                          <div class="table-responsive">
+                              <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
+                                  <thead class="table-dark">
                                 <tr>
                                     <th>ID</th>
                                     <th>Título</th>
@@ -39,14 +40,18 @@ async function listAds() {
                             </thead>
                             <tbody></tbody>
                         </table>
+                        </div>
+                      </div>
                     </div>
                 `;
-
       // Insertar la tabla en el DOM
       listContent.innerHTML = tableHTML;
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
+        responsive: true,
+        scrollX: true,
+        scrollY: true,
         processing: true,
         serverSide: true,
         ajax: {
@@ -59,8 +64,7 @@ async function listAds() {
             if (xhr.status === 401) {
               alert('Sesión expirada. Por favor, inicie sesión nuevamente.');
               window.location.href = '/login';
-            }
-            else if (xhr.status === 403) {
+            } else if (xhr.status === 403) {
               alert('No tienes los permisos necesarios.');
               window.location.href = '/';
             }
@@ -107,7 +111,28 @@ async function listAds() {
             last: `<span class="icon-pagination">»</span>`,
           },
         },
-        responsive: true,
+        scrollX: true,
+        scrollY: true,
+        layout: {
+          topStart: 'pageLength',
+          topEnd: ['search', 'buttons'],
+          bottomStart: 'info',
+          bottomEnd: 'paging',
+        },
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-success',
+            exportOptions: {
+              modifier: {
+                search: 'applied',
+                order: 'applied',
+              },
+              columns: ':not(:last-child)', // Excluye la columna de acciones
+            },
+          },
+        ],
         drawCallback: function () {
           // Configurar eventos después de que se dibuja la tabla
           const links = document.querySelectorAll('.action-item');
@@ -125,10 +150,10 @@ async function listAds() {
     } catch (error) {
       console.error('Error al cargar la lista de contenido:', error);
       listContent.innerHTML = `
-                    <div class="error-message">
-                        Error al cargar la lista de películas: ${error.message}
+                    <div class="alert alert-danger">
+                        Error al cargar la lista de Anuncios: ${error.message}
                     </div>
-                `;
+                  `;
     }
   }
 }

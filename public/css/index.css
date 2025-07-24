@@ -316,6 +316,12 @@ h1 {
     box-shadow: 0 6px 12px rgba(0,0,0,0.3);
 }
 
+#banner-gender,
+#banner-duration {
+    font-size: 0.7em;
+}
+
+
 @media (max-width: 1650px) {
     .movie-info {
         left: 0;

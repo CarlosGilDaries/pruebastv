@@ -168,6 +168,10 @@ section {
         position: relative;
         top: -10px;
     }
+
+    .menu {
+        padding-inline: 0;
+    }
 }
 
 @media (max-width: 991px) {

@@ -24,7 +24,6 @@ async function listOrders() {
                           <div class="table-responsive">
                               <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
                                   <thead class="table-dark">
-                        <thead>
                             <tr>
                                 <th>Nº Pedido</th>
                                 <th>Cantidad</th>

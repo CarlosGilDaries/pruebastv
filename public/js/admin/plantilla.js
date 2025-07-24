@@ -2,27 +2,28 @@ import { deleteForm } from '../modules/deleteForm.js';
 import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
 
-async function listRoles() {
-  const listContent = document.getElementById('list-roles');
+async function listActions() {
+  const listContent = document.getElementById('list-actions');
   const api = '/api/';
+  const backendURL = '/';
   const authToken = localStorage.getItem('auth_token');
-  const backendDeleteApi = '/api/delete-role';
+  const backendDeleteApi = '/api/delete-action';
 
   // Cargar los datos al iniciar
-  loadRolesList();
+  loadActionsList();
 
   // Función para cargar y mostrar los datos
-  async function loadRolesList() {
+  async function loadActionsList() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
                     <div class="card shadow-sm">
                       <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                          <h2 class="h5 mb-0"><i class="fa-solid fa-users"></i> Lista de Roles</h2>
-                          <a href="/admin/add-role.html" class="add-button">Crear Rol</a>
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-shoe-prints me-2"></i> Lista de Items</h2>
+                          <a href="/admin/add-footer-item.html" class="add-button">Crear Item</a>
                           </div>
                       <div class="card-body">
-                          <div id="delete-role-success-message" class="alert alert-success d-none mb-3"></div>
+                          <div id="delete-footer-item-success-message" class="alert alert-success d-none mb-3"></div>
                           
                           <div class="table-responsive">
                               <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
@@ -30,6 +31,8 @@ async function listRoles() {
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Logo</th>
+                                    <th>Url</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -45,10 +48,14 @@ async function listRoles() {
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
+        responsive: true,
+        scrollX: true,
+        scrollY: true,
         processing: true,
         serverSide: true,
+        order: [[1, 'asc']],
         ajax: {
-          url: api + 'roles/datatable',
+          url: api + 'actions/datatable',
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -65,7 +72,15 @@ async function listRoles() {
         },
         columns: [
           { data: 'id', name: 'id' },
+          { data: 'order', name: 'order' },
           { data: 'name', name: 'name' },
+          {
+            data: 'picture',
+            name: 'picture',
+            render: function (data) {
+              return `<img src="${data}" class="datatable-img">`;
+            },
+          },
           {
             data: 'actions',
             name: 'actions',
@@ -82,7 +97,6 @@ async function listRoles() {
             last: `<span class="icon-pagination">»</span>`,
           },
         },
-        responsive: true,
         scrollX: true,
         scrollY: true,
         layout: {
@@ -115,21 +129,24 @@ async function listRoles() {
           // Configurar los menús de acciones
           setUpMenuActions();
 
-          const message = document.getElementById(
-            'delete-role-success-message'
+          const message = document.getElementById('success-message');
+          deleteForm(
+            authToken,
+            '.action-delete-form',
+            backendDeleteApi,
+            message
           );
-          deleteForm(authToken, '.role-delete-form', backendDeleteApi, message);
         },
       });
     } catch (error) {
-      console.error('Error al cargar la lista de roles:', error);
+      console.error('Error al cargar la lista de acciones:', error);
       listContent.innerHTML = `
                     <div class="alert alert-danger">
-                        Error al cargar la lista de Roles: ${error.message}
+                        Error al cargar la lista de Acciones: ${error.message}
                     </div>
                   `;
     }
   }
 }
 
-listRoles();
+listActions();

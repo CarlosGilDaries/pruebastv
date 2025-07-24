@@ -17,16 +17,17 @@ async function listFooterItems() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-                    <div class="add-button-container">
-                        <h1><i class="fa-solid fa-shoe-prints"></i> Lista de Items</h1>
-                        <a href="/admin/add-footer-item.html" class="add-button add-footer-item">Crear Item</a>
-                    </div>
-                    <div id="success-message" class="success-message" style="margin-bottom: 20px;">
-                      ¡Item eliminada con éxito!
-                    </div>    
-                    <div class="table-responsive" id="footer-items-table">
-                        <table class="content-table display datatable">
-                            <thead>
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-shoe-prints me-2"></i> Lista de Items</h2>
+                          <a href="/admin/add-footer-item.html" class="add-button">Crear Item</a>
+                          </div>
+                      <div class="card-body">
+                          <div id="delete-footer-item-success-message" class="alert alert-success d-none mb-3"></div>
+                          
+                          <div class="table-responsive">
+                              <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
+                                  <thead class="table-dark">
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
@@ -37,6 +38,8 @@ async function listFooterItems() {
                             </thead>
                             <tbody></tbody>
                         </table>
+                        </div>
+                      </div>
                     </div>
                 `;
 
@@ -71,7 +74,7 @@ async function listFooterItems() {
             data: 'logo',
             name: 'logo',
             render: function (data) {
-              return `<img src="${data}">`;
+              return `<img src="${data}" class="datatable-img">`;
             },
           },
           { data: 'url', name: 'url' },
@@ -92,6 +95,28 @@ async function listFooterItems() {
           },
         },
         responsive: true,
+        scrollX: true,
+        scrollY: true,
+        layout: {
+          topStart: 'pageLength',
+          topEnd: ['search', 'buttons'],
+          bottomStart: 'info',
+          bottomEnd: 'paging',
+        },
+        buttons: [
+          {
+            extend: 'excel',
+            text: 'Excel',
+            className: 'btn btn-success',
+            exportOptions: {
+              modifier: {
+                search: 'applied',
+                order: 'applied',
+              },
+              columns: ':not(:last-child)', // Excluye la columna de acciones
+            },
+          },
+        ],
         drawCallback: function () {
           // Configurar eventos después de que se dibuja la tabla
           const links = document.querySelectorAll('.action-item');
@@ -114,10 +139,10 @@ async function listFooterItems() {
     } catch (error) {
       console.error('Error al cargar la lista de items:', error);
       listContent.innerHTML = `
-                    <div class="error-message">
-                        Error al cargar la lista de items: ${error.message}
+                    <div class="alert alert-danger">
+                        Error al cargar la lista de Items: ${error.message}
                     </div>
-                `;
+                  `;
     }
   }
 }
