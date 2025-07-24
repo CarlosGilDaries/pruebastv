@@ -17,15 +17,17 @@ async function listActions() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-                    <div class="add-button-container">
-                        <h1><i class="fa-solid fa-location-crosshairs"></i> Lista de Llamadas a la Acción</h1>
-                        <a href="/admin/add-action.html" class="add-button add-action">Crear Acción</a>
-                    </div>
-                    <div id="success-message" class="success-message" style="margin-bottom: 20px;">
-                      ¡LLamada a la Acción eliminada con éxito!
-                    </div>    
-                    <div class="table-responsive" id="actions-table">
-                        <table class="content-table display datatable">
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-location-crosshairs me-2"></i>Lista de LLamadas a la Acción</h2>
+                          <a href="/admin/add-action.html" class="add-button">Crear Acción</a>
+                          </div>
+                      <div class="card-body">
+                          <div id="delete-bill-success-message" class="alert alert-success d-none mb-3"></div>
+                          
+                          <div class="table-responsive">
+                              <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
+                                  <thead class="table-dark">
                             <thead>
                                 <tr>
                                     <th>ID</th>
@@ -37,6 +39,8 @@ async function listActions() {
                             </thead>
                             <tbody></tbody>
                         </table>
+                        </div>
+                      </div>
                     </div>
                 `;
 
@@ -45,6 +49,8 @@ async function listActions() {
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
+        scrollX: true,
+        scrollY: true,
         processing: true,
         serverSide: true,
         order: [[1, 'asc']],
@@ -72,7 +78,7 @@ async function listActions() {
             data: 'picture',
             name: 'picture',
             render: function (data) {
-              return `<img src="${data}">`;
+              return `<img src="${data}" class="datatable-img">`;
             },
           },
           {
@@ -102,9 +108,7 @@ async function listActions() {
           // Configurar los menús de acciones
           setUpMenuActions();
 
-          const message = document.getElementById(
-            'success-message'
-          );
+          const message = document.getElementById('success-message');
           deleteForm(
             authToken,
             '.action-delete-form',
@@ -116,10 +120,10 @@ async function listActions() {
     } catch (error) {
       console.error('Error al cargar la lista de acciones:', error);
       listContent.innerHTML = `
-                    <div class="error-message">
-                        Error al cargar la lista de acciones: ${error.message}
+                    <div class="alert alert-danger">
+                        Error al cargar la lista de Acciones: ${error.message}
                     </div>
-                `;
+                  `;
     }
   }
 }

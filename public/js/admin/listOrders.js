@@ -14,14 +14,16 @@ async function listOrders() {
     try {
       // Generar HTML del contenedor de la tabla
       let tableHTML = `
-                <div class="add-button-container">
-                    <h1><i class="fa-solid fa-file-invoice-dollar"></i> Lista de Pedidos</h1>
-                </div>
-                <div id="delete-order-success-message" class="success-message" style="margin-bottom: 20px;">
-                    ¡Pedido eliminado con éxito!
-                </div>    
-                <div class="table-responsive">
-                    <table class="content-table display datatable">
+                <div class="card shadow-sm">
+                      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-file-invoice-dollar me-2"></i>Lista de Pedidos</h2>
+                      </div>
+                      <div class="card-body">
+                          <div id="delete-bill-success-message" class="alert alert-success d-none mb-3"></div>
+                          
+                          <div class="table-responsive">
+                              <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
+                                  <thead class="table-dark">
                         <thead>
                             <tr>
                                 <th>Nº Pedido</th>
@@ -30,11 +32,13 @@ async function listOrders() {
                                 <th>DNI Usuario</th>
                                 <th>Descripción</th>
                                 <th>Fecha</th>
-                                <th>Acciones</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
+                    </div>
+                      </div>
                 </div>
             `;
 
@@ -43,6 +47,8 @@ async function listOrders() {
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
+        scrollX: true,
+        scrollY: true,
         processing: true,
         serverSide: true,
         order: [[5, 'asc']],
@@ -104,7 +110,7 @@ async function listOrders() {
         responsive: true,
         layout: {
           topStart: 'pageLength',
-          topEnd: ['search','buttons'],
+          topEnd: ['search', 'buttons'],
           bottomStart: 'info',
           bottomEnd: 'paging',
         },
@@ -135,7 +141,9 @@ async function listOrders() {
           // Botón para limpiar filtros
           const button = $(`<button class="clean-btn">Limpiar</button>`);
 
-          const topContainer = $('.dt-layout-row');
+          const topContainer = $(
+            '#DataTables_Table_0_wrapper > div:nth-child(1)'
+          );
           const searchInput = $('#dt-search-0');
           const excelButton = $('.dt-buttons');
 
@@ -295,10 +303,10 @@ async function listOrders() {
     } catch (error) {
       console.error('Error al cargar la lista de pedidos:', error);
       listContent.innerHTML = `
-                <div class="error-message">
-                    Error al cargar la lista de pedidos: ${error.message}
-                </div>
-            `;
+                    <div class="alert alert-danger">
+                        Error al cargar la lista de pedidos: ${error.message}
+                    </div>
+                  `;
     }
   }
 }

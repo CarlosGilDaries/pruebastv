@@ -52,11 +52,10 @@
 	background-color: #e94560;
 	font-weight: bold;
 	display: inline-block;
-	position: absolute;
-	top: 13px;
+    position: relative;
 	right: 40px;
-	margin: 8px; /* opcional, para que no esté pegado al borde */
-	height: 32px;
+	margin: 8px;
+	height: 38px;
 	width: 160px;
 	text-align: center;
 }
@@ -78,7 +77,7 @@
 }
 
 .add-button:hover {
-	background-color: #16213e;
+	background-color: #45a049;
 }
 
 .actions-menu {
@@ -115,4 +114,10 @@
     max-width: 100px;
     max-height: 60px;
     border-radius: 4px;
+}
+
+.datatable-img {
+    max-width: 100px;
+    max-height: 60px;
+    object-fit: contain;
 }
