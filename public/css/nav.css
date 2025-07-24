@@ -53,9 +53,10 @@ header {
     gap: 40px;
 }
 
-.logo {
-    width: 180px;
-    height: 55px;
+#logo {
+    width:150px;
+    height:50px;
+    object-fit: contain;
 }
 
 .left-nav-links,
@@ -288,10 +289,10 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
         height:20px;
         object-fit: contain;
     }
-    .logo {
-        width:100px;
-        height:40px;
-        object-fit: contain;
+    #logo {
+        width:100px !important;
+        height:40px !important;
+        object-fit: contain !important;
     }
     .menu {
         padding-inline: 0;

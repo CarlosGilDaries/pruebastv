@@ -197,7 +197,7 @@ class PayPalController extends Controller
                 $user->plan_id = $request->query('plan_id');
                 $user->plan_expires_at = Carbon::now()->addMonths($order->months == 'trimestral' ? 3 : 12);
                 $user->save();
-                //app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($order);
+                app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($order);
                 if (!$register) {
                     return redirect()->away('/successful-payment.html?status=success&order_id=' . $orderId);
                 } else {

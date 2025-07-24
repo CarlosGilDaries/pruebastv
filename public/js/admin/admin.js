@@ -6,8 +6,8 @@ const device_id = localStorage.getItem('device_id_' + email);
 const token = localStorage.getItem('auth_token');
 const backendAPI = '/api/';
 const logOutButton = document.getElementById('logout-button');
-const container = document.querySelector('.container');
-const links = document.querySelectorAll("body > div.admin-container > aside > ul > a > li");
+const container = document.querySelector('.admin-panel');
+const links = document.querySelectorAll('.admin-menu .nav-link');
 
 const permissionToContentMap = {
   contenido_local: 'list-local-content',
@@ -96,11 +96,12 @@ logOutButton.addEventListener('click', function() {
 	logOut(token);
 });
 
-document.addEventListener('DOMContentLoaded', function() {
-	links.forEach(link => {
-		if (link.getAttribute('data-content') == container.id) {
-			link.classList.add('active');
-		}
-	});
+document.addEventListener('DOMContentLoaded', function () {
+  links.forEach((link) => {
+    const li = link.closest('li');
+    if (li && li.getAttribute('data-content') == container.id) {
+      link.classList.add('active');
+    }
+  });
 });
 

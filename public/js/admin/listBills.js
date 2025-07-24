@@ -17,30 +17,33 @@ async function listBills() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-                    <div class="add-button-container">
-                        <h1><i class="fa-solid fa-receipt"></i> Lista de Facturas</h1>
-                    </div>
-                    <div id="delete-bill-success-message" class="success-message" style="margin-bottom: 20px;">
-                      ¡Factura eliminada con éxito!
-                    </div>    
-                    <div class="table-responsive">
-                        <table class="content-table display datatable">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nº Factura</th>
-                                    <th>DNI Usuario</th>
-                                    <th>Reference Pedido</th>
-                                    <th>Cantidad</th>
-                                    <th>Método de pago</th>
-                                    <th>Descripción</th>
-                                    <th>Fecha</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
+                    <div class="card shadow-sm">
+                      <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-receipt me-2"></i>Lista de Facturas</h2>
+                      </div>
+                      <div class="card-body">
+                          <div id="delete-bill-success-message" class="alert alert-success d-none mb-3"></div>
+                          
+                          <div class="table-responsive">
+                              <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
+                                  <thead class="table-dark">
+                                      <tr>
+                                          <th>ID</th>
+                                          <th>Nº Factura</th>
+                                          <th>DNI Usuario</th>
+                                          <th>Reference Pedido</th>
+                                          <th>Cantidad</th>
+                                          <th>Método de pago</th>
+                                          <th>Descripción</th>
+                                          <th>Fecha</th>
+                                          <th class="text-center">Acciones</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody></tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
                 `;
 
       // Insertar la tabla en el DOM
@@ -48,9 +51,12 @@ async function listBills() {
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
+        responsive: true,
+        scrollX: true,
+        scrollY: true,
         processing: true,
         serverSide: true,
-        order: [[5, 'asc']],
+        order: [[7, 'asc']],
         ajax: {
           url: api + 'bills/datatable',
           type: 'GET',
@@ -108,7 +114,6 @@ async function listBills() {
             last: `<span class="icon-pagination">»</span>`,
           },
         },
-        responsive: true,
         layout: {
           topStart: 'pageLength',
           topEnd: ['search', 'buttons'],
@@ -144,7 +149,9 @@ async function listBills() {
           // Botón para limpiar filtros
           const button = $(`<button class="clean-btn">Limpiar</button>`);
 
-          const topContainer = $('.dt-layout-row');
+          const topContainer = $(
+            '#DataTables_Table_0_wrapper > div:nth-child(1)'
+          );
           const searchInput = $('#dt-search-0');
           const excelButton = $('.dt-buttons');
 
@@ -274,10 +281,10 @@ async function listBills() {
     } catch (error) {
       console.error('Error al cargar la lista de facturas:', error);
       listContent.innerHTML = `
-                    <div class="error-message">
+                    <div class="alert alert-danger">
                         Error al cargar la lista de facturas: ${error.message}
                     </div>
-                `;
+                  `;
     }
   }
 }
