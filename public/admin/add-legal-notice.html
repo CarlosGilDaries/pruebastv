@@ -157,41 +157,42 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
 
-                <div class="container" id="add-legal-notice">
-                    <!-- Añadir Aviso Legal -->
-                    <h1><i class="fa-solid fa-gavel"></i> Añadir Aviso Legal</h1>
-                    <div id="add-legal-notice-success-message" class="success-message">
-                        Aviso Legal añadido con éxito
-                    </div>
-                    <form id="add-legal-notice-form">
-                        <div class="form-group">
-                            <label for="add-legal-notice-title">Título</label>
-                            <input type="text" id="add-legal-notice-title" name="title" required>
-                            <div id="add-legal-notice-title-error" class="error-message"></div>
-                        </div>
+                <div class="container p-5" id="add-legal-notice">
+    <h1><i class="fa-solid fa-gavel me-2"></i>Añadir Aviso Legal</h1>
+    
+    <div id="add-legal-notice-success-message" class="alert alert-success d-none">
+        Aviso Legal añadido con éxito
+    </div>
+    
+    <form id="add-legal-notice-form" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="add-legal-notice-title" class="form-label">Título</label>
+            <input type="text" class="form-control" id="add-legal-notice-title" name="title" required>
+            <div id="add-legal-notice-title-error" class="invalid-feedback"></div>
+        </div>
 
-                        <div class="form-group">
-                            <label for="text">Contenido</label>
-                            <textarea id="text" name="text" class="ckeditor wysiwyg-textarea"></textarea>
-                            <div id="text-error" class="error-message"></div>
-                        </div>
-
-                        <div class="loading" id="add-legal-notice-loading">
-                            <div class="loading-spinner"></div>
-                            <p>Añadiendo Aviso Legal, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Añadir Aviso Legal
-                        </button>
-                    </form>
-                </div>
-
+        <div class="mb-3">
+            <label for="text" class="form-label">Contenido</label>
+            <textarea id="text" name="text" class="form-control ckeditor wysiwyg-textarea" rows="10" required></textarea>
+            <div id="text-error" class="invalid-feedback"></div>
+        </div>
+        
+        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="add-legal-notice-loading">
+            <div class="spinner-border me-3" role="status">
+                <span class="visually-hidden">Cargando...</span>
             </div>
-        </main>
+            <p class="mb-0">Añadiendo Aviso Legal, por favor espere...</p>
+        </div>
+        
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i> Guardar Aviso Legal
+            </button>
+        </div>
+    </form>
+</div>
+
 
     </div>
 

@@ -13,39 +13,27 @@ async function initAddAction() {
     const data = await response.json();
     const positions = data.positions;
 
-    if (positions != null) {
+    // Llenar opciones de orden
+    if (positions != null && positions.length > 0) {
       positions.forEach((position) => {
         const option = document.createElement('option');
-        option.innerHTML = position;
+        option.textContent = position;
         option.value = position;
         select.appendChild(option);
       });
 
+      // Agregar última opción (n+1)
       const lastOption = document.createElement('option');
-      lastOption.innerHTML = positions.length + 1;
+      lastOption.textContent = positions.length + 1;
       lastOption.value = positions.length + 1;
       select.appendChild(lastOption);
     } else {
+      // Si no hay posiciones, agregar solo la opción 1
       const option = document.createElement('option');
-      option.innerHTML = 1;
+      option.textContent = 1;
       option.value = 1;
       select.appendChild(option);
     }
-
-    // Mostrar nombre de archivos seleccionados
-    const setupFileInput = (inputId, nameId, labelId) => {
-      const input = document.getElementById(inputId);
-      if (input) {
-        input.addEventListener('change', function (e) {
-          const fileName =
-            e.target.files[0]?.name || 'Ningún archivo seleccionado';
-          if (nameId) document.getElementById(nameId).textContent = fileName;
-          if (labelId) document.getElementById(labelId).textContent = fileName;
-        });
-      }
-    };
-
-    setupFileInput('picture', 'picture-name', 'picture-label-text');
 
     // Manejar envío del formulario
     document
@@ -55,31 +43,45 @@ async function initAddAction() {
 
         // Resetear mensajes de error
         document
-          .querySelectorAll('#add-action-form .error-message')
-          .forEach((el) => (el.textContent = ''));
-        document.getElementById('success-message').style.display = 'none';
+          .querySelectorAll('#add-action-form .invalid-feedback')
+          .forEach((el) => {
+            el.textContent = '';
+            el.style.display = 'none';
+          });
+        document.getElementById('success-message').classList.add('d-none');
+
+        // Validar formulario
+        if (!this.checkValidity()) {
+          e.stopPropagation();
+          this.classList.add('was-validated');
+          return;
+        }
 
         // Mostrar loader
-        document.getElementById('loading').style.display = 'block';
+        document.getElementById('loading').classList.remove('d-none');
 
-        // Obtener token de autenticación
-        const authToken = localStorage.getItem('auth_token');
+        // Verificar autenticación
         if (!authToken) {
           window.location.href = '/login';
           return;
         }
 
         // Crear FormData
-        const formAdData = new FormData();
-        formAdData.append('name', document.getElementById('name').value);
-        formAdData.append('order', document.getElementById('order').value);
-        formAdData.append('text', document.getElementById('text').value);
-        formAdData.append('subtext', document.getElementById('subtext').value);
-        formAdData.append('button_text', document.getElementById('button_text').value);
-        if (document.getElementById('picture')) {
-          formAdData.append('picture', document.getElementById('picture').files[0]);
+        const formData = new FormData();
+        formData.append('name', document.getElementById('name').value);
+        formData.append('order', document.getElementById('order').value);
+        formData.append('text', document.getElementById('text').value);
+        formData.append('subtext', document.getElementById('subtext').value);
+        formData.append(
+          'button_text',
+          document.getElementById('button_text').value
+        );
+        formData.append('url', document.getElementById('url').value);
+
+        const pictureInput = document.getElementById('picture');
+        if (pictureInput.files.length > 0) {
+          formData.append('picture', pictureInput.files[0]);
         }
-        formAdData.append('url', document.getElementById('url').value);
 
         try {
           const response = await fetch(backendAPI + 'add-action', {
@@ -87,33 +89,49 @@ async function initAddAction() {
             headers: {
               Authorization: `Bearer ${authToken}`,
             },
-            body: formAdData,
+            body: formData,
           });
 
           const data = await response.json();
 
           if (!response.ok) {
-            throw new Error(data.error || 'Error al subir la acción');
+            // Mostrar errores del servidor si existen
+            if (data.errors) {
+              Object.entries(data.errors).forEach(([field, messages]) => {
+                const errorElement = document.getElementById(`${field}-error`);
+                if (errorElement) {
+                  errorElement.textContent = messages.join(', ');
+                  errorElement.style.display = 'block';
+                }
+              });
+            } else {
+              throw new Error(data.error || 'Error al subir la acción');
+            }
+            return;
           }
 
           // Mostrar mensaje de éxito
-          document.getElementById('success-message').style.display = 'block';
+          const successMessage = document.getElementById('success-message');
+          successMessage.classList.remove('d-none');
           setTimeout(() => {
-            document.getElementById('success-message').style.display = 'none';
+            successMessage.classList.add('d-none');
           }, 5000);
 
           // Resetear formulario
-          document.getElementById('add-action-form').reset();
+          this.reset();
+          this.classList.remove('was-validated');
         } catch (error) {
           console.error('Error:', error);
+          alert('Error al añadir la acción: ' + error.message);
         } finally {
-          document.getElementById('loading').style.display = 'none';
+          document.getElementById('loading').classList.add('d-none');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
   } catch (error) {
-    console.log(error);
+    console.error('Error inicializando formulario:', error);
   }
 }
 
-initAddAction();
+// Inicializar el formulario cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initAddAction);

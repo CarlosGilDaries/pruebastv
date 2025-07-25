@@ -157,52 +157,54 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
 
-                <div class="container" id="add-category">
-                    <!-- Añadir Categoría -->
-                    <h1><i class="fa-solid fa-layer-group"></i></i> Añadir Categoría</h1>
-                    <div id="add-category-success-message" class="success-message">
-                        Categoría añadida con éxito
-                    </div>
-                    <form id="add-category-form">
-                        <div class="form-group">
-                            <label for="add-category-name">Nombre</label>
-                            <input type="text" id="add-category-name" name="name" required>
-                            <div id="add-category-name-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="priority">Prioridad</label>
-                            <select id="priority" name="priority" required>
-                                <option value="" disabled selected>Selecciona prioridad</option>
-                            </select>
-                            <div id="priority-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="checkbox-container">
-                            <input type="checkbox" id="render" name="render_at_index" value="1">
-                            <span class="checkmark"></span>
-                            Mostrar en el Inicio
-                            </label>
-                        </div>
-                        
-
-                        <div class="loading" id="add-category-loading">
-                            <div class="loading-spinner"></div>
-                            <p>Creando categoría, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Añadir Categoría
-                        </button>
-                    </form>
-                </div>
-
+                <div class="container p-5" id="add-category">
+    <h1><i class="fa-solid fa-layer-group me-2"></i>Añadir Categoría</h1>
+    
+    <div id="add-category-success-message" class="alert alert-success d-none">
+        Categoría añadida con éxito
+    </div>
+    
+    <form id="add-category-form" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="add-category-name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="add-category-name" name="name" required>
+                <div id="add-category-name-error" class="invalid-feedback"></div>
             </div>
-        </main>
+            
+            <div class="col-md-6 mb-3">
+                <label for="priority" class="form-label">Prioridad</label>
+                <select class="form-select" id="priority" name="priority" required>
+                    <option value="" disabled selected>Selecciona prioridad</option>
+                </select>
+                <div id="priority-error" class="invalid-feedback"></div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="render" name="render_at_index" value="1">
+                <label class="form-check-label" for="render">Mostrar en el Inicio</label>
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="add-category-loading">
+            <div class="spinner-border me-3" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Creando categoría, por favor espere...</p>
+        </div>
+        
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i> Añadir Categoría
+            </button>
+        </div>
+    </form>
+</div>
+
+
 
     </div>
 

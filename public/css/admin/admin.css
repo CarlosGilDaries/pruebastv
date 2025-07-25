@@ -19,6 +19,8 @@ body {
 /* Contenedor principal */
 .admin-container {
     min-height: 95vh;
+    width: 100%;
+    overflow-x: auto !important;
 }
 
 /* Sidebar/Offcanvas */
@@ -115,10 +117,5 @@ body {
     .admin-menu .nav-link {
         font-size: 14px;
     }
-}
-
-.admin-container {
-  width: 100%;
-  overflow-x: auto !important;
 }
 

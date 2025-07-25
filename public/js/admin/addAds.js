@@ -1,61 +1,22 @@
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
   async function initAddAd() {
     const backendAPI = '/api/';
+    const authToken = localStorage.getItem('auth_token');
 
-    // Mostrar nombre de archivos seleccionados
-    if (document.getElementById('ad-cover')) {
-      document.getElementById('ad-cover').addEventListener('change', function (e) {
-        const fileName =
-          e.target.files[0]?.name || 'Ningún archivo seleccionado';
-        document.getElementById('ad-cover-name').textContent = fileName;
-        document.getElementById('ad-cover-label-text').textContent = fileName;
-      });
-    }
-
-    document.getElementById('ad-file').addEventListener('change', function (e) {
-      const fileName = e.target.files[0]?.name || 'Ningún archivo seleccionado';
-      document.getElementById('ad-name').textContent = fileName;
-      document.getElementById('ad-label-text').textContent = fileName;
-    });
-
-    document.getElementById('ad-m3u8').addEventListener('change', function (e) {
-      const fileName = e.target.files[0]?.name || 'Ningún archivo seleccionado';
-      document.getElementById('ad-m3u8-name').textContent = fileName;
-      document.getElementById('ad-m3u8-label-text').textContent = fileName;
-    });
-
-    document.getElementById('ad-ts1').addEventListener('change', function (e) {
-      const fileName = e.target.files[0]?.name || 'Ningún archivo seleccionado';
-      document.getElementById('ad-ts1-name').textContent = fileName;
-      document.getElementById('ad-ts1-label-text').textContent = fileName;
-    });
-
-    document.getElementById('ad-ts2').addEventListener('change', function (e) {
-      const fileName = e.target.files[0]?.name || 'Ningún archivo seleccionado';
-      document.getElementById('ad-ts2-name').textContent = fileName;
-      document.getElementById('ad-ts2-label-text').textContent = fileName;
-    });
-
-    document.getElementById('ad-ts3').addEventListener('change', function (e) {
-      const fileName = e.target.files[0]?.name || 'Ningún archivo seleccionado';
-      document.getElementById('ad-ts3-name').textContent = fileName;
-      document.getElementById('ad-ts3-label-text').textContent = fileName;
-    });
-
-    // Mostrar/ocultar campos según tipo de contenido
+    // Manejar cambio de tipo de contenido
     document.getElementById('ad-type').addEventListener('change', function () {
       const type = this.value;
       const singleContent = document.getElementById('ad-single-content');
       const hlsContent = document.getElementById('ad-hls-content');
 
       if (type === 'application/vnd.apple.mpegurl') {
-        singleContent.classList.add('hidden');
-        hlsContent.classList.remove('hidden');
+        singleContent.classList.add('d-none');
+        hlsContent.classList.remove('d-none');
         document.getElementById('ad-file').required = false;
         document.getElementById('ad-m3u8').required = true;
       } else {
-        singleContent.classList.remove('hidden');
-        hlsContent.classList.add('hidden');
+        singleContent.classList.remove('d-none');
+        hlsContent.classList.add('d-none');
         document.getElementById('ad-file').required = true;
         document.getElementById('ad-m3u8').required = false;
       }
@@ -67,95 +28,105 @@
       .addEventListener('submit', async function (e) {
         e.preventDefault();
 
+        // Validar formulario
+        if (!this.checkValidity()) {
+          e.stopPropagation();
+          this.classList.add('was-validated');
+          return;
+        }
+
         // Resetear mensajes de error
         document
-          .querySelectorAll('#ad-form .error-message')
-          .forEach((el) => (el.textContent = ''));
-        document.getElementById('ad-success-message').style.display = 'none';
+          .querySelectorAll('#ad-form .invalid-feedback')
+          .forEach((el) => {
+            el.textContent = '';
+            el.style.display = 'none';
+          });
+        document.getElementById('ad-success-message').classList.add('d-none');
 
         // Mostrar loader
-        document.getElementById('ad-loading').style.display = 'block';
+        document.getElementById('ad-loading').classList.remove('d-none');
 
-        // Obtener token de autenticación
-        const authToken = localStorage.getItem('auth_token');
+        // Verificar autenticación
         if (!authToken) {
           window.location.href = '/login';
           return;
         }
 
-        // Crear FormData
-        const formAdData = new FormData();
-        formAdData.append('title', document.getElementById('ad-title').value);
-        formAdData.append('brand', document.getElementById('ad-brand').value);
-        formAdData.append('type', document.getElementById('ad-type').value);
-        if (document.getElementById('ad-cover')) {
-          formAdData.append(
-            'cover',
-            document.getElementById('ad-cover').files[0]
-          );
-        }
-
-        const type = document.getElementById('ad-type').value;
-        if (type === 'application/vnd.apple.mpegurl') {
-          formAdData.append(
-            'm3u8',
-            document.getElementById('ad-m3u8').files[0]
-          );
-          formAdData.append('ts1', document.getElementById('ad-ts1').files[0]);
-          formAdData.append('ts2', document.getElementById('ad-ts2').files[0]);
-          formAdData.append('ts3', document.getElementById('ad-ts3').files[0]);
-        } else {
-          formAdData.append(
-            'content',
-            document.getElementById('ad-file').files[0]
-          );
-        }
-
         try {
+          const formData = new FormData();
+          formData.append('title', document.getElementById('ad-title').value);
+          formData.append('brand', document.getElementById('ad-brand').value);
+          formData.append('type', document.getElementById('ad-type').value);
+
+          // Agregar archivo de imagen si existe
+          const coverInput = document.getElementById('ad-cover');
+          if (coverInput.files.length > 0) {
+            formData.append('cover', coverInput.files[0]);
+          }
+
+          // Agregar archivos según el tipo seleccionado
+          const type = document.getElementById('ad-type').value;
+          if (type === 'application/vnd.apple.mpegurl') {
+            ['m3u8', 'ts1', 'ts2', 'ts3'].forEach((field) => {
+              const input = document.getElementById(`ad-${field}`);
+              if (input.files.length > 0) {
+                formData.append(field, input.files[0]);
+              }
+            });
+          } else {
+            const contentInput = document.getElementById('ad-file');
+            if (contentInput.files.length > 0) {
+              formData.append('content', contentInput.files[0]);
+            }
+          }
+
           const response = await fetch(backendAPI + 'add-ad', {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${authToken}`,
             },
-            body: formAdData,
+            body: formData,
           });
 
           const data = await response.json();
 
           if (!response.ok) {
-            throw new Error(data.error || 'Error al subir el anuncio');
+            // Mostrar errores del servidor si existen
+            if (data.errors) {
+              Object.entries(data.errors).forEach(([field, messages]) => {
+                const errorElement = document.getElementById(`${field}-error`);
+                if (errorElement) {
+                  errorElement.textContent = messages.join(', ');
+                  errorElement.style.display = 'block';
+                }
+              });
+            } else {
+              throw new Error(data.error || 'Error al subir el anuncio');
+            }
+            return;
           }
 
           // Mostrar mensaje de éxito
-          document.getElementById('ad-success-message').style.display = 'block';
+          const successMessage = document.getElementById('ad-success-message');
+          successMessage.classList.remove('d-none');
+
           setTimeout(() => {
-            document.getElementById('ad-success-message').style.display =
-              'none';
+            successMessage.classList.add('d-none');
           }, 5000);
 
           // Resetear formulario
-          document.getElementById('ad-form').reset();
-          document
-            .querySelectorAll('#ad-form .file-name')
-            .forEach((el) => (el.textContent = ''));
-          document.querySelectorAll('#ad-form .file-input-label span').forEach((el) => {
-            el.textContent = 'Seleccionar archivo...';
-          });
+          this.reset();
+          this.classList.remove('was-validated');
         } catch (error) {
           console.error('Error:', error);
+          alert('Error al subir el anuncio: ' + error.message);
         } finally {
-          document.getElementById('ad-loading').style.display = 'none';
+          document.getElementById('ad-loading').classList.add('d-none');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
   }
-  
-  // Verificar si el DOM está listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAddAd);
-  } else {
-    initAddAd();
-  }
-})();
 
-
+  initAddAd();
+});

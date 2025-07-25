@@ -157,259 +157,246 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
-
-                <div class="container" id="add-content">                    
-                    <h1><i class="fa-solid fa-upload"></i> Añadir Contenido Externo</h1>
-                    
-                    <div id="success-message" class="success-message">
-                        ¡Contenido subido con éxito!
-                    </div>
-                    <!-- Formulario apra añadir contenido -->
-                    <form id="form">
-                        <!-- Campos básicos -->
-                        <div class="form-group">
-                            <label for="title">Título</label>
-                            <input type="text" id="title" name="title" required>
-                            <div id="title-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="tagline">Resumen corto</label>
-                            <textarea id="tagline" name="tagline" class="ckeditor wysiwyg-textarea"></textarea>
-                            <div id="tagline-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="overview">Descripción</label>
-                            <textarea id="overview" name="overview" class="ckeditor wysiwyg-textarea"></textarea>
-                            <div id="overview-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="cover">Imagen Ancha (JPG, 1024x768)</label>
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="cover">
-                                    <i class="fas fa-image"></i>
-                                    <span id="cover-label-text">Seleccionar archivo...</span>
-                                </label>
-                                <input type="file" id="cover" name="cover" class="file-input" accept="image/*" required>
-                                <div id="cover-name" class="file-name"></div>
-                            </div>
-                            <div id="cover-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tall-cover">Imagen Alta (JPG, 500×750)</label>
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="tall-cover">
-                                    <i class="fas fa-image"></i>
-                                    <span id="tall-cover-label-text">Seleccionar archivo...</span>
-                                </label>
-                                <input type="file" id="tall-cover" name="cover" class="file-input" accept="image/*" required>
-                                <div id="tall-cover-name" class="file-name"></div>
-                            </div>
-                            <div id="tall-cover-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="trailer">Trailer (Opcional)</label>
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="trailer">
-                                    <i class="fas fa-film"></i>
-                                    <span id="trailer-label-text">Seleccionar archivo MP4...</span>
-                                </label>
-                                <input type="file" id="trailer" name="trailer" class="file-input" accept="video/mp4">
-                                <div id="trailer-name" class="file-name"></div>
-                            </div>
-                            <div id="trailer-error" class="error-message"></div>
-                        </div>
-
-                        <!-- Planes -->
-                        <div class="form-group">
-                            <label for="checkbox-container">Vincular a plan/es</label>
-                            <div id="plans-container"></div>
-                            <div id="plans-container-error" class="error-message"></div>
-                        </div>
-
-                        <!-- Categorías -->
-                        <div class="form-group">
-                            <label for="checkbox-container">Vincular a categoría/s</label>
-                            <div id="categories-container"></div>
-                            <div id="categories-container-error" class="error-message"></div>
-                        </div>
-
-                        <!-- Etiquetas -->
-                        <div class="form-group">
-                            <label for="checkbox-container">Vincular a etiqueta/s</label>
-                            <div id="tags-container"></div>
-                            <div id="tags-container-error" class="error-message"></div>
-                        </div>
-
-                        <!-- Género -->            
-                        <div class="form-group">
-                            <label for="gender_id">Género</label>
-                            <select id="gender_id" name="gender_id" required>
-                                <option value="" disabled selected>Selecciona un género</option>
-                            </select>
-                            <div id="gender_id-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="type">Formato del contenido</label>
-                            <select id="type" name="type" required>
-                                <option value="" disabled selected>Selecciona un formato</option>
-								<option value="url_mp3">URL MP3</option>
-                                <option value="url_mp4">URL MP4</option>
-								<option value="url_hls">URL HLS</option>		
-                            </select>
-                            <div id="type-error" class="error-message"></div>
-                        </div>
-
-                        <!-- Contenido normal -->
-                        <div id="single-content" class="form-group">
-                            <label for="content">Archivo de contenido</label>
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="content">
-                                    <i class="fas fa-file-video"></i>
-                                    <span id="content-label-text">Seleccionar archivo...</span>
-                                </label>
-                                <input type="file" id="content" name="content" class="file-input" required>
-                                <div id="content-name" class="file-name"></div>
-                            </div>
-                            <div id="content-error" class="error-message"></div>
-                        </div>
-                        
-                        <!-- Contenido HLS -->
-                        <div id="hls-content" class="form-group hidden">
-                            <label>Archivos HLS</label>
-                            
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="m3u8">
-                                    <i class="fas fa-file-alt"></i>
-                                    <span id="m3u8-label-text">Seleccionar archivo .m3u8...</span>
-                                </label>
-                                <input type="file" id="m3u8" name="m3u8" class="file-input" accept=".m3u8">
-                                <div id="m3u8-name" class="file-name"></div>
-                            </div>
-                            <div id="m3u8-error" class="error-message"></div>
-                            
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="ts1">
-                                    <i class="fas fa-file-archive"></i>
-                                    <span id="ts1-label-text">Seleccionar playlist 1 (.zip)...</span>
-                                </label>
-                                <input type="file" id="ts1" name="ts1" class="file-input" accept=".zip">
-                                <div id="ts1-name" class="file-name"></div>
-                            </div>
-                            <div id="ts1-error" class="error-message"></div>
-                            
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="ts2">
-                                    <i class="fas fa-file-archive"></i>
-                                    <span id="ts2-label-text">Seleccionar playlist 2 (.zip)...</span>
-                                </label>
-                                <input type="file" id="ts2" name="ts2" class="file-input" accept=".zip">
-                                <div id="ts2-name" class="file-name"></div>
-                            </div>
-                            <div id="ts2-error" class="error-message"></div>
-                            
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="ts3">
-                                    <i class="fas fa-file-archive"></i>
-                                    <span id="ts3-label-text">Seleccionar playlist 3 (.zip)...</span>
-                                </label>
-                                <input type="file" id="ts3" name="ts3" class="file-input" accept=".zip">
-                                <div id="ts3-name" class="file-name"></div>
-                            </div>
-                            <div id="ts3-error" class="error-message"></div>
-                        </div>
-                        
-                        <!-- Iframe/URL -->
-                        <div id="external-content" class="form-group hidden">
-                            <div class="form-group">
-                                <label for="external_url">URL del contenido</label>
-                                <input type="text" id="external_url" name="external_url" placeholder="https://...">
-                                <div id="external_url-error" class="error-message"></div>
-                            </div>
-                        </div>
-                            
-                        <div class="form-group">
-                            <label for="duration">Duración</label>
-                            <input type="time" name="duration" id="duration" step="1">
-                            <div id="duration-error" class="error-message"></div>
-                        </div>                        
-                        
-                        <!-- Pay Per View -->
-                        <div class="form-group">
-                            <label class="checkbox-container">
-                                <input type="checkbox" id="pay_per_view" name="pay_per_view">
-                                <span class="checkmark"></span>
-                                <p>¿Es contenido Pay Per View?</p>
-                            </label>
-                            <div id="pay_per_view-error" class="error-message"></div>
-                        </div>
-                        
-                        <div id="pay_per_view_fields" class="form-group hidden">
-                            <div class="form-group">
-                                <label for="pay_per_view_price">Precio (€)</label>
-                                <input type="number" id="pay_per_view_price" name="pay_per_view_price" min="0" step="0.01" placeholder="0.00">
-                                <div id="pay_per_view_price-error" class="error-message"></div>
-                            </div>
-                        </div>
-
-                        <!-- Alquiler -->
-                        <div class="form-group">
-                            <label class="checkbox-container">
-                                <input type="checkbox" id="rent" name="rent">
-                                <span class="checkmark"></span>
-                                <p>¿Es contenido en Alquiler?</p>
-                            </label>
-                            <div id="rent-error" class="error-message"></div>
-                        </div>
-                        
-                        <div id="rent_fields" class="form-group hidden">
-                            <div class="form-group">
-                                <label for="rent_price">Precio (€)</label>
-                                <input type="number" id="rent_price" name="rent_price" min="0" step="0.01" placeholder="0.00">
-                                <div id="rent_price-error" class="error-message"></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label for="rent_days">Días de alquiler</label>
-                                <input type="number" id="rent_days" name="rent_days" min="1">
-                                <div id="rent_days-error" class="error-message"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- Disponibilidad -->
-                        <div class="form-group">
-                            <label for="start_time">Fecha/hora de inicio (opcional)</label>
-                            <input type="datetime-local" id="start_time" name="start_time">
-                            <div id="start_time-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="end_time">Fecha/hora de fin (opcional)</label>
-                            <input type="datetime-local" id="end_time" name="end_time">
-                            <div id="end_time-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="loading" id="loading">
-                            <div class="loading-spinner"></div>
-                            <p>Subiendo contenido, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Subir Contenido
-                        </button>
-                    </form>
-                </div>
-
+        <div class="container p-5" id="add-content">                    
+            <h1><i class="fa-solid fa-upload"></i> Añadir Contenido Externo</h1>
+            
+            <div id="success-message" class="alert alert-success d-none">
+                ¡Contenido subido con éxito!
             </div>
-        </main>
+            
+            <form id="form" class="needs-validation" novalidate>
+                <!-- Campos básicos -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="title" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                        <div id="title-error" class="invalid-feedback"></div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="gender_id" class="form-label">Género</label>
+                        <select class="form-select" id="gender_id" name="gender_id" required>
+                            <option value="" disabled selected>Selecciona un género</option>
+                        </select>
+                        <div id="gender_id-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="tagline" class="form-label">Resumen corto</label>
+                    <textarea class="form-control ckeditor wysiwyg-textarea" id="tagline" name="tagline" rows="3"></textarea>
+                    <div id="tagline-error" class="invalid-feedback"></div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="overview" class="form-label">Descripción</label>
+                    <textarea class="form-control ckeditor wysiwyg-textarea" id="overview" name="overview" rows="5"></textarea>
+                    <div id="overview-error" class="invalid-feedback"></div>
+                </div>
+                
+                <!-- Imágenes -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cover" class="form-label">Imagen Ancha (JPG, 1024x768)</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="cover" name="cover" accept="image/*" required>
+                        </div>
+                        <div id="cover-error" class="invalid-feedback"></div>
+                    </div>
 
+                    <div class="col-md-6 mb-3">
+                        <label for="tall-cover" class="form-label">Imagen Alta (JPG, 500×750)</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="tall-cover" name="cover" accept="image/*" required>
+                        </div>
+                        <div id="tall-cover-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <!-- Archivos multimedia -->
+                <div class="row">
+                    <div class="col-lg-12 col-md-6 mb-3">
+                        <label for="trailer" class="form-label">Trailer (Opcional)</label>
+                        <div class="input-group">
+                            <input type="file" class="form-control" id="trailer" name="trailer" accept="video/mp4">
+                        </div>
+                        <div id="trailer-error" class="invalid-feedback"></div>
+                    </div>
+                    
+                    <div class="col-lg-12 col-md-6 mb-3">
+                        <label for="type" class="form-label">Formato del contenido</label>
+                        <select class="form-select" id="type" name="type" required>
+                            <option value="" disabled selected>Selecciona un formato</option>
+                            <option value="url_mp3">URL MP3</option>
+                            <option value="url_mp4">URL MP4</option>
+							<option value="url_hls">URL HLS</option>
+                        </select>
+                        <div id="type-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <!-- Contenido normal -->
+                <div id="single-content" class="mb-3 d-none">
+                    <label for="content" class="form-label">Archivo de contenido</label>
+                    <div class="input-group">
+                        <input type="file" class="form-control" id="content" name="content" required>
+                    </div>
+                    <div id="content-error" class="invalid-feedback"></div>
+                </div>
+                
+                <!-- Contenido HLS -->
+                <div id="hls-content" class="d-none">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="m3u8" class="form-label">Archivo .m3u8</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="m3u8" name="m3u8" accept=".m3u8">
+                            </div>
+                            <div id="m3u8-error" class="invalid-feedback"></div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="ts1" class="form-label">Playlist 1 (.zip)</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="ts1" name="ts1" accept=".zip">
+                            </div>
+                            <div id="ts1-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="ts2" class="form-label">Playlist 2 (.zip)</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="ts2" name="ts2" accept=".zip">
+                            </div>
+                            <div id="ts2-error" class="invalid-feedback"></div>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="ts3" class="form-label">Playlist 3 (.zip)</label>
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="ts3" name="ts3" accept=".zip">
+                            </div>
+                            <div id="ts3-error" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Iframe/URL -->
+                <div id="external-content" class="mb-3 d-none">
+                    <label for="external_url" class="form-label">URL del contenido</label>
+                    <input type="text" class="form-control" id="external_url" name="external_url" placeholder="https://...">
+                    <div id="external_url-error" class="invalid-feedback"></div>
+                </div>
+                
+                <!-- Duración -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="duration" class="form-label">Duración</label>
+                        <input type="time" class="form-control" name="duration" id="duration" step="1">
+                        <div id="duration-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <!-- Checkboxes de relación -->
+                <div class="row">
+                    <!-- Planes -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Vincular a plan/es</label>
+                        <div id="plans-container" class="form-check-container"></div>
+                        <div id="plans-container-error" class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Categorías -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Vincular a categoría/s</label>
+                        <div id="categories-container" class="form-check-container"></div>
+                        <div id="categories-container-error" class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Etiquetas -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Vincular a etiqueta/s</label>
+                        <div id="tags-container" class="form-check-container"></div>
+                        <div id="tags-container-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <!-- Opciones de pago -->
+                <div class="row">
+                    <!-- Pay Per View -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="pay_per_view" name="pay_per_view">
+                            <label class="form-check-label" for="pay_per_view">¿Es contenido Pay Per View?</label>
+                            <div id="pay_per_view-error" class="invalid-feedback"></div>
+                        </div>
+                        
+                        <div id="pay_per_view_fields" class="d-none">
+                            <div class="mb-3">
+                                <label for="pay_per_view_price" class="form-label">Precio (€)</label>
+                                <input type="number" class="form-control" id="pay_per_view_price" name="pay_per_view_price" min="0" step="0.01" placeholder="0.00">
+                                <div id="pay_per_view_price-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Alquiler -->
+                    <div class="col-md-6 mb-3">
+                        <div class="form-check form-switch mb-2">
+                            <input class="form-check-input" type="checkbox" id="rent" name="rent">
+                            <label class="form-check-label" for="rent">¿Es contenido en Alquiler?</label>
+                            <div id="rent-error" class="invalid-feedback"></div>
+                        </div>
+                        
+                        <div id="rent_fields" class="d-none">
+                            <div class="mb-3">
+                                <label for="rent_price" class="form-label">Precio (€)</label>
+                                <input type="number" class="form-control" id="rent_price" name="rent_price" min="0" step="0.01" placeholder="0.00">
+                                <div id="rent_price-error" class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="rent_days" class="form-label">Días de alquiler</label>
+                                <input type="number" class="form-control" id="rent_days" name="rent_days" min="1">
+                                <div id="rent_days-error" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Disponibilidad -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="start_time" class="form-label">Fecha/hora de inicio (opcional)</label>
+                        <input type="datetime-local" class="form-control" id="start_time" name="start_time">
+                        <div id="start_time-error" class="invalid-feedback"></div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                        <label for="end_time" class="form-label">Fecha/hora de fin (opcional)</label>
+                        <input type="datetime-local" class="form-control" id="end_time" name="end_time">
+                        <div id="end_time-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+                
+                <!-- Loading -->
+                <div class="d-flex justify-content-center align-items-center my-4 d-none" id="loading">
+                    <div class="spinner-border me-3" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mb-0">Subiendo contenido, por favor espere...</p>
+                </div>
+                
+                <!-- Botón de envío -->
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload me-2"></i> Subir Contenido
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 

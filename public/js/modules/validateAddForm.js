@@ -145,7 +145,7 @@ export function validateAddForm() {
   }
 
   const planCheckboxes = document.querySelectorAll(
-    '#form .plan-checkbox'
+    '#plans-container .form-check .form-check-input'
   );
   let atLeastOneChecked = false;
 
@@ -160,7 +160,7 @@ export function validateAddForm() {
   }
 
   const categoryCheckboxes = document.querySelectorAll(
-    '#form .category-checkbox'
+    '#categories-container .form-check .form-check-input'
   );
   let atLeastOneCategoryChecked = false;
 

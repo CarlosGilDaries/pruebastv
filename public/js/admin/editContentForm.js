@@ -4,9 +4,11 @@ async function editContentForm() {
   let id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
-  const permission = document.getElementById('type-content').getAttribute('data-type');;
+  const permission = document
+    .getElementById('type-content')
+    .getAttribute('data-type');
 
-  loadContentData(id);
+  await loadContentData(id);
 
   // Manejar el checkbox para cambiar archivo de contenido
   const changeContentCheckbox = document.getElementById('change-content-file');
@@ -14,13 +16,13 @@ async function editContentForm() {
     const shouldChange = this.checked;
     document
       .getElementById('type-content')
-      .classList.toggle('hidden', !shouldChange);
+      .classList.toggle('d-none', !shouldChange);
 
     // Ocultar todos los campos de archivos si el checkbox no está marcado
     if (!shouldChange) {
-      document.getElementById('single-content').classList.add('hidden');
-      document.getElementById('hls-content').classList.add('hidden');
-      document.getElementById('external-content').classList.add('hidden');
+      document.getElementById('single-content').classList.add('d-none');
+      document.getElementById('hls-content').classList.add('d-none');
+      document.getElementById('external-content').classList.add('d-none');
     } else {
       // Mostrar los campos según el tipo seleccionado
       const type = document.getElementById('type').value;
@@ -43,239 +45,218 @@ async function editContentForm() {
     const hlsContent = document.getElementById('hls-content');
     const externalUrl = document.getElementById('external-content');
 
-    singleContent.classList.add('hidden');
-    hlsContent.classList.add('hidden');
-    externalUrl.classList.add('hidden');
+    singleContent.classList.add('d-none');
+    hlsContent.classList.add('d-none');
+    externalUrl.classList.add('d-none');
 
     if (type === 'video/mp4' || type === 'audio/mpeg') {
-      singleContent.classList.remove('hidden');
+      singleContent.classList.remove('d-none');
     } else if (type === 'application/vnd.apple.mpegurl') {
-      hlsContent.classList.remove('hidden');
+      hlsContent.classList.remove('d-none');
     } else {
-      externalUrl.classList.remove('hidden');
+      externalUrl.classList.remove('d-none');
     }
   }
 
   async function loadContentData(id) {
     try {
-      const response = await fetch(
-        `/api/edit-view-content/${id}/${permission}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const plansResponse = await fetch('/api/plans');
-      const tagsResponse = await fetch('/api/tags');
-      const genderResponse = await fetch('/api/genders', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const categoryResponse = await fetch('/api/dropdown-categories-menu', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const data = await response.json();
+      const [
+        response,
+        plansResponse,
+        tagsResponse,
+        genderResponse,
+        categoryResponse,
+      ] = await Promise.all([
+        fetch(`/api/edit-view-content/${id}/${permission}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch('/api/plans'),
+        fetch('/api/tags'),
+        fetch('/api/genders', {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch('/api/dropdown-categories-menu', {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+
+      const [data, plansData, tagsData, genderData, categoryData] =
+        await Promise.all([
+          response.json(),
+          plansResponse.json(),
+          tagsResponse.json(),
+          genderResponse.json(),
+          categoryResponse.json(),
+        ]);
+
       const content = data.data.movie;
-      const plansData = await plansResponse.json();
-      const genderData = await genderResponse.json();
-      const categoryData = await categoryResponse.json();
-      const tagsData = await tagsResponse.json();
-      const tags = tagsData.tags;
       const plans = plansData.plans;
       const genders = genderData.genders;
       const categories = categoryData.categories;
+      const tags = tagsData.tags;
 
-      let currentPlansId = [];
-      content.plans.forEach((plan) => {
-        currentPlansId.push(plan.id);
-      });
-      let currentCategoriesId = [];
-      content.categories.forEach((category) => {
-        currentCategoriesId.push(category.id);
-      });
-      let currentTagsId = [];
-      content.tags.forEach((tag) => {
-        currentTagsId.push(tag.id);
-      });
+      // Obtener IDs actuales de planes, categorías y etiquetas
+      const currentPlansId = content.plans.map((plan) => plan.id);
+      const currentCategoriesId = content.categories.map(
+        (category) => category.id
+      );
+      const currentTagsId = content.tags.map((tag) => tag.id);
 
+      // Llenar planes
       const plansContainer = document.getElementById('plans-container');
+      plans.forEach((plan) => {
+        const div = document.createElement('div');
+        div.className = 'form-check';
+
+        const input = document.createElement('input');
+        input.className = 'form-check-input';
+        input.type = 'checkbox';
+        input.value = plan.id;
+        input.id = `plan-${plan.id}`;
+        input.name = 'plans[]';
+        input.checked = currentPlansId.includes(plan.id);
+
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = `plan-${plan.id}`;
+        label.textContent = plan.name;
+
+        div.appendChild(input);
+        div.appendChild(label);
+        plansContainer.appendChild(div);
+      });
+
+      // Llenar categorías
       const categoriesContainer = document.getElementById(
         'categories-container'
       );
-      const tagsContainer = document.getElementById(
-        'tags-container'
-      );
-      const selectGender = document.getElementById('gender_id');
-      let plansContainerTextContent = '';
-      let categoriesContainerTextContent = '';
-      let tagsContainerTextContent = '';
-
-      plans.forEach((plan) => {
-        plansContainerTextContent += `
-                                    <label class="checkbox-container">
-                                      <input type="checkbox" name="plans[${plan.id}][id]" value="${plan.id}" id="plan-${plan.id}" class="plan-checkbox">
-                                      <span class="checkmark"></span>
-                                        <p>${plan.name}</p>
-                                    </label>
-                                    `;
-      });
-      plansContainer.innerHTML = plansContainerTextContent;
-
       categories.forEach((category) => {
-        categoriesContainerTextContent += `
-                                     <label class="checkbox-container">
-                                       <input type="checkbox" name="categories[${category.id}][id]" value="${category.id}" id="category-${category.id}" class="category-checkbox">
-                                       <span class="checkmark"></span>
-                                         <p>${category.name}</p>
-                                     </label>
-                                     `;
-      });
-      categoriesContainer.innerHTML = categoriesContainerTextContent;
+        const div = document.createElement('div');
+        div.className = 'form-check';
 
+        const input = document.createElement('input');
+        input.className = 'form-check-input';
+        input.type = 'checkbox';
+        input.value = category.id;
+        input.id = `category-${category.id}`;
+        input.name = 'categories[]';
+        input.checked = currentCategoriesId.includes(category.id);
+
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = `category-${category.id}`;
+        label.textContent = category.name;
+
+        div.appendChild(input);
+        div.appendChild(label);
+        categoriesContainer.appendChild(div);
+      });
+
+      // Llenar etiquetas
+      const tagsContainer = document.getElementById('tags-container');
       tags.forEach((tag) => {
-        tagsContainerTextContent += `
-                                     <label class="checkbox-container">
-                                       <input type="checkbox" name="tags[${tag.id}][id]" value="${tag.id}" id="tag-${tag.id}" class="tag-checkbox">
-                                       <span class="checkmark"></span>
-                                         <p>${tag.name}</p>
-                                     </label>
-                                     `;
-      });
-      tagsContainer.innerHTML = tagsContainerTextContent;
+        const div = document.createElement('div');
+        div.className = 'form-check';
 
+        const input = document.createElement('input');
+        input.className = 'form-check-input';
+        input.type = 'checkbox';
+        input.value = tag.id;
+        input.id = `tag-${tag.id}`;
+        input.name = 'tags[]';
+        input.checked = currentTagsId.includes(tag.id);
+
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = `tag-${tag.id}`;
+        label.textContent = tag.name;
+
+        div.appendChild(input);
+        div.appendChild(label);
+        tagsContainer.appendChild(div);
+      });
+
+      // Llenar géneros
+      const selectGender = document.getElementById('gender_id');
       genders.forEach((gender) => {
-        let option = document.createElement('option');
+        const option = document.createElement('option');
         option.value = gender.id;
-        option.innerHTML = gender.name;
+        option.textContent = gender.name;
         selectGender.appendChild(option);
       });
 
-      // Configurar inputs de archivo para mostrar nombre
-      const setupFileInput = (inputId, nameId, labelId, currentPath = null) => {
-        const input = document.getElementById(inputId);
-        const nameElement = document.getElementById(nameId);
-        const labelElement = document.getElementById(labelId);
-
-        if (currentPath) {
-          const fileName = currentPath.split('/').pop();
-          if (nameElement) nameElement.textContent = fileName;
-          if (labelElement) labelElement.textContent = fileName;
-        }
-
-        if (input) {
-          input.addEventListener('change', function (e) {
-            // Verificar primero si hay archivos seleccionados
-            const fileName =
-              e.target.files && e.target.files.length > 0
-                ? e.target.files[0].name
-                : 'Ningún archivo seleccionado';
-
-            if (nameElement) nameElement.textContent = fileName;
-            if (labelElement) labelElement.textContent = fileName;
-          });
-        }
-      };
-
-      setupFileInput('cover', 'cover-name', 'cover-label-text', content.cover);
-      setupFileInput(
-        'tall-cover',
-        'tall-cover-name',
-        'tall-cover-label-text',
-        content.tall_cover
-      );
-      setupFileInput(
-        'trailer',
-        'trailer-name',
-        'trailer-label-text',
-        content.trailer
-      );
-      setupFileInput('content', 'content-name', 'content-label-text');
-      setupFileInput('m3u8', 'm3u8-name', 'm3u8-label-text');
-      setupFileInput('ts1', 'ts1-name', 'ts1-label-text');
-      setupFileInput('ts2', 'ts2-name', 'ts2-label-text');
-      setupFileInput('ts3', 'ts3-name', 'ts3-label-text');
-
+      // Configurar inputs con los valores del contenido
       document.getElementById('title').value = content.title;
       document.getElementById('duration').value = content.duration;
-
-      if (
-        (content.type != 'video/mp4' ||
-          content.type != 'audio/mpeg' ||
-          content.type != 'application/vnd.apple.mpegurl')
-      ) {
-        document.getElementById('external_url').value = content.url;
-      }
-
-      CKEDITOR.instances.tagline.setData(content.tagline);
-      CKEDITOR.instances.overview.setData(content.overview);
-
-      let checkboxPlans = document.querySelectorAll('#form .plan-checkbox');
-
-      let checkboxCategories = document.querySelectorAll(
-        '#form .category-checkbox'
-      );
-
-      let checkboxTags = document.querySelectorAll(
-        '#form .tag-checkbox'
-      );
-
-      checkboxPlans.forEach((chbox) => {
-        chbox.checked = currentPlansId.includes(Number(chbox.value));
-      });
-      checkboxCategories.forEach((chbox) => {
-        chbox.checked = currentCategoriesId.includes(Number(chbox.value));
-      });
-      checkboxTags.forEach((chbox) => {
-        chbox.checked = currentTagsId.includes(Number(chbox.value));
-      });
-
+      document.getElementById('type').value = content.type;
       document.getElementById('gender_id').value = content.gender_id;
+
+      // Configurar campos de pago
       document.getElementById('pay_per_view').checked =
         content.pay_per_view == 1;
       document.getElementById('pay_per_view_price').value =
-        content.pay_per_view_price;
-      document.getElementById('rent').checked =
-        content.rent == 1;
-      document.getElementById('rent_price').value =
-        content.rent_price;
-      document.getElementById('rent_days').value =
-        content.rent_days;
-      document.getElementById('start_time').value = content.start_time;
-      document.getElementById('end_time').value = content.end_time;
+        content.pay_per_view_price || '';
+      document.getElementById('rent').checked = content.rent == 1;
+      document.getElementById('rent_price').value = content.rent_price || '';
+      document.getElementById('rent_days').value = content.rent_days || '';
+
+      // Mostrar/ocultar campos de pago según corresponda
+      if (content.pay_per_view == 1) {
+        document
+          .getElementById('pay_per_view_fields')
+          .classList.remove('d-none');
+      }
+      if (content.rent == 1) {
+        document.getElementById('rent_fields').classList.remove('d-none');
+      }
+
+      // Configurar fechas
+      document.getElementById('start_time').value = content.start_time || '';
+      document.getElementById('end_time').value = content.end_time || '';
+
+      // Configurar CKEditor
+      CKEDITOR.instances.tagline.setData(content.tagline || '');
+      CKEDITOR.instances.overview.setData(content.overview || '');
+
+      // Configurar URL externa si corresponde
+      if (
+        content.type &&
+        !['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl'].includes(
+          content.type
+        )
+      ) {
+        document.getElementById('external_url').value = content.url || '';
+      }
     } catch (error) {
       console.error('Error cargando contenido:', error);
     }
   }
 
+  // Manejar cambios en los switches de pago
   document
     .getElementById('pay_per_view')
     .addEventListener('change', function () {
       const payPerViewFields = document.getElementById('pay_per_view_fields');
       if (this.checked) {
-        payPerViewFields.classList.remove('hidden');
+        payPerViewFields.classList.remove('d-none');
       } else {
-        payPerViewFields.classList.add('hidden');
+        payPerViewFields.classList.add('d-none');
         document.getElementById('pay_per_view_price').value = '';
       }
     });
-  
-  document
-    .getElementById('rent')
-    .addEventListener('change', function () {
-      const rentFields = document.getElementById('rent_fields');
-      if (this.checked) {
-        rentFields.classList.remove('hidden');
-      } else {
-        rentFields.classList.add('hidden');
-        document.getElementById('rent_price').value = '';
-        document.getElementById('rent_days').value = '';
-      }
-    });
 
+  document.getElementById('rent').addEventListener('change', function () {
+    const rentFields = document.getElementById('rent_fields');
+    if (this.checked) {
+      rentFields.classList.remove('d-none');
+    } else {
+      rentFields.classList.add('d-none');
+      document.getElementById('rent_price').value = '';
+      document.getElementById('rent_days').value = '';
+    }
+  });
+
+  // Manejar envío del formulario
   document
     .getElementById('form')
     .addEventListener('submit', async function (e) {
@@ -289,39 +270,31 @@ async function editContentForm() {
       const shouldChangeContent = document.getElementById(
         'change-content-file'
       ).checked;
-
-      document.getElementById('loading').style.display = 'block';
+      document.getElementById('loading').classList.remove('d-none');
 
       const formData = new FormData();
       formData.append('title', document.getElementById('title').value);
       formData.append('duration', document.getElementById('duration').value);
       formData.append('gender_id', document.getElementById('gender_id').value);
-      formData.append(
-        'tagline',
-        CKEDITOR.instances.tagline.getData()
-      );
-      formData.append(
-        'overview',
-        CKEDITOR.instances.overview.getData()
-      );
+      formData.append('tagline', CKEDITOR.instances.tagline.getData());
+      formData.append('overview', CKEDITOR.instances.overview.getData());
       formData.append(
         'pay_per_view',
         document.getElementById('pay_per_view').checked ? '1' : '0'
       );
-
-      if (document.getElementById('pay_per_view').value) {
-        formData.append(
-          'pay_per_view_price',
-          document.getElementById('pay_per_view_price').value
-        );
-      }
-
       formData.append(
         'rent',
         document.getElementById('rent').checked ? '1' : '0'
       );
 
-      if (document.getElementById('rent').value) {
+      // Agregar campos condicionales
+      if (document.getElementById('pay_per_view').checked) {
+        formData.append(
+          'pay_per_view_price',
+          document.getElementById('pay_per_view_price').value
+        );
+      }
+      if (document.getElementById('rent').checked) {
         formData.append(
           'rent_price',
           document.getElementById('rent_price').value
@@ -331,63 +304,50 @@ async function editContentForm() {
           document.getElementById('rent_days').value
         );
       }
-
       if (document.getElementById('start_time').value) {
         formData.append(
           'start_time',
           document.getElementById('start_time').value
         );
       }
-
       if (document.getElementById('end_time').value) {
         formData.append('end_time', document.getElementById('end_time').value);
       }
 
+      // Procesar archivos (solo si se seleccionaron nuevos)
       const coverInput = document.getElementById('cover');
-      if (coverInput && coverInput.files.length > 0) {
+      if (coverInput.files.length > 0) {
         formData.append('cover', coverInput.files[0]);
-      } else {
-        formData.append('cover', ''); // Envía un valor vacío si no hay archivo
       }
 
       const tallCoverInput = document.getElementById('tall-cover');
-      if (tallCoverInput && tallCoverInput.files.length > 0) {
+      if (tallCoverInput.files.length > 0) {
         formData.append('tall_cover', tallCoverInput.files[0]);
-      } else {
-        formData.append('tall_cover', ''); // Envía un valor vacío si no hay archivo
       }
 
-      if (
-        document.getElementById('trailer') &&
-        document.getElementById('trailer').files[0]
-      ) {
-        formData.append('trailer', document.getElementById('trailer').files[0]);
+      const trailerInput = document.getElementById('trailer');
+      if (trailerInput.files.length > 0) {
+        formData.append('trailer', trailerInput.files[0]);
       }
 
-      // Solo procesar archivos de contenido si el checkbox está marcado
+      // Procesar contenido solo si se debe cambiar
       if (shouldChangeContent) {
         const type = document.getElementById('type').value;
         formData.append('type', type);
+
         if (type === 'video/mp4' || type === 'audio/mpeg') {
           const contentInput = document.getElementById('content');
           if (contentInput.files.length > 0) {
             formData.append('content', contentInput.files[0]);
           }
         } else if (type === 'application/vnd.apple.mpegurl') {
-          const m3u8Input = document.getElementById('m3u8');
-          const ts1Input = document.getElementById('ts1');
-          const ts2Input = document.getElementById('ts2');
-          const ts3Input = document.getElementById('ts3');
-
-          if (m3u8Input.files.length > 0)
-            formData.append('m3u8', m3u8Input.files[0]);
-          if (ts1Input.files.length > 0)
-            formData.append('ts1', ts1Input.files[0]);
-          if (ts2Input.files.length > 0)
-            formData.append('ts2', ts2Input.files[0]);
-          if (ts3Input.files.length > 0)
-            formData.append('ts3', ts3Input.files[0]);
-        } else if (type != null && type != '') {
+          ['m3u8', 'ts1', 'ts2', 'ts3'].forEach((field) => {
+            const input = document.getElementById(field);
+            if (input.files.length > 0) {
+              formData.append(field, input.files[0]);
+            }
+          });
+        } else {
           formData.append(
             'external_url',
             document.getElementById('external_url').value
@@ -395,64 +355,60 @@ async function editContentForm() {
         }
       }
 
-      const checkboxes = document.querySelectorAll('#form .plan-checkbox');
-
-      checkboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-          formData.append('plans[]', checkbox.value);
+      // Agregar checkboxes seleccionados
+      ['plans-container', 'categories-container', 'tags-container'].forEach(
+        (container) => {
+          const checkboxes = document.querySelectorAll(
+            `#${container} input[type="checkbox"]:checked`
+          );
+          const fieldName = container.split('-')[0] + '[]';
+          checkboxes.forEach((checkbox) => {
+            formData.append(fieldName, checkbox.value);
+          });
         }
-      });
-
-      const categoryCheckboxes = document.querySelectorAll(
-        '#form .category-checkbox'
       );
-
-      categoryCheckboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-          formData.append('categories[]', checkbox.value);
-        }
-      });
-
-      const tagCheckboxes = document.querySelectorAll(
-        '#form .tag-checkbox'
-      );
-
-      tagCheckboxes.forEach((checkbox) => {
-        if (checkbox.checked) {
-          formData.append('tags[]', checkbox.value);
-        }
-      });
 
       try {
-        const editResponse = await fetch(
+        const response = await fetch(
           `/api/update-content/${id}/${permission}`,
           {
             method: 'POST',
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { Authorization: `Bearer ${token}` },
             body: formData,
           }
         );
-        const data = await editResponse.json();
-        console.log(data);
+
+        const data = await response.json();
 
         if (data.success) {
           // Mostrar mensaje de éxito
-          document.getElementById('success-message').style.display = 'block';
+          const successMessage = document.getElementById('success-message');
+          successMessage.classList.remove('d-none');
+          successMessage.textContent = 'Contenido actualizado correctamente';
 
           setTimeout(() => {
-            document.getElementById('success-message').style.display = 'none';
+            successMessage.classList.add('d-none');
           }, 5000);
 
           window.scrollTo({ top: 0, behavior: 'smooth' });
         } else {
-          console.log('Error al editar:', data.message);
+          // Mostrar errores si existen
+          if (data.errors) {
+            Object.entries(data.errors).forEach(([field, messages]) => {
+              const errorElement = document.getElementById(`${field}-error`);
+              if (errorElement) {
+                errorElement.textContent = messages.join(', ');
+                errorElement.style.display = 'block';
+              }
+            });
+          } else {
+            console.error('Error al editar:', data.message);
+          }
         }
       } catch (error) {
-        console.log(error);
+        console.error('Error:', error);
       } finally {
-        document.getElementById('loading').style.display = 'none';
+        document.getElementById('loading').classList.add('d-none');
       }
     });
 }
