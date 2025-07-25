@@ -157,67 +157,78 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
-
-                <div class="container" id="edit-plan">
-                    <!-- Editar Plan -->
-                    <h1><i class="fas fa-pen"></i> Editar Plan</h1>
-                    <div id="edit-plan-success-message" class="success-message">
-                        Plan editado con éxito
-                    </div>
-                    <form id="edit-plan-form">
-                        <div class="form-group">
-                            <label for="edit-plan-name">Nombre</label>
-                            <input type="text" id="edit-plan-name" name="name" required>
-                            <div id="edit-plan-name-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-plan-trimestral-price">Precio Trimestral</label>
-                            <input type="number" min="0" step="0.01" id="edit-plan-trimestral-price" name="trimestral_price" required>
-                            <div id="edit-plan-trimestral-price-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-plan-anual-price">Precio Anual</label>
-                            <input type="number" min="0" step="0.01" id="edit-plan-anual-price" name="anual_price" required>
-                            <div id="edit-plan-anual-price-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-plan-max-devices">Dispositivos Máximos</label>
-                            <input type="number" id="edit-plan-max-devices" name="max_devices" required>
-                            <div id="edit-plan-max-devices-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-plan-max-streams">Streams Máximos</label>
-                            <input type="number" id="edit-plan-max-streams" name="max_streams" required>
-                            <div id="edit-plan-max-streams-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-plan-ads">Anuncios</label>
-                            <select id="edit-plan-ads" name="ads" required>
-                                <option value=1>Sí</option>
-                                <option value=0>No</option>
-                            </select>
-                        </div>
-
-                        <div class="loading" id="edit-plan-loading">
-                            <div class="loading-spinner"></div>
-                            <p>Editando plan, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Editar Plan
-                        </button>
-                    </form>
-                </div>
-
+                <div class="container p-3 p-md-5" id="edit-plan">
+    <!-- Editar Plan -->
+    <h1 class="mb-4"><i class="fas fa-pen me-2"></i> Editar Plan</h1>
+    
+    <div id="edit-plan-success-message" class="alert alert-success d-none">
+        Plan editado con éxito
+    </div>
+    
+    <form id="edit-plan-form" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-plan-name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="edit-plan-name" name="name" required>
+                <div id="edit-plan-name-error" class="invalid-feedback"></div>
             </div>
-        </main>
+
+            <div class="col-md-6 mb-3">
+                <label for="edit-plan-ads" class="form-label">Anuncios</label>
+                <select class="form-select" id="edit-plan-ads" name="ads" required>
+                    <option value="1">Sí</option>
+                    <option value="0">No</option>
+                </select>
+                <div id="edit-plan-ads-error" class="invalid-feedback"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-plan-trimestral-price" class="form-label">Precio Trimestral</label>
+                <div class="input-group">
+                    <span class="input-group-text">€</span>
+                    <input type="number" min="0" step="0.01" class="form-control" id="edit-plan-trimestral-price" name="trimestral_price" required>
+                </div>
+                <div id="edit-plan-trimestral-price-error" class="invalid-feedback"></div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="edit-plan-anual-price" class="form-label">Precio Anual</label>
+                <div class="input-group">
+                    <span class="input-group-text">€</span>
+                    <input type="number" min="0" step="0.01" class="form-control" id="edit-plan-anual-price" name="anual_price" required>
+                </div>
+                <div id="edit-plan-anual-price-error" class="invalid-feedback"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-plan-max-devices" class="form-label">Dispositivos Máximos</label>
+                <input type="number" class="form-control" id="edit-plan-max-devices" name="max_devices" required>
+                <div id="edit-plan-max-devices-error" class="invalid-feedback"></div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="edit-plan-max-streams" class="form-label">Streams Máximos</label>
+                <input type="number" class="form-control" id="edit-plan-max-streams" name="max_streams" required>
+                <div id="edit-plan-max-streams-error" class="invalid-feedback"></div>
+            </div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center my-3 d-none" id="edit-plan-loading">
+            <div class="spinner-border text-primary me-2" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Editando plan, por favor espere...</p>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-upload me-2"></i> Editar Plan
+        </button>
+    </form>
+</div>
 
     </div>
 

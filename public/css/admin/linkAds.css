@@ -156,3 +156,7 @@ checkbox-container-linkads {
     border-width: 0 3px 3px 0;
     transform: rotate(45deg);
 }
+
+.ads-table {
+    width: 100% !important;
+}

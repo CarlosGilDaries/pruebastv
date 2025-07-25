@@ -157,35 +157,34 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
-
-                <div class="container" id="edit-tag">
-                    <!-- Editar Etiqueta -->
-                    <h1><i class="fas fa-pen"></i> Editar Etiqueta</h1>
-                    <div id="edit-tag-success-message" class="success-message">
-                        Etiqueta editado con éxito
-                    </div>
-                    <form id="edit-tag-form">
-                        <div class="form-group">
-                            <label for="edit-tag-name">Nombre</label>
-                            <input type="text" id="edit-tag-name" name="name" required>
-                            <div id="edit-tag-name-error" class="error-message"></div>
-                        </div>
-
-                        <div class="loading" id="edit-tag-loading">
-                            <div class="loading-spinner"></div>
-                            <p>Editando etiqueta, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Editar Etiqueta
-                        </button>
-                    </form>
-                </div>
-
+<div class="container" id="edit-tag">
+    <!-- Editar Etiqueta -->
+    <h1 class="mb-4"><i class="fas fa-pen me-2"></i>Editar Etiqueta</h1>
+    <div id="edit-tag-success-message" class="alert alert-success d-none">
+        Etiqueta editada con éxito
+    </div>
+    <form id="edit-tag-form" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="edit-tag-name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="edit-tag-name" name="name" required>
+            <div id="edit-tag-name-error" class="invalid-feedback">
+                Por favor ingrese un nombre para la etiqueta
             </div>
-        </main>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="edit-tag-loading">
+            <div class="spinner-border text-primary me-3" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Editando etiqueta, por favor espere...</p>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-upload me-2"></i>Editar Etiqueta
+        </button>
+    </form>
+</div>
+
 
     </div>
 

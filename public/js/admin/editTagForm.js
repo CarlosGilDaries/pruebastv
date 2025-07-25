@@ -1,70 +1,98 @@
-async function editTagForm() {
-	const token = localStorage.getItem('auth_token');
+document.addEventListener('DOMContentLoaded', function () {
+  const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
-  let id = localStorage.getItem('id');
-  
+  const id = localStorage.getItem('id');
+  const form = document.getElementById('edit-tag-form');
+
+  if (!id) {
+    showError('No se proporcionó ID de etiqueta');
+    return;
+  }
+
+  // Cargar datos de la etiqueta
   loadTagData(id);
 
-  // Función para cargar datos de etiqueta
+  // Manejar el envío del formulario
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      e.stopPropagation();
+      form.classList.add('was-validated');
+      return;
+    }
+
+    await submitTagForm(id);
+  });
+
+  function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger mt-3';
+    errorDiv.textContent = message;
+    form.appendChild(errorDiv);
+    setTimeout(() => errorDiv.remove(), 5000);
+  }
+
   async function loadTagData(id) {
     try {
       const response = await fetch(`${backendAPI}tag/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      if (!response.ok) {
+        throw new Error('Error al cargar los datos');
+      }
+
       const data = await response.json();
 
       if (data.success && data.tag) {
         document.getElementById('edit-tag-name').value = data.tag.name;
       } else {
-        console.error('Error:', data.message);
+        throw new Error(data.message || 'Error al cargar la etiqueta');
       }
     } catch (error) {
       console.error('Error:', error);
+      showError(error.message);
     }
   }
 
-  // Manejar el envío del formulario
-  document
-    .getElementById('edit-tag-form')
-    .addEventListener('submit', async function (e) {
-      e.preventDefault();
+  async function submitTagForm(id) {
+    const loading = document.getElementById('edit-tag-loading');
+    const successMessage = document.getElementById('edit-tag-success-message');
+    const name = document.getElementById('edit-tag-name').value;
 
-      const id = localStorage.getItem('id');
+    loading.classList.remove('d-none');
+    successMessage.classList.add('d-none');
 
-      document.getElementById('edit-tag-loading').style.display = 'block';
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
 
-      try {
-        const formData = new FormData();
-        formData.append(
-          'name',
-          document.getElementById('edit-tag-name').value
-        );
+      const response = await fetch(`${backendAPI}edit-tag/${id}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
-        const response = await fetch(`${backendAPI}edit-tag/${id}`, {
-          method: 'POST',
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-          document.getElementById('edit-tag-success-message').style.display =
-            'block';
-          setTimeout(() => {
-            document.getElementById(
-              'edit-tag-success-message'
-            ).style.display = 'none';
-          }, 5000);
-        }
-      } catch (error) {
-        console.error('Error submitting form:', error);
-      } finally {
-        document.getElementById('edit-tag-loading').style.display = 'none';
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
       }
-    });
-}
 
-editTagForm();
+      const data = await response.json();
 
+      if (data.success) {
+        successMessage.classList.remove('d-none');
+        setTimeout(() => {
+          successMessage.classList.add('d-none');
+        }, 5000);
+      } else {
+        throw new Error(data.message || 'Error al editar la etiqueta');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      showError(error.message);
+    } finally {
+      loading.classList.add('d-none');
+    }
+  }
+});

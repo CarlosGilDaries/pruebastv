@@ -1,151 +1,154 @@
-async function editWebSettingsForm() {
+document.addEventListener('DOMContentLoaded', function () {
   const token = localStorage.getItem('auth_token');
+  const form = document.getElementById('web-form');
 
+  // Cargar datos iniciales
   loadWebSettingsData();
 
+  // Manejar el envío del formulario
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      e.stopPropagation();
+      form.classList.add('was-validated');
+      return;
+    }
+
+    await submitWebSettings();
+  });
+
   async function loadWebSettingsData() {
+    const loading = document.getElementById('loading');
+    loading.classList.remove('d-none');
+
     try {
-      const response = await fetch(`/api/company-details/`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      const response = await fetch('/api/company-details/', {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      
-        const data = await response.json();
-        const details = data.details;
 
-      // Configurar inputs de archivo para mostrar nombre
-      const setupFileInput = (inputId, nameId, labelId, currentPath = null) => {
-        const input = document.getElementById(inputId);
-        const nameElement = document.getElementById(nameId);
-        const labelElement = document.getElementById(labelId);
+      if (!response.ok) {
+        throw new Error('Error al cargar los datos');
+      }
 
-        if (currentPath) {
-          const fileName = currentPath.split('/').pop();
-          if (nameElement) nameElement.textContent = fileName;
-          if (labelElement) labelElement.textContent = fileName;
-        }
+      const data = await response.json();
+      const details = data.details;
 
-        if (input) {
-          input.addEventListener('change', function (e) {
-            // Verificar primero si hay archivos seleccionados
-            const fileName =
-              e.target.files && e.target.files.length > 0
-                ? e.target.files[0].name
-                : 'Ningún archivo seleccionado';
+      // Llenar campos del formulario
+      document.getElementById('name').value = details.name || '';
+      document.getElementById('fiscal_address').value =
+        details.fiscal_address || '';
+      document.getElementById('nif_cif').value = details.nif_cif || '';
+      document.getElementById('email').value = details.email || '';
+      document.getElementById('facebook').value = details.facebook || '';
+      document.getElementById('instagram').value = details.instagram || '';
+      document.getElementById('twitter').value = details.twitter || '';
 
-            if (nameElement) nameElement.textContent = fileName;
-            if (labelElement) labelElement.textContent = fileName;
-          });
-        }
-      };
-
-        setupFileInput(
-          'favicon_input',
-          'favicon_input-name',
-          'favicon_input-label-text',
-          details.favicon
+      // Configurar CKEditor si está disponible
+      if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances) {
+        CKEDITOR.instances.commercial_registry_text.setData(
+          details.commercial_registry_text || ''
         );
-        setupFileInput(
-          'logo_input',
-          'logo_input-name',
-          'logo_input-label-text',
-          details.logo
-        );
+        CKEDITOR.instances.lopd_text.setData(details.lopd_text || '');
+      }
 
-      document.getElementById('name').value = details.name;
-        document.getElementById('fiscal_address').value = details.fiscal_address;
-        document.getElementById('nif_cif').value = details.nif_cif;
-        document.getElementById('email').value = details.email;
-        document.getElementById('facebook').value = details.facebook;
-        document.getElementById('instagram').value =
-            details.instagram;
-            document.getElementById('twitter').value = details.twitter;
+      // Mostrar imágenes actuales si existen
+      if (details.favicon) {
+        document.getElementById('current-favicon').innerHTML = `
+                    <p class="mb-1">Favicon actual:</p>
+                    <img src="${details.favicon}" alt="Favicon actual" style="max-width: 32px; height: auto;">
+                `;
+      }
 
-      CKEDITOR.instances.commercial_registry_text.setData(
-        details.commercial_registry_text
-      );
-      CKEDITOR.instances.lopd_text.setData(details.lopd_text);
-
+      if (details.logo) {
+        document.getElementById('current-logo').innerHTML = `
+                    <p class="mb-1">Logo actual:</p>
+                    <img src="${details.logo}" alt="Logo actual" style="max-width: 200px; height: auto;">
+                `;
+      }
     } catch (error) {
       console.error('Error cargando contenido:', error);
+      showError('Error al cargar los ajustes: ' + error.message);
+    } finally {
+      loading.classList.add('d-none');
     }
-    }
-    
-  document
-    .getElementById('web-form')
-    .addEventListener('submit', async function (e) {
-      e.preventDefault();
+  }
 
-      // Validar antes de enviar
-      /*if (!validateAddForm()) {
-        return;
-      }*/
+  function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger mt-3';
+    errorDiv.textContent = message;
+    form.prepend(errorDiv);
+    setTimeout(() => errorDiv.remove(), 5000);
+  }
 
-      document.getElementById('loading').style.display = 'block';
-        
+  async function submitWebSettings() {
+    const loading = document.getElementById('loading');
+    const successMessage = document.getElementById('success-message');
+
+    loading.classList.remove('d-none');
+    successMessage.classList.add('d-none');
+
+    try {
       const formData = new FormData();
       formData.append('name', document.getElementById('name').value);
       formData.append(
         'fiscal_address',
         document.getElementById('fiscal_address').value
       );
-        formData.append('nif_cif', document.getElementById('nif_cif').value);
-        formData.append('email', document.getElementById('email').value);
-        formData.append('facebook', document.getElementById('facebook').value);
-        formData.append(
-          'instagram',
-          document.getElementById('instagram').value
-        );
-        formData.append('twitter', document.getElementById('twitter').value);
-      formData.append(
-        'commercial_registry_text',
-        CKEDITOR.instances.commercial_registry_text.getData()
-      );
-      formData.append('lopd_text', CKEDITOR.instances.lopd_text.getData());
+      formData.append('nif_cif', document.getElementById('nif_cif').value);
+      formData.append('email', document.getElementById('email').value);
+      formData.append('facebook', document.getElementById('facebook').value);
+      formData.append('instagram', document.getElementById('instagram').value);
+      formData.append('twitter', document.getElementById('twitter').value);
 
+      // Agregar contenido de CKEditor si está disponible
+      if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances) {
+        formData.append(
+          'commercial_registry_text',
+          CKEDITOR.instances.commercial_registry_text.getData()
+        );
+        formData.append('lopd_text', CKEDITOR.instances.lopd_text.getData());
+      }
+
+      // Agregar archivos si se seleccionaron
       const faviconInput = document.getElementById('favicon_input');
-      if (faviconInput && faviconInput.files.length > 0) {
+      if (faviconInput.files.length > 0) {
         formData.append('favicon', faviconInput.files[0]);
-      } else {
-        formData.append('favicon', ''); // Envía un valor vacío si no hay archivo
       }
 
       const logoInput = document.getElementById('logo_input');
-      if (logoInput && logoInput.files.length > 0) {
+      if (logoInput.files.length > 0) {
         formData.append('logo', logoInput.files[0]);
+      }
+
+      const response = await fetch('/api/edit-company-details', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        successMessage.classList.remove('d-none');
+        setTimeout(() => successMessage.classList.add('d-none'), 5000);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // Recargar datos para mostrar las nuevas imágenes
+        loadWebSettingsData();
       } else {
-        formData.append('logo', ''); // Envía un valor vacío si no hay archivo
+        throw new Error(data.message || 'Error al actualizar los ajustes');
       }
-
-      try {
-        const editResponse = await fetch(`/api/edit-company-details`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
-        const data = await editResponse.json();
-
-        if (data.success) {
-          // Mostrar mensaje de éxito
-          document.getElementById('success-message').style.display = 'block';
-
-          setTimeout(() => {
-            document.getElementById('success-message').style.display = 'none';
-          }, 5000);
-
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          console.log('Error al editar:', data.message);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        document.getElementById('loading').style.display = 'none';
-      }
-    });
-}
-
-editWebSettingsForm();
+    } catch (error) {
+      console.error('Error:', error);
+      showError(error.message);
+    } finally {
+      loading.classList.add('d-none');
+    }
+  }
+});

@@ -121,9 +121,3 @@ button.dt-button.buttons-excel.buttons-html5.btn.btn-success:hover {
 #DataTables_Table_0_wrapper > div:nth-child(1) > div.dt-layout-cell.dt-layout-end > div {
     margin-right: 30px !important;
 }
-
-@media (max-width: 768px) {
-    .dt-layout-start {
-        width: 20% !important;
-    }
-}

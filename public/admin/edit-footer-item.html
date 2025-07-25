@@ -157,53 +157,49 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
+                <div class="container p-3 p-md-5" id="edit-footer-item-form">
+    <h1 class="mb-4"><i class="fas fa-pen me-2"></i> Editar Item</h1>
+    <div id="success-message" class="alert alert-success d-none">
+        Item editado con éxito
+    </div>
+    <form id="edit-footer_item-form" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="name" class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="name" name="name" required>
+            <div id="name-error" class="invalid-feedback"></div>
+        </div>
 
-                <div class="container" id="edit-footer-item-form">
-                    <h1><i class="fas fa-pen"></i> Editar Item</h1>
-                    <div id="success-message" class="success-message">
-                        Item editada con éxito
-                    </div>
-                    <form id="edit-footer_item-form">
-                        <div class="form-group">
-                            <label for="name">Nombre</label>
-                            <input type="text" id="name" name="name" required>
-                            <div id="name-error" class="error-message"></div>
-                        </div>
+        <div class="mb-3">
+            <label for="url" class="form-label">URL</label>
+            <input type="text" class="form-control" id="url" name="url" required>
+            <div id="url-error" class="invalid-feedback"></div>
+        </div>
 
-                        <div class="form-group">
-                            <label for="url">URL</label>
-                            <input type="text" id="url" name="url" required>
-                            <div id="url-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="logo_input">Logo (PNG)</label>
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="logo_input">
-                                    <i class="fas fa-image"></i>
-                                    <span id="logo_input-label-text">Seleccionar archivo...</span>
-                                </label>
-                                <input type="file" id="logo_input" name="logo_input" class="file-input" accept="image/*">
-                                <div id="logo_input-name" class="file-name"></div>
-                            </div>
-                            <div id="logo_input-error" class="error-message"></div>
-                        </div>
-
-                        <div class="loading" id="loading">
-                            <div class="loading-spinner"></div>
-                            <p>Editando Item, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Editar Item
-                        </button>
-                    </form>
-                </div>
-
+        <div class="mb-3">
+            <label for="logo_input" class="form-label">Logo (PNG)</label>
+            <div class="input-group">
+                <input type="file" class="form-control" id="logo_input" name="logo_input" accept="image/*">
+                <label class="input-group-text" for="logo_input">
+                    <i class="fas fa-image"></i>
+                </label>
             </div>
-        </main>
+            <small id="logo_input-name" class="form-text text-muted"></small>
+            <div id="logo_input-error" class="invalid-feedback"></div>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-center my-3 d-none" id="loading">
+            <div class="spinner-border text-primary me-2" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Editando Item, por favor espere...</p>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-upload me-2"></i> Editar Item
+        </button>
+    </form>
+</div>
+
 
     </div>
 

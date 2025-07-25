@@ -157,114 +157,128 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
 
                 <div class="container" id="edit-user">
-                    <!-- Editar Usuario -->
-                    <h1><i class="fas fa-pen"></i> Editar Usuario</h1>
-                    <div id="edit-user-success-message" class="success-message">
-                        Usuario editado con éxito
-                    </div>
-                    <form id="edit-user-form">
-                        <div class="form-group">
-                            <label for="edit-user-name">Nombre</label>
-                            <input type="text" id="edit-user-name" name="name" required>
-                            <div id="edit-user-name-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-surnames">Apellidos</label>
-                            <input type="text" id="edit-user-surnames" name="name" required>
-                            <div id="edit-user-surnames-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-email">Email</label>
-                            <input type="email" id="edit-user-email" name="email" required>
-                            <div id="edit-user-email-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-dni">DNI</label>
-                            <input type="text" id="edit-user-dni" name="dni" required>
-                            <div id="edit-user-dni-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-address">Dirección</label>
-                            <input type="text" id="edit-user-address" name="address" required>
-                            <div id="edit-user-address-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-city">Ciudad</label>
-                            <input type="text" id="edit-user-city" name="city" required>
-                            <div id="edit-user-city-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-country">País</label>
-                            <input type="text" id="edit-user-country" name="country" required>
-                            <div id="edit-user-country-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-uder-birth-year">Año de nacimiento</label>
-                            <input type="number" id="edit-user-birth-year" name="birth-year" required>
-                            <div id="edit-user-birth-year-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-gender">Género</label>
-                            <select id="edit-user-gender" name="gender" required>
-                                <option value="man">Hombre</option>
-                                <option value="woman">Mujer</option>
-                                <option value="non-binary">No binario</option>
-                                <option value="others">Otros</option>
-                            </select>
-                            <div id="edit-user-gender-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-plan">Plan</label>
-                            <select id="edit-user-plan" name="plan" required>
-                            </select>
-                            <div id="edit-user-plan-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-role">Rol</label>
-                            <select id="edit-user-role" name="role" required>
-                            </select>
-                            <div id="edit-user-role-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="edit-user-password">Contraseña</label>
-                            <input type="password" id="edit-user-password" name="password">
-							<div id="edit-user-password-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="edit-user-password-confirmation">Confirmar contraseña</label>
-                            <input type="password" id="edit-user-password-confirmation" name="password_confirmation">
-							<div id="edit-user-password-confirmation-error" class="error-message"></div>
-                        </div>
-
-                        <div class="loading" id="edit-user-loading">
-                            <div class="loading-spinner"></div>
-                            <p>Editando usuario, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Editar Usuario
-                        </button>
-                    </form>
-                </div>
-
+    <!-- Editar Usuario -->
+    <h1 class="mb-4"><i class="fas fa-user-edit me-2"></i> Editar Usuario</h1>
+    <div id="edit-user-success-message" class="alert alert-success d-none">
+        Usuario editado con éxito
+    </div>
+    <form id="edit-user-form" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="edit-user-name" name="name" required>
+                <div id="edit-user-name-error" class="invalid-feedback">Por favor ingrese un nombre válido</div>
             </div>
-        </main>
+
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-surnames" class="form-label">Apellidos</label>
+                <input type="text" class="form-control" id="edit-user-surnames" name="surnames" required>
+                <div id="edit-user-surnames-error" class="invalid-feedback">Por favor ingrese apellidos válidos</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="edit-user-email" name="email" required>
+                <div id="edit-user-email-error" class="invalid-feedback">Por favor ingrese un email válido</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-dni" class="form-label">DNI</label>
+                <input type="text" class="form-control" id="edit-user-dni" name="dni" required>
+                <div id="edit-user-dni-error" class="invalid-feedback">Por favor ingrese un DNI válido</div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="edit-user-address" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="edit-user-address" name="address" required>
+            <div id="edit-user-address-error" class="invalid-feedback">Por favor ingrese una dirección válida</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="edit-user-city" class="form-label">Ciudad</label>
+                <input type="text" class="form-control" id="edit-user-city" name="city" required>
+                <div id="edit-user-city-error" class="invalid-feedback">Por favor ingrese una ciudad válida</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="edit-user-country" class="form-label">País</label>
+                <input type="text" class="form-control" id="edit-user-country" name="country" required>
+                <div id="edit-user-country-error" class="invalid-feedback">Por favor ingrese un país válido</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="edit-user-birth-year" class="form-label">Año de nacimiento</label>
+                <input type="number" class="form-control" id="edit-user-birth-year" name="birth-year" required>
+                <div id="edit-user-birth-year-error" class="invalid-feedback">Por favor ingrese un año válido</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-gender" class="form-label">Género</label>
+                <select class="form-select" id="edit-user-gender" name="gender" required>
+                    <option value="man">Hombre</option>
+                    <option value="woman">Mujer</option>
+                    <option value="non-binary">No binario</option>
+                    <option value="others">Otros</option>
+                </select>
+                <div id="edit-user-gender-error" class="invalid-feedback">Por favor seleccione un género</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-plan" class="form-label">Plan</label>
+                <select class="form-select" id="edit-user-plan" name="plan" required>
+                    <option value="0">Sin plan</option>
+                </select>
+                <div id="edit-user-plan-error" class="invalid-feedback">Por favor seleccione un plan</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-role" class="form-label">Rol</label>
+                <select class="form-select" id="edit-user-role" name="role" required>
+                    <option value="0">Sin rol</option>
+                </select>
+                <div id="edit-user-role-error" class="invalid-feedback">Por favor seleccione un rol</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-password" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="edit-user-password" name="password">
+                <div id="edit-user-password-error" class="invalid-feedback">La contraseña debe tener al menos 6 caracteres</div>
+                <small class="text-muted">Dejar en blanco para no cambiar</small>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="edit-user-password-confirmation" class="form-label">Confirmar contraseña</label>
+                <input type="password" class="form-control" id="edit-user-password-confirmation" name="password_confirmation">
+                <div id="edit-user-password-confirmation-error" class="invalid-feedback">Las contraseñas no coinciden</div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="edit-user-loading">
+            <div class="spinner-border text-primary me-3" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Editando usuario, por favor espere...</p>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i>Guardar Cambios
+            </button>
+        </div>
+    </form>
+</div>
 
     </div>
 

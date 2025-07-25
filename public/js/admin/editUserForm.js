@@ -1,180 +1,217 @@
-async function editUserForm() {
-    let id = localStorage.getItem("id");
-    const token = localStorage.getItem("auth_token");
-    const backendAPI = "/api/";
+document.addEventListener('DOMContentLoaded', function () {
+  const token = localStorage.getItem('auth_token');
+  const backendAPI = '/api/';
+  const id = localStorage.getItem('id');
+  const form = document.getElementById('edit-user-form');
 
-    loadUserData(id);
+  if (!id) {
+    showError('No se proporcionó ID de usuario');
+    return;
+  }
 
-    document
-        .getElementById("edit-user-form")
-        .addEventListener("submit", async function (e) {
-            e.preventDefault();
-            document.getElementById("edit-user-loading").style.display =
-                "block";
+  // Cargar datos del usuario
+  loadUserData(id);
 
-            const formData = new FormData();
-            formData.append(
-                "name",
-                document.getElementById("edit-user-name").value
-            );
-            formData.append(
-                "surnames",
-                document.getElementById("edit-user-surnames").value
-            );
-            formData.append(
-                "email",
-                document.getElementById("edit-user-email").value
-            );
-            formData.append(
-                "dni",
-                document.getElementById("edit-user-dni").value
-            );
-            formData.append(
-                "address",
-                document.getElementById("edit-user-address").value
-            );
-            formData.append(
-                "city",
-                document.getElementById("edit-user-city").value
-            );
-            formData.append(
-                "country",
-                document.getElementById("edit-user-country").value
-            );
-            formData.append(
-                "birth_year",
-                document.getElementById("edit-user-birth-year").value
-            );
-            formData.append(
-                "gender",
-                document.getElementById("edit-user-gender").value
-            );
-            formData.append(
-                "plan",
-                document.getElementById("edit-user-plan").value
-            );
-            formData.append(
-              'role',
-              document.getElementById('edit-user-role').value
-            );
-            if (document.getElementById('edit-user-password').value) {
-                formData.append(
-                    'password',
-                    document.getElementById('edit-user-password').value
-                );
-                formData.append(
-                  'password_confirmation',
-                  document.getElementById('edit-user-password-confirmation')
-                    .value
-                );
-            }
+  // Manejar el envío del formulario
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-            try {
-                const editResponse = await fetch(
-                    backendAPI + `edit-user/${id}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                        body: formData,
-                    }
-                );
-
-                const data = await editResponse.json();
-
-                if (data.success) {
-                    document.getElementById(
-                        "edit-user-success-message"
-                    ).style.display = "block";
-                    setTimeout(() => {
-                        document.getElementById(
-                            "edit-user-success-message"
-                        ).style.display = "none";
-                    }, 5000);
-                    window.scrollTo({ top: 0, behavior: "smooth" });
-                } else {
-                    console.error("Error al editar:", data.message);
-                }
-            } catch (error) {
-                console.error("Error:", error);
-            } finally {
-                document.getElementById("edit-user-loading").style.display =
-                    "none";
-            }
-        });
-
-    async function loadUserData(id) {
-        try {
-            const response = await fetch(backendAPI + `user/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            const rolsResponse = await fetch('/api/roles' , {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            const result = await response.json();
-            const user = result.data.user;
-            const plans = result.data.plans;
-            const rolesData = await rolsResponse.json();
-            const roles = rolesData.roles;
-
-            document.getElementById("edit-user-name").value = user.name || "";
-            document.getElementById("edit-user-surnames").value =
-                user.surnames || "";
-            document.getElementById("edit-user-email").value = user.email || "";
-            document.getElementById("edit-user-dni").value = user.dni || "";
-            document.getElementById("edit-user-address").value =
-                user.address || "";
-            document.getElementById("edit-user-city").value = user.city || "";
-            document.getElementById("edit-user-country").value =
-                user.country || "";
-            document.getElementById("edit-user-birth-year").value =
-                user.birth_year || "";
-            document.getElementById("edit-user-gender").value =
-                user.gender || "";
-
-            const planSelect = document.getElementById("edit-user-plan");
-            planSelect.innerHTML = "";
-			const nulo = document.createElement("option");
-			nulo.value = 0;
-			nulo.text = 'Sin plan';
-			planSelect.appendChild(nulo);
-            plans.forEach((plan) => {
-                const option = document.createElement("option");
-                option.value = plan.id;
-                option.text = plan.name;
-                if (user.plan?.id === plan.id) {
-                    option.selected = true;
-                }
-                planSelect.appendChild(option);
-            });
-
-            const roleSelect = document.getElementById('edit-user-role');
-            roleSelect.innerHTML = '';
-            const rolNulo = document.createElement('option');
-            rolNulo.value = 0;
-            rolNulo.text = 'Sin rol';
-            roleSelect.appendChild(rolNulo);
-
-            roles.forEach((role) => {
-              const option = document.createElement('option');
-              option.value = role.id;
-              option.text = role.name;
-              if (user.role?.id === role.id) {
-                option.selected = true;
-              }
-              roleSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error("Error cargando datos del usuario:", error);
-        }
+    if (!validateForm()) {
+      return;
     }
-}
 
-editUserForm();
+    await submitUserForm();
+  });
+
+  function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'alert alert-danger mt-3';
+    errorDiv.textContent = message;
+    form.prepend(errorDiv);
+    setTimeout(() => errorDiv.remove(), 5000);
+  }
+
+  function validateForm() {
+    let isValid = true;
+    form.classList.add('was-validated');
+
+    // Validar contraseñas si se ingresó alguna
+    const password = document.getElementById('edit-user-password').value;
+    const passwordConfirm = document.getElementById(
+      'edit-user-password-confirmation'
+    ).value;
+
+    if (password || passwordConfirm) {
+      if (password.length < 6) {
+        document.getElementById('edit-user-password-error').style.display =
+          'block';
+        isValid = false;
+      } else {
+        document.getElementById('edit-user-password-error').style.display =
+          'none';
+      }
+
+      if (password !== passwordConfirm) {
+        document.getElementById(
+          'edit-user-password-confirmation-error'
+        ).style.display = 'block';
+        isValid = false;
+      } else {
+        document.getElementById(
+          'edit-user-password-confirmation-error'
+        ).style.display = 'none';
+      }
+    }
+
+    return isValid;
+  }
+
+  async function loadUserData(id) {
+    const loading = document.getElementById('edit-user-loading');
+    loading.classList.remove('d-none');
+
+    try {
+      const [userResponse, rolesResponse] = await Promise.all([
+        fetch(`${backendAPI}user/${id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        fetch('/api/roles', {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
+
+      if (!userResponse.ok || !rolesResponse.ok) {
+        throw new Error('Error al cargar los datos');
+      }
+
+      const userData = await userResponse.json();
+      const rolesData = await rolesResponse.json();
+
+      if (!userData.success || !rolesData.success) {
+        throw new Error(
+          userData.message ||
+            rolesData.message ||
+            'Error en los datos recibidos'
+        );
+      }
+
+      const user = userData.data.user;
+      const plans = userData.data.plans;
+      const roles = rolesData.roles;
+
+      // Llenar campos del formulario
+      document.getElementById('edit-user-name').value = user.name || '';
+      document.getElementById('edit-user-surnames').value = user.surnames || '';
+      document.getElementById('edit-user-email').value = user.email || '';
+      document.getElementById('edit-user-dni').value = user.dni || '';
+      document.getElementById('edit-user-address').value = user.address || '';
+      document.getElementById('edit-user-city').value = user.city || '';
+      document.getElementById('edit-user-country').value = user.country || '';
+      document.getElementById('edit-user-birth-year').value =
+        user.birth_year || '';
+      document.getElementById('edit-user-gender').value = user.gender || '';
+
+      // Llenar select de planes
+      const planSelect = document.getElementById('edit-user-plan');
+      planSelect.innerHTML = '<option value="0">Sin plan</option>';
+      plans.forEach((plan) => {
+        const option = new Option(plan.name, plan.id);
+        if (user.plan?.id === plan.id) {
+          option.selected = true;
+        }
+        planSelect.add(option);
+      });
+
+      // Llenar select de roles
+      const roleSelect = document.getElementById('edit-user-role');
+      roleSelect.innerHTML = '<option value="0">Sin rol</option>';
+      roles.forEach((role) => {
+        const option = new Option(role.name, role.id);
+        if (user.role?.id === role.id) {
+          option.selected = true;
+        }
+        roleSelect.add(option);
+      });
+    } catch (error) {
+      console.error('Error cargando datos del usuario:', error);
+      showError(error.message);
+    } finally {
+      loading.classList.add('d-none');
+    }
+  }
+
+  async function submitUserForm() {
+    const loading = document.getElementById('edit-user-loading');
+    const successMessage = document.getElementById('edit-user-success-message');
+
+    loading.classList.remove('d-none');
+    successMessage.classList.add('d-none');
+
+    try {
+      const formData = new FormData();
+      formData.append('name', document.getElementById('edit-user-name').value);
+      formData.append(
+        'surnames',
+        document.getElementById('edit-user-surnames').value
+      );
+      formData.append(
+        'email',
+        document.getElementById('edit-user-email').value
+      );
+      formData.append('dni', document.getElementById('edit-user-dni').value);
+      formData.append(
+        'address',
+        document.getElementById('edit-user-address').value
+      );
+      formData.append('city', document.getElementById('edit-user-city').value);
+      formData.append(
+        'country',
+        document.getElementById('edit-user-country').value
+      );
+      formData.append(
+        'birth_year',
+        document.getElementById('edit-user-birth-year').value
+      );
+      formData.append(
+        'gender',
+        document.getElementById('edit-user-gender').value
+      );
+      formData.append('plan', document.getElementById('edit-user-plan').value);
+      formData.append('role', document.getElementById('edit-user-role').value);
+
+      const password = document.getElementById('edit-user-password').value;
+      if (password) {
+        formData.append('password', password);
+        formData.append(
+          'password_confirmation',
+          document.getElementById('edit-user-password-confirmation').value
+        );
+      }
+
+      const response = await fetch(`${backendAPI}edit-user/${id}`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Error en la respuesta del servidor');
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        successMessage.classList.remove('d-none');
+        setTimeout(() => successMessage.classList.add('d-none'), 5000);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error(data.message || 'Error al editar el usuario');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      showError(error.message);
+    } finally {
+      loading.classList.add('d-none');
+    }
+  }
+});

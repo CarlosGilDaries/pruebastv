@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link 
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" 
+    crossorigin="anonymous">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/admin/admin.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
@@ -11,246 +15,274 @@
     <title>Configuración Web</title>
 </head>
 <body>
-    <div class="menu">
-        <nav>
-            <ul class="nav left-nav">
-                <li class="logo"><a href="/"><img id="logo" src="/images/logo.png" alt="Streaming logo"></a></li>
-            </ul>
-        </nav>
-        <nav>
-            <ul class="nav right-nav">
-                <a id="logout-button"><button class="login-btn">Cerrar sesión</button></a>
-            </ul>
-        </nav>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-black">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <button class="navbar-toggler me-2 order-first" type="button" 
+                        data-bs-toggle="offcanvas" data-bs-target="#adminSidebar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+                <a class="navbar-brand order-lg-2 m-0" href="/">
+                    <img id="logo" src="/images/logo.png" alt="Streaming logo" style="width: 180px; height: 55px;">
+                </a>
+            </div>
 
-    <div class="admin-container">
+            <div class="d-flex align-items-center">
+                <button id="logout-button" class="login-btn">Cerrar sesión</button>
+            </div>
+        </div>
+    </nav>
 
-        <aside class="admin-sidebar">
-            <ul class="admin-menu">
-				<a href="/admin/admin-panel.html">
-                	<li data-content="admin-panel">
-                        <i class="fa-solid fa-square-poll-vertical"></i>
-                        <span>Estadísticas</span>
-                	</li>
-				 </a>
-                 <a href="/admin/list-content.html">
-                	<li data-content="list-local-content">
-                        <i class="fas fa-film"></i>
-                        <span>Contenido Local</span>
-                	</li>
-				 </a>
-                 <a href="/admin/list-external-content.html">
-                	<li data-content="list-external-content">
-                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        <span>Contenido Externo</span>
-                	</li>
-				 </a>
-                 <a href="/admin/list-streams.html">
-                	<li data-content="list-streams">
-                        <i class="fa-solid fa-tower-broadcast"></i>
-                        <span>Streams</span>
-                	</li>
-				 </a>
-				<a href="/admin/list-ads.html">
-                	<li data-content="list-ads">
-                        <i class="fas fa-ad"></i>
-                        <span>Anuncios</span>
-					</li>
-				</a>
-				<a href="/admin/list-plans.html">
-                	<li data-content="list-plans">
-                        <i class="fa-solid fa-euro-sign"></i>
-                        <span>Planes</span>
-                	</li>
-				</a>
-				<a href="/admin/list-genders.html">
-                	<li data-content="list-genders">
-                        <i class="fa-solid fa-rocket"></i>
-                        <span>Géneros</span>
-                	</li>
-				</a>
-                <a href="/admin/list-categories.html">
-                	<li data-content="list-categories">
-                        <i class="fa-solid fa-layer-group"></i>
-                        <span>Categorías</span>
-                	</li>
-				</a>
-                <a href="/admin/list-tags.html">
-                	<li data-content="list-tags">
-                        <i class="fa-solid fa-tag"></i>
-                        <span>Etiquetas</span>
-                	</li>
-				</a>
-                <a href="/admin/list-actions.html">
-                	<li data-content="list-actions">
-                        <i class="fa-solid fa-location-crosshairs"></i>
-                        <span>LLamadas a Acción</span>
-                	</li>
-				</a>
-				<a href="/admin/list-users.html">
-                	<li data-content="list-users">
-                        <i class="fas fa-user"></i>
-                        <span>Usuarios</span>
-                	</li>
-				</a>
-				<a href="/admin/list-orders.html">
-                	<li data-content="list-orders">
-                        <i class="fa-solid fa-file-invoice-dollar"></i>
-                        <span>Pedidos</span>
-                	</li>
-				</a>
-                <a href="/admin/list-bills.html">
-                	<li data-content="list-bills">
-                        <i class="fa-solid fa-receipt"></i>
-                        <span>Facturas</span>
-                	</li>
-				</a>
-				<a href="/admin/web-config.html">
-                	<li data-content="web-config">
-                        <i class="fa-solid fa-globe"></i>
-                        <span>Configuración Web</span>
-                	</li>
-				</a>
-                <a href="/admin/mail-config.html">
-                	<li data-content="mail-config">
-                        <i class="fa-solid fa-envelope"></i>
-                        <span>Configuración Mail</span>
-                	</li>
-				</a>
-                <a href="/admin/list-legal-notices.html">
-                	<li data-content="list-legal-notices">
-                        <i class="fa-solid fa-gavel"></i>
-                        <span>Aviso Legal</span>
-                	</li>
-				</a>
-                <a href="/admin/list-privacy-politics.html">
-                	<li data-content="list-privacy-politics">
-                        <i class="fa-solid fa-lock"></i>
-                        <span>Política de Privacidad</span>
-                	</li>
-				</a>
-                <a href="/admin/list-footer-items.html">
-                	<li data-content="list-footer-items">
-                        <i class="fa-solid fa-shoe-prints"></i>
-                        <span>Items Footer</span>
-                	</li>
-				</a>
-                <a href="/admin/list-roles.html">
-                	<li data-content="list-roles">
-                        <i class="fa-solid fa-users"></i>
-                        <span>Roles</span>
-                	</li>
-				</a>
-            </ul>
+    <div class="admin-container d-flex">
+
+        <aside class="admin-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="adminSidebar">
+            <div class="offcanvas-body">
+                <ul class="admin-menu nav flex-column">
+                    <li class="nav-item" data-content="admin-panel">
+                        <a class="nav-link" href="/admin/admin-panel.html">
+                            <i class="fa-solid fa-square-poll-vertical me-2"></i>
+                            <span>Estadísticas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-local-content">
+                        <a class="nav-link" href="/admin/list-content.html">
+                            <i class="fas fa-film me-2"></i>
+                            <span>Contenido Local</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-external-content">
+                        <a class="nav-link" href="/admin/list-external-content.html">
+                            <i class="fa-solid fa-arrow-up-right-from-square me-2"></i>
+                            <span>Contenido Externo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-streams">
+                        <a class="nav-link" href="/admin/list-streams.html">
+                            <i class="fa-solid fa-tower-broadcast me-2"></i>
+                            <span>Streams</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-ads">
+                        <a class="nav-link" href="/admin/list-ads.html">
+                            <i class="fas fa-ad me-2"></i>
+                            <span>Anuncios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-plans">
+                        <a class="nav-link" href="/admin/list-plans.html">
+                            <i class="fa-solid fa-euro-sign me-2"></i>
+                            <span>Planes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-genders">
+                        <a class="nav-link" href="/admin/list-genders.html">
+                            <i class="fa-solid fa-rocket me-2"></i>
+                            <span>Géneros</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-categories">
+                        <a class="nav-link" href="/admin/list-categories.html">
+                            <i class="fa-solid fa-layer-group me-2"></i>
+                            <span>Categorías</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-tags">
+                        <a class="nav-link" href="/admin/list-tags.html">
+                            <i class="fa-solid fa-tag me-2"></i>
+                            <span>Etiquetas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-actions">
+                        <a class="nav-link" href="/admin/list-actions.html">
+                            <i class="fa-solid fa-location-crosshairs me-2"></i>
+                            <span>LLamadas a Acción</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-users">
+                        <a class="nav-link" href="/admin/list-users.html">
+                            <i class="fas fa-user me-2"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-orders">
+                        <a class="nav-link" href="/admin/list-orders.html">
+                            <i class="fa-solid fa-file-invoice-dollar me-2"></i>
+                            <span>Pedidos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-bills">
+                        <a class="nav-link" href="/admin/list-bills.html">
+                            <i class="fa-solid fa-receipt me-2"></i>
+                            <span>Facturas</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="web-config">
+                        <a class="nav-link active" href="/admin/web-config.html">
+                            <i class="fa-solid fa-globe me-2"></i>
+                            <span>Configuración Web</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="mail-config">
+                        <a class="nav-link" href="/admin/mail-config.html">
+                            <i class="fa-solid fa-envelope me-2"></i>
+                            <span>Configuración Mail</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-legal-notices">
+                        <a class="nav-link" href="/admin/list-legal-notices.html">
+                            <i class="fa-solid fa-gavel me-2"></i>
+                            <span>Aviso Legal</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-privacy-politics">
+                        <a class="nav-link" href="/admin/list-privacy-politics.html">
+                            <i class="fa-solid fa-lock me-2"></i>
+                            <span>Política de Privacidad</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-footer-items">
+                        <a class="nav-link" href="/admin/list-footer-items.html">
+                            <i class="fa-solid fa-shoe-prints me-2"></i>
+                            <span>Items Footer</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-roles">
+                        <a class="nav-link" href="/admin/list-roles.html">
+                            <i class="fa-solid fa-users me-2"></i>
+                            <span>Roles</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
-
                 <div class="container" id="web-config">
-                    <!-- Editar Ajustes Web -->
-                    <h1><i class="fa-solid fa-globe"></i> Editar Ajustes Web</h1>
-                    <div id="success-message" class="success-message">
-                        Ajustes Web editados con éxito
-                    </div>
-                    <form id="web-form">
-                        <div class="form-group">
-                            <label for="name">Nombre</label>
-                            <input type="text" id="name" name="name" required>
-                            <div id="name-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="fiscal_address">Dirección Fiscal</label>
-                            <input type="text" id="fiscal_address" name="fiscal_address" required>
-                            <div id="fiscal_address-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="nif_cif">NIF</label>
-                            <input type="text" id="nif_cif" name="nif_cif" required>
-                            <div id="nif_cif-error" class="error-message"></div>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                            <div id="email-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="commercial_registry_text">Texto Registro Mercantil</label>
-                            <textarea id="commercial_registry_text" name="commercial_registry_text" class="ckeditor wysiwyg-textarea" required></textarea>
-                            <div id="commercial_registry_text-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="lopd_text">Texto LOPD</label>
-                            <textarea id="lopd_text" name="lopd_text" class="ckeditor wysiwyg-textarea" required></textarea>
-                            <div id="lopd_text-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="favicon_input">Favicon (PNG)</label>
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="favicon_input">
-                                    <i class="fas fa-image"></i>
-                                    <span id="favicon_input-label-text">Seleccionar archivo...</span>
-                                </label>
-                                <input type="file" id="favicon_input" name="favicon_input" class="file-input" accept="image/*">
-                                <div id="favicon_input-name" class="file-name"></div>
-                            </div>
-                            <div id="favicon_input-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="logo_input">Logo (PNG)</label>
-                            <div class="file-input-container">
-                                <label class="file-input-label" for="logo_input">
-                                    <i class="fas fa-image"></i>
-                                    <span id="logo_input-label-text">Seleccionar archivo...</span>
-                                </label>
-                                <input type="file" id="logo_input" name="logo_input" class="file-input" accept="image/*">
-                                <div id="logo_input-name" class="file-name"></div>
-                            </div>
-                            <div id="logo_input-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="instagram">Instagram</label>
-                            <input type="text" id="instagram" name="instagram" required>
-                            <div id="instagram-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="facebook">Facebook</label>
-                            <input type="text" id="facebook" name="facebook" required>
-                            <div id="facebook-error" class="error-message"></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="twitter">Twitter</label>
-                            <input type="text" id="twitter" name="twitter" required>
-                            <div id="twitter-error" class="error-message"></div>
-                        </div>
-
-                        <div class="loading" id="loading">
-                            <div class="loading-spinner"></div>
-                            <p>Editando ajustes web, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Editar
-                        </button>
-                    </form>
-                </div>
-
+    <!-- Editar Ajustes Web -->
+    <h1 class="mb-4"><i class="fa-solid fa-globe me-2"></i> Editar Ajustes Web</h1>
+    <div id="success-message" class="alert alert-success d-none">
+        Ajustes Web editados con éxito
+    </div>
+    <form id="web-form" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <div id="name-error" class="invalid-feedback">Por favor ingrese un nombre válido</div>
             </div>
-        </main>
+
+            <div class="col-md-6 mb-3">
+                <label for="nif_cif" class="form-label">NIF/CIF</label>
+                <input type="text" class="form-control" id="nif_cif" name="nif_cif" required>
+                <div id="nif_cif-error" class="invalid-feedback">Por favor ingrese un NIF/CIF válido</div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="fiscal_address" class="form-label">Dirección Fiscal</label>
+            <input type="text" class="form-control" id="fiscal_address" name="fiscal_address" required>
+            <div id="fiscal_address-error" class="invalid-feedback">Por favor ingrese una dirección válida</div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" required>
+                <div id="email-error" class="invalid-feedback">Por favor ingrese un email válido</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="commercial_registry_text" class="form-label">Texto Registro Mercantil</label>
+                <textarea id="commercial_registry_text" name="commercial_registry_text" class="form-control ckeditor wysiwyg-textarea" required></textarea>
+                <div id="commercial_registry_text-error" class="invalid-feedback">Por favor complete este campo</div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="lopd_text" class="form-label">Texto LOPD</label>
+                <textarea id="lopd_text" name="lopd_text" class="form-control ckeditor wysiwyg-textarea" required></textarea>
+                <div id="lopd_text-error" class="invalid-feedback">Por favor complete este campo</div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="favicon_input" class="form-label">Favicon (PNG)</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" id="favicon_input" name="favicon_input" accept="image/*">
+                    <label class="input-group-text" for="favicon_input">
+                        <i class="fas fa-image"></i>
+                    </label>
+                </div>
+                <small class="text-muted">Tamaño recomendado: 32x32 px</small>
+                <div id="favicon_input-error" class="invalid-feedback d-block"></div>
+                <div id="current-favicon" class="mt-2"></div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label for="logo_input" class="form-label">Logo (PNG)</label>
+                <div class="input-group">
+                    <input type="file" class="form-control" id="logo_input" name="logo_input" accept="image/*">
+                    <label class="input-group-text" for="logo_input">
+                        <i class="fas fa-image"></i>
+                    </label>
+                </div>
+                <small class="text-muted">Tamaño recomendado: mínimo 200px de ancho</small>
+                <div id="logo_input-error" class="invalid-feedback d-block"></div>
+                <div id="current-logo" class="mt-2"></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label for="facebook" class="form-label">Facebook</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fab fa-facebook"></i></span>
+                    <input type="text" class="form-control" id="facebook" name="facebook" required>
+                </div>
+                <div id="facebook-error" class="invalid-feedback">Por favor ingrese un enlace válido</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="instagram" class="form-label">Instagram</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fab fa-instagram"></i></span>
+                    <input type="text" class="form-control" id="instagram" name="instagram" required>
+                </div>
+                <div id="instagram-error" class="invalid-feedback">Por favor ingrese un enlace válido</div>
+            </div>
+
+            <div class="col-md-4 mb-3">
+                <label for="twitter" class="form-label">Twitter</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fab fa-twitter"></i></span>
+                    <input type="text" class="form-control" id="twitter" name="twitter" required>
+                </div>
+                <div id="twitter-error" class="invalid-feedback">Por favor ingrese un enlace válido</div>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="loading">
+            <div class="spinner-border text-primary me-3" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Editando ajustes web, por favor espere...</p>
+        </div>
+        
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save me-2"></i> Guardar Cambios
+            </button>
+        </div>
+    </form>
+</div>
 
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
+    crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
     <script src="/js/admin/editWebSettings.js"></script>

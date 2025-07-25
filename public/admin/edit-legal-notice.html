@@ -157,41 +157,39 @@
             </div>
         </aside>
 
-        <main class="admin-main">
-            <div id="content-area">
+                <div class="container p-3 p-md-5" id="legal-notice">
+    <!-- Editar Aviso Legal -->
+    <h1 class="mb-4"><i class="fa-solid fa-gavel me-2"></i> Editar Aviso Legal</h1>
+    
+    <div id="success-message" class="alert alert-success d-none">
+        Aviso Legal editado con éxito
+    </div>
+    
+    <form id="legal-notice-form" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="edit-title" class="form-label">Título</label>
+            <input type="text" class="form-control" id="edit-title" name="edit-title" required>
+            <div id="edit-title-error" class="invalid-feedback"></div>
+        </div>
 
-                <div class="container" id="legal-notice">
-                    <!-- Añadir Aviso Legal -->
-                    <h1><i class="fa-solid fa-gavel"></i> Editar Aviso Legal</h1>
-                    <div id="success-message" class="success-message">
-                        Aviso Legal editado con éxito
-                    </div>
-                    <form id="legal-notice-form">
-                        <div class="form-group">
-                            <label for="edit-title">Título</label>
-                            <input type="text" id="edit-title" name="edit-title" required>
-                            <div id="edit-title-error" class="error-message"></div>
-                        </div>
+        <div class="mb-3">
+            <label for="text" class="form-label">Contenido</label>
+            <textarea id="text" name="text" class="form-control ckeditor wysiwyg-textarea" required></textarea>
+            <div id="text-error" class="invalid-feedback"></div>
+        </div>
 
-                        <div class="form-group">
-                            <label for="text">Contenido</label>
-                            <textarea id="text" name="text" class="ckeditor wysiwyg-textarea"></textarea>
-                            <div id="text-error" class="error-message"></div>
-                        </div>
-
-                        <div class="loading" id="loading">
-                            <div class="loading-spinner"></div>
-                            <p>Editando Aviso Legal, por favor espere...</p>
-                        </div>
-                        
-                        <button type="submit" class="btn">
-                            <i class="fas fa-upload"></i> Editar Aviso Legal
-                        </button>
-                    </form>
-                </div>
-
+        <div class="d-flex align-items-center justify-content-center my-3 d-none" id="loading">
+            <div class="spinner-border text-primary me-2" role="status">
+                <span class="visually-hidden">Cargando...</span>
             </div>
-        </main>
+            <p class="mb-0">Editando Aviso Legal, por favor espere...</p>
+        </div>
+        
+        <button type="submit" class="btn btn-primary w-100">
+            <i class="fas fa-upload me-2"></i> Editar Aviso Legal
+        </button>
+    </form>
+</div>
 
     </div>
 
