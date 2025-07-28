@@ -311,3 +311,15 @@ Route::get('/paypal/rent/capture', [PayPalController::class, 'paypalCaptureRentO
 Route::get('/paypal/cancel', [PayPalController::class, 'paypalCancel'])->name('paypal.cancel');
 
 Route::post('rent/{userId}/{movieId}', [RentController::class, 'store'])->name('rent.create');
+
+Route::get('/translations/{locale}', function ($locale) {
+    if (!in_array($locale, ['es', 'en', 'va'])) {
+        return response()->json(['error' => 'Language not supported'], 400);
+    }
+    
+    $translations = [
+        'messages' => require resource_path("lang/$locale/messages.php"),
+    ];
+    
+    return response()->json($translations);
+});
