@@ -4,18 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link 
+    <link 
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" 
     rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" 
     crossorigin="anonymous">
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/admin/admin.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.min.css">
-    <title>Idiomas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>Añadir Idioma</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
@@ -127,7 +124,7 @@
                         </a>
                     </li>
                     <li class="nav-item" data-content="list-languages">
-                        <a class="nav-link" href="/admin/list-languages.html">
+                        <a class="nav-link active" href="/admin/list-languages.html">
                             <i class="fa-solid fa-language me-2"></i>
                             <span>Idiomas</span>
                         </a>
@@ -166,29 +163,104 @@
             </div>
         </aside>
 
-        <main class="admin-main flex-grow-1">
-            <div id="content-area">
 
-                <div class="container-fluid p-3 admin-panel" id="list-languages"></div>
-
+        <div class="container p-5" id="add-language">
+    <h1><i class="fa-solid fa-layer-group me-2"></i>Añadir Idioma</h1>
+    
+    <div id="add-language-success-message" class="alert alert-success d-none">
+        Idioma añadido con éxito
+    </div>
+    
+    <form id="add-language-form" class="needs-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label for="add-language-name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="add-language-name" name="name" required>
+                <div id="add-language-name-error" class="invalid-feedback"></div>
             </div>
-        </main>
+
+            <div class="col-md-6 mb-3">
+                <label for="add-language-code" class="form-label">Código</label>
+                <input type="text" class="form-control" id="add-language-code" name="code" placeholder="es, en, etc" required>
+                <div id="add-language-code-error" class="invalid-feedback"></div>
+            </div>
+        </div>
+        
+        <div class="mb-3">
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1">
+                <label class="form-check-label" for="render">Activo</label>
+            </div>
+        </div>
+        
+        <!-- Sección de traducciones iniciales -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Traducciones iniciales (Login)</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="translation_login" class="form-label">"Iniciar Sesión" (título)</label>
+                        <input type="text" class="form-control" id="translation_login" name="translations[login]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_forgot_password" class="form-label">"¿Olvidaste la contraseña?"</label>
+                        <input type="text" class="form-control" id="translation_forgot_password" name="translations[forgot_password]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_login_button" class="form-label">"Iniciar Sesión" (botón)</label>
+                        <input type="text" class="form-control" id="translation_login_button" name="translations[login_button]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_no_account" class="form-label">"¿No tienes cuenta?"</label>
+                        <input type="text" class="form-control" id="translation_no_account" name="translations[no_account]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_register" class="form-label">"Regístrate"</label>
+                        <input type="text" class="form-control" id="translation_register" name="translations[register]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_legal_notice" class="form-label">"Aviso Legal"</label>
+                        <input type="text" class="form-control" id="translation_legal_notice" name="translations[legal_notice]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_privacy_policy" class="form-label">"Política de Privacidad"</label>
+                        <input type="text" class="form-control" id="translation_privacy_policy" name="translations[privacy_policy]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_contact" class="form-label">"Contacto"</label>
+                        <input type="text" class="form-control" id="translation_contact" name="translations[contact]" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+                
+                <div class="d-flex justify-content-center align-items-center my-4 d-none" id="add-language-loading">
+                    <div class="spinner-border me-3" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mb-0">Creando Idioma, por favor espere...</p>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-plus-circle me-2"></i> Añadir Idioma
+                    </button>
+                </div>
+            </form>
+        </div>
+
+
 
     </div>
 
-    <script src="/ckeditor/ckeditor.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
     crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.bootstrap5.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.1/js/dataTables.buttons.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.1/js/buttons.html5.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script type="module" src="/js/admin/listLanguages.js"></script>
+    <script src="/js/admin/addLanguage.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

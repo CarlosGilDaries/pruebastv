@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\FavoritesController;
 use App\Http\Controllers\Api\FooterItemController;
+use App\Http\Controllers\Api\LanguageController;
 use App\Http\Controllers\Api\LegalNoticeController;
 use App\Http\Controllers\Api\PayPalController;
 use App\Http\Controllers\Api\PermissionController;
@@ -238,6 +239,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('add-privacy-politic', [PrivacyPoliticController::class, 'store']);
         Route::post('edit-privacy-politic/{id}', [PrivacyPoliticController::class, 'update']);
         Route::delete('delete-privacy-politic', [PrivacyPoliticController::class, 'destroy']);
+    });
+
+        // Rutas de Idiomas protegidas
+    Route::middleware([
+        CheckPermissions::class . ':idiomas',
+    ])->group(function () {
+        Route::get('languages/datatable', [LanguageController::class, 'datatable']);
+        Route::get('language/{id}', [LanguageController::class, 'show']);
+        Route::post('add-language', [LanguageController::class, 'store']);
+        Route::post('edit-language/{id}', [LanguageController::class, 'update']);
+        Route::delete('delete-language', [LanguageController::class, 'destroy']);
     });
 
     Route::get('permissions', [PermissionController::class, 'index']);

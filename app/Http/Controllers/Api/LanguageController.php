@@ -96,6 +96,26 @@ class LanguageController extends Controller
 
             $language->save();
 
+            $defaultTranslations = [
+                ['key' => 'login', 'value' => $request->translations['login']],
+                ['key' => 'forgot_password', 'value' => $request->translations['forgot_password']],
+                ['key' => 'login_button', 'value' => $request->translations['login_button']],
+                ['key' => 'no_account', 'value' => $request->translations['no_account']],
+                ['key' => 'register', 'value' => $request->translations['register']],
+                ['key' => 'legal_notice', 'value' => $request->translations['legal_notice']],
+                ['key' => 'privacy_policy', 'value' => $request->translations['privacy_policy']],
+                ['key' => 'contact', 'value' => $request->translations['contact']],
+            ];
+            
+            // Insertar traducciones
+            foreach ($defaultTranslations as $translation) {
+                Translation::create([
+                    'language_id' => $language->id,
+                    'key' => $translation['key'],
+                    'value' => $translation['value']
+                ]);
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Idioma ' . $language->name . ' creado con éxito.'
@@ -141,7 +161,9 @@ class LanguageController extends Controller
             $id = $request->input('content_id');
             $language = Language::where('id', $id)->first();
             $translations = Translation::where('language_id', $id)->get();
-            $translations->delete();
+            foreach ($translations as $translation) {
+                $translation->delete();
+            }
             $language->delete();
 
 
@@ -169,8 +191,6 @@ class LanguageController extends Controller
 				<button class="actions-button orders-button">Acciones</button>
 				<div class="actions-menu">
 					<a href="/admin/edit-language.html" class="action-item content-action edit-button" data-id="'.$id.'">Editar</a>
-                    <a href="/admin/traductions.html" class="action-item content-action edit-button" data-id="'.$id.'">Traducciones</a>
-                    <form class="language-delete-form" data-id="' . $id . '">
                     <form class="language-delete-form" data-id="' . $id . '">
 						<input type="hidden" name="content_id" value="' . $id . '">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
