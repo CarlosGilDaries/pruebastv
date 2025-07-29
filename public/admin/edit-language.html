@@ -492,6 +492,35 @@
 
         <div class="card mb-4">
             <div class="card-header">
+                <h5 class="mb-0">Ficha de Contenido</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="translation_description_show" class="form-label">"Descripción" (título)</label>
+                        <input type="text" class="form-control" id="translation_description_show" name="translations[description_show]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_details_show" class="form-label">"Detalles" (tab)</label>
+                        <input type="text" class="form-control" id="translation_details_show" name="translations[details_show]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_similars_show" class="form-label">"Similares" (tab)</label>
+                        <input type="text" class="form-control" id="translation_similars_show" name="translations[similars_show]" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Contenido</h5>
+            </div>
+            <div class="card-body" id="content"></div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
                 <h5 class="mb-0">Llamadas a la acción</h5>
             </div>
             <div class="card-body" id="actions"></div>

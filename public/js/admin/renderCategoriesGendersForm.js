@@ -4,21 +4,25 @@ async function renderCategoriesAndGenders() {
         const categoriesContainer = document.getElementById('categories');
         const tagsContainer = document.getElementById('tags');
         const actionsContainer = document.getElementById('actions');
+        const contentContainer = document.getElementById('content');
 
         const categoriesResponse = await fetch('/api/dropdown-categories-menu');
         const gendersResponse = await fetch('/api/genders');
         const tagsResponse = await fetch('/api/tags');
         const actionsResponse = await fetch('/api/actions');
+        const contentResponse = await fetch('/api/content');
 
         const categoriesData = await categoriesResponse.json();
         const gendersData = await gendersResponse.json();
         const tagsData = await tagsResponse.json();
         const actionsData = await actionsResponse.json();
+        const contentData = await contentResponse.json();
 
         const categories = categoriesData.categories;
         const genders = gendersData.genders;
         const tags = tagsData.tags;
         const actions = actionsData.actions;
+        const contents = contentData.data.movies;
 
         let genderFormHtml = `<div class="col-md-6">
                                             <label for="translation_gender_title" class="form-label">"Géneros" (Document title)</label>
@@ -46,6 +50,10 @@ async function renderCategoriesAndGenders() {
                                 </div>`;
         
         let actionFormHtml = "";
+        let contentFormHtml = `<div class="col-md-6">
+        <label for="translation_watch_now" class="form-label">"Botón Ver Ahora"</label>
+        <input value="Ver Ahora" type="text" class="form-control" id="translation_watch_now" name="translations[watch_now]" required>
+    </div>`;
                             
         genders.forEach(gender => {
             const columnHtml = `<div class="col-md-6">
@@ -107,6 +115,50 @@ async function renderCategoriesAndGenders() {
         actionsRow.classList.add('row', 'g-3');
         actionsRow.innerHTML = actionFormHtml;
         actionsContainer.appendChild(actionsRow);
+
+        contents.forEach((content) => {
+          const columnHtml = `<div class="col-md-6">
+        <label for="translation_content_${content.id}_title" class="form-label">"${content.title}"</label>
+        <input value="${content.title}" type="text" class="form-control" id="translation_content_${content.id}_title" name="translations[content_${content.id}_title]" required>
+    </div>
+    <div class="col-md-6">
+        <label for="translation_content_${content.id}_tagline" class="form-label">"${content.title} Resumen corto"</label>
+        <textarea class="form-control ckeditor wysiwyg-textarea" id="translation_content_${content.id}_tagline" name="translations[content_${content.id}_tagline]" rows="3"></textarea>
+    </div>
+    <div class="col-md-6">
+        <label for="translation_content_${content.id}_overview" class="form-label">"${content.title} Descripción"</label>
+        <textarea class="form-control ckeditor wysiwyg-textarea" id="translation_content_${content.id}_overview" name="translations[content_${content.id}_overview]" rows="3"></textarea>
+    </div>`;
+          contentFormHtml += columnHtml;
+        });
+
+        const contentRow = document.createElement('div');
+        contentRow.classList.add('row', 'g-3');
+        contentRow.innerHTML = contentFormHtml;
+        contentContainer.appendChild(contentRow);
+
+        // Inicializar CKEditor para los nuevos textareas
+        const newTextareas = contentRow.querySelectorAll('textarea.ckeditor');
+
+        newTextareas.forEach((textarea) => {
+          CKEDITOR.replace(textarea.id);
+
+          // Esperar a que cada instancia esté lista
+          CKEDITOR.on('instanceReady', function (evt) {
+            const editor = evt.editor;
+            const id = editor.name;
+
+            // Buscar el contenido relacionado
+            const contentId = id.match(/translation_content_(\d+)_/)[1];
+            const content = contents.find((c) => c.id == contentId);
+
+            if (id.endsWith('_tagline')) {
+              editor.setData(content.tagline || '');
+            } else if (id.endsWith('_overview')) {
+              editor.setData(content.overview || '');
+            }
+          });
+        });
 
     } catch (error) {
         console.log(error);

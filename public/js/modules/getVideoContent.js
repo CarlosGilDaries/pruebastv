@@ -18,6 +18,7 @@ export function getVideoContent(data, node) {
     info.classList.add('miniature-info');
 
     const title = document.createElement('h3');
+    title.setAttribute('data-i18n', `content_${video.id}_title`);
     title.textContent = video.title;
 
     const gender = document.createElement('p');

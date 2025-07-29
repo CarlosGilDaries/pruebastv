@@ -48,6 +48,7 @@ export async function gridShow(
       info.classList.add('info');
 
       const title2 = document.createElement('h3');
+      title2.setAttribute('data-i18n', `content_${movie.id}_title`);
       title2.textContent = movie.title;
 
       const gender = document.createElement('p');

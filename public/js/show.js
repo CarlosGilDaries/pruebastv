@@ -5,6 +5,7 @@ import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { formatDuration } from './modules/formatDuration.js';
 import { renderSimilars } from './modules/renderSimilars.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
+import { applyTranslations } from './translations.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -56,6 +57,9 @@ if (device_id == null) {
 
 async function fetchMovieData() {
   try {
+    // Cargar el idioma actual primero
+    const currentLanguage = localStorage.getItem('userLocale') || 'es';
+
     const response = await fetch('/api/content/' + movieSlug, {
       method: 'GET',
       headers: {
@@ -87,13 +91,14 @@ async function fetchMovieData() {
 
     const tags = data.data.movie.tags;
     const tagsContainer = document.querySelector('.keyword-links');
-    tags.forEach(tag => {
+    tags.forEach((tag) => {
       const link = document.createElement('a');
       link.href = `/tag-show.html?id=${tag.id}`;
       link.classList.add('keyword-link');
+      link.setAttribute('data-i18n', `tag_${tag.id}`);
       link.innerHTML = tag.name;
       tagsContainer.appendChild(link);
-    })
+    });
 
     const userData = await userResponse.json();
     const movieId = data.data.movie.id;
@@ -122,23 +127,22 @@ async function fetchMovieData() {
       }
 
       if (data.data.movie.rent && userData.data.user.rol != 'admin') {
-        const rentResponse = await fetch(
-          '/api/check-if-rented/' + movieId,
-          {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const rentResponse = await fetch('/api/check-if-rented/' + movieId, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
         const rentData = await rentResponse.json();
 
         if (!rentData.success && rentResponse.status == 404) {
           play.classList.add('rent-btn');
           play.textContent =
-            `Alquilar ${data.data.movie.rent_days} días: ` + data.data.movie.rent_price + ' €';
+            `Alquilar ${data.data.movie.rent_days} días: ` +
+            data.data.movie.rent_price +
+            ' €';
           play.addEventListener('click', async function () {
             localStorage.setItem('movie_id', data.data.movie.id);
             window.location.href = '/rent-payment-method.html';
@@ -193,8 +197,9 @@ async function fetchMovieData() {
                 dateTimeIntoTime(data.data.movie.start_time);
               play.classList.add('disabled-btn');
               startTimeContainer.style.display = 'block';
-              startTimeText.innerHTML = 'El contenido no ha empezado todavía.'
-              startTimeDateTime.innerHTML = 'Fecha de inicio: ' + 
+              startTimeText.innerHTML = 'El contenido no ha empezado todavía.';
+              startTimeDateTime.innerHTML =
+                'Fecha de inicio: ' +
                 dateTimeIntoDate(data.data.movie.start_time) +
                 ' a las ' +
                 dateTimeIntoTime(data.data.movie.start_time);
@@ -209,7 +214,7 @@ async function fetchMovieData() {
                   },
                 }
               );
-              play.innerHTML = "Finalizado";
+              play.innerHTML = 'Finalizado';
               play.classList.add('disabled-btn');
               startTimeContainer.style.display = 'block';
               startTimeText.innerHTML = 'El contenido ya ha terminado.';
@@ -218,7 +223,10 @@ async function fetchMovieData() {
                 dateTimeIntoDate(data.data.movie.end_time) +
                 ' a las ' +
                 dateTimeIntoTime(data.data.movie.end_time);
-            } else if (hasStarted(data.data.movie.start_time) && !hasEnded(data.data.movie.end_time)) {
+            } else if (
+              hasStarted(data.data.movie.start_time) &&
+              !hasEnded(data.data.movie.end_time)
+            ) {
               play.innerHTML = 'Ver Ahora';
 
               play.addEventListener('click', function () {
@@ -251,6 +259,7 @@ async function fetchMovieData() {
 
       const image = document.getElementById('content-image');
       const title = document.getElementById('content-title');
+      title.setAttribute('data-i18n', `content_${data.data.movie.id}_title`);
       const trailer = document.getElementById('trailer');
       if (data.data.movie.trailer != null) {
         trailer.classList.add('fade-out');
@@ -261,16 +270,33 @@ async function fetchMovieData() {
       }
       trailer.poster = data.data.movie.cover;
       image.src = data.data.movie.cover;
-      title.innerHTML = data.data.movie.title;
+      title.textContent = data.data.movie.title;
       document.title = data.data.movie.title + ' - Pruebas TV';
-      gender.innerHTML = data.data.movie.gender.name;
+      gender.textContent = data.data.movie.gender.name;
+      gender.setAttribute('data-i18n', `gender_${data.data.movie.gender.id}`);
       gender.href = `/gender-show.html?id=${data.data.movie.gender_id}`;
-      tagline.innerHTML = data.data.movie.tagline;
+      const taglineText = document.createElement('p');
+      taglineText.innerHTML = data.data.movie.tagline;
+      taglineText.setAttribute(
+        'data-i18n',
+        `content_${data.data.movie.id}_tagline`
+      );
+      tagline.appendChild(taglineText);
       duration.innerHTML = formatDuration(data.data.movie.duration);
-      overview.innerHTML = data.data.movie.overview;
-      
-		renderSimilars(data.data.movie, token);
-		
+      const overviewText = document.createElement('div'); // 🔄 CAMBIO AQUÍ
+      overviewText.textContent = data.data.movie.overview;
+      overviewText.setAttribute(
+        'data-i18n',
+        `content_${data.data.movie.id}_overview`
+      );
+      overview.appendChild(overviewText);
+      console.log(data.data.movie.overview);
+
+      if (typeof applyTranslations === 'function') {
+        applyTranslations(currentLanguage);
+      }
+
+      renderSimilars(data.data.movie, token);
     } else {
       console.error('Error al consultar la API: ', data.message);
     }
@@ -280,23 +306,6 @@ async function fetchMovieData() {
 }
 
 fetchMovieData();
-
-/*const tabs = document.querySelectorAll('.tab');
-
-tabs.forEach(tab => {
-	tab.addEventListener('click', function() {
-		document.querySelectorAll('.tab').forEach(t => {
-			t.classList.remove('active')
-		});
-		document.querySelectorAll('.tab-content').forEach(c => {
-			c.classList.remove('active')
-		});
-
-    const tabId = this.getAttribute('data-tab');
-    document.getElementById(tabId).classList.add('active');
-    this.classList.add('active');
-	});
-});*/
 
 // Función para verificar si una película es favorita
 async function isMovieFavorite(movieId) {

@@ -99,6 +99,18 @@ async function editLanguageForm() {
           formData.append(`translations[${key}]`, input.value);
         });
 
+        for (let instanceName in CKEDITOR.instances) {
+          if (CKEDITOR.instances.hasOwnProperty(instanceName)) {
+            const editor = CKEDITOR.instances[instanceName];
+            const textarea = document.getElementById(instanceName);
+            if (textarea && textarea.name.startsWith('translations[')) {
+              const key = textarea.name.match(/\[(.*?)\]/)[1];
+              const data = editor.getData();
+              formData.append(`translations[${key}]`, data);
+            }
+          }
+        }
+
         const response = await fetch(`${backendAPI}edit-language/${id}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
