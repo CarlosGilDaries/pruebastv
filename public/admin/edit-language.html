@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/css/admin/admin.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Añadir Idioma</title>
+    <title>Editar Idioma</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
@@ -164,25 +164,25 @@
         </aside>
 
 
-        <div class="container p-5" id="add-language">
-    <h1><i class="fa-solid fa-layer-group me-2"></i>Añadir Idioma</h1>
+        <div class="container p-5" id="edit-language">
+    <h1><i class="fas fa-pen me-2"></i>Editar Idioma</h1>
     
-    <div id="add-language-success-message" class="alert alert-success d-none">
-        Idioma añadido con éxito
+    <div id="edit-language-success-message" class="alert alert-success d-none">
+        Idioma editado con éxito
     </div>
     
-    <form id="add-language-form" class="needs-validation" novalidate>
+    <form id="edit-language-form" class="needs-validation" novalidate>
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label for="add-language-name" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="add-language-name" name="name" required>
-                <div id="add-language-name-error" class="invalid-feedback"></div>
+                <label for="edit-language-name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="edit-language-name" name="name" required>
+                <div id="edit-language-name-error" class="invalid-feedback"></div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="add-language-code" class="form-label">Código</label>
-                <input type="text" class="form-control" id="add-language-code" name="code" placeholder="es, en, etc" required>
-                <div id="add-language-code-error" class="invalid-feedback"></div>
+                <label for="edit-language-code" class="form-label">Código</label>
+                <input type="text" class="form-control" id="edit-language-code" name="code" placeholder="es, en, etc" required>
+                <div id="edit-language-code-error" class="invalid-feedback"></div>
             </div>
         </div>
         
@@ -234,6 +234,10 @@
             </div>
             <div class="card-body">
                 <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="translation_register_title" class="form-label">"Registro" (Document title)</label>
+                        <input type="text" class="form-control" id="translation_register_title" name="translations[register_title]" required>
+                    </div>
                     <div class="col-md-6">
                         <label for="translation_register_heading" class="form-label">"Registro" (encabezado)</label>
                         <input type="text" class="form-control" id="translation_register_heading" name="translations[register_heading]" required>
@@ -291,8 +295,12 @@
                         <input type="text" class="form-control" id="translation_next_button" name="translations[next_button]" required>
                     </div>
                     <div class="col-md-6">
-                        <label for="translation_submit_button" class="form-label">"Pagar Plan" (botón)</label>
+                        <label for="translation_submit_button" class="form-label">"Registro" (botón)</label>
                         <input type="text" class="form-control" id="translation_submit_button" name="translations[submit_button]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_submit_pay_plan_button" class="form-label">"Pagar Plan" (botón)</label>
+                        <input type="text" class="form-control" id="translation_submit_pay_plan_button" name="translations[submit_pay_plan_button]" required>
                     </div>
                     <div class="col-md-6">
                         <label for="translation_have_account" class="form-label">"¿Ya tienes cuenta?"</label>
@@ -301,6 +309,66 @@
                     <div class="col-md-6">
                         <label for="translation_login_link" class="form-label">"Inicia Sesión"</label>
                         <input type="text" class="form-control" id="translation_login_link" name="translations[login_link]" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Nuevo Dispositivo</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="translation_new_device_title" class="form-label">"Nuevo Dispositivo" (título página)</label>
+                        <input type="text" class="form-control" id="translation_new_device_title" name="translations[new_device_title]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_new_device_heading" class="form-label">"Nuevo dispositivo" (encabezado)</label>
+                        <input type="text" class="form-control" id="translation_new_device_heading" name="translations[new_device_heading]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_device_name_label" class="form-label">"Nombre del dispositivo" (etiqueta)</label>
+                        <input type="text" class="form-control" id="translation_device_name_label" name="translations[device_name_label]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_add_device_button" class="form-label">"Añadir dispositivo" (botón)</label>
+                        <input type="text" class="form-control" id="translation_add_device_button" name="translations[add_device_button]" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Gestión de Dispositivos</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="translation_devices_management_title" class="form-label">"Gestión de Dispositivos" (título página)</label>
+                        <input type="text" class="form-control" id="translation_devices_management_title" name="translations[devices_management_title]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_active_devices_heading" class="form-label">"Dispositivos Activos" (encabezado)</label>
+                        <input type="text" class="form-control" id="translation_active_devices_heading" name="translations[active_devices_heading]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_device_limit_message" class="form-label">"Has alcanzado el límite de dispositivos permitidos para tu plan actual."</label>
+                        <input type="text" class="form-control" id="translation_device_limit_message" name="translations[device_limit_message]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_change_plan_link" class="form-label">"CAMBIAR DE PLAN" (texto del enlace)</label>
+                        <input type="text" class="form-control" id="translation_change_plan_link" name="translations[change_plan_link]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_unnamed_device" class="form-label">"Dispositivo sin nombre"</label>
+                        <input type="text" class="form-control" id="translation_unnamed_device" name="translations[unnamed_device]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_delete_button" class="form-label">"Eliminar" (botón)</label>
+                        <input type="text" class="form-control" id="translation_delete_button" name="translations[delete_button]" required>
                     </div>
                 </div>
             </div>
@@ -382,66 +450,6 @@
 
         <div class="card mb-4">
             <div class="card-header">
-                <h5 class="mb-0">Nuevo Dispositivo</h5>
-            </div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="translation_new_device_title" class="form-label">"Nuevo Dispositivo" (Document title)</label>
-                        <input type="text" class="form-control" id="translation_new_device_title" name="translations[new_device_title]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_new_device_heading" class="form-label">"Nuevo dispositivo" (encabezado)</label>
-                        <input type="text" class="form-control" id="translation_new_device_heading" name="translations[new_device_heading]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_device_name_label" class="form-label">"Nombre del dispositivo" (etiqueta)</label>
-                        <input type="text" class="form-control" id="translation_device_name_label" name="translations[device_name_label]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_add_device_button" class="form-label">"Añadir dispositivo" (botón)</label>
-                        <input type="text" class="form-control" id="translation_add_device_button" name="translations[add_device_button]" required>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
-                <h5 class="mb-0">Gestión de Dispositivos</h5>
-            </div>
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label for="translation_devices_management_title" class="form-label">"Gestión de Dispositivos" (título página)</label>
-                        <input type="text" class="form-control" id="translation_devices_management_title" name="translations[devices_management_title]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_active_devices_heading" class="form-label">"Dispositivos Activos" (encabezado)</label>
-                        <input type="text" class="form-control" id="translation_active_devices_heading" name="translations[active_devices_heading]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_device_limit_message" class="form-label">"Has alcanzado el límite de dispositivos permitidos para tu plan actual."</label>
-                        <input type="text" class="form-control" id="translation_device_limit_message" name="translations[device_limit_message]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_change_plan_link" class="form-label">"CAMBIAR DE PLAN" (texto del enlace)</label>
-                        <input type="text" class="form-control" id="translation_change_plan_link" name="translations[change_plan_link]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_unnamed_device" class="form-label">"Dispositivo sin nombre"</label>
-                        <input type="text" class="form-control" id="translation_unnamed_device" name="translations[unnamed_device]" required>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="translation_delete_button" class="form-label">"Eliminar" (botón)</label>
-                        <input type="text" class="form-control" id="translation_delete_button" name="translations[delete_button]" required>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card mb-4">
-            <div class="card-header">
                 <h5 class="mb-0">Footer</h5>
             </div>
             <div class="card-body">
@@ -462,16 +470,16 @@
             </div>
         </div>
                 
-                <div class="d-flex justify-content-center align-items-center my-4 d-none" id="add-language-loading">
+                <div class="d-flex justify-content-center align-items-center my-4 d-none" id="edit-language-loading">
                     <div class="spinner-border me-3" role="status">
                         <span class="visually-hidden">Cargando...</span>
                     </div>
-                    <p class="mb-0">Creando Idioma, por favor espere...</p>
+                    <p class="mb-0">Editando Idioma, por favor espere...</p>
                 </div>
                 
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus-circle me-2"></i> Añadir Idioma
+                        <i class="fas fa-plus-circle me-2"></i> Editar Idioma
                     </button>
                 </div>
             </form>
@@ -486,7 +494,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/addLanguage.js"></script>
+    <script src="/js/admin/editLanguage.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

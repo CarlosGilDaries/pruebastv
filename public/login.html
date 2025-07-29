@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="/css/login.css">
     <title data-i18n="login">Login</title>
 </head>
-<body>
+<body id="login">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -20,13 +20,9 @@
                 </a>
                 
                 <!-- Selector de idioma -->
-                <div class="ms-auto">
-                    <select id="languageSelector" class="form-select form-select-sm">
-                        <option value="es">Castellano</option>
-                        <option value="en">English</option>
-                        <option value="va">Valencià</option>
-                    </select>
-                </div>
+                <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                    <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
+                </li>
             </div>
         </nav>
     </header>

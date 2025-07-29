@@ -271,6 +271,10 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
     color: var(--color-primary);
 }
 
+#language-container {
+    margin-right: 10px !important;
+}
+
 /* Para pantallas pequeñas */
 @media (max-width: 768px) {
     .search-box {
@@ -322,7 +326,12 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
     }
     .login-btn {
         margin-top: 30px;
-    } 
+    }
+    
+    #language-container {
+        width: 70%;
+        margin: 0 !important;
+    }
 }
 
 @media (min-width: 576px) and (max-width: 991px) {

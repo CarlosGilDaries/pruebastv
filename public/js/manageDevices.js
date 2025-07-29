@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', async function () {
   } catch (error) {
     console.error('Error:', error);
     alert('Error al cargar dispositivos: ' + error.message);
-    window.location.href = '/login.html';
   }
 });
 
@@ -57,11 +56,14 @@ function renderDevices(devices) {
 
     const deviceName = document.createElement('p');
     deviceName.className = 'device-name';
-    deviceName.textContent = device.device_name || 'Dispositivo sin nombre';
+    deviceName.textContent =
+      device.device_name ||
+      document.querySelector('[data-i18n="unnamed_device"]').textContent;
 
     const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = ``
     deleteButton.className = 'delete-device';
-    deleteButton.textContent = 'Eliminar';
+    deleteButton.innerHTML = '<span data-i18n="delete_button">Eliminar</span>';
     deleteButton.addEventListener('click', () => handleDeleteDevice(device.id));
 
     deviceElement.appendChild(deviceName);

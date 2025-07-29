@@ -246,9 +246,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
         CheckPermissions::class . ':idiomas',
     ])->group(function () {
         Route::get('languages/datatable', [LanguageController::class, 'datatable']);
-        Route::get('language/{id}', [LanguageController::class, 'show']);
         Route::post('add-language', [LanguageController::class, 'store']);
-        Route::post('edit-language/{id}', [LanguageController::class, 'update']);
+        Route::post('edit-language/{code}', [LanguageController::class, 'update']);
         Route::delete('delete-language', [LanguageController::class, 'destroy']);
     });
 
@@ -290,6 +289,8 @@ Route::get('tag/{id}', [TagController::class, 'show']);
 Route::get('footer-items', [FooterItemController::class, 'index']);
 Route::get('legal-notice', [LegalNoticeController::class, 'index']);
 Route::get('privacy-politic', [PrivacyPoliticController::class, 'index']);
+Route::get('languages', [LanguageController::class, 'index']);
+Route::get('language/{code}', [LanguageController::class, 'show']);
 
 Route::get('check-email/{email}', [LoginApiController::class, 'checkEmail']);
 Route::get('check-dni/{dni}', [LoginApiController::class, 'checkDni']);

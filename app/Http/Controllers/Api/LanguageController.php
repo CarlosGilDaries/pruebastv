@@ -14,12 +14,13 @@ class LanguageController extends Controller
     public function index()
     {
         try {
-            $languages = Language::where('is_active', 1)->get();
+            $languages = Language::with('translations')
+                ->where('is_active', 1)->get();
 
             return response()->json([
                 'success' => true,
                 'languages' => $languages
-            ]. 200);
+            ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error en index de LanguageController: ' . $e->getMessage());
@@ -31,10 +32,11 @@ class LanguageController extends Controller
         }
     }
 
-    public function show($id)
+    public function show($code)
     {
         try {
-            $language = Language::where('id', $id)->first();
+            $language = Language::with('translations')
+                ->where('code', $code)->first();
 
             return response()->json([
                 'success' => true,
@@ -96,24 +98,17 @@ class LanguageController extends Controller
 
             $language->save();
 
-            $defaultTranslations = [
-                ['key' => 'login', 'value' => $request->translations['login']],
-                ['key' => 'forgot_password', 'value' => $request->translations['forgot_password']],
-                ['key' => 'login_button', 'value' => $request->translations['login_button']],
-                ['key' => 'no_account', 'value' => $request->translations['no_account']],
-                ['key' => 'register', 'value' => $request->translations['register']],
-                ['key' => 'legal_notice', 'value' => $request->translations['legal_notice']],
-                ['key' => 'privacy_policy', 'value' => $request->translations['privacy_policy']],
-                ['key' => 'contact', 'value' => $request->translations['contact']],
-            ];
-            
-            // Insertar traducciones
-            foreach ($defaultTranslations as $translation) {
-                Translation::create([
-                    'language_id' => $language->id,
-                    'key' => $translation['key'],
-                    'value' => $translation['value']
-                ]);
+            // Iterar dinámicamente sobre las traducciones recibidas
+            foreach ($request->translations as $key => $value) {
+                Translation::updateOrCreate(
+                    [
+                        'language_id' => $language->id,
+                        'key' => $key
+                    ],
+                    [
+                        'value' => $value
+                    ]
+                );
             }
 
             return response()->json([
@@ -130,16 +125,28 @@ class LanguageController extends Controller
         }
     }
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $code)
     {
         try {
-            $language = Language::where('id', $id)->first();
+            $language = Language::where('code', $code)->firstOrFail();
 
             $language->code = sanitize_html($request->code);
             $language->name = sanitize_html($request->name);
             $language->is_active = sanitize_html($request->is_active);
-
             $language->save();
+
+            // Iterar dinámicamente sobre las traducciones recibidas
+            foreach ($request->translations as $key => $value) {
+                Translation::updateOrCreate(
+                    [
+                        'language_id' => $language->id,
+                        'key' => $key
+                    ],
+                    [
+                        'value' => $value
+                    ]
+                );
+            }
 
             return response()->json([
                 'success' => true,
@@ -154,6 +161,7 @@ class LanguageController extends Controller
             ], 500);
         }
     }
+
 
     public function destroy(Request $request)
     {
@@ -184,13 +192,14 @@ class LanguageController extends Controller
 
     private function getActionButtons($language)
 	{
+        $code = $language->code;
 		$id = $language->id;
 
 		return '
 			<div class="actions-container">
 				<button class="actions-button orders-button">Acciones</button>
 				<div class="actions-menu">
-					<a href="/admin/edit-language.html" class="action-item content-action edit-button" data-id="'.$id.'">Editar</a>
+					<a href="/admin/edit-language.html" class="action-item content-action edit-button" data-id="'.$code.'">Editar</a>
                     <form class="language-delete-form" data-id="' . $id . '">
 						<input type="hidden" name="content_id" value="' . $id . '">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>

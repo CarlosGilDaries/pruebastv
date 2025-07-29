@@ -1,95 +1,138 @@
-// Configuración de traducciones
-let currentLocale = 'es';
-let translations = {};
-let pageId = document.body.id || 'login'; // Asigna un ID a cada body o usa la ruta
+// translations.js
+document.addEventListener('DOMContentLoaded', function () {
+  const languageSelector = document.getElementById('languageSelector');
+  let currentLanguage = 'es'; // Idioma por defecto
+  let translations = {}; // Almacenará todas las traducciones
+  titleId = document.body.id;
 
-// Función para aplicar traducciones
-function applyTranslations() {
-  // Traducir elementos con data-i18n
-  document.querySelectorAll('[data-i18n]').forEach((el) => {
-    const key = el.getAttribute('data-i18n');
-    el.textContent = __(key);
-  });
+  // Cargar idiomas disponibles
+  async function loadLanguages() {
+    try {
+      const response = await fetch('/api/languages');
+      if (!response.ok) {
+        throw new Error('Error al cargar los idiomas');
+      }
 
-  // Traducir título de página
-  updatePageTitle();
-}
+      const data = await response.json();
 
-// Función para actualizar título de página
-function updatePageTitle() {
-  const pageTitleKey = `page_titles.${pageId}`;
-  const defaultTitle =
-    document.querySelector('h1, h2, h3')?.textContent || __('login');
-  document.title = __(pageTitleKey) || defaultTitle;
-}
+      if (data.success && data.languages && data.languages.length > 0) {
+        // Limpiar selector
+        languageSelector.innerHTML = '';
 
-// Función para determinar el ID de página
-function getPageId() {
-  const path = window.location.pathname;
-  if (path === '/login.html' || path === '/') return 'login';
-  if (path === '/plans.html') return 'plans';
-  if (path === '/contact.html') return 'contact';
-  // Añade más rutas según necesites
-  return path.split('/').pop().replace('.html', '') || 'home';
-}
+        // Agregar idiomas disponibles
+        data.languages.forEach((language) => {
+          if (language.is_active === 1) {
+            const option = document.createElement('option');
+            option.value = language.code;
+            option.textContent = language.name;
+            languageSelector.appendChild(option);
 
-// Inicialización mejorada
-function initializeTranslations() {
-  pageId = getPageId();
-  const savedLocale = localStorage.getItem('userLocale');
-  const browserLocale = navigator.language.substring(0, 2);
-  const defaultLocale = ['es', 'en', 'va'].includes(browserLocale)
-    ? browserLocale
-    : 'es';
+            // Guardar las traducciones de este idioma
+            translations[language.code] = {};
+            language.translations.forEach((trans) => {
+              translations[language.code][trans.key] = trans.value;
+            });
+          }
+        });
 
-  loadTranslations(savedLocale || defaultLocale);
-}
-
-// Función para cargar traducciones
-async function loadTranslations(locale) {
-  try {
-    const response = await fetch(`/api/translations/${locale}`);
-    if (!response.ok) throw new Error('Failed to load translations');
-
-    translations = await response.json();
-    currentLocale = locale;
-    applyTranslations();
-
-    // Guardar preferencia
-    localStorage.setItem('userLocale', locale);
-
-    // Actualizar selector
-    document.getElementById('languageSelector').value = locale;
-
-    // Cambiar atributo lang del html
-    document.documentElement.lang = locale;
-  } catch (error) {
-    console.error('Error loading translations:', error);
+        // Cargar traducciones del español (si no está en la lista)
+        if (!translations['es']) {
+          await loadSpanishTranslations();
+        }
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
-}
 
-// Función para obtener traducción
-function __(key, group = 'messages') {
-  return translations[group]?.[key] || key;
-}
+  // Cargar traducciones del español (idioma por defecto)
+  async function loadSpanishTranslations() {
+    try {
+      const response = await fetch('/api/language/es');
+      if (!response.ok) {
+        throw new Error('Error al cargar las traducciones en español');
+      }
 
-// Aplicar traducciones a la interfaz
-function applyTranslations() {
-  // Elementos con data-i18n
-  document.querySelectorAll('[data-i18n]').forEach((el) => {
-    const key = el.getAttribute('data-i18n');
-    el.textContent = __(key);
+      const data = await response.json();
+
+      if (data.success && data.language && data.language.translations) {
+        translations['es'] = {};
+        data.language.translations.forEach((trans) => {
+          translations['es'][trans.key] = trans.value;
+        });
+
+        // Aplicar traducciones por defecto
+        applyTranslations('es');
+      }
+    } catch (error) {
+      console.error('Error cargando español:', error);
+    }
+  }
+
+  // Aplicar las traducciones al documento
+  function applyTranslations(langCode) {
+    const langTranslations = translations[langCode];
+    if (!langTranslations) return;
+
+    // Actualizar elementos con data-i18n
+    document.querySelectorAll('[data-i18n]').forEach((element) => {
+      const key = element.getAttribute('data-i18n');
+      if (langTranslations[key]) {
+        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+          element.placeholder = langTranslations[key];
+        } else {
+          element.textContent = langTranslations[key];
+        }
+      }
+    });
+
+    // Actualizar título de la página
+    const titleTranslation = langTranslations[`${titleId}_title`];
+    console.log(`${titleId}_title`);
+    document.title = titleTranslation;
+  }
+
+  // Manejar cambio de idioma
+  languageSelector.addEventListener('change', async function () {
+    const selectedLang = this.value;
+
+    if (selectedLang === 'es') {
+      // Si es español, aplicar las traducciones que ya tenemos
+      applyTranslations('es');
+    } else if (translations[selectedLang]) {
+      // Si tenemos las traducciones de este idioma, aplicarlas
+      applyTranslations(selectedLang);
+    } else {
+      // Si no tenemos las traducciones, cargarlas
+      try {
+        const response = await fetch(`/api/language/${selectedLang}`);
+        if (!response.ok) {
+          throw new Error('Error al cargar las traducciones');
+        }
+
+        const data = await response.json();
+
+        if (data.success && data.language && data.language.translations) {
+          // Guardar las traducciones
+          translations[selectedLang] = {};
+          data.language.translations.forEach((trans) => {
+            translations[selectedLang][trans.key] = trans.value;
+          });
+
+          // Aplicar las traducciones
+          applyTranslations(selectedLang);
+        }
+      } catch (error) {
+        console.error('Error cambiando idioma:', error);
+        // Volver al español si hay error
+        this.value = 'es';
+        applyTranslations('es');
+      }
+    }
+
+    currentLanguage = selectedLang;
   });
 
-  // Título de la página
-  document.title = __('login');
-}
-
-// Selector de idioma
-document.getElementById('languageSelector').addEventListener('change', (e) => {
-  loadTranslations(e.target.value);
+  // Inicializar
+  loadLanguages();
 });
-
-
-// Inicializar
-document.addEventListener('DOMContentLoaded', initializeTranslations);
