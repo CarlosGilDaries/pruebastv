@@ -7,6 +7,9 @@ const gendersDropDown = document.getElementById('genders');
 const title = document.querySelector('.grid-title');
 const urlParams = new URLSearchParams(window.location.search);
 const tagId = urlParams.get('id');
+const documentTitle = document.getElementById('title');
+document.body.id = `tag_${tagId}`;
+documentTitle.setAttribute('data-i18n', `tag_${tagId}`);
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');

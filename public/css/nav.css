@@ -332,6 +332,9 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
         width: 70%;
         margin: 0 !important;
     }
+    .menu {
+        padding-inline: 0;
+    }
 }
 
 @media (min-width: 576px) and (max-width: 991px) {

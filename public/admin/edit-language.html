@@ -196,6 +196,48 @@
         <!-- Sección de traducciones -->
         <div class="card mb-4">
             <div class="card-header">
+                <h5 class="mb-0">Header</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="translation_nav_home" class="form-label">"Inicio" (nav)</label>
+                        <input type="text" class="form-control" id="translation_nav_home" name="translations[nav_home]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_nav_account" class="form-label">"Cuenta" (nav)</label>
+                        <input type="text" class="form-control" id="translation_nav_account" name="translations[nav_account]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_nav_profile" class="form-label">"Perfil" (nav)</label>
+                        <input type="text" class="form-control" id="translation_nav_profile" name="translations[nav_profile]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_nav_favorites" class="form-label">"Favoritos" (nav)</label>
+                        <input type="text" class="form-control" id="translation_nav_favorites" name="translations[nav_favorites]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_nav_watched" class="form-label">"Vistos" (nav)</label>
+                        <input type="text" class="form-control" id="translation_nav_watched" name="translations[nav_watched]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_nav_payment_history" class="form-label">"Historial de pagos" (nav)</label>
+                        <input type="text" class="form-control" id="translation_nav_payment_history" name="translations[nav_payment_history]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_nav_logout" class="form-label">"Cerrar sesión" (nav)</label>
+                        <input type="text" class="form-control" id="translation_nav_logout" name="translations[nav_logout]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_search_placeholder" class="form-label">"Buscar contenido..." (placeholder)</label>
+                        <input type="text" class="form-control" id="translation_search_placeholder" name="translations[search_placeholder]" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
                 <h5 class="mb-0">Login</h5>
             </div>
             <div class="card-body">
@@ -450,6 +492,36 @@
 
         <div class="card mb-4">
             <div class="card-header">
+                <h5 class="mb-0">Llamadas a la acción</h5>
+            </div>
+            <div class="card-body" id="actions"></div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Géneros</h5>
+            </div>
+            <div class="card-body" id="genders"></div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Categorías</h5>
+            </div>
+            <div class="card-body" id="categories">
+            </div>
+        </div>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Etiquetas</h5>
+            </div>
+            <div class="card-body" id="tags">
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
                 <h5 class="mb-0">Footer</h5>
             </div>
             <div class="card-body">
@@ -494,6 +566,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
+    <script src="/js/admin/renderCategoriesGendersForm.js"></script>
     <script src="/js/admin/editLanguage.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>

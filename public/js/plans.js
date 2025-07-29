@@ -190,7 +190,7 @@ function displayPlans(plans, actualPlan, canRenew) {
         }
       } else {
         if (plan.trimestral_price != 0 && actualPlan != plan.name) {
-          button2.innerHTML = `${plan.name} <span data-i18n="annual">Anual</span>`;
+          button.innerHTML = `${plan.name} <span data-i18n="quarterly">Trimestral</span>`;
           button2.innerHTML = `${plan.name} <span data-i18n="annual">Anual</span>`;
         } else if (plan.trimestral_price == 0) {
           if (actualPlan != plan.name) {

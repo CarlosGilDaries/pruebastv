@@ -18,8 +18,6 @@ async function editLanguageForm() {
 
       const data = await response.json();
 
-      console.log(data);
-
       if (data.success && data.language) {
         // Rellenar datos del idioma
         document.getElementById('edit-language-name').value =

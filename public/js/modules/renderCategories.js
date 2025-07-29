@@ -27,7 +27,7 @@ export async function renderCategories(main, categoriesData) {
     section.setAttribute('data-index', category.priority);
     section.classList.add('category', 'content-type');
     section.innerHTML = `
-            <h2 class="category-title" id="title-${category.priority}">${category.name}</h2>
+            <h2 class="category-title" id="title-${category.priority}" data-i18n="category_${category.id}">${category.name}</h2>
             <div class="content-wrapper">
                 <button class="scroll-left">&lt;</button>
                 <div id="video-content-${category.priority}" class="content-container"></div>

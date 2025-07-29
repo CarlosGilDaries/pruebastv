@@ -6,11 +6,15 @@ export function renderActionCall(main, action) {
           action.picture
         }')">
             <div class="action-call-text">
-                <h2>${action.text}</h2>
-                ${action.subtext ? `<p>${action.subtext}</p>` : ''}
-                <a href="${action.url}" class="action-button">${
-    action.button_text
-  }</a>
+                <h2 data-i18n="action_${action.id}_text">${action.text}</h2>
+                ${
+                  action.subtext
+                    ? `<p data-i18n="action_${action.id}_subtext">${action.subtext}</p>`
+                    : ''
+                }
+                <a href="${action.url}" data-i18n="action_${
+    action.id
+  }_button" class="action-button">${action.button_text}</a>
             </div>
         </div>
     `;

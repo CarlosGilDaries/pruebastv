@@ -17,7 +17,7 @@ export async function renderTypeGrid(route, types, type) {
       typeBox.classList.add(`${type}-box`, 'box');
       typeBox.innerHTML = `
   <div class="overlay-text">
-    <h2 class="${type}-name">${item.name}</h2>
+    <h2 data-i18n="${type}_${item.id}" class="${type}-name">${item.name}</h2>
   </div>
 `;
       typeBox.addEventListener('click', () => {

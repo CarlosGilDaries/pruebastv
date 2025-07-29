@@ -25,6 +25,7 @@ export async function gridShow(
     const data = await response.json();
     if (title != null) {
       title.innerHTML = data[endpoint].name;
+      title.setAttribute('data-i18n', `${endpoint}_${data[endpoint].id}`);
       document.title = data[endpoint].name;
     }
     const node = document.querySelector('.main-grid');
@@ -50,6 +51,7 @@ export async function gridShow(
       title2.textContent = movie.title;
 
       const gender = document.createElement('p');
+      gender.setAttribute('data-i18n', `gender_${movie.gender.id}`);
       gender.textContent = `${movie.gender.name}`;
 
       const duration = document.createElement('p');
@@ -62,7 +64,7 @@ export async function gridShow(
 
       if (movie.pay_per_view == 1) {
         const ppv = document.createElement('p');
-        ppv.textContent = `Contenido Pay Per View: ${movie.pay_per_view_price} €`;
+        ppv.textContent = `Pay Per View: ${movie.pay_per_view_price} €`;
         info.append(ppv);
       }
     });

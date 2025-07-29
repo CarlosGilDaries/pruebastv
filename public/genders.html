@@ -11,9 +11,9 @@
         <link rel="stylesheet" href="/css/normalize.css">
         <link rel="stylesheet" href="/css/type-grid.css">
         <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
-        <title>Géneros</title>
+        <title data-i18n="gender_title">Géneros</title>
     </head>
-    <body>
+    <body id="gender">
         <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -31,46 +31,50 @@
                 <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/">Inicio</a>
+                            <a class="nav-link" href="/" data-i18n="nav_home">Inicio</a>
                         </li>
 
                         <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorías</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="category_title">Categorías</a>
                             <ul class="dropdown-menu" id="categories"></ul>
                         </li>
                         <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="gender_title">Géneros</a>
                             <ul class="dropdown-menu" id="genders"></ul>
                         </li>
                             
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/plans.html">Planes</a>
+                            <a class="nav-link" href="/plans.html" data-i18n="plans_title">Planes</a>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ms-lg-auto right-nav">
                         <li class="nav-item dropdown user">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link" data-i18n="nav_account">
                                 Cuenta
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
-                                <li><a class="dropdown-item" href="/account">Perfil</a></li>
-                                <li><a class="dropdown-item" href="/favorites.html">Favoritos</a></li>
-                                <li><a class="dropdown-item" href="/seen.html">Vistos</a></li>
-                                <li><a class="dropdown-item" href="/order-history.html">Historial de pagos</a></li>
-                                <li><a class="dropdown-item" id="logout" href="#">Cerrar sesión</a></li>
+                                <li><a class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
+                                <li><a class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
+                                <li><a class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
+                                <li><a class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
+                                <li><a class="dropdown-item" id="logout" href="#" data-i18n="nav_logout">Cerrar sesión</a></li>
                             </ul>
+                        </li>
+
+                        <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                            <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Filtro de búsqueda (siempre visible) -->
+                <!-- Filtro de búsqueda -->
                 <div class="search-container d-flex align-items-center ms-auto">
                     <div class="search-icon me-2">
                         <img src="/images/search-icon.png" alt="Buscar" id="searchToggle">
                     </div>
                     <div class="search-box" id="searchBox">
-                        <input type="text" id="searchInput" placeholder="Buscar contenido...">
+                        <input type="text" id="searchInput" placeholder="Buscar contenido..." data-i18n-placeholder="search_placeholder">
                         <div class="search-results" id="searchResults"></div>
                     </div>
                 </div>
@@ -79,54 +83,52 @@
     </header>
 
         <main>
-            <h1 class="grid-title">Géneros</h1>
+            <h1 class="grid-title" data-i18n="gender_heading">Géneros</h1>
           <div class="main-grid"></div>
         </main>
 
     <footer class="footer mt-auto">
-    <div class="container-fluid py-4 px-3">
+        <div class="container-fluid py-4 px-3">
+            <div class="row align-items-center text-center text-lg-start">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                    <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-3">
+                        <a href="/legal-notice.html" data-i18n="legal_notice">Aviso Legal</a>
+                        <a href="/privacy-politic.html" data-i18n="privacy_policy">Política de Privacidad</a>
+                        <a href="/contact.html" data-i18n="contact">Contacto</a>
+                    </div>
+                </div>
 
-        <!-- Primera fila: info legal y redes -->
-        <div class="row align-items-center text-center text-lg-start">
-        <!-- Info legal -->
-        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
-            <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-3">
-                <a href="/legal-notice.html">Aviso Legal</a>
-                <a href="/privacy-politic.html">Política de Privacidad</a>
-                <a href="/contact.html">Contacto</a>
+                <!-- Redes sociales -->
+                <div class="col-12 col-lg-6">
+                    <ul class="icons list-unstyled d-flex justify-content-center justify-content-lg-end gap-4 m-0">
+                        <li><a id="instagram" href="https://www.instagram.com/"><img src="/images/instagram-53.png" alt="Instagram"></a></li>
+                        <li><a id="facebook" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="Facebook"></a></li>
+                        <li><a id="twitter" href="https://www.twitter.com/"><img src="/images/twitterx--v2.png" alt="Twitter"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Separador -->
+            <div class="separation-line my-3"></div>
+
+            <!-- Segunda fila: logos institucionales y copyright -->
+            <div class="row align-items-center text-center text-lg-start">
+                <!-- Logos -->
+                <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+                    <div class="items-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center gap-4"></div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="col-12 col-lg-4 text-lg-end">
+                    <p id="copyright" class="mb-0">
+                    <a href="https://www.kmcmobile.es/">KMCMobile</a> © 2025
+                    </p>
+                </div>
             </div>
         </div>
-
-        <!-- Redes sociales -->
-        <div class="col-12 col-lg-6">
-            <ul class="icons list-unstyled d-flex justify-content-center justify-content-lg-end gap-4 m-0">
-                <li><a id="instagram" href="https://www.instagram.com/"><img src="/images/instagram-53.png" alt="Instagram"></a></li>
-                <li><a id="facebook" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="Facebook"></a></li>
-                <li><a id="twitter" href="https://www.twitter.com/"><img src="/images/twitterx--v2.png" alt="Twitter"></a></li>
-            </ul>
-        </div>
-        </div>
-
-        <!-- Separador -->
-        <div class="separation-line my-3"></div>
-
-        <!-- Segunda fila: logos institucionales y copyright -->
-        <div class="row align-items-center text-center text-lg-start">
-        <!-- Logos -->
-        <div class="col-12 col-lg-8 mb-3 mb-lg-0">
-            <div class="items-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center gap-4"></div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="col-12 col-lg-4">
-            <p id="copyright" class="mb-0">
-            <a href="https://www.kmcmobile.es/">KMCMobile</a> © 2025
-            </p>
-        </div>
-        </div>
-    </div>
     </footer>
 
+    <script type="module" src="/js/translations.js"></script>
     <script type="module" src="/js/gendersGrid.js"></script>
     <script src="/js/webSettings.js"></script>
     <script src="/js/searchInput.js"></script>

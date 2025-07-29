@@ -1,7 +1,8 @@
-import { formatDuration } from "./formatDuration.js";
+import { formatDuration } from './formatDuration.js';
+import { applyTranslations } from '../translations.js';
 
 export function initPriorityBanner(categoriesData) {
-	try {
+  try {
     // Encontrar la categoría con priority 1
     const priorityCategory = categoriesData.categories.find(
       (cat) => cat.priority === 1
@@ -24,14 +25,20 @@ export function initPriorityBanner(categoriesData) {
       '.priority-first-movie-title'
     );
     const playButton = bannerSection.querySelector('.play-button');
-		const movieInfo = bannerSection.querySelector('.movie-info');
-		const gender = document.getElementById('banner-gender');
-		const duration = document.getElementById('banner-duration');
-		
+    const movieInfo = bannerSection.querySelector('.movie-info');
+    const gender = document.getElementById('banner-gender');
+    const duration = document.getElementById('banner-duration');
 
     let currentMovieIndex = 0;
     const movies = priorityCategory.movies;
-    let isTransitioning = false; // Bandera para evitar interrupciones
+    let isTransitioning = false;
+
+    // Función para aplicar traducciones al género
+    function applyGenderTranslation(genderElement, genderData) {
+      genderElement.setAttribute('data-i18n', `gender_${genderData.id}`);
+      genderElement.textContent = genderData.name;
+      applyTranslations(localStorage.getItem('userLocale') || 'es');
+    }
 
     // Función para cargar una película con transición
     async function loadMovie(index) {
@@ -43,34 +50,34 @@ export function initPriorityBanner(categoriesData) {
       // Fade out del contenido actual
       movieInfo.classList.add('title-transition');
       titleElement.style.opacity = '0';
-		videoElement.style.opacity = '0';
-		gender.style.opacity = '0';
-		duration.style.opacity = '0';
+      videoElement.style.opacity = '0';
+      gender.style.opacity = '0';
+      duration.style.opacity = '0';
 
       // Esperar a que complete la transición de salida
       await new Promise((resolve) => setTimeout(resolve, 200));
 
       // Actualizar contenido
-		titleElement.textContent = movie.title;
-		gender.textContent = movie.gender.name;
-		duration.textContent = formatDuration(movie.duration);
+      titleElement.textContent = movie.title;
+      applyGenderTranslation(gender, movie.gender);
+      duration.textContent = formatDuration(movie.duration);
       playButton.onclick = () =>
         (window.location.href = `/content/${movie.slug}`);
 
       if (movie.trailer) {
-        // Detener video anterior y reiniciar completamente
+        // Detener video anterior
         videoElement.pause();
-        videoElement.removeAttribute('poster'); // evitar parpadeo del póster anterior
+        videoElement.removeAttribute('poster');
         sourceElement.removeAttribute('src');
-        videoElement.load(); // descarga el source anterior inmediatamente
+        videoElement.load();
 
-        // Asignar el nuevo póster inmediatamente
+        // Asignar nuevo póster
         videoElement.poster = movie.cover;
 
-        // Cargar y reproducir el nuevo trailer con retraso
+        // Cargar nuevo trailer
         setTimeout(() => {
           sourceElement.src = movie.trailer;
-          videoElement.load(); // carga el nuevo video
+          videoElement.load();
           const playPromise = videoElement.play();
 
           if (playPromise !== undefined) {
@@ -93,13 +100,13 @@ export function initPriorityBanner(categoriesData) {
       }
 
       // Fade in del nuevo contenido
-      await new Promise((resolve) => setTimeout(resolve, 50)); // Pequeña pausa
+      await new Promise((resolve) => setTimeout(resolve, 50));
       titleElement.style.opacity = '1';
-		videoElement.style.opacity = '1';
-		gender.style.opacity = '1';
-		duration.style.opacity = '1';
+      videoElement.style.opacity = '1';
+      gender.style.opacity = '1';
+      duration.style.opacity = '1';
 
-      // Resetear estado de transición después de completar
+      // Resetear estado de transición
       setTimeout(() => {
         movieInfo.classList.remove('title-transition');
         isTransitioning = false;
@@ -115,11 +122,9 @@ export function initPriorityBanner(categoriesData) {
     rightArrow.className = 'scroll-right-banner';
     rightArrow.innerHTML = '&gt;';
 
-    // Añadir flechas al DOM
     bannerSection.appendChild(leftArrow);
     bannerSection.appendChild(rightArrow);
 
-    // Eventos de flechas con manejo de transición
     leftArrow.addEventListener('click', () => {
       currentMovieIndex =
         (currentMovieIndex - 1 + movies.length) % movies.length;
@@ -133,9 +138,9 @@ export function initPriorityBanner(categoriesData) {
 
     // Estilos iniciales para la transición
     videoElement.style.transition = 'opacity 0.5s ease-in-out';
-		titleElement.style.transition = 'opacity 0.2s ease-in-out';
-		gender.style.transition = 'opacity 0.2s ease-in-out';
-		duration.style.transition = 'opacity 0.2s ease-in-out';
+    titleElement.style.transition = 'opacity 0.2s ease-in-out';
+    gender.style.transition = 'opacity 0.2s ease-in-out';
+    duration.style.transition = 'opacity 0.2s ease-in-out';
 
     // Cargar la primera película
     loadMovie(0);

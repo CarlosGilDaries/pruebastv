@@ -14,6 +14,7 @@ export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
         a.classList.add('dropdown-item');
         a.href = `/${type}-show.html?id=${item.id}`;
         a.textContent = item.name;
+        a.setAttribute('data-i18n', `${type}_${item.id}`);
         li.appendChild(a);
         dropDownMenuElement.appendChild(li);
       }
@@ -23,6 +24,7 @@ export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
     seeMoreLink.classList.add('dropdown-item');
     seeMoreLink.href = `/${types}.html`;
     seeMoreLink.textContent = 'Ver Más';
+    seeMoreLink.setAttribute('data-i18n', 'see_more');
     seeMore.appendChild(seeMoreLink);
     dropDownMenuElement.appendChild(seeMore);
 

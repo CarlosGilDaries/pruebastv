@@ -21,6 +21,7 @@ export function getVideoContent(data, node) {
     title.textContent = video.title;
 
     const gender = document.createElement('p');
+    gender.setAttribute('data-i18n', `gender_${video.gender.id}`);
     gender.textContent = `${video.gender.name}`;
 
     const duration = document.createElement('p');
@@ -37,7 +38,7 @@ export function getVideoContent(data, node) {
 
     if (video.rent == 1) {
       const rent = document.createElement('p');
-      rent.textContent = `Alquiler: ${video.rent_price} €`;
+      rent.innerHTML = `<span data-i18n="rent">Alquiler</span>: ${video.rent_price} €`;
       info.append(rent);
     }
 

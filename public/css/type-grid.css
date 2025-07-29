@@ -41,7 +41,8 @@ main {
 }
 
 .category-name,
-.gender-name {
+.gender-name,
+.tag-name {
     color: black;
     z-index: 2;
     font-size: 1.4rem;
