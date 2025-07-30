@@ -1,9 +1,52 @@
-document.addEventListener('DOMContentLoaded', function () {
+import { renderCategoriesAndGenders } from './renderCategoriesGendersForm.js';
+
+document.addEventListener('DOMContentLoaded', async function () {
   async function initAddLanguage() {
     const backendAPI = '/api/';
     const authToken = localStorage.getItem('auth_token');
 
     try {
+      // Primero cargamos los datos para generar los campos
+      const [
+        categoriesResponse,
+        gendersResponse,
+        tagsResponse,
+        actionsResponse,
+        contentResponse,
+      ] = await Promise.all([
+        fetch('/api/dropdown-categories-menu'),
+        fetch('/api/genders'),
+        fetch('/api/tags'),
+        fetch('/api/actions'),
+        fetch('/api/content'),
+      ]);
+
+      const [categoriesData, gendersData, tagsData, actionsData, contentData] =
+        await Promise.all([
+          categoriesResponse.json(),
+          gendersResponse.json(),
+          tagsResponse.json(),
+          actionsResponse.json(),
+          contentResponse.json(),
+        ]);
+
+      // Creamos un objeto data similar al que recibiríamos al editar, pero con valores vacíos
+      const mockData = {
+        success: true,
+        language: {
+          translations: [], // No hay traducciones para un nuevo idioma
+          is_active: 1,
+        },
+        categories: categoriesData.categories,
+        genders: gendersData.genders,
+        tags: tagsData.tags,
+        actions: actionsData.actions,
+        contents: contentData.data.movies,
+      };
+
+      // Renderizamos los campos (sin callback ya que no necesitamos hacer nada después)
+      await renderCategoriesAndGenders(mockData, () => {});
+
       // Manejar envío del formulario
       document
         .getElementById('add-language-form')
@@ -40,30 +83,58 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           try {
+            // Recoger todos los datos del formulario
             const formData = {
               name: document.getElementById('add-language-name').value,
               code: document.getElementById('add-language-code').value,
               is_active: document.getElementById('is_active').checked ? 1 : 0,
-              translations: {
-                login: document.getElementById('translation_login').value,
-                forgot_password: document.getElementById(
-                  'translation_forgot_password'
-                ).value,
-                login_button: document.getElementById(
-                  'translation_login_button'
-                ).value,
-                no_account: document.getElementById('translation_no_account')
-                  .value,
-                register: document.getElementById('translation_register').value,
-                legal_notice: document.getElementById(
-                  'translation_legal_notice'
-                ).value,
-                privacy_policy: document.getElementById(
-                  'translation_privacy_policy'
-                ).value,
-                contact: document.getElementById('translation_contact').value,
-              },
+              translations: {},
             };
+
+            // Agregar traducciones básicas
+            const basicTranslations = [
+              'login',
+              'forgot_password',
+              'login_button',
+              'no_account',
+              'register',
+              'legal_notice',
+              'privacy_policy',
+              'contact',
+              'watch_now',
+              'keep_watching',
+            ];
+
+            basicTranslations.forEach((key) => {
+              const element = document.getElementById(`translation_${key}`);
+              if (element) {
+                formData.translations[key] = element.value;
+              }
+            });
+
+            // Agregar traducciones de géneros, categorías, etc.
+            const translationInputs = document.querySelectorAll(
+              '[name^="translations["]'
+            );
+            translationInputs.forEach((input) => {
+              const key = input.name.match(/\[(.*?)\]/)[1];
+              // Solo agregar si no es un campo básico ya incluido
+              if (!basicTranslations.includes(key)) {
+                formData.translations[key] = input.value;
+              }
+            });
+
+            // Agregar contenido de CKEditor
+            for (let instanceName in CKEDITOR.instances) {
+              if (CKEDITOR.instances.hasOwnProperty(instanceName)) {
+                const editor = CKEDITOR.instances[instanceName];
+                const textarea = document.getElementById(instanceName);
+                if (textarea && textarea.name.startsWith('translations[')) {
+                  const key = textarea.name.match(/\[(.*?)\]/)[1];
+                  formData.translations[key] = editor.getData();
+                }
+              }
+            }
 
             const response = await fetch(backendAPI + 'add-language', {
               method: 'POST',
@@ -89,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
                   }
                 });
               } else {
-                throw new Error(data.error || 'Error al crear la idioma');
+                throw new Error(data.error || 'Error al crear el idioma');
               }
               return;
             }
@@ -109,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.remove('was-validated');
           } catch (error) {
             console.error('Error:', error);
-            alert('Error al crear la idioma: ' + error.message);
+            alert('Error al crear el idioma: ' + error.message);
           } finally {
             document
               .getElementById('add-language-loading')

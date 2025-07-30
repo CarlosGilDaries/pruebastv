@@ -10,7 +10,7 @@ export function applyTranslations(langCode) {
   document.querySelectorAll('[data-i18n]').forEach((element) => {
     const key = element.getAttribute('data-i18n');
     if (langTranslations[key]) {
-      element.textContent = langTranslations[key];
+      element.innerHTML = langTranslations[key];
     }
   });
 

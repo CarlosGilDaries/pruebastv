@@ -1,8 +1,10 @@
 import { selectPlan } from './modules/selectPlan.js';
+import { applyTranslations } from './translations.js';
 
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
 const neededPlans = localStorage.getItem('needed_plans');
+const currentLanguage = localStorage.getItem('userLocale');
 let userData;
 
 try {
@@ -338,4 +340,8 @@ function choosePlan(planId, buttonValue) {
   localStorage.setItem('months', buttonValue);
   window.location.href = '/payment-method.html';
   return;
+}
+
+if (typeof applyTranslations === 'function') {
+  applyTranslations(currentLanguage);
 }

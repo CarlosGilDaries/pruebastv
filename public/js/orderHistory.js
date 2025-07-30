@@ -52,7 +52,7 @@ function displayOrders(orders) {
         </div>
         <button class="bill-button" data-id="${
           order.reference
-        }">Descargar factura</button>
+        }" data-i18n="download_bill_button">Descargar factura</button>
       </div>
     `
     )
@@ -62,14 +62,16 @@ function displayOrders(orders) {
 }
 
 function formatDate(dateString) {
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  };
-  return new Date(dateString).toLocaleDateString('es-ES', options);
+  const date = new Date(dateString);
+
+  // Obtener día, mes, año, horas y minutos
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Los meses van de 0-11
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year}, ${hours}:${minutes}`;
 }
 
 async function setupDownloadButtons() {

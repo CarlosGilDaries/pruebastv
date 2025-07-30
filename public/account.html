@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/account.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
-    <title>Perfil de Usuario</title>
+    <title data-i18n="account_title">Perfil de Usuario</title>
   </head>
-  <body>
+  <body id="account">
 
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
@@ -89,7 +89,7 @@
                 <div class="col-12 col-lg-10 col-xl-8">
                     <div class="card shadow-sm">
                         <div class="card-header bg-white text-center py-3">
-                            <h2 class="mb-0">Información de Usuario</h2>
+                            <h2 class="mb-0" data-i18n="account_heading">Información de Usuario</h2>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
@@ -101,7 +101,7 @@
                     </div>
                     
                     <div class="text-center mt-4">
-                        <button class="btn btn-warning btn-lg fw-bold px-4 py-2 rounded-pill select-plan">
+                        <button class="btn btn-warning btn-lg fw-bold px-4 py-2 rounded-pill select-plan" data-i18n="account_change_plan">
                             Cambiar plan
                         </button>
                     </div>
@@ -111,49 +111,47 @@
     </main>
 
     <footer class="footer mt-auto">
-    <div class="container-fluid py-4 px-3">
+        <div class="container-fluid py-4 px-3">
+            <div class="row align-items-center text-center text-lg-start">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                    <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-3">
+                        <a href="/legal-notice.html" data-i18n="legal_notice">Aviso Legal</a>
+                        <a href="/privacy-politic.html" data-i18n="privacy_policy">Política de Privacidad</a>
+                        <a href="/contact.html" data-i18n="contact">Contacto</a>
+                    </div>
+                </div>
 
-        <!-- Primera fila: info legal y redes -->
-        <div class="row align-items-center text-center text-lg-start">
-        <!-- Info legal -->
-        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
-            <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-3">
-                <a href="/legal-notice.html">Aviso Legal</a>
-                <a href="/privacy-politic.html">Política de Privacidad</a>
-                <a href="/contact.html">Contacto</a>
+                <!-- Redes sociales -->
+                <div class="col-12 col-lg-6">
+                    <ul class="icons list-unstyled d-flex justify-content-center justify-content-lg-end gap-4 m-0">
+                        <li><a id="instagram" href="https://www.instagram.com/"><img src="/images/instagram-53.png" alt="Instagram"></a></li>
+                        <li><a id="facebook" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="Facebook"></a></li>
+                        <li><a id="twitter" href="https://www.twitter.com/"><img src="/images/twitterx--v2.png" alt="Twitter"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Separador -->
+            <div class="separation-line my-3"></div>
+
+            <!-- Segunda fila: logos institucionales y copyright -->
+            <div class="row align-items-center text-center text-lg-start">
+                <!-- Logos -->
+                <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+                    <div class="items-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center gap-4"></div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="col-12 col-lg-4 text-lg-end">
+                    <p id="copyright" class="mb-0">
+                    <a href="https://www.kmcmobile.es/">KMCMobile</a> © 2025
+                    </p>
+                </div>
             </div>
         </div>
-
-        <!-- Redes sociales -->
-        <div class="col-12 col-lg-6">
-            <ul class="icons list-unstyled d-flex justify-content-center justify-content-lg-end gap-4 m-0">
-                <li><a id="instagram" href="https://www.instagram.com/"><img src="/images/instagram-53.png" alt="Instagram"></a></li>
-                <li><a id="facebook" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="Facebook"></a></li>
-                <li><a id="twitter" href="https://www.twitter.com/"><img src="/images/twitterx--v2.png" alt="Twitter"></a></li>
-            </ul>
-        </div>
-        </div>
-
-        <!-- Separador -->
-        <div class="separation-line my-3"></div>
-
-        <!-- Segunda fila: logos institucionales y copyright -->
-        <div class="row align-items-center text-center text-lg-start">
-        <!-- Logos -->
-        <div class="col-12 col-lg-8 mb-3 mb-lg-0">
-            <div class="items-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center gap-4"></div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="col-12 col-lg-4">
-            <p id="copyright" class="mb-0">
-            <a href="https://www.kmcmobile.es/">KMCMobile</a> © 2025
-            </p>
-        </div>
-        </div>
-    </div>
     </footer>
 
+    <script type="module" src="/js/translations.js"></script>
     <script type="module" src="/js/account.js"></script>
     <script src="/js/webSettings.js"></script>
     <script src="/js/searchInput.js"></script>

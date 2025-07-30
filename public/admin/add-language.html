@@ -232,6 +232,10 @@
                         <label for="translation_search_placeholder" class="form-label">"Buscar contenido..." (placeholder)</label>
                         <input type="text" class="form-control" id="translation_search_placeholder" name="translations[search_placeholder]" required>
                     </div>
+                    <div class="col-md-6">
+                        <label for="translation_see_more" class="form-label">"Ver más" (nav)</label>
+                        <input value="Ver Más" type="text" class="form-control" id="translation_see_more" name="translations[see_more]" required>
+                    </div>
                 </div>
             </div>
         </div>
@@ -424,6 +428,48 @@
 
         <div class="card mb-4">
             <div class="card-header">
+                <h5 class="mb-0">Perfil</h5>
+            </div>
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="translation_account_title" class="form-label">"Perfil" (Document Title)</label>
+                        <input type="text" class="form-control" id="translation_account_title" name="translations[account_title]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_account_heading" class="form-label">"Perfil" (Encabezado)</label>
+                        <input type="text" class="form-control" id="translation_account_heading" name="translations[account_heading]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_account_change_plan" class="form-label">"Cambiar Plan" (botón)</label>
+                        <input type="text" class="form-control" id="translation_account_change_plan" name="translations[account_change_plan]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_plan_label" class="form-label">"Plan" (fila)</label>
+                        <input type="text" class="form-control" id="translation_plan_label" name="translations[plan_label]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_account_phone" class="form-label">"Teléfono" (fila)</label>
+                        <input type="text" class="form-control" id="translation_account_phone" name="translations[account_phone]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_account_change_button" class="form-label">"Cambiar" (botón filas)</label>
+                        <input type="text" class="form-control" id="translation_account_change_button" name="translations[account_change_button]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_account_expiration_span" class="form-label">"Caducidad" (palabra)</label>
+                        <input type="text" class="form-control" id="translation_account_expiration_span" name="translations[account_expiration_span]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="translation_download_bill_button" class="form-label">"Descargar Factura" (botón)</label>
+                        <input type="text" class="form-control" id="translation_download_bill_button" name="translations[download_bill_button]" required>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
                 <h5 class="mb-0">Nuevo Dispositivo</h5>
             </div>
             <div class="card-body">
@@ -555,9 +601,6 @@
                 </div>
             </form>
         </div>
-
-
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
@@ -565,8 +608,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/renderCategoriesGendersForm.js"></script>
-    <script src="/js/admin/addLanguage.js"></script>
+    <script type="module" src="/js/admin/addLanguage.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

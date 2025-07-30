@@ -324,8 +324,9 @@ body > header > div > nav:nth-child(2) > ul > li.dropdown.user > ul > li:nth-chi
     #user-link {
         margin-top: 10px;
     }
-    .login-btn {
-        margin-top: 30px;
+    #languageSelector {
+        margin-top: 20px;
+        width: 120px;
     }
     
     #language-container {

@@ -129,7 +129,7 @@ async function listContent() {
           },
         ],
         language: {
-          url: '//cdn.datatables.net/plug-ins/1.10.25/i18n/Spanish.json',
+          url: '//datatables-cdn.com/plug-ins/1.10.25/i18n/Spanish.json',
           paginate: {
             first: `<span class="icon-pagination">«</span>`,
             previous: `<span class="icon-pagination">‹</span>`,

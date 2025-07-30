@@ -1,3 +1,5 @@
+import { renderCategoriesAndGenders } from "./renderCategoriesGendersForm.js";
+
 async function editLanguageForm() {
   const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
@@ -19,6 +21,11 @@ async function editLanguageForm() {
       const data = await response.json();
 
       if (data.success && data.language) {
+        // Primero renderizar el formulario
+        await new Promise((resolve) => {
+          renderCategoriesAndGenders(data, resolve);
+        });
+
         // Rellenar datos del idioma
         document.getElementById('edit-language-name').value =
           data.language.name || '';
@@ -27,7 +34,7 @@ async function editLanguageForm() {
         document.getElementById('is_active').checked =
           data.language.is_active === 1;
 
-        // Rellenar traducciones
+        // Rellenar traducciones (ahora los editores están listos)
         if (
           data.language.translations &&
           data.language.translations.length > 0
@@ -38,6 +45,13 @@ async function editLanguageForm() {
             );
             if (inputElement) {
               inputElement.value = translation.value || '';
+
+              // Actualizar también los editores CKEDITOR si existen
+              if (CKEDITOR.instances[inputElement.id]) {
+                CKEDITOR.instances[inputElement.id].setData(
+                  translation.value || ''
+                );
+              }
             }
           });
         }

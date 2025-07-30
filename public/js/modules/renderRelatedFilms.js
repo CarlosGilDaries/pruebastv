@@ -1,4 +1,5 @@
 import { formatDuration } from "./formatDuration.js";
+import { applyTranslations } from '../translations.js';
 
 export async function renderGridFilms(data, node) {
     data.forEach((movie) => {
@@ -21,9 +22,11 @@ export async function renderGridFilms(data, node) {
 
         const title = document.createElement("h3");
         title.classList.add('h6', 'mb-1');
+        title.setAttribute('data-i18n', `content_${movie.id}_title`);
         title.textContent = movie.title;
 
         const gender = document.createElement("p");
+        gender.setAttribute('data-i18n', `gender_${movie.gender.id}`);
         gender.textContent = `${movie.gender.name}`;
         gender.classList.add('text-white', 'small', 'mb-1');
 
@@ -37,4 +40,8 @@ export async function renderGridFilms(data, node) {
         node.append(article);
     });
 
+    const currentLanguage = localStorage.getItem('userLocale') || 'es';
+    if (typeof applyTranslations === 'function') {
+            applyTranslations(currentLanguage);
+    }
 }

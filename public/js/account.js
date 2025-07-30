@@ -1,6 +1,7 @@
 import { logOut } from './modules/logOut.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
+import { applyTranslations } from './translations.js';
 
 const token = localStorage.getItem('auth_token');
 if (token == null) {
@@ -18,6 +19,7 @@ if (device_id == null) {
 clickLogOut();
 
 document.addEventListener('DOMContentLoaded', function () {
+  const currentLanguage = localStorage.getItem('userLocale');
   const categoriesDropDown = document.getElementById('categories');
   const gendersDropDown = document.getElementById('genders');
   dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
@@ -36,7 +38,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const user = data.data.user;
 
         if (user.rol == 'admin') {
-          button.innerHTML = 'Panel de Admin';
+          button.innerHTML = 'Admin Panel';
+          button.setAttribute('data-i18n', "admin_panel_button");
         }
 
         if (user) {
@@ -45,15 +48,15 @@ document.addEventListener('DOMContentLoaded', function () {
             .getElementsByTagName('tbody')[0];
 
           const fieldsToDisplay = {
-            name: 'Nombre',
-            surnames: 'Apellidos',
-            email: 'Email',
-            phone: 'Teléfono',
-            address: 'Dirección',
-            city: 'Ciudad',
-            country: 'País',
-            dni: 'DNI/NIF',
-            gender: 'Sexo',
+            name: { label: 'Nombre', i18n: 'name_label' },
+            surnames: { label: 'Apellidos', i18n: 'surnames_label' },
+            email: { label: 'Email', i18n: 'email_label' },
+            phone: { label: 'Teléfono', i18n: 'account_phone' },
+            address: { label: 'Dirección', i18n: 'address_label' },
+            city: { label: 'Ciudad', i18n: 'city_label' },
+            country: { label: 'País', i18n: 'country_label' },
+            dni: { label: 'DNI/NIF', i18n: 'dni_label' },
+            gender: { label: 'Sexo', i18n: 'gender_label' },
           };
 
           for (const [key, value] of Object.entries(user)) {
@@ -65,27 +68,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 const cell1 = row.insertCell(0);
                 const cell2 = row.insertCell(1);
 
-                cell1.textContent = fieldsToDisplay[key];
+                cell1.textContent = fieldsToDisplay[key].label;
                 cell1.classList.add('fw-bold');
+                cell1.setAttribute('data-i18n', fieldsToDisplay[key].i18n);
 
                 // Manejo especial para el campo de género
                 if (value == 'man' || value == 'woman' || value == 'others') {
+                  cell2.setAttribute('data-i18n', `gender_${value}`);
                   cell2.textContent =
                     value == 'man'
                       ? 'Hombre'
                       : value == 'woman'
                       ? 'Mujer'
-                      : 'Sin especificar';
+                      : 'N/A';
                 } else {
-                  cell2.textContent = value || 'No especificado';
+                  cell2.textContent = value || 'N/A';
                 }
 
                 // Añadir botón "Cambiar" para campos específicos
                 if (['email', 'address', 'phone'].includes(key)) {
                   const changeButton = document.createElement('button');
                   changeButton.className = 'btn change-btn ms-2';
-                  changeButton.innerHTML =
-                    'Cambiar';
+                  changeButton.innerHTML = 'Cambiar';
+                  changeButton.setAttribute(
+                    'data-i18n',
+                    'account_change_button'
+                  );
                   cell2.classList.add(
                     'd-flex',
                     'justify-content-between',
@@ -119,6 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             planKey.textContent = 'Plan';
             planKey.classList.add('fw-bold');
+            planKey.setAttribute('data-i18n', 'plan_label');
 
             const expirationDate = new Date(user.plan_expires_at);
             const formattedDate = expirationDate.toLocaleDateString('es-ES', {
@@ -133,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
             planInfo.innerHTML = `<div class="fw-bold">${plan.name}</div>`;
 
             if (plan.trimestral_price != 0) {
-              planInfo.innerHTML += `<small class="text-muted">Caduca: ${formattedDate}</small>`;
+              planInfo.innerHTML += `<small class="text-muted"><span data-i18n="account_expiration_span">Caduca</span>: ${formattedDate}</small>`;
             }
 
             planValue.appendChild(planInfo);
@@ -144,14 +153,17 @@ document.addEventListener('DOMContentLoaded', function () {
           const passwordKey = passwordRow.insertCell(0);
           const passwordValue = passwordRow.insertCell(1);
 
-          passwordKey.textContent = 'Contraseña';
+          passwordKey.textContent = 'Password';
           passwordKey.classList.add('fw-bold');
           passwordValue.textContent = '••••••••';
 
           const changePasswordButton = document.createElement('button');
           changePasswordButton.className = 'btn change-btn ms-2';
-          changePasswordButton.innerHTML =
-            'Cambiar';
+          changePasswordButton.innerHTML = 'Cambiar';
+          changePasswordButton.setAttribute(
+            'data-i18n',
+            'account_change_button'
+          );
           passwordValue.classList.add(
             'd-flex',
             'justify-content-between',
@@ -174,9 +186,11 @@ document.addEventListener('DOMContentLoaded', function () {
             user.rol == 'admin' ? '/admin/admin-panel.html' : '/plans.html';
         });
       }
+      if (typeof applyTranslations === 'function') {
+        applyTranslations(currentLanguage);
+      }
     })
     .catch((error) => {
       console.error('Error:', error);
     });
 });
-

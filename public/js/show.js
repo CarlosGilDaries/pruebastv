@@ -284,7 +284,7 @@ async function fetchMovieData() {
       tagline.appendChild(taglineText);
       duration.innerHTML = formatDuration(data.data.movie.duration);
       const overviewText = document.createElement('div'); // 🔄 CAMBIO AQUÍ
-      overviewText.textContent = data.data.movie.overview;
+      overviewText.innerHTML = data.data.movie.overview;
       overviewText.setAttribute(
         'data-i18n',
         `content_${data.data.movie.id}_overview`
@@ -292,11 +292,12 @@ async function fetchMovieData() {
       overview.appendChild(overviewText);
       console.log(data.data.movie.overview);
 
+      renderSimilars(data.data.movie, token);
+
       if (typeof applyTranslations === 'function') {
         applyTranslations(currentLanguage);
       }
 
-      renderSimilars(data.data.movie, token);
     } else {
       console.error('Error al consultar la API: ', data.message);
     }
