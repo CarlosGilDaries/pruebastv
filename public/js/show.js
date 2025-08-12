@@ -190,6 +190,10 @@ async function fetchMovieData() {
       } else {
         if (!data.data.movie.rent) {
           if (data.data.movie.start_time) {
+            play.setAttribute(
+              'data-i18n',
+              `prueba`
+            );
             if (!hasStarted(data.data.movie.start_time)) {
               play.innerHTML =
                 dateTimeIntoDate(data.data.movie.start_time) +
@@ -217,6 +221,7 @@ async function fetchMovieData() {
               play.innerHTML = 'Finalizado';
               play.classList.add('disabled-btn');
               startTimeContainer.style.display = 'block';
+              startTimeContainer.classList.remove('d-none');
               startTimeText.innerHTML = 'El contenido ya ha terminado.';
               startTimeDateTime.innerHTML =
                 'Fecha de fin: ' +
