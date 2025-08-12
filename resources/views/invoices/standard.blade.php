@@ -2,6 +2,7 @@
 <html lang="es">
 	<head>
 		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title>Factura #{{ $invoice['number'] }}</title>
 		<style>
 			.main-content {
@@ -24,7 +25,7 @@
 
 			/* Estilo para el encabezado */
 			.header {
-				text-align: right;
+				width: 100%;
 				margin-bottom: 30px;
 				padding-bottom: 15px;
 				border-bottom: 2px solid #2c3e50;
@@ -32,14 +33,29 @@
 
 			.header h1 {
 				color: #2c3e50;
-				margin: 0;
 				font-size: 24px;
 			}
 
 			.header p {
-				margin: 5px 0 0;
 				color: #7f8c8d;
 			}
+
+			/*.logo {
+				width:200px;
+				height:90px;
+				object-fit: contain;
+			}
+
+			.logo-container {
+				float: left;
+    			width: 50%;
+			}
+
+			.number-date {
+				float: right;
+				width: 50%;
+				text-align: right;
+			}*/
 
 			/* Texto vertical del registro comercial */
 			.vertical-text {
@@ -70,9 +86,9 @@
 				border-radius: 4px;
 			}
 
-			.company-info {
+			/*.company-info {
 				border-left: 4px solid #3498db;
-			}
+			}*/
 
 			.client-info {
 				border-left: 4px solid #e74c3c;
@@ -102,7 +118,6 @@
 
 			table tbody td {
 				padding: 10px;
-				border-bottom: 1px solid #e0e0e0;
 			}
 
 			table.totals {
@@ -165,16 +180,24 @@
 
 		<div class="main-content">
 			<div class="header">
-				<div>
-					<h1>Factura Nº {{ $invoice['number'] }}</h1>
-					<p>Fecha: {{ $invoice['date'] }}</p>
-				</div>
+				<table style="width:100%; border-collapse: collapse;">
+					<tr>
+						<td style="width:50%; vertical-align: middle;">
+							<img src="/public/images/logo.png" style="width:200px; height:90px; object-fit: contain;">
+						</td>
+						<td style="width:50%; text-align:right; vertical-align: middle;">
+							<h1>Factura Nº {{ $invoice['number'] }}</h1>
+							<p>Fecha: {{ $invoice['date'] }}</p>
+						</td>
+					</tr>
+				</table>
 			</div>
-			<div class="info-block company-info">
+			
+			{{--<div class="info-block company-info">
 				<p class="title"><strong>{{ $company['name'] }}</strong></p>
 				Dirección: {{ $company['address'] }}<br>
 				CIF: {{ $company['cif'] }}
-			</div>
+			</div>--}}
 
 			<div class="info-block client-info">
 				<p class="title"><strong>Cliente</strong></p>
