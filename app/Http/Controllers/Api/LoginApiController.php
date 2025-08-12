@@ -7,7 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Role;
 use App\Models\UserSession;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Registered;
@@ -107,6 +109,39 @@ class LoginApiController extends Controller
             $gender = sanitize_html($request->gender);
             $birth_year = sanitize_html($request->birth_year);
             $plan_type = sanitize_html($request->plan_type);
+            $role = sanitize_html($request->role);
+            if ($role == 'web') {
+                $new_role = Role::where('name', $role)
+                    ->first();
+            } else {
+                $new_role = Role::where('id', $role)
+                    ->first();
+            }
+            if ($new_role && $new_role->name == 'web') {
+                $rol = 'user';
+                Log::debug('caso 1: ' . $new_role);
+            } else {
+                $rol = 'admin';
+                Log::debug('caso 2: ' . $rol);
+            }
+            $plan = sanitize_html($request->plan);
+            if ($plan) {
+                $planId = $plan;
+            } else {
+                $planId = null;
+            }
+            $plan_time = sanitize_html($request->plan_time);
+            if ($plan_time) {
+                if ($plan_time == 'trimestral') {
+                    $plan_expires_at = Carbon::now()->addMonths(3);
+                } else if ($plan_time == 'annual') {
+                    $plan_expires_at = Carbon::now()->addMonths(12);
+                } else {
+                    $plan_expires_at = null;
+                }
+            } else {
+                $plan_expires_at = null;
+            }
 
             $user = User::create([
                 'name' => $name,
@@ -120,9 +155,11 @@ class LoginApiController extends Controller
                 'phone' => $phone,
                 'phone_code' => $phone_code,
                 'gender' => $gender,
-                'rol' => 'user',
-                'plan_id' => null,
+                'rol' => $rol,
+                'plan_id' => $planId,
                 'password' => Hash::make($request->password),
+                'role_id' => $new_role->id,
+                'plan_expires_at' => $plan_expires_at
             ]);
 
             event(new Registered($user));

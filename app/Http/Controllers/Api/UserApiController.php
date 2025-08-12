@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Plan;
 use App\Models\PlanOrder;
+use App\Models\Role;
 use App\Models\UnifiedOrder;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -135,12 +136,11 @@ class UserApiController extends Controller
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:50'],
                 'surnames' => ['required', 'string', 'max:100'],
-                'email' => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
+                'email' => ['required', 'string', 'email', 'max:100'],
                 'dni' => [
                     Rule::requiredIf(fn () => $request->plan_type !== 'free'),
                     'nullable',
                     'regex:/^\d{8}[A-Za-z]$/',
-                    'unique:users,dni',
                     function ($attribute, $value, $fail) {
                         if ($value) {
                             if (!preg_match('/^(\d{8})([A-Za-z])$/', $value, $matches)) {
@@ -188,8 +188,8 @@ class UserApiController extends Controller
                     Rule::in(['man', 'woman', 'other']),
                 ],
 
-                'password' => ['required', 'string', 'min:6', 'same:password_confirmation'],
-                'password_confirmation' => ['required', 'string', 'min:6'],
+                'password' => ['string', 'min:6', 'same:password_confirmation'],
+                'password_confirmation' => ['string', 'min:6'],
             ]);
 
             if ($validator->fails()) {
@@ -224,14 +224,17 @@ class UserApiController extends Controller
             $user->city = $city;
             $user->country = $country;
             $user->birth_year = $request->input('birth_year');
-			if ($request->input('plan') != 0) {
+
+            $new_role = Role::where('id', $request->input('role'))->first();
+
+			if ($request->input('plan') && $request->input('plan') != 0) {
             	$user->plan_id = $request->input('plan');
 			} 
-            if ($request->input('role') != 0) {
+            if ($request->input('role') && $new_role->name != 'web') {
             	$user->role_id = $request->input('role');
                 $user->rol = 'admin';
-			} else {
-                $user->role_id = null;
+			} else if ($request->input('role') && $new_role->name == 'web') {
+                $user->role_id = $request->input('role');
                 $user->rol = 'user';
             }
             $user->gender = $request->input('gender');

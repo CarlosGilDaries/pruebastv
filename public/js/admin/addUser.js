@@ -2,6 +2,7 @@ async function initAddUser() {
   const backendAPI = '/api/';
   const form = document.getElementById('add-user-form');
   const planSelect = document.getElementById('add-user-plan');
+  const roleSelect = document.getElementById('add-user-role');
   const successMessage = document.getElementById('add-user-success-message');
   const loading = document.getElementById('add-user-loading');
 
@@ -19,8 +20,15 @@ async function initAddUser() {
         Authorization: `Bearer ${authToken}`,
       },
     });
+    const rolesResponse = await fetch(backendAPI + 'roles', {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
     const plansData = await response.json();
     const plans = plansData.plans;
+    const rolesData = await rolesResponse.json();
+    const roles = rolesData.roles;
 
     plans.forEach((plan) => {
       const option = document.createElement('option');
@@ -28,6 +36,14 @@ async function initAddUser() {
       option.textContent = plan.name;
       planSelect.appendChild(option);
     });
+
+    roles.forEach((role) => {
+      const option = document.createElement('option');
+      option.value = role.id;
+      option.textContent = role.name;
+      roleSelect.appendChild(option);
+    });
+
   } catch (error) {
     console.error('Error al cargar planes:', error);
     const errorDiv = document.getElementById('add-user-plan-error');
@@ -74,11 +90,15 @@ async function initAddUser() {
       document.getElementById('add-user-country').value
     );
     formData.append(
-      'birthday',
-      document.getElementById('add-user-birthday').value
+      'birth_year',
+      document.getElementById('add-user-birth-year').value
     );
     formData.append('gender', document.getElementById('add-user-gender').value);
     formData.append('plan', document.getElementById('add-user-plan').value);
+    formData.append('phone', document.getElementById('add-user-phone').value);
+    formData.append('phone_code', document.getElementById('country-code').value);
+    formData.append('role', document.getElementById('add-user-role').value);
+    formData.append('plan_time', document.getElementById('add-user-plan-time').value);
     formData.append(
       'password',
       document.getElementById('add-user-password').value
@@ -87,6 +107,8 @@ async function initAddUser() {
       'password_confirmation',
       document.getElementById('add-user-password-confirmation').value
     );
+
+    console.log(formData);
 
     try {
       const response = await fetch(backendAPI + 'register', {
