@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
 
       const user = userData.data.user;
-      const plans = userData.data.plans;
       const roles = rolesData.roles;
 
       // Llenar campos del formulario
@@ -110,21 +109,11 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('edit-user-birth-year').value =
         user.birth_year || '';
       document.getElementById('edit-user-gender').value = user.gender || '';
-
-      // Llenar select de planes
-      const planSelect = document.getElementById('edit-user-plan');
-      planSelect.innerHTML = '<option value="0">Sin plan</option>';
-      plans.forEach((plan) => {
-        const option = new Option(plan.name, plan.id);
-        if (user.plan?.id === plan.id) {
-          option.selected = true;
-        }
-        planSelect.add(option);
-      });
+      document.getElementById('edit-user-phone').value = user.phone || '';
+      document.getElementById('country-code').value = user.phone_code || '';
 
       // Llenar select de roles
       const roleSelect = document.getElementById('edit-user-role');
-      roleSelect.innerHTML = '<option value="0">Sin rol</option>';
       roles.forEach((role) => {
         const option = new Option(role.name, role.id);
         if (user.role?.id === role.id) {
@@ -176,7 +165,14 @@ document.addEventListener('DOMContentLoaded', function () {
         'gender',
         document.getElementById('edit-user-gender').value
       );
-      formData.append('plan', document.getElementById('edit-user-plan').value);
+      formData.append(
+        'phone',
+        document.getElementById('edit-user-phone').value
+      );
+      formData.append(
+        'phone_code',
+        document.getElementById('country-code').value
+      );
       formData.append('role', document.getElementById('edit-user-role').value);
 
       const password = document.getElementById('edit-user-password').value;

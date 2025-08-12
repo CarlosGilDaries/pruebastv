@@ -16,6 +16,8 @@ document
     const dni = document.getElementById('dni')?.value ?? null;
     const phoneNumber = document.getElementById('phone').value;
     const countryCode = document.getElementById('country-code').value;
+    const role = 'web';
+
     let phone = null;
     let phone_code = null;
     if (phoneNumber != "") {
@@ -60,7 +62,8 @@ document
           gender,
           password,
           password_confirmation,
-          plan_type
+          plan_type,
+          role
         }),
       });
 

@@ -226,7 +226,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
                 <label for="edit-user-gender" class="form-label">Género</label>
                 <select class="form-select" id="edit-user-gender" name="gender" required>
                     <option value="man">Hombre</option>
@@ -237,20 +237,65 @@
                 <div id="edit-user-gender-error" class="invalid-feedback">Por favor seleccione un género</div>
             </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="edit-user-plan" class="form-label">Plan</label>
-                <select class="form-select" id="edit-user-plan" name="plan" required>
-                    <option value="0">Sin plan</option>
-                </select>
-                <div id="edit-user-plan-error" class="invalid-feedback">Por favor seleccione un plan</div>
+            <div class="col-md-4 mb-4">
+                <label for="edit-user-phone" class="form-label">Teléfono</label>
+                <div class="input-group">
+                    <select id="country-code" class="form-select" style="max-width: 120px;">
+                        <option value="+34">+34 (ES)</option>
+                        <option value="+43">+43 (AT)</option>
+                        <option value="+375">+375 (BY)</option>
+                        <option value="+32">+32 (BE)</option>
+                        <option value="+387">+387 (BA)</option>
+                        <option value="+359">+359 (BG)</option>
+                        <option value="+385">+385 (HR)</option>
+                        <option value="+357">+357 (CY)</option>
+                        <option value="+420">+420 (CZ)</option>
+                        <option value="+45">+45 (DK)</option>
+                        <option value="+372">+372 (EE)</option>
+                        <option value="+358">+358 (FI)</option>
+                        <option value="+33">+33 (FR)</option>
+                        <option value="+49">+49 (DE)</option>
+                        <option value="+30">+30 (GR)</option>
+                        <option value="+36">+36 (HU)</option>
+                        <option value="+354">+354 (IS)</option>
+                        <option value="+353">+353 (IE)</option>
+                        <option value="+39">+39 (IT)</option>
+                        <option value="+371">+371 (LV)</option>
+                        <option value="+370">+370 (LT)</option>
+                        <option value="+352">+352 (LU)</option>
+                        <option value="+356">+356 (MT)</option>
+                        <option value="+373">+373 (MD)</option>
+                        <option value="+377">+377 (MC)</option>
+                        <option value="+382">+382 (ME)</option>
+                        <option value="+31">+31 (NL)</option>
+                        <option value="+47">+47 (NO)</option>
+                        <option value="+48">+48 (PL)</option>
+                        <option value="+351">+351 (PT)</option>
+                        <option value="+40">+40 (RO)</option>
+                        <option value="+7">+7 (RU)</option>
+                        <option value="+381">+381 (RS)</option>
+                        <option value="+421">+421 (SK)</option>
+                        <option value="+386">+386 (SI)</option>
+                        <option value="+46">+46 (SE)</option>
+                        <option value="+41">+41 (CH)</option>
+                        <option value="+380">+380 (UA)</option>
+                        <option value="+44">+44 (UK)</option>
+                        <option value="+90">+90 (TR)</option>
+                        <option value="+423">+423 (LI)</option>
+                        <option value="+378">+378 (SM)</option>
+                        <option value="+356">+356 (MT)</option>
+                        <option value="+379">+379 (VA)</option>
+                        <option value="+298">+298 (FO)</option>
+                        <option value="+299">+299 (GL)</option>
+                    </select>
+                    <input type="tel" class="form-control" id="edit-user-phone" name="phone" required>
+                </div>
+                <div id="add-user-phone-error" class="invalid-feedback"></div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
                 <label for="edit-user-role" class="form-label">Rol</label>
                 <select class="form-select" id="edit-user-role" name="role" required>
-                    <option value="0">Sin rol</option>
                 </select>
                 <div id="edit-user-role-error" class="invalid-feedback">Por favor seleccione un rol</div>
             </div>
