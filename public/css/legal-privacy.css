@@ -8,6 +8,13 @@ main {
     background-color: #f5f5f5;
 }
 
+.main {
+    background-color: #f5f5f5;
+	position: relative;
+	z-index: 1;
+
+}
+
 .container,
 #content-area  {
 	width: 80%;
@@ -41,6 +48,16 @@ p {
 h3 {
     font-size: 1.3em;
     margin-bottom: 10px;
+}
+
+.cookies-links {
+    color: black;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.cookies-links:hover {
+    color: var(--unlink-users-btn-hover);
 }
 
 @media (max-width: 576px) {

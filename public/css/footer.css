@@ -41,6 +41,8 @@ footer {
 .info a:nth-child(1),
 .info a:nth-child(2),
 .info a:nth-child(3),
+.info a:nth-child(4),
+.info a:nth-child(5),
 #copyright a {
 	transition: color 0.3s ease;
 }
@@ -48,6 +50,8 @@ footer {
 .info a:nth-child(1):hover,
 .info a:nth-child(2):hover,
 .info a:nth-child(3):hover,
+.info a:nth-child(4):hover,
+.info a:nth-child(5):hover,
 #copyright a:hover {
     color: var(--unlink-users-btn-hover);
 }

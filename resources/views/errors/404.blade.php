@@ -90,47 +90,46 @@
 		</div>
 
 		    <footer class="footer mt-auto">
-    <div class="container-fluid py-4 px-3">
+        <div class="container-fluid py-4 px-3">
+            <div class="row align-items-center text-center text-lg-start">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                    <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-5">
+                        <a href="/legal-notice.html" data-i18n="legal_notice">Aviso Legal</a>
+                        <a href="/privacy-politic.html" data-i18n="privacy_policy">Política de Privacidad</a>
+                        <a href="/payment-politic.html" data-i18n="payment_policy">Política de Pagos</a>
+                        <a href="/cookies.html" data-i18n="cookies">Cookies</a>
+                        <a href="/contact.html" data-i18n="contact">Contacto</a>
+                    </div>
+                </div>
 
-        <!-- Primera fila: info legal y redes -->
-        <div class="row align-items-center text-center text-lg-start">
-        <!-- Info legal -->
-        <div class="col-12 col-lg-6 mb-4 mb-lg-0">
-            <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-3">
-                <a href="/legal-notice.html">Aviso Legal</a>
-                <a href="/privacy-politic.html">Política de Privacidad</a>
-                <a href="/contact.html">Contacto</a>
+                <!-- Redes sociales -->
+                <div class="col-12 col-lg-6">
+                    <ul class="icons list-unstyled d-flex justify-content-center justify-content-lg-end gap-4 m-0">
+                        <li><a id="instagram" href="https://www.instagram.com/"><img src="/images/instagram-53.png" alt="Instagram"></a></li>
+                        <li><a id="facebook" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="Facebook"></a></li>
+                        <li><a id="twitter" href="https://www.twitter.com/"><img src="/images/twitterx--v2.png" alt="Twitter"></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Separador -->
+            <div class="separation-line my-3"></div>
+
+            <!-- Segunda fila: logos institucionales y copyright -->
+            <div class="row align-items-center text-center text-lg-start">
+                <!-- Logos -->
+                <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+                    <div class="items-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center gap-5"></div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="col-12 col-lg-4 text-lg-end">
+                    <p id="copyright" class="mb-0">
+                    <a href="https://www.kmcmobile.es/">KMCMobile</a> © 2025
+                    </p>
+                </div>
             </div>
         </div>
-
-        <!-- Redes sociales -->
-        <div class="col-12 col-lg-6">
-            <ul class="icons list-unstyled d-flex justify-content-center justify-content-lg-end gap-4 m-0">
-                <li><a id="instagram" href="https://www.instagram.com/"><img src="/images/instagram-53.png" alt="Instagram"></a></li>
-                <li><a id="facebook" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="Facebook"></a></li>
-                <li><a id="twitter" href="https://www.twitter.com/"><img src="/images/twitterx--v2.png" alt="Twitter"></a></li>
-            </ul>
-        </div>
-        </div>
-
-        <!-- Separador -->
-        <div class="separation-line my-3"></div>
-
-        <!-- Segunda fila: logos institucionales y copyright -->
-        <div class="row align-items-center text-center text-lg-start">
-        <!-- Logos -->
-        <div class="col-12 col-lg-8 mb-3 mb-lg-0">
-            <div class="items-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center gap-4"></div>
-        </div>
-
-        <!-- Copyright -->
-        <div class="col-12 col-lg-4">
-            <p id="copyright" class="mb-0">
-            <a href="https://www.kmcmobile.es/">KMCMobile</a> © 2025
-            </p>
-        </div>
-        </div>
-    </div>
     </footer>
 
 		<script type="module">
