@@ -7,12 +7,14 @@ document.addEventListener('DOMContentLoaded', async function () {
   const dniType = document.getElementById('dni-nie');
   let currentStep = 0;
 
-  dniType.addEventListener('change', function () {
-    const dniField = document.getElementById('dni');
-    if (dniField.value) {
-      validateField(dniField);
-    }
-  });
+  if (dniType) {
+    dniType.addEventListener('change', function () {
+      const dniField = document.getElementById('dni');
+      if (dniField.value) {
+        validateField(dniField);
+      }
+    });
+  }
 
   // Inicializar pasos
   function showStep(step) {

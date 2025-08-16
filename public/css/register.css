@@ -37,6 +37,7 @@ section {
     color: #fff;
     padding: 0 35px 0 5px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
 #gender-icon {
