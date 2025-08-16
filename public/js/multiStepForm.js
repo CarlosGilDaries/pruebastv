@@ -4,7 +4,15 @@ document.addEventListener('DOMContentLoaded', async function () {
   const prevBtn = document.querySelector('.prev-btn');
   const nextBtn = document.querySelector('.next-btn');
   const submitBtn = document.querySelector('.submit-btn');
+  const dniType = document.getElementById('dni-nie');
   let currentStep = 0;
+
+  dniType.addEventListener('change', function () {
+    const dniField = document.getElementById('dni');
+    if (dniField.value) {
+      validateField(dniField);
+    }
+  });
 
   // Inicializar pasos
   function showStep(step) {
@@ -84,26 +92,56 @@ document.addEventListener('DOMContentLoaded', async function () {
 
       case 'dni':
         if (!value) {
-          showError(field, 'El dni es obligatorio');
+          showError(field, 'El documento es obligatorio');
           return false;
         }
-        if (!/^(\d{8})([A-Za-z])$/.test(value)) {
-          showError(field, 'Por favor ingresa un DNI válido');
-          return false;
-        }
-        const match = value.match(/^(\d{8})([A-Za-z])$/);
-        const numero = parseInt(match[1], 10);
-        const letraIngresada = match[2].toUpperCase();
-        const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
-        const letraCorrecta = letras[numero % 23];
 
-        if (letraIngresada !== letraCorrecta) {
-          showError(field, `Por favor ingresa un DNI válido.`);
-          return false;
+        const docType = dniType.value;
+
+        if (docType === 'dni') {
+          if (!/^(\d{8})([A-Za-z])$/.test(value)) {
+            showError(field, 'Por favor ingresa un DNI válido');
+            return false;
+          }
+
+          const match = value.match(/^(\d{8})([A-Za-z])$/);
+          const numero = parseInt(match[1], 10);
+          const letraIngresada = match[2].toUpperCase();
+          const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+          const letraCorrecta = letras[numero % 23];
+
+          if (letraIngresada !== letraCorrecta) {
+            showError(field, 'La letra del DNI no es correcta');
+            return false;
+          }
+        } else if (docType === 'nie') {
+          if (!/^[XYZ]\d{7}[A-Za-z]$/.test(value)) {
+            showError(field, 'Por favor ingresa un NIE válido');
+            return false;
+          }
+
+          const nieMatch = value.match(/^([XYZ])(\d{7})([A-Za-z])$/);
+          let numero = nieMatch[2];
+          const letraIngresada = nieMatch[3].toUpperCase();
+          const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+
+          const primeraLetra = nieMatch[1];
+          if (primeraLetra === 'X') numero = '0' + numero;
+          else if (primeraLetra === 'Y') numero = '1' + numero;
+          else if (primeraLetra === 'Z') numero = '2' + numero;
+
+          const letraCorrecta = letras[parseInt(numero, 10) % 23];
+
+          if (letraIngresada !== letraCorrecta) {
+            showError(field, 'La letra del NIE no es correcta');
+            return false;
+          }
         }
+
+        // Verificar en la base de datos
         const validDni = await checkDnisFromDB(value);
         if (!validDni) {
-          showError(field, 'El DNI ya está registrado.');
+          showError(field, 'El documento ya está registrado.');
           return false;
         }
         break;
@@ -140,14 +178,14 @@ document.addEventListener('DOMContentLoaded', async function () {
           return false;
         }
         break;
-      
+
       case 'phone':
         if (value.length > 15) {
           showError(field, 'No puede exceder los 15 dígitos');
           return false;
         }
         break;
-      
+
       case 'birth-year':
         if (!value) {
           showError(field, 'El año es obligatorio.');
@@ -170,32 +208,45 @@ document.addEventListener('DOMContentLoaded', async function () {
           return false;
         }
         break;
-      
+
       case 'gender':
         if (!value) {
           showError(field, 'El género es obligatorio.');
           return false;
         }
         break;
-      
+
       case 'password':
         if (!value) {
           showError(field, 'La contraseña es obligatoria.');
           return false;
         }
-        if (value.length < 6) {
-          showError(field, 'Mínimo 6 carateres.');
+
+        // Validaciones de complejidad
+        const errors = [];
+
+        if (value.length < 8) {
+          errors.push('mínimo 8 caracteres');
+        }
+        if (!/[A-Z]/.test(value)) {
+          errors.push('al menos 1 mayúscula');
+        }
+        if (!/[0-9]/.test(value)) {
+          errors.push('al menos 1 número');
+        }
+        if (!/[*#><@$%&+=¿?¡!]/.test(value)) {
+          errors.push('al menos 1 caracter especial');
+        }
+
+        if (errors.length > 0) {
+          showError(field, `Inválida: ${errors.join(', ')}.`);
           return false;
         }
         break;
-      
+
       case 'password_confirmation':
         if (!value) {
           showError(field, 'La confirmación es obligatoria.');
-          return false;
-        }
-        if (value.length < 6) {
-          showError(field, 'Mínimo 6 carateres.');
           return false;
         }
         break;
