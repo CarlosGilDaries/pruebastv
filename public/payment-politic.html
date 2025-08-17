@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/legal-privacy.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
-    <title>Política de Pagos</title>
+    <title data-i18n="payment_policy">Política de Pagos</title>
   </head>
-  <body>
+  <body id="payment_policy">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -31,46 +31,50 @@
                 <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/">Inicio</a>
+                            <a class="nav-link" href="/" data-i18n="nav_home">Inicio</a>
                         </li>
 
                         <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorías</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="category_title">Categorías</a>
                             <ul class="dropdown-menu" id="categories"></ul>
                         </li>
                         <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="gender_title">Géneros</a>
                             <ul class="dropdown-menu" id="genders"></ul>
                         </li>
                             
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/plans.html">Planes</a>
+                            <a class="nav-link" href="/plans.html" data-i18n="plans_title">Planes</a>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ms-lg-auto right-nav">
                         <li class="nav-item dropdown user">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link" data-i18n="nav_account">
                                 Cuenta
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
-                                <li><a class="dropdown-item" href="/account">Perfil</a></li>
-                                <li><a class="dropdown-item" href="/favorites.html">Favoritos</a></li>
-                                <li><a class="dropdown-item" href="/seen.html">Vistos</a></li>
-                                <li><a class="dropdown-item" href="/order-history.html">Historial de pagos</a></li>
-                                <li><a class="dropdown-item" id="logout" href="#">Cerrar sesión</a></li>
+                                <li><a class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
+                                <li><a class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
+                                <li><a class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
+                                <li><a class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
+                                <li><a class="dropdown-item" id="logout" href="#" data-i18n="nav_logout">Cerrar sesión</a></li>
                             </ul>
+                        </li>
+
+                        <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                            <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Filtro de búsqueda (siempre visible) -->
+                <!-- Filtro de búsqueda -->
                 <div class="search-container d-flex align-items-center ms-auto">
                     <div class="search-icon me-2">
                         <img src="/images/search-icon.png" alt="Buscar" id="searchToggle">
                     </div>
                     <div class="search-box" id="searchBox">
-                        <input type="text" id="searchInput" placeholder="Buscar contenido...">
+                        <input type="text" id="searchInput" placeholder="Buscar contenido..." data-i18n-placeholder="search_placeholder">
                         <div class="search-results" id="searchResults"></div>
                     </div>
                 </div>
@@ -83,17 +87,17 @@
             <div class="col-lg-8">
                 <article class="bg-white p-4 p-md-5 rounded shadow-sm">
                     <header class="mb-4">
-                        <h1 class="h2 fw-bold text-primary">Política de Pagos</h1>
-                        <p class="text-muted">Última actualización: 13/08/2025</p>
+                        <h1 data-i18n="payment_policy_heading" class="h2 fw-bold text-primary">Política de Pagos</h1>
+                        <p class="text-muted"><span data-i18n="payment_policy_last_update">Última actualización</span>: 13/08/2025</p>
                     </header>
 
                     <section class="mb-4">
-                        <p class="lead">Esta política regula los métodos, condiciones y procedimientos de pago en la plataforma <span style="font-weight: bold; color:black">DisfrutaValenciaTV</span>.</p>
+                        <p data-i18n="payment_policy_1" class="lead">Esta política regula los métodos, condiciones y procedimientos de pago en la plataforma <span data-i18n="company_name" style="font-weight: bold; color:black">DisfrutaValenciaTV</span>.</p>
                     </section>
 
                     <section class="mb-5">
-                        <h2 class="h4 fw-bold mb-3 border-bottom pb-2">1. Métodos de pago aceptados</h2>
-                        <p>El usuario podrá realizar el pago de los servicios o contenidos contratados mediante las siguientes pasarelas seguras de pago externas:</p>
+                        <h2 data-i18n="payment_policy_methods_1" class="h4 fw-bold mb-3 border-bottom pb-2">1. Métodos de pago aceptados</h2>
+                        <p data-i18n="payment_policy_methods_2">El usuario podrá realizar el pago de los servicios o contenidos contratados mediante las siguientes pasarelas seguras de pago externas:</p>
                         
                         <div class="d-flex align-items-center mb-3">
             
@@ -105,74 +109,74 @@
                             <span class="fw-bold">- PayPal</span>
                         </div>
                         
-                        <p>El usuario elegirá la pasarela que prefiera en el momento de la compra.</p>
+                        <p data-i18n="payment_policy_methods_3">El usuario elegirá la pasarela que prefiera en el momento de la compra.</p>
                     </section>
 
                     <section class="mb-5">
-                        <h2 class="h4 fw-bold mb-3 border-bottom pb-2">2. Gestión de datos de pago</h2>
-                        <p>La plataforma <strong>no almacena ni procesa</strong> datos bancarios o de tarjetas de crédito/débito del usuario.</p>
-                        <p>Toda la información necesaria para efectuar el pago se introduce y gestiona directamente en las pasarelas seguras de pago seleccionadas (Redsys o PayPal), que son responsables del tratamiento de dichos datos conforme a sus propias políticas de privacidad y condiciones de uso.</p>
+                        <h2 data-i18n="payment_policy_data_1" class="h4 fw-bold mb-3 border-bottom pb-2">2. Gestión de datos de pago</h2>
+                        <p data-i18n="payment_policy_data_2">La plataforma no almacena ni procesa datos bancarios o de tarjetas de crédito/débito del usuario.</p>
+                        <p data-i18n="payment_policy_data_3">Toda la información necesaria para efectuar el pago se introduce y gestiona directamente en las pasarelas seguras de pago seleccionadas (Redsys o PayPal), que son responsables del tratamiento de dichos datos conforme a sus propias políticas de privacidad y condiciones de uso.</p>
                     </section>
 
                     <section class="mb-5">
-                        <h2 class="h4 fw-bold mb-3 border-bottom pb-2">3. Tipos de pagos disponibles</h2>
+                        <h2 data-i18n="payment_policy_types_1" class="h4 fw-bold mb-3 border-bottom pb-2">3. Tipos de pagos disponibles</h2>
                         
                         <div class="card mb-3">
                             <div class="card-header bg-light">
-                                <h3 class="h5 fw-bold mb-0">a) Suscripción por planes</h3>
+                                <h3 data-i18n="payment_policy_types_2" class="h5 fw-bold mb-0">a) Suscripción por planes</h3>
                             </div>
                             <div class="card-body">
-                                <p>Plan de <strong>3 meses</strong> o plan de <strong>12 meses</strong>, cada uno con sus correspondientes privilegios y acceso a determinados contenidos.</p>
-                                <p class="mb-0">El acceso se activa una vez confirmado el pago y se mantiene durante la duración contratada.</p>
+                                <p data-i18n="payment_policy_types_3">Plan de 3 meses o plan de 12 meses, cada uno con sus correspondientes privilegios y acceso a determinados contenidos.</p>
+                                <p data-i18n="payment_policy_types_4" class="mb-0">El acceso se activa una vez confirmado el pago y se mantiene durante la duración contratada.</p>
                             </div>
                         </div>
 
                         <div class="card">
                             <div class="card-header bg-light">
-                                <h3 class="h5 fw-bold mb-0">b) Pago por visión (Pay Per View) o alquiler</h3>
+                                <h3 data-i18n="payment_policy_types_5" class="h5 fw-bold mb-0">b) Pago por visión (Pay Per View) o alquiler</h3>
                             </div>
                             <div class="card-body">
-                                <p>El usuario podrá pagar individualmente por visualizar un contenido catalogado como <strong>pay per view</strong> o alquilar un contenido concreto.</p>
-                                <p class="mb-0">El acceso se habilitará únicamente para el contenido adquirido y por el tiempo estipulado en la descripción del producto.</p>
+                                <p data-i18n="payment_policy_types_6">El usuario podrá pagar individualmente por visualizar un contenido catalogado como pay per view o alquilar un contenido concreto.</p>
+                                <p data-i18n="payment_policy_types_7" class="mb-0">El acceso se habilitará únicamente para el contenido adquirido y por el tiempo estipulado en la descripción del producto.</p>
                             </div>
                         </div>
                     </section>
 
                     <section class="mb-5">
-                        <h2 class="h4 fw-bold mb-3 border-bottom pb-2">4. Confirmación y facturación</h2>
-                        <p>Una vez realizado el pago, el usuario recibirá:</p>
+                        <h2 data-i18n="payment_policy_invoices_1" class="h4 fw-bold mb-3 border-bottom pb-2">4. Confirmación y facturación</h2>
+                        <p data-i18n="payment_policy_invoices_2">Una vez realizado el pago, el usuario recibirá:</p>
                         <ul class="list-group list-group-flush mb-3">
-                            <li class="list-group-item">Confirmación del pago</li>
-                            <li class="list-group-item">Acceso inmediato al contenido contratado</li>
-                            <li class="list-group-item">Factura electrónica</li>
+                            <li data-i18n="payment_policy_invoices_3" class="list-group-item">Confirmación del pago</li>
+                            <li data-i18n="payment_policy_invoices_4" class="list-group-item">Acceso inmediato al contenido contratado</li>
+                            <li data-i18n="payment_policy_invoices_5" class="list-group-item">Factura electrónica</li>
                         </ul>
-                        <p>Todas las transacciones generan una factura electrónica, disponible en la cuenta del usuario en la sección 
-                        <a href="/order-history.html" class="text-decoration-none cookies-links">
+                        <p data-i18n="payment_policy_invoices_6">Todas las transacciones generan una factura electrónica, disponible en la cuenta del usuario en la sección 
+                        <a data-i18n="nav_payment_history" href="/order-history.html" class="text-decoration-none cookies-links">
                             Historial de Pagos
                         </a>
                         </p>
                     </section>
 
                     <section class="mb-5">
-                        <h2 class="h4 fw-bold mb-3 border-bottom pb-2">5. Reembolsos y cancelaciones</h2>
-                        <p>Debido a la naturaleza digital e inmediata del acceso a los contenidos, <strong>no se admitirán devoluciones ni reembolsos</strong> una vez que el usuario haya accedido al contenido contratado, salvo que la ley aplicable disponga lo contrario.</p>
-                        <p>Si el contenido adquirido no estuviera disponible por causas imputables a la plataforma, se ofrecerá al usuario la opción de un reembolso completo o un cambio por otro contenido de valor equivalente.</p>
+                        <h2 data-i18n="payment_policy_cancelations_1" class="h4 fw-bold mb-3 border-bottom pb-2">5. Reembolsos y cancelaciones</h2>
+                        <p data-i18n="payment_policy_cancelations_2">Debido a la naturaleza digital e inmediata del acceso a los contenidos, no se admitirán devoluciones ni reembolsos una vez que el usuario haya accedido al contenido contratado, salvo que la ley aplicable disponga lo contrario.</p>
+                        <p data-i18n="payment_policy_cancelations_3">Si el contenido adquirido no estuviera disponible por causas imputables a la plataforma, se ofrecerá al usuario la opción de un reembolso completo o un cambio por otro contenido de valor equivalente.</p>
                     </section>
 
                     <section class="mb-5">
-                        <h2 class="h4 fw-bold mb-3 border-bottom pb-2">6. Seguridad</h2>
+                        <h2 data-i18n="payment_policy_security_1" class="h4 fw-bold mb-3 border-bottom pb-2">6. Seguridad</h2>
                         <div class="d-flex align-items-start mb-3">
                             <div>
-                                <h3 class="h5 fw-bold">Protección de pagos</h3>
-                                <p class="mb-0">Todas las transacciones se realizan a través de pasarelas de pago seguras que utilizan cifrado SSL y cumplen con los estándares de seguridad exigidos por la normativa PCI DSS para la gestión de datos de pago.</p>
+                                <h3 data-i18n="payment_policy_security_2" class="h5 fw-bold">Protección de pagos</h3>
+                                <p data-i18n="payment_policy_security_3" class="mb-0">Todas las transacciones se realizan a través de pasarelas de pago seguras que utilizan cifrado SSL y cumplen con los estándares de seguridad exigidos por la normativa PCI DSS para la gestión de datos de pago.</p>
                             </div>
                         </div>
                     </section>
 
                     <section>
-                        <h2 class="h4 fw-bold mb-3 border-bottom pb-2">7. Contacto</h2>
-                        <p>Para cualquier consulta o incidencia relacionada con pagos, el usuario puede contactar con nuestro servicio de atención al cliente en la página de 
-                        <a href="/contact.html" class="text-decoration-none cookies-links">
+                        <h2 data-i18n="payment_policy_contact_1" class="h4 fw-bold mb-3 border-bottom pb-2">7. Contacto</h2>
+                        <p data-i18n="payment_policy_contact_2">Para cualquier consulta o incidencia relacionada con pagos, el usuario puede contactar con nuestro servicio de atención al cliente en la página de 
+                        <a data-i18n="payment_policy_contact_3" href="/contact.html" class="text-decoration-none cookies-links">
                             contacto
                         </a>
                         </p>
@@ -228,6 +232,7 @@
     integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
     crossorigin="anonymous"></script>
     <script type="module" src="/js/cookies.js"></script>
+    <script type="module" src="/js/translations.js"></script>
     <script src="/js/webSettings.js"></script>
     <script src="/js/searchInput.js"></script>
   </body>

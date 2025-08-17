@@ -1,9 +1,24 @@
+import { clickLogOut } from './modules/clickLogOutButton.js';
+import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
+import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+
 document.addEventListener('DOMContentLoaded', function () {
+
+  const categoriesDropDown = document.getElementById('categories');
+  const gendersDropDown = document.getElementById('genders');
+
+  dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+  dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+
+  setupLoginSignupButtons();
+  clickLogOut();
+
   const form = document.getElementById('form');
   const loading = document.getElementById('loading');
   const successMessage = document.getElementById('success-message');
 
   loading.style.display = 'none';
+  loading.classList.remove('d-flex');
   successMessage.style.display = 'none';
 
   form.addEventListener('submit', async function (e) {
@@ -25,7 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
         'El email es requerido';
       isValid = false;
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      document.getElementById('email-error').textContent = 'Introduce un email válido.';
+      document.getElementById('email-error').textContent =
+        'Introduce un email válido.';
       isValid = false;
     }
 
@@ -76,6 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
       alert('Error de conexión');
     } finally {
       loading.style.display = 'none';
+      loading.classList.remove('d-flex');
     }
   });
 });

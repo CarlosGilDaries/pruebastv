@@ -1,4 +1,10 @@
+import { clickLogOut } from './modules/clickLogOutButton.js';
+import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
+import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+
 const container = document.getElementById('privacy-politic');
+const categoriesDropDown = document.getElementById('categories');
+const gendersDropDown = document.getElementById('genders');
 
 async function loadPrivacyPolitic() {
     const response = await fetch('/api/privacy-politic');
@@ -11,5 +17,11 @@ async function loadPrivacyPolitic() {
         container.appendChild(itemContainer);
     });
 }
+
+dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+
+setupLoginSignupButtons();
+clickLogOut();
 
 loadPrivacyPolitic();
