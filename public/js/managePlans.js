@@ -14,13 +14,17 @@ document.addEventListener('DOMContentLoaded', async function () {
     const neededPlans = [...new Set(localStorage.getItem('needed_plans').split(','))];
 	const link = document.getElementById('link-to-plans');
 	if (actualPlan) {
-		h2.innerHTML = `Plan Actual - ${actualPlan}`;
-		message.innerHTML = `No se puede visualizar este contenido con el plan actual. Plan/es necesarios:`;
-		link.innerHTML = `CAMBIAR DE PLAN`;
+		h2.innerHTML = `<span data-i18n="manage_plans_actual_plan">Plan Actual</span> - ${actualPlan}`;
+        message.innerHTML = `No se puede visualizar este contenido con el plan actual. Plan/es necesarios:`;
+        message.setAttribute('data-i18n', 'manage_plans_text');
+        link.innerHTML = `CAMBIAR DE PLAN`;
+        link.setAttribute('data-i18n', 'manage_plans_link')
 	} else {
-		h2.innerHTML = `Plan Actual - Ninguno`;
-		message.innerHTML = `Plan/es para visualizar este contenido:`;
-		link.innerHTML = `SUSCRIBIRSE A UN PLAN`
+		h2.innerHTML = `<span data-i18n="manage_plans_actual_plan">Plan Actual</span> - <span data-i18n="manage_plans_none">Ninguno</span>`;
+        message.innerHTML = `Plan/es para visualizar este contenido:`;
+        message.setAttribute('data-i18n', 'manage_plans_none_text');
+        link.innerHTML = `SUSCRIBIRSE A UN PLAN`;
+        link.setAttribute('data-i18n', 'manage_plans_link_2');
 	}
 
     neededPlans.forEach((plan) => {

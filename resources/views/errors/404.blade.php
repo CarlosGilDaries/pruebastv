@@ -8,80 +8,84 @@
 		<link rel="stylesheet" href="/css/normalize.css">
 		<link rel="stylesheet" href="/css/404.css">
 		<link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" id="favicon">
-		<title>Página no encontrada</title>
+		<title data-i18n="404">Página no encontrada</title>
 	</head>
-	<body>
-	<header>
-        <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
-            <div class="container-fluid">
-                <!-- Logo -->
-                <a class="navbar-brand logo" href="/">
-                    <img src="/file/logo.png" id="logo" alt="Pruebas TV logo">
-                </a>
+	<body id="404">
+        <header>
+            <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
+                <div class="container-fluid">
+                    <!-- Logo -->
+                    <a class="navbar-brand logo" href="/">
+                        <img src="/file/logo.png" id="logo" alt="Pruebas TV logo">
+                    </a>
 
-                <!-- Botón hamburguesa -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                    <!-- Botón hamburguesa -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <!-- Contenido colapsable -->
-                <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
-                        <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/">Inicio</a>
-                        </li>
+                    <!-- Contenido colapsable -->
+                    <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
+                            <li class="nav-item left-nav-links">
+                                <a class="nav-link" href="/" data-i18n="nav_home">Inicio</a>
+                            </li>
 
-                        <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorías</a>
-                            <ul class="dropdown-menu" id="categories"></ul>
-                        </li>
-                        <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
-                            <ul class="dropdown-menu" id="genders"></ul>
-                        </li>
-                            
-                        <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/plans.html">Planes</a>
-                        </li>
-                    </ul>
+                            <li class="nav-item dropdown left-nav-links">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="category_title">Categorías</a>
+                                <ul class="dropdown-menu" id="categories"></ul>
+                            </li>
+                            <li class="nav-item dropdown left-nav-links">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="gender_title">Géneros</a>
+                                <ul class="dropdown-menu" id="genders"></ul>
+                            </li>
+                                
+                            <li class="nav-item left-nav-links">
+                                <a class="nav-link" href="/plans.html" data-i18n="plans_title">Planes</a>
+                            </li>
+                        </ul>
 
-                    <ul class="navbar-nav ms-lg-auto right-nav">
-                        <li class="nav-item dropdown user">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link">
-                                Cuenta
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
-                                <li><a class="dropdown-item" href="/account">Perfil</a></li>
-                                <li><a class="dropdown-item" href="/favorites.html">Favoritos</a></li>
-                                <li><a class="dropdown-item" href="/seen.html">Vistos</a></li>
-                                <li><a class="dropdown-item" href="/order-history.html">Historial de pagos</a></li>
-                                <li><a class="dropdown-item" id="logout" href="#">Cerrar sesión</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                        <ul class="navbar-nav ms-lg-auto right-nav">
+                            <li class="nav-item dropdown user">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link" data-i18n="nav_account">
+                                    Cuenta
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
+                                    <li><a class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
+                                    <li><a class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
+                                    <li><a class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
+                                    <li><a class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
+                                    <li><a class="dropdown-item" id="logout" href="#" data-i18n="nav_logout">Cerrar sesión</a></li>
+                                </ul>
+                            </li>
 
-                <!-- Filtro de búsqueda (siempre visible) -->
-                <div class="search-container d-flex align-items-center ms-auto">
-                    <div class="search-icon me-2">
-                        <img src="/images/search-icon.png" alt="Buscar" id="searchToggle">
+                            <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                                <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="search-box" id="searchBox">
-                        <input type="text" id="searchInput" placeholder="Buscar contenido...">
-                        <div class="search-results" id="searchResults"></div>
+
+                    <!-- Filtro de búsqueda -->
+                    <div class="search-container d-flex align-items-center ms-auto">
+                        <div class="search-icon me-2">
+                            <img src="/images/search-icon.png" alt="Buscar" id="searchToggle">
+                        </div>
+                        <div class="search-box" id="searchBox">
+                            <input type="text" id="searchInput" placeholder="Buscar contenido..." data-i18n-placeholder="search_placeholder">
+                            <div class="search-results" id="searchResults"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    </header>
+            </nav>
+        </header>
 
 		<div class="error-container">
 			<div class="error-content">
-				<h1>404</h1>
-				<h2>Página no encontrada</h2>
-				<p>No hemos encontrado lo que buscabas.</p>
+				<h1 data-i18n="404_heading">404</h1>
+				<h2 data-i18n="404_heading_2">Página no encontrada</h2>
+				<p data-i18n="404_text">No hemos encontrado lo que buscabas.</p>
 				<div class="error-actions">
-					<a href="/" class="btn">Volver al inicio</a>
+					<a data-i18n="404_action" href="/" class="btn">Volver al inicio</a>
 				</div>
 			</div>
 			<div class="error-image">
@@ -144,6 +148,7 @@
 			import { clickLogOut } from './js/modules/clickLogOutButton.js';
 			clickLogOut();
 		</script>
+        <script type="module" src="/js/translations.js"></script>
 		<script src="/js/webSettings.js"></script>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 	</body>

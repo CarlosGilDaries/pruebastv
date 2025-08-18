@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/payment-error.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
-    <title>Verificar Email</title>
+    <title data-i18n="email_verification_title">Verificar Email</title>
 </head>
-<body>
+<body id="email_verification">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -84,15 +84,15 @@
     
     <main>
         <div class="payment-error">
-            <h1>Validar Email</h1>
-            <p class="error-message">Es necesario validar tu correo electrónico. En tu bandeja de entrada tendrás un correo con un enlace para verificarlo.</p>
+            <h1 data-i18n="email_verification_heading">Validar Email</h1>
+            <p data-i18n="email_verification_text" class="error-message">Es necesario validar tu correo electrónico. En tu bandeja de entrada tendrás un correo con un enlace para verificarlo.</p>
             
             <div class="error-details">
-                <p>Si no tienes el correo o ha caducado el enlace, haz click en este botón.</p>
+                <p data-i18n="email_verification_details">Si no tienes el correo o ha caducado el enlace, haz click en este botón.</p>
             </div>
             
             <div class="error-actions">
-                <button id="resendVerification" class="error-primary-button">Reenviar</button>
+                <button data-i18n="email_verification_button" id="resendVerification" class="error-primary-button">Reenviar</button>
                 <p id="resendMessage" style="display: none; color: green; margin-top: 10px;"></p>
             </div>
         </div>
@@ -141,6 +141,7 @@
         </div>
     </footer>
 
+    <script type="module" src="/js/translations.js"></script>
     <script src="/js/resendEmail.js" type="module"></script>
     <script src="/js/webSettings.js"></script>
     <script src="/js/searchInput.js"></script>

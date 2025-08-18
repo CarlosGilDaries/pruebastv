@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/edit-user.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
-    <title>Cambiar Teléfono</title>
+    <title data-i18n="change_phone_title">Cambiar Teléfono</title>
   </head>
-  <body>
+  <body id="change_phone_title">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -88,16 +88,16 @@
             <div class="col-12 col-md-10 col-lg-8 col-xl-6">
                 <div class="card">
                     <div class="card-header bg-white text-center py-3">
-                        <h2 class="mb-0">Cambiar Teléfono</h2>
+                        <h2 data-i18n="change_phone_heading" class="mb-0">Cambiar Teléfono</h2>
                     </div>
                     <div class="card-body">
-                        <div id="success-message" class="alert alert-success d-none">
+                        <div data-i18n="change_phone_success" id="success-message" class="alert alert-success d-none">
                             Teléfono cambiado con éxito
                         </div>
                         
                         <form id="form">
                             <div class="mb-4">
-                                <label for="phone" class="form-label fw-bold">Teléfono</label>
+                                <label data-i18n="phone_label" for="phone" class="form-label fw-bold">Teléfono</label>
                                 <div class="input-group">
                                     <select id="country-code" class="form-select" style="max-width: 120px;">
                                         <option value="+34">+34 (ES)</option>
@@ -148,38 +148,37 @@
                                         <option value="+299">+299 (GL)</option>
                                     </select>
                                     <input type="tel" class="form-control" id="phone" name="phone" required>
-                                    </div>
-                                    <div id="phone-error" class="invalid-feedback"></div>
                                 </div>
+                                <div id="phone-error" class="invalid-feedback"></div>
+                            </div>
 
-                                <div class="mb-4">
-                                    <label for="password" class="form-label fw-bold">Contraseña</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                    <div id="password-error" class="invalid-feedback"></div>
+                            <div class="mb-4">
+                                <label data-i18n="password_label" for="password" class="form-label fw-bold">Contraseña</label>
+                                <input type="password" class="form-control" id="password" name="password" required>
+                                <div id="password-error" class="invalid-feedback"></div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label data-i18n="confirm_password_label" for="password-confirmation" class="form-label fw-bold">Confirmar Contraseña</label>
+                                <input type="password" class="form-control" id="password-confirmation" name="password_confirmation" required>
+                                <div id="password-confirmation-error" class="invalid-feedback"></div>
+                            </div>
+
+                            <div data-i18n="wrong_password" id="form-error" class="alert alert-danger d-none text-center mb-4">
+                                Contraseña incorrecta
+                            </div>
+
+                            <div class="d-flex justify-content-center mb-3 d-none" id="loading">
+                                <div class="spinner-border text-danger" role="status">
+                                    <span data-i18n="loading" class="visually-hidden">Cargando...</span>
                                 </div>
+                                <p data-i18n="change_phone_loading" class="ms-3 mb-0">Editando teléfono, por favor espere...</p>
+                            </div>
 
-                                <div class="mb-4">
-                                    <label for="password-confirmation" class="form-label fw-bold">Confirmar Contraseña</label>
-                                    <input type="password" class="form-control" id="password-confirmation" name="password_confirmation" required>
-                                    <div id="password-confirmation-error" class="invalid-feedback"></div>
-                                </div>
-
-                                <div id="form-error" class="alert alert-danger d-none text-center mb-4">
-                                    Contraseña incorrecta
-                                </div>
-
-                                <div class="d-flex justify-content-center mb-3 d-none" id="loading">
-                                    <div class="spinner-border text-danger" role="status">
-                                        <span class="visually-hidden">Cargando...</span>
-                                    </div>
-                                    <p class="ms-3 mb-0">Editando teléfono, por favor espere...</p>
-                                </div>
-
-                                <button type="submit" class="btn btn-danger w-100 py-2 fw-bold">
-                                    <i class="fas fa-save me-2"></i> Cambiar Teléfono
-                                </button>
-                            </form>
-                        </div>
+                            <button data-i18n="change_phone_button" type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                                <i class="fas fa-save me-2"></i> Cambiar Teléfono
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

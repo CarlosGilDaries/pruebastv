@@ -90,12 +90,12 @@
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
             </div>
-            <h1>¡Email verificado con éxito!</h1>
-            <p class="confirmation-message">Tu email ha sido verificado correctamente.</p>
+            <h1 data-i18n="email_verification_success">¡Email verificado con éxito!</h1>
+            <p data-i18n="email_verification_success_text" class="confirmation-message">Tu email ha sido verificado correctamente.</p>
             
             <div class="action-buttons">
-                <a href="/" class="primary-button">Ir al Inicio</a>
-                <a href="/account" class="secondary-button">Ver mi cuenta</a>
+                <a data-i18n="email_verification_success_link_1" href="/" class="primary-button">Ir al Inicio</a>
+                <a data-i18n="email_verification_success_link_2" href="/account" class="secondary-button">Ver mi cuenta</a>
             </div>
         </div>
     </main>
@@ -143,6 +143,7 @@
         </div>
     </footer>
 
+    <script type="module" src="/js/translations.js"></script>
     <script type="module">
         import { clickLogOut } from './js/modules/clickLogOutButton.js';
         clickLogOut();

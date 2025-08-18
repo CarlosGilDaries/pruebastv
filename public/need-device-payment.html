@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/payment.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
-    <title>Pago Realizado</title>
+    <title data-i18n="need_device_payment_title">Pago Realizado</title>
 </head>
-<body>
+<body id="need_device_payment">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -31,46 +31,50 @@
                 <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/">Inicio</a>
+                            <a class="nav-link" href="/" data-i18n="nav_home">Inicio</a>
                         </li>
 
                         <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorías</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="category_title">Categorías</a>
                             <ul class="dropdown-menu" id="categories"></ul>
                         </li>
                         <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="gender_title">Géneros</a>
                             <ul class="dropdown-menu" id="genders"></ul>
                         </li>
                             
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/plans.html">Planes</a>
+                            <a class="nav-link" href="/plans.html" data-i18n="plans_title">Planes</a>
                         </li>
                     </ul>
 
                     <ul class="navbar-nav ms-lg-auto right-nav">
                         <li class="nav-item dropdown user">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link" data-i18n="nav_account">
                                 Cuenta
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
-                                <li><a class="dropdown-item" href="/account">Perfil</a></li>
-                                <li><a class="dropdown-item" href="/favorites.html">Favoritos</a></li>
-                                <li><a class="dropdown-item" href="/seen.html">Vistos</a></li>
-                                <li><a class="dropdown-item" href="/order-history.html">Historial de pagos</a></li>
-                                <li><a class="dropdown-item" id="logout" href="#">Cerrar sesión</a></li>
+                                <li><a class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
+                                <li><a class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
+                                <li><a class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
+                                <li><a class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
+                                <li><a class="dropdown-item" id="logout" href="#" data-i18n="nav_logout">Cerrar sesión</a></li>
                             </ul>
+                        </li>
+
+                        <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                            <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Filtro de búsqueda (siempre visible) -->
+                <!-- Filtro de búsqueda -->
                 <div class="search-container d-flex align-items-center ms-auto">
                     <div class="search-icon me-2">
                         <img src="/images/search-icon.png" alt="Buscar" id="searchToggle">
                     </div>
                     <div class="search-box" id="searchBox">
-                        <input type="text" id="searchInput" placeholder="Buscar contenido...">
+                        <input type="text" id="searchInput" placeholder="Buscar contenido..." data-i18n-placeholder="search_placeholder">
                         <div class="search-results" id="searchResults"></div>
                     </div>
                 </div>
@@ -86,11 +90,11 @@
                     <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
             </div>
-            <h1>¡Pago realizado con éxito!</h1>
-            <p class="confirmation-message">Sólo falta un paso para poder disfrutar de nuestro contenido.</p>
+            <h1 data-i18n="need_device_payment_heading">¡Pago realizado con éxito!</h1>
+            <p data-i18n="need_device_payment_text" class="confirmation-message">Sólo falta un paso para poder disfrutar de nuestro contenido.</p>
             
             <div class="action-buttons">
-                <a href="/new-device.html" class="primary-button">Finalizar Registro</a>
+                <a data-i18n="need_device_payment_button" href="/new-device.html" class="primary-button">Finalizar Registro</a>
             </div>
         </div>
     </main>
@@ -137,6 +141,7 @@
         </div>
     </footer>
     
+    <script type="module" src="/js/translations.js"></script>
     <script type="module" src="/js/payment.js"></script>
     <script src="/js/webSettings.js"></script>
     <script src="/js/searchInput.js"></script>

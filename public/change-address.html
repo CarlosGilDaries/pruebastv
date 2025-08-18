@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/edit-user.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
-    <title>Cambiar dirección</title>
+    <title data-i18n="change_address_title">Cambiar dirección</title>
   </head>
-  <body>
+  <body id="change_address">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -88,57 +88,57 @@
                 <div class="col-12 col-md-10 col-lg-8 col-xl-6">
                     <div class="card">
                         <div class="card-header bg-white text-center py-3">
-                            <h2 class="mb-0">Cambiar Dirección</h2>
+                            <h2 data-i18n="change_address_heading" class="mb-0">Cambiar Dirección</h2>
                         </div>
                         <div class="card-body">
-                            <div id="success-message" class="alert alert-success d-none">
+                            <div data-i18n="change_address_success" id="success-message" class="alert alert-success d-none">
                                 Dirección cambiada con éxito
                             </div>
                             
                             <form id="form">
 
                                 <div class="mb-4">
-                                    <label for="address" class="form-label fw-bold">Dirección</label>
+                                    <label data-i18n="change_address_1" for="address" class="form-label fw-bold">Dirección</label>
                                     <input type="text" class="form-control" id="address" name="address" required>
                                     <div id="adress-error" class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="city" class="form-label fw-bold">Ciudad</label>
+                                    <label data-i18n="change_address_2" for="city" class="form-label fw-bold">Ciudad</label>
                                     <input type="text" class="form-control" id="city" name="city" required>
                                     <div id="city-error" class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="country" class="form-label fw-bold">País</label>
+                                    <label data-i18n="change_address_3" for="country" class="form-label fw-bold">País</label>
                                     <input type="text" class="form-control" id="country" name="country" required>
                                     <div id="country-error" class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="password" class="form-label fw-bold">Contraseña</label>
+                                    <label data-i18n="password" for="password" class="form-label fw-bold">Contraseña</label>
                                     <input type="password" class="form-control" id="password" name="password" required>
                                     <div id="password-error" class="invalid-feedback"></div>
                                 </div>
 
                                 <div class="mb-4">
-                                    <label for="password-confirmation" class="form-label fw-bold">Confirmar Contraseña</label>
+                                    <label data-i18n="confirm_password" for="password-confirmation" class="form-label fw-bold">Confirmar Contraseña</label>
                                     <input type="password" class="form-control" id="password-confirmation" name="password_confirmation" required>
                                     <div id="password-confirmation-error" class="invalid-feedback"></div>
                                 </div>
 
-                                <div id="form-error" class="alert alert-danger d-none text-center mb-4">
+                                <div data-i18n="wrong_password" id="form-error" class="alert alert-danger d-none text-center mb-4">
                                     Contraseña incorrecta
                                 </div>
 
                                 <div class="d-flex justify-content-center mb-3 d-none" id="loading">
                                     <div class="spinner-border text-danger" role="status">
-                                        <span class="visually-hidden">Cargando...</span>
+                                        <span data-i18n="loading" class="visually-hidden">Cargando...</span>
                                     </div>
-                                    <p class="ms-3 mb-0">Editando contraseña, por favor espere...</p>
+                                    <p data-i18n="change_address_wait" class="ms-3 mb-0">Editando dirección, por favor espere...</p>
                                 </div>
 
-                                <button type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                                <button data-i18n="change_address_button" type="submit" class="btn btn-danger w-100 py-2 fw-bold">
                                     Cambiar Dirección
                                 </button>
                             </form>
@@ -192,6 +192,7 @@
         </div>
     </footer>
 
+    <script type="module" src="/js/translations.js"></script>
     <script type="module" src="/js/editCurrentUser.js"></script>
     <script src="/js/webSettings.js"></script>
     <script src="/js/searchInput.js"></script>

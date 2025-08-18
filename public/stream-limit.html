@@ -11,10 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/manageDevicesPlans.css">
-    <title>Gestión de Streams Simultáneos</title>
+    <title data-i18n="manage_streams_title">Gestión de Streams Simultáneos</title>
 </head>
-<body>
-
+<body id="manage_streams">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -85,10 +84,10 @@
     <section>
         <div class="devices-box">
             <div id="devices-container">
-                <h2>Límite Alcanzado</h2>
-                <p class="message">Has alcanzado el límite de visualizacions simultáneas permitidas para tu plan actual.</p>
+                <h2 data-i18n="manage_streams_heading">Límite Alcanzado</h2>
+                <p data-i18n="manage_streams_text" class="message">Has alcanzado el límite de visualizacions simultáneas permitidas para tu plan actual.</p>
                 <div class="change-plan-option">
-                    <p>¿Quieres <a href="/plans.html">CAMBIAR DE PLAN</a>?</p>
+                    <p data-i18n="manage_streams_question">¿Quieres <a data-i18n="manage_streams_link" href="/plans.html">CAMBIAR DE PLAN</a>?</p>
                 </div>
             </div>
         </div>
@@ -136,6 +135,8 @@
             </div>
         </div>
     </footer>
+
+    <script type="module" src="/js/translations.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
     crossorigin="anonymous"></script>

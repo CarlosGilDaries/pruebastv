@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="/css/payment-method.css">
-    <title>Método de Pago</title>
+    <title data-i18n="payment_method_title">Método de Pago</title>
 </head>
-<body>
+<body id="payment_method">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -21,21 +21,26 @@
                 <a class="navbar-brand logo" href="/">
                     <img src="/file/logo.png" id="logo" alt="Pruebas TV logo">
                 </a>
+
+                <!-- Selector de idioma -->
+                <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                    <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
+                </li>
             </div>
         </nav>
     </header>
 
     <section>
         <div class="main">
-            <h1>Elige un Método de Pago</h1>
+            <h1 data-i18n="payment_method_heading">Elige un Método de Pago</h1>
             <div id="methods-container" class="methods-container">
                 <button class="payment-btn paypal-btn">
                     <img src="/images/paypal-logo.png" alt="PayPal">
-                    Pagar con PayPal
+                    <span data-i18n="payment_method_text">Pagar con </span>PayPal
                 </button>
                 <button class="payment-btn redsys-btn">
                     <img src="/images/redsys-logo.png" alt="Redsys">
-                    Pagar con Redsys
+                    <span data-i18n="payment_method_text">Pagar con </span>Redsys
                 </button>
             </div>
         </div>
@@ -84,6 +89,8 @@
             </div>
         </div>
     </footer>
+
+    <script type="module" src="/js/translations.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
     crossorigin="anonymous"></script>
