@@ -22,58 +22,10 @@
                     <img src="/file/logo.png" id="logo" alt="Pruebas TV logo">
                 </a>
 
-                <!-- Botón hamburguesa -->
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <!-- Contenido colapsable -->
-                <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
-                        <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/">Inicio</a>
-                        </li>
-
-                        <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Categorías</a>
-                            <ul class="dropdown-menu" id="categories"></ul>
-                        </li>
-                        <li class="nav-item dropdown left-nav-links">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Géneros</a>
-                            <ul class="dropdown-menu" id="genders"></ul>
-                        </li>
-                            
-                        <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/plans.html">Planes</a>
-                        </li>
-                    </ul>
-
-                    <ul class="navbar-nav ms-lg-auto right-nav">
-                        <li class="nav-item dropdown user">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link">
-                                Cuenta
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
-                                <li><a class="dropdown-item" href="/account">Perfil</a></li>
-                                <li><a class="dropdown-item" href="/favorites.html">Favoritos</a></li>
-                                <li><a class="dropdown-item" href="/seen.html">Vistos</a></li>
-                                <li><a class="dropdown-item" href="/order-history.html">Historial de pagos</a></li>
-                                <li><a class="dropdown-item" id="logout" href="#">Cerrar sesión</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Filtro de búsqueda (siempre visible) -->
-                <div class="search-container d-flex align-items-center ms-auto">
-                    <div class="search-icon me-2">
-                        <img src="/images/search-icon.png" alt="Buscar" id="searchToggle">
-                    </div>
-                    <div class="search-box" id="searchBox">
-                        <input type="text" id="searchInput" placeholder="Buscar contenido...">
-                        <div class="search-results" id="searchResults"></div>
-                    </div>
-                </div>
+                <!-- Selector de idioma -->
+                <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                    <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
+                </li>
             </div>
         </nav>
     </header>
