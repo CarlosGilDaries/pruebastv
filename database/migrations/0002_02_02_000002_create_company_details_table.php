@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longtext('lopd_text');
             $table->string('favicon')->nullable();
             $table->string('logo')->nullable();
+            $table->string('invoice_logo')->nullable();
 			$table->string('facebook')->nullable();
 			$table->string('instagram')->nullable();
 			$table->string('twitter')->nullable();

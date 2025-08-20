@@ -66,6 +66,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     <img src="${details.logo}" alt="Logo actual" style="max-width: 200px; height: auto;">
                 `;
       }
+
+      if (details.invoice_logo) {
+        document.getElementById('current-invoice-logo').innerHTML = `
+                    <p class="mb-1">Logo para Facturas actual:</p>
+                    <img src="${details.invoice_logo}" alt="Logo para Facturas actual" style="max-width: 200px; height: auto;">
+                `;
+      }
     } catch (error) {
       console.error('Error cargando contenido:', error);
       showError('Error al cargar los ajustes: ' + error.message);
@@ -120,6 +127,11 @@ document.addEventListener('DOMContentLoaded', function () {
       const logoInput = document.getElementById('logo_input');
       if (logoInput.files.length > 0) {
         formData.append('logo', logoInput.files[0]);
+      }
+
+      const invoiceLogoInput = document.getElementById('invoice_logo_input');
+      if (invoiceLogoInput.files.length > 0) {
+        formData.append('invoice_logo', invoiceLogoInput.files[0]);
       }
 
       const response = await fetch('/api/edit-company-details', {

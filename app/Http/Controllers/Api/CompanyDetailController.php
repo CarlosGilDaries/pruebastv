@@ -48,8 +48,6 @@ class CompanyDetailController extends Controller
             $email = sanitize_html($request->input('email'));
             $lopd_text = sanitize_html($request->input('lopd_text'));
             $commercial_registry_text = sanitize_html($request->input('commercial_registry_text'));
-            $favicon = sanitize_html($request->input('favicon'));
-            $logo = sanitize_html($request->input('logo'));
 			$facebook = sanitize_html($request->input('facebook'));
 			$instagram = sanitize_html($request->input('instagram'));
 			$twitter = sanitize_html($request->input('twitter'));
@@ -60,8 +58,6 @@ class CompanyDetailController extends Controller
 			$details->email = $email;
             $details->commercial_registry_text = $commercial_registry_text;
 			$details->lopd_text = $lopd_text;
-            $details->logo = $logo;
-            $details->favicon = $favicon;
 			$details->facebook = $facebook;
 			$details->instagram = $instagram;
 			$details->twitter = $twitter;
@@ -73,6 +69,13 @@ class CompanyDetailController extends Controller
                 $logoExtension = $logo->getClientOriginalExtension();
 				$details->logo = '/file/logo.' . $logoExtension;
 				$logo->storeAs('settings/','logo.' . $logoExtension, 'private');
+            }
+
+            $invoice_logo = $request->file('invoice_logo');
+            if ($invoice_logo) {
+                $invoiceLogoExtension = $invoice_logo->getClientOriginalExtension();
+                $details->invoice_logo = '/file/invoice_logo.' . $invoiceLogoExtension;
+				$invoice_logo->storeAs('settings/','invoice_logo.' . $invoiceLogoExtension, 'private');
             }
 
             $favicon = $request->file('favicon');

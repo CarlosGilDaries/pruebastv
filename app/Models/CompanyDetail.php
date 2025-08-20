@@ -15,6 +15,7 @@ class CompanyDetail extends Model
         'lopd_text',
         'favicon',
         'logo',
+        'invoice_logo',
         'facebook',
         'instagram',
         'twitter',
