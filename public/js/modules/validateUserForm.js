@@ -58,27 +58,40 @@ export async function validateUserForm() {
     if (password != passwordConfirm) {
       showFormErrors('password', 'Las contraseñas no coinciden.');
       isValid = false;
-    } else if (password.length < 6) {
-      showFormErrors('password', 'Mínimo 6 caracteres.');
-      isValid = false;
     }
   }
 
   if (document.getElementById('new-password')) {
     const newPass = document.getElementById('new-password').value.trim();
-    const newPassConfirm = document.getElementById('new-password-confirmation').value.trim();
+    const newPassConfirm = document
+      .getElementById('new-password-confirmation')
+      .value.trim();
     if (newPass != newPassConfirm) {
-            showFormErrors(
-              'new-password-confirmation',
-              'Las contraseñas nuevas no coinciden.'
-            );
-            showFormErrors('new-password', 'Las contraseñas nuevas no coinciden.');
-            isValid = false;
-    } else {
-      if (newPass.length < 6) {
-        showFormErrors('new-password', '6 caracteres como mínimo.');
-        isValid = false;
-      }
+      showFormErrors(
+        'new-password-confirmation',
+        'Las contraseñas nuevas no coinciden.'
+      );
+      showFormErrors('new-password', 'Las contraseñas nuevas no coinciden.');
+      isValid = false;
+    }
+    // validaciones de complejidad
+    let errors = [];
+    if (newPass.length < 8) {
+      errors.push('mínimo 8 caracteres');
+    }
+    if (!/[A-Z]/.test(newPass)) {
+      errors.push('al menos 1 mayúscula');
+    }
+    if (!/[0-9]/.test(newPass)) {
+      errors.push('al menos 1 número');
+    }
+    if (!/[*#><@$%&+=¿?¡!]/.test(newPass)) {
+      errors.push('al menos 1 caracter especial');
+    }
+
+    if (errors.length > 0) {
+      showFormErrors('new-password', `Inválida: ${errors.join(', ')}.`);
+      isValid = false;
     }
   }
 

@@ -1,5 +1,6 @@
 import { getIp } from './modules/getIp.js';
 import { selectPlan } from './modules/selectPlan.js';
+import { showPassword } from './modules/showPasword.js';
 
 document
   .getElementById('register-form')
@@ -102,4 +103,20 @@ document
         document.getElementById('error-message').textContent = '';
         document.getElementById('error-message').style.display = 'none';
       });
+  });
+
+  const passwordIcon = document.querySelector('.pass-icon');
+  const ionEyeIcon = document.getElementById('eye-icon');
+  const passwordInput = document.getElementById('password');
+  const passwordIcon2 = document.querySelector('.pass-icon-2');
+  const ionEyeIcon2 = document.getElementById('eye-icon-2');
+  const confirmationPasswordInput = document.getElementById(
+    'password_confirmation'
+  );
+
+  passwordIcon.addEventListener('click', (event) => {
+    showPassword(event, passwordInput, ionEyeIcon);
+  });
+  passwordIcon2.addEventListener('click', (event) => {
+    showPassword(event, confirmationPasswordInput, ionEyeIcon2);
   });
