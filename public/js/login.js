@@ -1,4 +1,5 @@
 import { getIp } from "./modules/getIp.js";
+import { showPassword } from "./modules/showPasword.js";
 
 document.addEventListener('DOMContentLoaded', function () {
   const passwordInput = document.getElementById('password');
@@ -74,4 +75,12 @@ document
         'Credenciales incorrectas';
       document.getElementById('error-message').style.display = 'block';
     }
+  });
+
+  const passwordIcon = document.querySelector('.pass-icon');
+  const ionEyeIcon = document.getElementById('eye-icon');
+  const passwordInput = document.getElementById('password');
+
+  passwordIcon.addEventListener('click', (event) => {
+    showPassword(event, passwordInput, ionEyeIcon);
   });

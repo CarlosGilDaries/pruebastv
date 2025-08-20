@@ -28,24 +28,6 @@ class LoginApiController extends Controller
                 'dni' => [
                     Rule::requiredIf(fn () => $request->plan_type !== 'free'),
                     'nullable',
-                    'regex:/^\d{8}[A-Za-z]$/',
-                    'unique:users,dni',
-                    function ($attribute, $value, $fail) {
-                        if ($value) {
-                            if (!preg_match('/^(\d{8})([A-Za-z])$/', $value, $matches)) {
-                                return; // ya lo manejará la regex
-                            }
-
-                            $numero = (int) $matches[1];
-                            $letraIngresada = strtoupper($matches[2]);
-                            $letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
-                            $letraCorrecta = $letras[$numero % 23];
-
-                            if ($letraIngresada !== $letraCorrecta) {
-                                $fail("La letra del DNI no es válida.");
-                            }
-                        }
-                    }
                 ],
 
                 'address' => [
