@@ -1,5 +1,6 @@
 import { validateUserForm } from "./modules/validateUserForm.js";
 import { dropDownTypeMenu } from "./modules/dropDownTypeMenu.js";
+import { showPassword } from "./modules/showPasword.js";
 
 const gendersDropDown = document.getElementById('genders');
 const categoriesDropDown = document.getElementById('categories');
@@ -145,3 +146,42 @@ async function editUserForm() {
 }
 
 editUserForm();
+
+const passwordIcon = document.getElementById('toggle-password');
+const ionEyeIcon = document.getElementById('eye-icon');
+const passwordInput = document.getElementById('password');
+const passwordIcon2 = document.getElementById('toggle-password-2');
+const ionEyeIcon2 = document.getElementById('eye-icon-2');
+const confirmationPasswordInput = document.getElementById(
+  'password-confirmation'
+);
+const passwordIcon3 = document.getElementById('toggle-password-3');
+const ionEyeIcon3 = document.getElementById('eye-icon-3');
+const newPasswordInput = document.getElementById('new-password');
+const passwordIcon4 = document.getElementById('toggle-password-4');
+const ionEyeIcon4 = document.getElementById('eye-icon-4');
+const confirmationNewPasswordInput = document.getElementById(
+  'new-password-confirmation'
+);
+
+if (passwordIcon) {
+  passwordIcon.addEventListener('click', (event) => {
+    showPassword(event, passwordInput, ionEyeIcon);
+  });
+}
+if (passwordIcon2) {
+  passwordIcon2.addEventListener('click', (event) => {
+    showPassword(event, confirmationPasswordInput, ionEyeIcon2);
+  });
+}
+if (passwordIcon3) {
+  passwordIcon3.addEventListener('click', (event) => {
+    showPassword(event, newPasswordInput, ionEyeIcon3);
+  });
+}
+if (passwordIcon4) {
+  passwordIcon4.addEventListener('click', (event) => {
+    showPassword(event, confirmationNewPasswordInput, ionEyeIcon4);
+  });
+}
+
