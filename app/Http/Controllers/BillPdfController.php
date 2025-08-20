@@ -58,22 +58,20 @@ class BillPdfController extends Controller
 	
 	public function generatePlanOrderInvoice(PlanOrder $order)
 	{
-		$companyResponse = Http::get(route('company-details'));
-		$orderResponse = Http::get(route('plan-order.show', $order->id));
-		/*$companyResponse = Http::withOptions([
+		/*$companyResponse = Http::get(route('company-details'));
+		$orderResponse = Http::get(route('plan-order.show', $order->id));*/
+		$companyResponse = Http::withOptions([
 			'verify' => false
 			])->get(route('company-details'));
 		$orderResponse = Http::withOptions([
     		'verify' => false
-			])->get(route('plan-order.show', $order->id));*/
+			])->get(route('plan-order.show', $order->id));
 
 		$companyDetails = $companyResponse->json()['details'];
 		$orderDetails = $orderResponse->json()['order'];
 
 		$user = User::where('id', $order->user_id)->first();
 
-		Log::debug($user);
-		Log::debug($order);
 		$bill = $order->bill()->create([
 			'user_dni' => $user->dni,
 			'url' => '',
@@ -84,7 +82,7 @@ class BillPdfController extends Controller
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
 
-		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id);
+		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id, 'plan');
 
 		$filename = 'factura-' . now()->format('dmY') . '-' . str_pad($bill->id, 8, '0', STR_PAD_LEFT) . '.pdf';
 		$path = "bills/user_{$order->user_id}/{$filename}";
@@ -119,7 +117,7 @@ class BillPdfController extends Controller
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
 
-		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id);
+		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id, 'ppv');
 
 		$filename = 'factura-' . now()->format('dmY') . '-' . str_pad($bill->id, 8, '0', STR_PAD_LEFT) . '.pdf';
 		$path = "bills/user_{$order->user_id}/{$filename}";
@@ -138,6 +136,12 @@ class BillPdfController extends Controller
 	{
 		$companyResponse = Http::get(route('company-details'));
 		$orderResponse = Http::get(route('rent-order.show', $order->id));
+		/*$companyResponse = Http::withOptions([
+			'verify' => false
+			])->get(route('company-details'));
+		$orderResponse = Http::withOptions([
+    		'verify' => false
+			])->get(route('rent-order.show', $order->id));*/
 
 		$companyDetails = $companyResponse->json()['details'];
 		$orderDetails = $orderResponse->json()['order'];
@@ -154,7 +158,7 @@ class BillPdfController extends Controller
 
 		$invoiceNumber = str_pad($bill->id, 8, '0', STR_PAD_LEFT);
 
-		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id);
+		$pdf = $this->generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $bill->id, 'rent');
 
 		$filename = 'factura-' . now()->format('dmY') . '-' . str_pad($bill->id, 8, '0', STR_PAD_LEFT) . '.pdf';
 		$path = "bills/user_{$order->user_id}/{$filename}";
@@ -192,15 +196,24 @@ class BillPdfController extends Controller
 		}
 	}
 
-	protected function generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $billId)
+	protected function generateInvoicePdf($companyDetails, $orderDetails, $invoiceNumber, $billId, $type)
 	{
+		if ($type == 'plan') {
+			$expires = $orderDetails['user']['plan_expires_at'];
+		} else if ($type == 'rent') {
+			$expires = $orderDetails['expires_at'];
+		} else if ($type == 'ppv') {
+			$expires = $orderDetails['movie']['end_time'];
+		}
+
 		$data = [
 			'company' => [
 				'name' => $companyDetails['name'],
 				'address' => $companyDetails['fiscal_address'],
 				'cif' => $companyDetails['nif_cif'],
 				'lopd' => $companyDetails['lopd_text'],
-				'commercial_registry_text' => $companyDetails['commercial_registry_text']
+				'commercial_registry_text' => $companyDetails['commercial_registry_text'],
+				'logo' => storage_path('app/private/settings/invoice_logo.png'),
 			],
 			'client' => [
 				'name' => $orderDetails['user']['name'] . ' ' . $orderDetails['user']['surnames'],
@@ -208,6 +221,7 @@ class BillPdfController extends Controller
 				$orderDetails['user']['city'] . ', ' . 
 				$orderDetails['user']['country'],
 				'dni' => $orderDetails['user']['dni'],
+				'expires_at' => $expires,
 			],
 			'invoice' => [
 				'id' => $billId,
@@ -218,7 +232,8 @@ class BillPdfController extends Controller
 				'iva' => number_format($orderDetails['amount'] * 0.21, 2) . ' €',
 				'iva_percentage' => '21 %',
 				'payment_method' => $orderDetails['payment_method'],
-			]
+			],
+			'type' => $type,
 		];
 
 		return Pdf::loadView('invoices.standard', $data);

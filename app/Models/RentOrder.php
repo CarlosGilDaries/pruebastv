@@ -16,7 +16,8 @@ class RentOrder extends Model implements RedsysPayable
         'user_id',
         'movie_id',
 		'description',
-        'payment_method'
+        'payment_method',
+        'expires_at'
     ];
 
     use CanCreateRedsysRequests;

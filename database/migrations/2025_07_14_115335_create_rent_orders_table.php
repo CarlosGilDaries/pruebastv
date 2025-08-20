@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('movie_id')->nullable()->constrained()->onDelete('set null');
 			$table->string('description');
+            $table->timestamp('expires_at');
             $table->enum('payment_method', ['PayPal', 'Redsys']);
             $table->timestamps();
         });

@@ -11,6 +11,7 @@
 			/* Reset y estilos base */
 			body {
 				font-family: 'Helvetica Neue', Arial, sans-serif;
+				font-size: 14px;
 				line-height: 1.6;
 				color: #333;
 				margin: 0;
@@ -40,23 +41,6 @@
 				color: #7f8c8d;
 			}
 
-			/*.logo {
-				width:200px;
-				height:90px;
-				object-fit: contain;
-			}
-
-			.logo-container {
-				float: left;
-    			width: 50%;
-			}
-
-			.number-date {
-				float: right;
-				width: 50%;
-				text-align: right;
-			}*/
-
 			/* Texto vertical del registro comercial */
 			.vertical-text {
 				position: absolute;
@@ -68,7 +52,7 @@
 				font-size: 12px;
 				padding: 10px;
 				white-space: nowrap;
-				height: 200px; /* Ajusta según necesites */
+				height: 200px;
 				display: flex;
 				align-items: center;
 			}
@@ -183,7 +167,7 @@
 				<table style="width:100%; border-collapse: collapse;">
 					<tr>
 						<td style="width:50%; vertical-align: middle;">
-							<img src="/public/images/logo.png" style="width:200px; height:90px; object-fit: contain;">
+							<img src={{ $company['logo'] }} style="width:200px; height:90px; object-fit: contain;">
 						</td>
 						<td style="width:50%; text-align:right; vertical-align: middle;">
 							<h1>Factura Nº {{ $invoice['number'] }}</h1>
@@ -203,13 +187,14 @@
 				<p class="title"><strong>Cliente</strong></p>
 				Nombre: {{ $client['name'] }}<br>
 				Dirección: {{ $client['address'] }}<br>
-				DNI: {{ $client['dni'] }}
+				DNI: {{ $client['dni'] }}<br>
 			</div>
 
 			<table>
 				<thead>
 					<tr>
 						<th>Descripción</th>
+						<th>Fecha Fin</th>
 						<th>Forma de pago</th>
 						<th>Importe</th>
 					</tr>
@@ -217,6 +202,11 @@
 				<tbody>
 					<tr>
 						<td>{{ $invoice['description'] }}</td>
+						@if ($client['expires_at'] != null)
+							<td>{{ \Carbon\Carbon::parse($client['expires_at'])->format('d/m/Y') }}</td>
+						@else
+							<td>N/A</td>
+						@endif
 						<td>{{ $invoice['payment_method'] }}</td>
 						<td>{{ $invoice['amount'] }}</td>
 					</tr>

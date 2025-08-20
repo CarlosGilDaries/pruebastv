@@ -483,6 +483,7 @@ class PayPalController extends Controller
                     'movie_id' => $movie->id,
                     'status' => 'pending',
                     'description' => $description,
+                    'expires_at' => Carbon::now()->addDays($movie->rent_days),
                     'payment_method' => 'PayPal'
                 ]);
     
