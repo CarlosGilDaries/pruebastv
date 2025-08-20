@@ -93,6 +93,12 @@ main {
     transform: translateY(-2px);
 }
 
+@media (max-width: 991px) {
+    .menu {
+        padding-inline: 0;
+    }
+}
+
 @media (max-width: 768px) {
     .payment-confirmation {
         padding: 1.5rem;
