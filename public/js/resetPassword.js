@@ -1,5 +1,15 @@
+import { showPassword } from './modules/showPasword.js';
+import { validateUserForm } from './modules/validateUserForm.js';
+
 document.getElementById('form').addEventListener('submit', async function (e) {
   e.preventDefault();
+
+  // Validar antes de enviar
+  const validatedForm = await validateUserForm();
+  if (!validatedForm) {
+    document.getElementById('loading').classList.add('d-none');;
+    return;
+  }
 
   const password = document.getElementById('new-password').value;
   const passwordConfirmation = document.getElementById(
@@ -46,7 +56,7 @@ document.getElementById('form').addEventListener('submit', async function (e) {
       successDiv.classList.remove('d-none');
       // Redirigir después de éxito
       setTimeout(() => {
-        window.location.href = '/login.html';
+        window.location.href = '/login';
       }, 2000);
     } else {
       errorDiv.classList.remove('d-none');
@@ -59,3 +69,23 @@ document.getElementById('form').addEventListener('submit', async function (e) {
     loading.classList.add('d-none');
   }
 });
+
+const passwordIcon3 = document.getElementById('toggle-password-3');
+const ionEyeIcon3 = document.getElementById('eye-icon-3');
+const newPasswordInput = document.getElementById('new-password');
+const passwordIcon4 = document.getElementById('toggle-password-4');
+const ionEyeIcon4 = document.getElementById('eye-icon-4');
+const confirmationNewPasswordInput = document.getElementById(
+  'new-password-confirmation'
+);
+
+if (passwordIcon3) {
+  passwordIcon3.addEventListener('click', (event) => {
+    showPassword(event, newPasswordInput, ionEyeIcon3);
+  });
+}
+if (passwordIcon4) {
+  passwordIcon4.addEventListener('click', (event) => {
+    showPassword(event, confirmationNewPasswordInput, ionEyeIcon4);
+  });
+}
