@@ -160,16 +160,20 @@
                     <!-- Paso 4 -->
                     <div class="form-step" data-step="4">
                         <div class="input-box">
-                            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                            <span data-shown="no" class="icon pass-icon">
+                                <ion-icon id="eye-icon" name="eye-outline"></ion-icon>
+                            </span>
                             <input type="password" id="password" required>
-                            <label data-i18n="password">Contraseña</label>
+                            <label data-i18n="password">Password</label>
                             <p class="error-message"></p>
                         </div>
                         
                         <div class="input-box">
-                            <span class="icon"><ion-icon name="lock-closed"></ion-icon></span>
+                            <span data-shown="no" class="icon pass-icon-2">
+                                <ion-icon id="eye-icon-2" name="eye-outline"></ion-icon>
+                            </span>
                             <input type="password" id="password_confirmation" required>
-                            <label data-i18n="confirm_password">Confirmar contraseña</label>
+                            <label data-i18n="confirm_password">Confirmar password</label>
                             <p class="error-message"></p>
                         </div>
                         <p style="color: white"> <span data-i18n="">Criterios contraseña</span>: <br>- <span data-i18n="">Mínimo 8 caracteres de longitud</span> <br>- <span data-i18n="">Al menos 1 mayúscula</span><br> - <span data-i18n="">Al menos 1 número</span> <br>- <span data-i18n="">Al menos 1 caracter especial</span></p>

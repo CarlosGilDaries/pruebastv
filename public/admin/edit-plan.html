@@ -173,13 +173,21 @@
     
     <form id="edit-plan-form" class="needs-validation" novalidate>
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
                 <label for="edit-plan-name" class="form-label">Nombre</label>
                 <input type="text" class="form-control" id="edit-plan-name" name="name" required>
                 <div id="edit-plan-name-error" class="invalid-feedback"></div>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
+                <label for="plan_order" class="form-label">Orden</label>
+                <select class="form-select" id="plan_order" name="plan_order" required>
+                    <option value="" disabled selected>Selecciona orden</option>
+                </select>
+                <div id="plan-order-error" class="invalid-feedback"></div>
+            </div>
+
+            <div class="col-md-4 mb-3">
                 <label for="edit-plan-ads" class="form-label">Anuncios</label>
                 <select class="form-select" id="edit-plan-ads" name="ads" required>
                     <option value="1">Sí</option>

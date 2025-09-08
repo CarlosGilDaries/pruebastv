@@ -70,15 +70,15 @@ async function initPlayer() {
       .map((plan) => plan.name);
 
     if (!userData.data.plan) {
-      localStorage.setItem('needed_plans', neededPlans);
+      sessionStorage.setItem('needed_plans', neededPlans);
       window.location.href = '/manage-plans.html';
       return;
     }
 
     const actualPlan = userData.data.plan.name;
     if (!neededPlans.includes(actualPlan) && actualPlan !== 'Admin') {
-      localStorage.setItem('actual_plan', actualPlan);
-      localStorage.setItem('needed_plans', neededPlans);
+      sessionStorage.setItem('actual_plan', actualPlan);
+      sessionStorage.setItem('needed_plans', neededPlans);
       window.location.href = '/manage-plans.html';
       return;
     }

@@ -2,6 +2,38 @@ document.addEventListener('DOMContentLoaded', function () {
   async function initAddPlan() {
     const backendAPI = '/api/';
     const authToken = localStorage.getItem('auth_token');
+    const select = document.getElementById('plan_order');
+
+    const response = await fetch(backendAPI + 'plans', {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    const data = await response.json();
+    const orders = data.orders || [];
+
+    // Llenar opciones de prioridad
+    if (orders.length > 0) {
+      orders.forEach((order) => {
+        const option = document.createElement('option');
+        option.textContent = order;
+        option.value = order;
+        select.appendChild(option);
+      });
+
+      // Agregar última opción (n+1)
+      const lastOption = document.createElement('option');
+      lastOption.textContent = orders.length + 1;
+      lastOption.value = orders.length + 1;
+      select.appendChild(lastOption);
+    } else {
+      // Si no hay prioridades, agregar solo la opción 1
+      const option = document.createElement('option');
+      option.textContent = 1;
+      option.value = 1;
+      select.appendChild(option);
+    }
 
     // Manejar envío del formulario
     document
@@ -41,6 +73,10 @@ document.addEventListener('DOMContentLoaded', function () {
           formData.append(
             'name',
             document.getElementById('add-plan-name').value
+          );
+          formData.append(
+            'plan_order',
+            document.getElementById('plan_order').value
           );
           formData.append(
             'trimestral_price',

@@ -2,7 +2,7 @@ import { processRedsysPayment } from './modules/redsys.js';
 import { paypalPpvPayment } from './modules/paypalPpv.js';
 
 const token = localStorage.getItem('auth_token');
-const movieId = localStorage.getItem('movie_id');
+const movieId = sessionStorage.getItem('movie_id');
 const paypal = document.querySelector('.paypal-btn');
 const redsys = document.querySelector('.redsys-btn');
 

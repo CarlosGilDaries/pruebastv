@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->integer('order');
+            $table->integer('plan_order');
             $table->string('name');
             $table->decimal('trimestral_price', 5, 2);
             $table->decimal('anual_price', 5, 2);

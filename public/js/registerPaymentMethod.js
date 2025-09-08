@@ -2,8 +2,8 @@ import { selectPlan } from './modules/selectPlan.js';
 import { paypalPayment } from './modules/paypal.js';
 
 const token = localStorage.getItem('auth_token');
-const months = localStorage.getItem('months');
-const planId = localStorage.getItem('plan_id');
+const months = sessionStorage.getItem('months');
+const planId = sessionStorage.getItem('plan_id');
 const paypal = document.querySelector('.paypal-btn');
 const redsys = document.querySelector('.redsys-btn');
 paypal.value = months;

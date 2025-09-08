@@ -112,8 +112,8 @@ async function fetchMovieData() {
 
     if (userData.success && data.success) {
       if (userData.data.plan == null) {
-        localStorage.setItem('actual_plan', 'Ninguno');
-        localStorage.setItem('needed_plans', neededPlans);
+        sessionStorage.setItem('actual_plan', 'Ninguno');
+        sessionStorage.setItem('needed_plans', neededPlans);
         window.location.href = '/manage-plans.html';
         return;
       }
@@ -121,8 +121,8 @@ async function fetchMovieData() {
       const actualPlan = userData.data.plan.name;
 
       if (!neededPlans.includes(actualPlan) && actualPlan != 'Admin') {
-        localStorage.setItem('actual_plan', actualPlan);
-        localStorage.setItem('needed_plans', neededPlans);
+        sessionStorage.setItem('actual_plan', actualPlan);
+        sessionStorage.setItem('needed_plans', neededPlans);
         window.location.href = '/manage-plans.html';
       }
 
@@ -144,7 +144,7 @@ async function fetchMovieData() {
             data.data.movie.rent_price +
             ' €';
           play.addEventListener('click', async function () {
-            localStorage.setItem('movie_id', data.data.movie.id);
+            sessionStorage.setItem('movie_id', data.data.movie.id);
             window.location.href = '/rent-payment-method.html';
             return;
           });
@@ -176,7 +176,7 @@ async function fetchMovieData() {
           play.textContent =
             'Pagar para ver: ' + data.data.movie.pay_per_view_price + ' €';
           play.addEventListener('click', async function () {
-            localStorage.setItem('movie_id', data.data.movie.id);
+            sessionStorage.setItem('movie_id', data.data.movie.id);
             window.location.href = '/ppv-payment-method.html';
             return;
           });

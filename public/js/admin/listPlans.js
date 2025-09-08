@@ -30,6 +30,7 @@ async function listPlans() {
                                   <thead class="table-dark">
                                 <tr>
                                     <th>ID</th>
+                                    <th>Orden</th>
                                     <th>Nombre</th>
                                     <th>Precio Trimestral</th>
                                     <th>Precio Anual</th>
@@ -53,6 +54,7 @@ async function listPlans() {
       const table = $('.datatable').DataTable({
         processing: true,
         serverSide: true,
+        order: [[1, 'asc']],
         ajax: {
           url: api + 'plans/datatable',
           type: 'GET',
@@ -71,6 +73,7 @@ async function listPlans() {
         },
         columns: [
           { data: 'id', name: 'id' },
+          { data: 'plan_order', name: 'plan_order' },
           { data: 'name', name: 'name' },
           { data: 'trimestral_price', name: 'trimestral_price' },
           { data: 'anual_price', name: 'anual_price' },

@@ -2,6 +2,7 @@ async function editPlanForm() {
   const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
+  const select = document.getElementById('plan_order');
 
   await loadPlanData(id);
 
@@ -15,6 +16,28 @@ async function editPlanForm() {
 
   async function loadPlanData(id) {
     try {
+      // Cargar prioridades disponibles
+      const orderResponse = await fetch(backendAPI + 'plans', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (!orderResponse.ok) {
+        throw new Error('Error al cargar las prioridades');
+      }
+
+      const orderData = await orderResponse.json();
+      const orders = orderData.orders;
+
+      // Limpiar y llenar select de prioridades
+      select.innerHTML =
+        '<option value="" disabled selected>Selecciona orden</option>';
+      orders.forEach((order) => {
+        const option = document.createElement('option');
+        option.textContent = order;
+        option.value = order;
+        select.appendChild(option);
+      });
+
       const response = await fetch(backendAPI + `plan/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -32,6 +55,8 @@ async function editPlanForm() {
 
       // Llenar formulario con datos del plan
       document.getElementById('edit-plan-name').value = plan.name || '';
+      document.getElementById('plan_order').value =
+        plan.plan_order || '';
       document.getElementById('edit-plan-trimestral-price').value =
         plan.trimestral_price || '';
       document.getElementById('edit-plan-anual-price').value =
@@ -72,6 +97,10 @@ async function editPlanForm() {
         formData.append(
           'name',
           document.getElementById('edit-plan-name').value
+        );
+        formData.append(
+          'plan_order',
+          document.getElementById('plan_order').value
         );
         formData.append(
           'trimestral_price',

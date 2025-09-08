@@ -101,10 +101,8 @@ class LoginApiController extends Controller
             }
             if ($new_role && $new_role->name == 'web') {
                 $rol = 'user';
-                Log::debug('caso 1: ' . $new_role);
             } else {
                 $rol = 'admin';
-                Log::debug('caso 2: ' . $rol);
             }
             $plan = sanitize_html($request->plan);
             if ($plan) {

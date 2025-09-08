@@ -18,10 +18,12 @@ class PlanController extends Controller
     {
         try {
         $plans = Plan::whereNot('name', 'admin')->get();
+        $orders = Plan::all()->sortBy('plan_order')->pluck('plan_order')->toArray();
 
         return response()->json([
             'success' => true,
             'plans' => $plans,
+            'orders' => $orders,
             'message' => 'Planes obtenidos con éxito.',
         ], 200);
 
@@ -44,8 +46,8 @@ class PlanController extends Controller
 				->addColumn('id', function($plan) {
 					return $plan->id;
 				})
-                ->addColumn('order', function($plan) {
-                    return $plan->order;
+                ->addColumn('plan_order', function($plan) {
+                    return $plan->plan_order;
                 })
 				->addColumn('name', function($plan) {
 					return $plan->name;
@@ -95,14 +97,14 @@ class PlanController extends Controller
             $max_streams = sanitize_html(($request->input('max_streams')));
             $ads = $request->input('ads');
 
-            $newOrder = $request->input('order');
+            $newOrder = $request->input('plan_order');
             
             // Si el orden ya existe, desplazar los planes existentes
-            if (Plan::where('order', $newOrder)->exists()) {
-                Plan::where('order', '>=', $newOrder)
-                       ->increment('order');
+            if (Plan::where('plan_order', $newOrder)->exists()) {
+                Plan::where('plan_order', '>=', $newOrder)
+                       ->increment('plan_order');
             }
-            $plan->order = $newOrder;
+            $plan->plan_order = $newOrder;
 
             $plan->name = $name;
             $plan->trimestral_price = $trimestral_price;
@@ -166,23 +168,22 @@ class PlanController extends Controller
             $max_streams = sanitize_html(($request->input('max_streams')));
             $ads = $request->input('ads');
 
-            $currentOrder = $plan->order;
-            $newOrder = $request->input('order');
-            
+            $currentOrder = $plan->plan_order;
+            $newOrder = $request->input('plan_order');
             if ($currentOrder != $newOrder) {
                 if ($newOrder < $currentOrder) {
                     // Mover hacia arriba (prioridad más alta)
-                    Plan::where('order', '>=', $newOrder)
-                        ->where('order', '<', $currentOrder)
-                        ->increment('order');
+                    Plan::where('plan_order', '>=', $newOrder)
+                        ->where('plan_order', '<', $currentOrder)
+                        ->increment('plan_order');
                 } else {
                     // Mover hacia abajo (prioridad más baja)
-                    Plan::where('order', '>', $currentOrder)
-                        ->where('order', '<=', $newOrder)
-                        ->decrement('order');
+                    Plan::where('plan_order', '>', $currentOrder)
+                        ->where('plan_order', '<=', $newOrder)
+                        ->decrement('plan_order');
                 }
                 
-                $plan->Order = $newOrder;
+                $plan->plan_order = $newOrder;
             }
 
             $plan->name = $name;
@@ -217,15 +218,15 @@ class PlanController extends Controller
         try {
             $id = $request->input('content_id');
             $plan = Plan::where('id', $id)->first();
-            $deletedOrder = $plan->order;
+            $deletedOrder = $plan->plan_order;
 
             $plan->delete();
 
             // Reordenar los planes restantes si el eliminado no era el último
-            $maxOrder = Plan::max('order') ?? 0;           
+            $maxOrder = Plan::max('plan_order') ?? 0;           
             if ($deletedOrder < $maxOrder) {
-                Plan::where('order', '>', $deletedOrder)
-                       ->decrement('order');
+                Plan::where('plan_order', '>', $deletedOrder)
+                       ->decrement('plan_order');
             }
 
             return response()->json([

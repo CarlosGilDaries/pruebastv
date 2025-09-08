@@ -21,7 +21,6 @@ export async function paypalPayment(planId, token, months = 0, register = false)
     );
 
     const data = await response.json();
-    console.log(data);
     if (data.approval_url) {
       window.location.href = data.approval_url;
     } else {
