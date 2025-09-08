@@ -30,6 +30,8 @@ use App\Http\Controllers\Api\PermissionController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Api\MovieProgressController;
+use App\Http\Controllers\Api\NewPasswordController;
+use App\Http\Controllers\Api\PasswordResetLinkController;
 use App\Http\Controllers\Api\PrivacyPoliticController;
 use App\Http\Controllers\Api\RentController;
 use App\Http\Controllers\Api\RentOrderController;
@@ -317,6 +319,14 @@ Route::get('/verify-email/{id}/{hash}', VerifyEmailController::class)
 Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
                 ->middleware(['auth:sanctum', 'throttle:6,1'])
                 ->name('verification.send');
+
+Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+                ->middleware('guest')
+                ->name('password.email');
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+                ->middleware('guest')
+                ->name('password.store');
 
 Route::get('/paypal/capture', [PayPalController::class, 'paypalCapturePlanOrder'])->name('paypal.capture');
 Route::get('/paypal/ppv/capture', [PayPalController::class, 'paypalCapturePpvOrder'])->name('paypal.ppv.capture');

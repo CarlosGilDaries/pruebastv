@@ -78,7 +78,7 @@ document
           window.location.href = '/register-payment-method.html'
         }
         if (data.data.require_device_registration) {
-          const plan_id = localStorage.getItem('plan_id');
+          const plan_id = sessionStorage.getItem('plan_id');
           selectPlan(plan_id, localStorage.getItem('auth_token'), 0, true);
         }
       }
