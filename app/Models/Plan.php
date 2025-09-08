@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Plan extends Model
 {
     protected $fillable = [
+        'order',
         'name',
         'trimestral_price',
         'anual_price',

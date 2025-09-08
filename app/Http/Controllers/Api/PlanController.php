@@ -44,6 +44,9 @@ class PlanController extends Controller
 				->addColumn('id', function($plan) {
 					return $plan->id;
 				})
+                ->addColumn('order', function($plan) {
+                    return $plan->order;
+                })
 				->addColumn('name', function($plan) {
 					return $plan->name;
 				})
@@ -91,6 +94,15 @@ class PlanController extends Controller
             $max_devices = sanitize_html(($request->input('max_devices')));
             $max_streams = sanitize_html(($request->input('max_streams')));
             $ads = $request->input('ads');
+
+            $newOrder = $request->input('order');
+            
+            // Si el orden ya existe, desplazar los planes existentes
+            if (Plan::where('order', $newOrder)->exists()) {
+                Plan::where('order', '>=', $newOrder)
+                       ->increment('order');
+            }
+            $plan->order = $newOrder;
 
             $plan->name = $name;
             $plan->trimestral_price = $trimestral_price;
@@ -154,6 +166,25 @@ class PlanController extends Controller
             $max_streams = sanitize_html(($request->input('max_streams')));
             $ads = $request->input('ads');
 
+            $currentOrder = $plan->order;
+            $newOrder = $request->input('order');
+            
+            if ($currentOrder != $newOrder) {
+                if ($newOrder < $currentOrder) {
+                    // Mover hacia arriba (prioridad más alta)
+                    Plan::where('order', '>=', $newOrder)
+                        ->where('order', '<', $currentOrder)
+                        ->increment('order');
+                } else {
+                    // Mover hacia abajo (prioridad más baja)
+                    Plan::where('order', '>', $currentOrder)
+                        ->where('order', '<=', $newOrder)
+                        ->decrement('order');
+                }
+                
+                $plan->Order = $newOrder;
+            }
+
             $plan->name = $name;
             $plan->trimestral_price = $trimestral_price;
             $plan->anual_price = $anual_price;
@@ -186,7 +217,16 @@ class PlanController extends Controller
         try {
             $id = $request->input('content_id');
             $plan = Plan::where('id', $id)->first();
+            $deletedOrder = $plan->order;
+
             $plan->delete();
+
+            // Reordenar los planes restantes si el eliminado no era el último
+            $maxOrder = Plan::max('order') ?? 0;           
+            if ($deletedOrder < $maxOrder) {
+                Plan::where('order', '>', $deletedOrder)
+                       ->decrement('order');
+            }
 
             return response()->json([
                 'success' => true,
