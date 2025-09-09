@@ -23,6 +23,7 @@ export async function gridShow(
 
     const response = await fetch(url, options);
     const data = await response.json();
+    console.log(data);
     if (title != null) {
       title.innerHTML = data[endpoint].name;
       title.setAttribute('data-i18n', `${endpoint}_${data[endpoint].id}`);
@@ -30,7 +31,10 @@ export async function gridShow(
     }
     const node = document.querySelector('.main-grid');
 
-    const movies = id != null ? data[endpoint].movies : data[endpoint];
+    let movies = id != null ? data[endpoint].movies : data[endpoint];
+    if (movies == undefined) {
+      movies = data.movies;
+    }
 
     movies.forEach((movie) => {
       const article = document.createElement('article');
@@ -67,6 +71,12 @@ export async function gridShow(
         const ppv = document.createElement('p');
         ppv.textContent = `Pay Per View: ${movie.pay_per_view_price} €`;
         info.append(ppv);
+      }
+
+      if (movie.rent == 1) {
+        const rent = document.createElement('p');
+        rent.innerHTML = `<span data-i18n="rent">Alquiler</span>: ${movie.rent_price} €`;
+        info.append(rent);
       }
     });
 

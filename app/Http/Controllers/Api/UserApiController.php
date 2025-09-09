@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use App\Models\Plan;
 use App\Models\PlanOrder;
+use App\Models\PpvOrder;
+use App\Models\RentOrder;
 use App\Models\Role;
 use App\Models\UnifiedOrder;
 use App\Models\User;
@@ -431,6 +433,51 @@ class UserApiController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function getContentOrders()
+    {
+        try {
+            $user = Auth::user();
+
+            $ppvOrders = PpvOrder::where('user_id', $user->id)
+                ->with('movie.gender')
+                ->where('status', 'paid')
+                ->get();
+
+            $rentOrders = RentOrder::where('user_id', $user->id)
+                ->with('movie.gender')
+                ->where('status', 'paid')
+                ->get();
+
+            $allOrders = $ppvOrders->concat($rentOrders);
+
+            $movies = $allOrders->map(function ($order) {
+                $movie = $order->movie;
+                $movie->order_created_at = $order->created_at;
+                Log::info("Movie ID={$movie->id}, Title={$movie->title}");
+                return $movie;
+            });
+
+            $uniqueMovies = $movies->groupBy('id')->map(function ($group) {
+                return $group->sortByDesc('order_created_at')->first();
+            })->values();
+
+            $sortedMovies = $uniqueMovies->sortByDesc('order_created_at')->values();
+
+            return response()->json([
+                'success' => true,
+                'movies' => $sortedMovies,
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error en getContentOrders: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en getContentOrders: ' . $e->getMessage(),
             ], 500);
         }
     }

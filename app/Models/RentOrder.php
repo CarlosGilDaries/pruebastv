@@ -29,7 +29,7 @@ class RentOrder extends Model implements RedsysPayable
 
     public function movie()
     {
-        return $this->belongsTo(Movie::class);
+        return $this->belongsTo(Movie::class, 'movie_id', 'id');
     }
 	
     public function bill(): MorphOne

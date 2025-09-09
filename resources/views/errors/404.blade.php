@@ -54,6 +54,7 @@
                                     <li><a class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
                                     <li><a class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
                                     <li><a class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
+                                    <li><a class="dropdown-item" href="/paid-resources.html" data-i18n="nav_paid_resources">Recursos Pagados</a></li>
                                     <li><a class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
                                     <li><a class="dropdown-item" id="logout" href="#" data-i18n="nav_logout">Cerrar sesión</a></li>
                                 </ul>

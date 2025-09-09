@@ -145,6 +145,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('ppv-current-user-order/{id}', [PpvOrderController::class, 'currentUserOrder']);
+    Route::get('paid-resources', [UserApiController::class, 'getContentOrders']);
     Route::get('current-user-orders', [UserApiController::class, 'getOrders']);
     Route::get('get-bill/{reference}', [UserApiController::class, 'getBill']);
 	
