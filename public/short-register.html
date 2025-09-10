@@ -147,7 +147,7 @@
                         
                         <div class="input-box select-box">
                             <span class="icon" id="gender-icon"><ion-icon name="transgender"></ion-icon></span>
-                            <select id="gender" required>
+                            <select id="gender" class="register-select" required>
                                 <option value="" disabled selected hidden data-i18n="gender_label">Género</option>
                                 <option value="man" data-i18n="gender_man">Hombre</option>
                                 <option value="woman" data-i18n="gender_woman">Mujer</option>
@@ -176,6 +176,17 @@
                             <label data-i18n="confirm_password">Confirmar password</label>
                             <p class="error-message"></p>
                         </div>
+
+                        <div class="privacy-box">
+                            <label>
+                                <input type="checkbox" id="privacy-policy" required>
+                                <span data-i18n="accept_text">
+                                    Acepto las <a data-i18n="privacy_politics_link" href="/privacy-politic.html" target="_blank">Políticas de Privacidad</a>
+                                </span>
+                            </label>
+                            <p class="error-message"></p>
+                        </div>
+
                         <p style="color: white"> <span data-i18n="">Criterios contraseña</span>: <br>- <span data-i18n="">Mínimo 8 caracteres de longitud</span> <br>- <span data-i18n="">Al menos 1 mayúscula</span><br> - <span data-i18n="">Al menos 1 número</span> <br>- <span data-i18n="">Al menos 1 caracter especial</span></p>
                     </div>
                 </div>

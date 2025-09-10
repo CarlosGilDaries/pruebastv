@@ -252,6 +252,13 @@ document.addEventListener('DOMContentLoaded', async function () {
           return false;
         }
         break;
+
+      case 'privacy-policy':
+        if (!field.checked) {
+          showError(field, 'Por favor, acepta las políticas.');
+          return false;
+        }
+        break;
     }
 
     return true;

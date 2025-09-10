@@ -69,7 +69,6 @@ document
       });
 
       const data = await response.json();
-      console.log(data);
       if (data.success) {
         localStorage.setItem('auth_token', data.data.auth_token);
         localStorage.setItem('current_user_email', data.data.user);
