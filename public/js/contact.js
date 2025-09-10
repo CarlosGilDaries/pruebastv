@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const categoriesDropDown = document.getElementById('categories');
   const gendersDropDown = document.getElementById('genders');
+  let recaptchaLoaded = false;
+  let recaptchaWidgetId;
 
   dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
   dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
@@ -27,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const email = document.getElementById('email').value;
     const subject = document.getElementById('subject').value;
     const message = document.getElementById('line').value;
+    const captchaResponse = grecaptcha.getResponse();
 
     let isValid = true;
 
@@ -34,6 +37,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document
       .querySelectorAll('.error-message')
       .forEach((el) => (el.textContent = ''));
+    
+    /*if (!captchaResponse.length > 0) {
+      document.getElementById('captcha-error').textContent =
+        'Por favor, haz click en el captcha';
+      isValid = false;
+    }*/
 
     if (!email) {
       document.getElementById('email-error').textContent =
@@ -72,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
           email: email,
           subject: subject,
           message: message,
+          'g-recaptcha-response': captchaResponse,
         }),
       });
 
@@ -83,9 +93,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         setTimeout(() => {
           successMessage.style.display = 'none';
+          window.location.reload();
         }, 5000);
       } else {
-        alert('Hubo un error al enviar el mensaje');
+        document.getElementById('captcha-error').textContent =
+          'Por favor, haz click en el captcha';
       }
     } catch (error) {
       console.error('Error:', error);
