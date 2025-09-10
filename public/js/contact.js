@@ -6,8 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const categoriesDropDown = document.getElementById('categories');
   const gendersDropDown = document.getElementById('genders');
-  let recaptchaLoaded = false;
-  let recaptchaWidgetId;
 
   dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
   dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
@@ -38,11 +36,11 @@ document.addEventListener('DOMContentLoaded', function () {
       .querySelectorAll('.error-message')
       .forEach((el) => (el.textContent = ''));
     
-    /*if (!captchaResponse.length > 0) {
+    if (!captchaResponse.length > 0) {
       document.getElementById('captcha-error').textContent =
         'Por favor, haz click en el captcha';
       isValid = false;
-    }*/
+    }
 
     if (!email) {
       document.getElementById('email-error').textContent =
@@ -90,10 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.success) {
         successMessage.style.display = 'block';
         form.reset();
+        grecaptcha.reset();
 
         setTimeout(() => {
           successMessage.style.display = 'none';
-          window.location.reload();
         }, 5000);
       } else {
         document.getElementById('captcha-error').textContent =
@@ -105,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
     } finally {
       loading.style.display = 'none';
       loading.classList.remove('d-flex');
+      grecaptcha.reset();
     }
   });
 });
