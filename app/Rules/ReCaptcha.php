@@ -5,7 +5,6 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 
 class ReCaptcha implements ValidationRule
 {
@@ -23,9 +22,6 @@ class ReCaptcha implements ValidationRule
 
         if (!$response['success']) {
             $fail("The Google ReCaptcha is not validate.");
-            Log::info($response);
-        } else {
-            Log::info($response);
         }
     }
 }

@@ -11,9 +11,12 @@
     <link rel="stylesheet" href="/css/normalize.css">
     <link rel="stylesheet" href="/css/index.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
+    <link rel="stylesheet" href="/css/cookie-banner.css">
+    <script async src="/js/modules/cookie-banner.js"></script>
     <title>DisfrutaValenciaTv</title>
 </head>
 <body>
+    <div id="cb-cookie-overlay"></div>
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -82,6 +85,23 @@
             </div>
         </nav>
     </header>
+
+    <div id="cb-cookie-banner" class="alert alert-dark text-center mb-0" role="alert">
+        <div id="cookies-pop-up">
+        <h2>🍪 Aviso de Cookies</h2>
+        <p class="pop-up-text">
+            Este sitio web utiliza cookies y almacenamiento local para garantizar el correcto
+            funcionamiento y la seguridad de la plataforma.
+        </p>
+        <p class="small pop-up-text">
+            Para más detalles, consulta nuestra 
+            <a id="pop-up-link" href="/cookies.html" target="_blank">Política de Cookies</a>.
+        </p>
+        <button type="button" class="btn btn-primary mt-3" onclick="window.cb_hideCookieBanner()">
+            Aceptar
+        </button>
+        </div>
+    </div>
 
     <section class="background-banner category priority-first">
         <video muted autoplay loop>
