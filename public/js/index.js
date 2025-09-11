@@ -6,6 +6,7 @@ import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 import { checkDeviceID } from './modules/checkDeviceId.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { getVideoContent } from './modules/getVideoContent.js';
+import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
@@ -77,5 +78,9 @@ async function indexData() {
 
 indexData();
 setupLoginSignupButtons();
+if (token != null) {
+  resetFreeExpiration(token);
+}
+
 
 

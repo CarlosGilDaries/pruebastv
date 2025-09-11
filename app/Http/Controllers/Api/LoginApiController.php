@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use App\Notifications\FreeFirstWarningNotification;
 
 class LoginApiController extends Controller
 {
@@ -160,6 +161,7 @@ class LoginApiController extends Controller
             } else {
                 $user->update(['plan_expires_at' => Carbon::now()->addDays(10)]);
                 $user->save();
+                $user->notify(new FreeFirstWarningNotification());
                 
                 return response()->json([
                     'success' => true,

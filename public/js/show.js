@@ -6,6 +6,7 @@ import { formatDuration } from './modules/formatDuration.js';
 import { renderSimilars } from './modules/renderSimilars.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { applyTranslations } from './translations.js';
+import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -389,4 +390,8 @@ function dateTimeIntoTime(dateTime) {
   const resultado = `${horas}:${minutos}`;
 
   return resultado;
+}
+
+if (token != null) {
+  resetFreeExpiration(token);
 }

@@ -117,6 +117,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('plan/{id}', [PlanController::class, 'show']);
+    Route::get('reset-free-expiration', [PlanController::class, 'resetFreeExpiration']);
     //Route::post('link-content-with-plans', [MoviePlanController::class, 'store']);
 
     // Rutas de Géneros protegidas

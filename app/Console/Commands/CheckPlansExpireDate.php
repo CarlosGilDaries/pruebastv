@@ -38,6 +38,16 @@ class CheckPlansExpireDate extends Command
         if ($expiredUsers->isNotEmpty()) {
             $userIds = $expiredUsers->pluck('id')->toArray();
 
+            // Desactivar Free
+            User::with('plan')
+                ->whereIn('id', $userIds)
+                ->whereHas('plan', function ($q) {
+                    $q->where('trimestral_price', '=', 0);
+                })
+                ->update([
+                    'free_available' => 0
+                ]);
+
             // Desactivar planes
             User::whereIn('id', $userIds)
                 ->update([

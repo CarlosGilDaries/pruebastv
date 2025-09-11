@@ -29,7 +29,6 @@ try {
     data.success &&
     userData.data.plan != null
   ) {
-
     // Generar una diferencia de 48 horas o menos para la condición de renovar
     const now = new Date();
     const expirationDate = new Date(userData.data.user.plan_expires_at);
@@ -48,20 +47,20 @@ try {
     data.success &&
     userData.data.plan == null
   ) {
-    const plans = data.plans;
-    displayPlans(plans, null);
-  } else if (token != null && userData.success && userData.data.plan == null && userData.data.user.free_available == 0) {
-    const plans = data.plans;
-    displayPlans(plans, null);
-    const freeButton = document.querySelector('.free-button');
-    if (freeButton) {
-      freeButton.setAttribute('data-i18n', 'not_available_button');
-      freeButton.innerHTML = 'No Disponible';
-      freeButton.classList.add('disabled-plan');
-      freeButton.disabled = true;
+    if (userData.data.user.free_available == 1) {
+      const plans = data.plans;
+      displayPlans(plans, null);
+    } else {
+      const plans = data.plans;
+      displayPlans(plans, null);
+      const freeButton = document.querySelector('.free-button');
+      if (freeButton) {
+        freeButton.setAttribute('data-i18n', 'not_available_button');
+        freeButton.innerHTML = 'No Disponible';
+        freeButton.classList.add('disabled-plan');
+        freeButton.disabled = true;
+      }
     }
-  } else if (token != null && userData.success && userData.data.plan == null && userData.data.user.free_available == 1) {
-
   } else if (data.success) {
     const plans = data.plans;
     displayPlans(plans, null);
@@ -287,7 +286,7 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
           if (token != null) {
             if (plan.trimestral_price == 0) {
               if (checkOrder(plan.plan_order, actualPlanOrder)) {
-                choosePlan(plan.id, button.value);
+                await selectPlan(plan.id, token, button.value);
               }
             } else {
               if (checkOrder(plan.plan_order, actualPlanOrder)) {

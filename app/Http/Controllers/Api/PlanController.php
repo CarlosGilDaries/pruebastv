@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Plan;
-//use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class PlanController extends Controller
 {
@@ -201,11 +202,35 @@ class PlanController extends Controller
             ], 200);
 
         } catch(\Exception $e) {
-                        Log::error('Error: ' . $e->getMessage());
+            Log::error('Error: ' . $e->getMessage());
 
             return response()->json([
                 'success' => false,
                 'message' => 'Error: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function resetFreeExpiration()
+    {
+        try {
+            $user = Auth::user();
+            $user->load('plan');
+            
+            if ($user->plan->trimestral_price == 0) {
+                $user->update(['plan_expires_at' => Carbon::now()->addDays(10)]);
+            }
+
+            return response()->json([
+                'success' => true
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error en resetFreeExpiration: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en resetFreeExpiration: ' . $e->getMessage(),
             ], 500);
         }
     }

@@ -8,6 +8,7 @@ use App\Models\Plan;
 use App\Models\PpvOrder;
 use App\Models\Movie;
 use App\Models\RentOrder;
+use App\Notifications\FreeFirstWarningNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,7 @@ class RedsysController extends Controller
                     'plan_id' => $request->plan_id,
                     'plan_expires_at' => Carbon::now()->addDays(10)
                 ]);
+                $user->notify(new FreeFirstWarningNotification());
 
                 if ($register) {
                     return response()->json([
