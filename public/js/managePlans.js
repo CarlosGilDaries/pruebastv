@@ -10,8 +10,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const plansList = document.querySelector('.plans-list');
     const message = document.querySelector('.message');
     const h2 = document.querySelector('h2');
-    const actualPlan = localStorage.getItem('actual_plan');
-    const neededPlans = [...new Set(localStorage.getItem('needed_plans').split(','))];
+    const actualPlan = sessionStorage.getItem('actual_plan');
+    const neededPlans = [...new Set(sessionStorage.getItem('needed_plans').split(','))];
 	const link = document.getElementById('link-to-plans');
 	if (actualPlan) {
 		h2.innerHTML = `<span data-i18n="manage_plans_actual_plan">Plan Actual</span> - ${actualPlan}`;

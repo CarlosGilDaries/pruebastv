@@ -136,6 +136,7 @@ class LoginApiController extends Controller
                 'phone_code' => $phone_code,
                 'gender' => $gender,
                 'rol' => $rol,
+                'free_available' => 1,
                 'plan_id' => $planId,
                 'password' => Hash::make($request->password),
                 'role_id' => $new_role->id,
@@ -157,6 +158,9 @@ class LoginApiController extends Controller
                     'message' => 'Usuario registrado exitosamente'
                 ], 200);
             } else {
+                $user->update(['plan_expires_at' => Carbon::now()->addDays(10)]);
+                $user->save();
+                
                 return response()->json([
                     'success' => true,
                     'data' => [

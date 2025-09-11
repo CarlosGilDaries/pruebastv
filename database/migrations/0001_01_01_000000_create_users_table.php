@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('country');
             $table->smallInteger('birth_year')->unsigned()->between(1950, date('Y') + 100);
             $table->enum('gender', ['man', 'woman', 'others']);
+            $table->boolean('free_available');
             $table->foreignId('plan_id')->nullable()->constrained();
             $table->timestamp('plan_expires_at')->nullable();
             $table->enum('rol', ['user', 'admin']);

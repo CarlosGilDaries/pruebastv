@@ -13,6 +13,7 @@ Artisan::command('inspire', function () {
 Schedule::command('streams:clean')->everyMinute();
 Schedule::command('app:check-plans-expire-date')->everyMinute();
 Schedule::command('app:plan-expiration-warnings')->everyMinute();
+Schedule::command('app:free-expiration-warnings')->everyMinute();
 Schedule::command('app:check-rents-expire-date')->everyMinute();
 
 // php artisan schedule:work

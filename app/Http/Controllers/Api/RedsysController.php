@@ -27,7 +27,8 @@ class RedsysController extends Controller
 
             if ($plan->trimestral_price == 0) {
                 $user->update([
-                    'plan_id' => $request->plan_id
+                    'plan_id' => $request->plan_id,
+                    'plan_expires_at' => Carbon::now()->addDays(10)
                 ]);
 
                 if ($register) {

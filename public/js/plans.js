@@ -42,6 +42,26 @@ try {
     const actualPlan = userData.data.plan.name;
     const actualPlanOrder = userData.data.plan.plan_order;
     displayPlans(plans, actualPlan, canRenew, actualPlanOrder);
+  } else if (
+    token != null &&
+    userData.success &&
+    data.success &&
+    userData.data.plan == null
+  ) {
+    const plans = data.plans;
+    displayPlans(plans, null);
+  } else if (token != null && userData.success && userData.data.plan == null && userData.data.user.free_available == 0) {
+    const plans = data.plans;
+    displayPlans(plans, null);
+    const freeButton = document.querySelector('.free-button');
+    if (freeButton) {
+      freeButton.setAttribute('data-i18n', 'not_available_button');
+      freeButton.innerHTML = 'No Disponible';
+      freeButton.classList.add('disabled-plan');
+      freeButton.disabled = true;
+    }
+  } else if (token != null && userData.success && userData.data.plan == null && userData.data.user.free_available == 1) {
+
   } else if (data.success) {
     const plans = data.plans;
     displayPlans(plans, null);
@@ -171,6 +191,10 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
             }
           });
         }
+      } else {
+        if (plan.trimestral_price == 0) {
+          button.classList.add('free-button');
+        }
       }
       if (neededPlans && !neededPlans.includes(plan.name)) {
         button.innerHTML = '<span data-i18n="not_applicable">No aplica</span>';
@@ -228,12 +252,13 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
             button2.innerHTML = `${plan.name} <span data-i18n="annual">Anual</span>`;
           } else {
             button.textContent = `${plan.name}`;
+            button.classList.add('free-button');
           }
           button.classList.add('needed-plan');
           button.addEventListener('click', async () => {
             if (plan.trimestral_price == 0) {
               if (checkOrder(plan.plan_order, actualPlanOrder)) {
-                choosePlan(plan.id, button.value);
+                await selectPlan(plan.id, token, button.value);
               }
             } else {
               if (checkOrder(plan.plan_order, actualPlanOrder)) {
@@ -256,7 +281,7 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
           button2.classList.add('needed-plan');
         } else {
           button.textContent = `${plan.name}`;
-          button.classList.add('needed-plan');
+          button.classList.add('needed-plan', 'free-button');
         }
         button.addEventListener('click', async () => {
           if (token != null) {
@@ -283,7 +308,7 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
 
         button2.addEventListener('click', async () => {
           if (token != null) {
-            await selectPlan(plan.id, token, button2.value);
+            choosePlan(plan.id, button2.value);
           } else {
             sessionStorage.setItem('plan_id', plan.id);
             sessionStorage.setItem('months', 12);
@@ -298,6 +323,12 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
       card.appendChild(button2);
     }
     container.appendChild(card);
+
+    if (actualPlan && plan.name == actualPlan && plan.trimestral_price != 0) {
+      const freeButton = document.querySelector('.free-button');
+      freeButton.classList.add('disabled-plan');
+      freeButton.disabled = true;
+    }
   });
 }
 
