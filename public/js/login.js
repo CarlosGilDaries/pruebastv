@@ -1,5 +1,6 @@
 import { getIp } from "./modules/getIp.js";
 import { showPassword } from "./modules/showPasword.js";
+import { aceptedCookies } from './modules/acceptedCookies.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   const passwordInput = document.getElementById('password');
@@ -84,3 +85,5 @@ document
   passwordIcon.addEventListener('click', (event) => {
     showPassword(event, passwordInput, ionEyeIcon);
   });
+
+  aceptedCookies()

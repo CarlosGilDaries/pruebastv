@@ -1,6 +1,7 @@
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { gridShow } from './modules/gridShow.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
+import { aceptedCookies } from './modules/acceptedCookies.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
@@ -16,3 +17,4 @@ dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
 gridShow(title, 'category', categoryId);
 clickLogOut();
+aceptedCookies();

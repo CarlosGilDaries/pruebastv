@@ -1,6 +1,7 @@
 import { getIp } from './modules/getIp.js';
 import { selectPlan } from './modules/selectPlan.js';
 import { showPassword } from './modules/showPasword.js';
+import { aceptedCookies } from './modules/acceptedCookies.js';
 
 document
   .getElementById('register-form')
@@ -119,3 +120,5 @@ document
   passwordIcon2.addEventListener('click', (event) => {
     showPassword(event, confirmationPasswordInput, ionEyeIcon2);
   });
+
+aceptedCookies();

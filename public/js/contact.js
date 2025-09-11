@@ -1,6 +1,7 @@
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+import { aceptedCookies } from './modules/acceptedCookies.js';
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -107,3 +108,5 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+
+aceptedCookies();

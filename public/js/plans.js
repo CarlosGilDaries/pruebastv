@@ -1,5 +1,6 @@
 import { selectPlan } from './modules/selectPlan.js';
 import { applyTranslations } from './translations.js';
+import { aceptedCookies } from './modules/acceptedCookies.js';
 
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
@@ -323,3 +324,5 @@ function checkOrder(planOrder, actualPlanOrder = null) {
 if (typeof applyTranslations === 'function') {
   applyTranslations(currentLanguage);
 }
+
+aceptedCookies();
