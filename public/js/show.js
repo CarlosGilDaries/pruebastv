@@ -7,6 +7,8 @@ import { renderSimilars } from './modules/renderSimilars.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { applyTranslations } from './translations.js';
 import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
+import { showSpinner } from './modules/spinner.js';
+import { hideSpinner } from './modules/spinner.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -312,7 +314,11 @@ async function fetchMovieData() {
   }
 }
 
+showSpinner();
 fetchMovieData();
+setTimeout(() => {
+  hideSpinner();
+}, 1000);
 
 // Función para verificar si una película es favorita
 async function isMovieFavorite(movieId) {

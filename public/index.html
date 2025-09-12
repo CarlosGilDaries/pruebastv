@@ -86,60 +86,66 @@
         </nav>
     </header>
 
-    <div id="cb-cookie-banner" class="alert alert-dark text-center mb-0" role="alert">
-        <div id="cookies-pop-up">
-        <h2>🍪 Aviso de Cookies</h2>
-        <p class="pop-up-text">
-            Este sitio web utiliza cookies y almacenamiento local para garantizar el correcto
-            funcionamiento y la seguridad de la plataforma.
-        </p>
-        <p class="small pop-up-text">
-            Para más detalles, consulta nuestra 
-            <a id="pop-up-link" href="/cookies.html" target="_blank">Política de Cookies</a>.
-        </p>
-        <button type="button" class="btn btn-primary mt-3" onclick="window.cb_hideCookieBanner()">
-            Aceptar
-        </button>
-        </div>
+    <div id="loading-spinner" class="spinner-overlay">
+        <div class="spinner"></div>
     </div>
 
-    <section class="background-banner category priority-first">
-        <video muted autoplay loop>
-            <source type="video/mp4" src="">
-        </video>
+    <div id="main-content" class="main-content">
+        <div id="cb-cookie-banner" class="alert alert-dark text-center mb-0" role="alert">
+            <div id="cookies-pop-up">
+            <h2>🍪 Aviso de Cookies</h2>
+            <p class="pop-up-text">
+                Este sitio web utiliza cookies y almacenamiento local para garantizar el correcto
+                funcionamiento y la seguridad de la plataforma.
+            </p>
+            <p class="small pop-up-text">
+                Para más detalles, consulta nuestra 
+                <a id="pop-up-link" href="/cookies.html" target="_blank">Política de Cookies</a>.
+            </p>
+            <button type="button" class="btn btn-primary mt-3" onclick="window.cb_hideCookieBanner()">
+                Aceptar
+            </button>
+            </div>
+        </div>
 
-        <div class="banner">
-            <div class="container h-100">
-                <div class="row align-items-center h-100">
-                    <div class="col-lg-6 col-md-8 col-sm-12">
-                        <div class="movie-info">
-                            <h1 class="priority-first-movie-title"></h1>
-                            <h3>
-                                <span id="banner-gender"></span>
-                                <span id="point"> · </span>
-                                <span id="banner-duration"></span>
-                            </h3>
-                            <button class="play-button" data-i18n="watch_now">Ver Ahora</button>
+        <section class="background-banner category priority-first">
+            <video muted autoplay loop>
+                <source type="video/mp4" src="">
+            </video>
+
+            <div class="banner">
+                <div class="container h-100">
+                    <div class="row align-items-center h-100">
+                        <div class="col-lg-6 col-md-8 col-sm-12">
+                            <div class="movie-info">
+                                <h1 class="priority-first-movie-title"></h1>
+                                <h3>
+                                    <span id="banner-gender"></span>
+                                    <span id="point"> · </span>
+                                    <span id="banner-duration"></span>
+                                </h3>
+                                <button class="play-button" data-i18n="watch_now">Ver Ahora</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <button class="scroll-left-banner">&lt;</button>
-        <button class="scroll-right-banner">&gt;</button>
-    </section>
-
-    <main class="index-main">
-        <section data-index="0" class="category content-type" id="keep-watching" style="display: none">
-            <h2 class="category-title" id="title-0" data-i18n="keep_watching">Seguir viendo</h2>
-            <div class="content-wrapper">
-                <button class="scroll-left disabled">&lt;</button>
-                <div id="video-content-0" class="content-container">
-                <button class="scroll-right disabled">&gt;</button>
-            </div>
+            <button class="scroll-left-banner">&lt;</button>
+            <button class="scroll-right-banner">&gt;</button>
         </section>
-    </main>
+
+        <main class="index-main">
+            <section data-index="0" class="category content-type" id="keep-watching" style="display: none">
+                <h2 class="category-title" id="title-0" data-i18n="keep_watching">Seguir viendo</h2>
+                <div class="content-wrapper">
+                    <button class="scroll-left disabled">&lt;</button>
+                    <div id="video-content-0" class="content-container">
+                    <button class="scroll-right disabled">&gt;</button>
+                </div>
+            </section>
+        </main>
+    </div>
 
     <footer class="footer mt-auto">
         <div class="container-fluid py-4 px-3">

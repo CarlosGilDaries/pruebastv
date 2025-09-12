@@ -1,6 +1,8 @@
 import { selectPlan } from './modules/selectPlan.js';
 import { applyTranslations } from './translations.js';
 import { aceptedCookies } from './modules/acceptedCookies.js';
+import { showSpinner } from './modules/spinner.js';
+import { hideSpinner } from './modules/spinner.js';
 
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
@@ -330,6 +332,11 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
     }
   });
 }
+
+showSpinner();
+setTimeout(() => {
+  hideSpinner()
+}, 100);
 
 function choosePlan(planId, buttonValue) {
   sessionStorage.setItem('plan_id', planId);

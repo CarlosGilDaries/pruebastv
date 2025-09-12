@@ -2,6 +2,7 @@
 @import '/css/banner.css';
 @import '/css/nav.css';
 @import '/css/footer.css';
+@import '/css/spinner.css';
 
 .background-banner.priority-first {
     height: 70vh;

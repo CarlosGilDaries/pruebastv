@@ -2,6 +2,8 @@ import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { gridShow } from './modules/gridShow.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { aceptedCookies } from './modules/acceptedCookies.js';
+import { showSpinner } from './modules/spinner.js';
+import { hideSpinner } from './modules/spinner.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
@@ -15,6 +17,11 @@ documentTitle.setAttribute('data-i18n', `gender_${genderId}`);
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
+showSpinner();
 gridShow(title, 'gender', genderId);
+setTimeout(() => {
+  hideSpinner();
+}, 300);
+
 clickLogOut();
 aceptedCookies();

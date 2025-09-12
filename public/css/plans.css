@@ -1,6 +1,7 @@
 @import '/css/commons.css';
 @import '/css/nav.css';
 @import '/css/footer.css';
+@import '/css/spinner.css';
 
 .menu {
     background-color: #000;

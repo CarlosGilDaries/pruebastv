@@ -3,6 +3,7 @@
 @import '/css/nav.css';
 @import '/css/footer.css';
 @import '/css/grid-films.css';
+@import '/css/spinner.css';
 
 .background-banner {
     height: 80vh;

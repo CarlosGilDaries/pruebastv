@@ -7,6 +7,8 @@ import { checkDeviceID } from './modules/checkDeviceId.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { getVideoContent } from './modules/getVideoContent.js';
 import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
+import { showSpinner } from './modules/spinner.js';
+import { hideSpinner } from './modules/spinner.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
@@ -17,6 +19,8 @@ const keepWatching = document.getElementById('keep-watching');
 const keepWatchingVideoContent = document.getElementById('video-content-0');
 
 document.addEventListener('DOMContentLoaded', function () {
+  showSpinner();
+
   if (device_id == null && token != null) {
     logOut(token);
   }
@@ -77,6 +81,11 @@ async function indexData() {
 }
 
 indexData();
+
+setTimeout(() => {
+  hideSpinner();
+}, 800);
+
 setupLoginSignupButtons();
 if (token != null) {
   resetFreeExpiration(token);
