@@ -179,6 +179,9 @@ class MovieApiController extends Controller
 
         public function update(Request $request, $id)
     {
+
+        DB::beginTransaction();
+
         try {
 			$validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:100',
@@ -400,8 +403,56 @@ class MovieApiController extends Controller
 				'created_at' => now(),
 				'updated_at' => now(),
 			]);
+
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "content_{$movie->id}_title"
+                ],
+                ['value' => $title]
+            );
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "content_{$movie->id}_tagline"
+                ],
+                ['value' => $tagline]
+            );
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "content_{$movie->id}_overview"
+                ],
+                ['value' => $overview]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['title', 'tagline', 'overview'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "content_{$movie->id}_{$field}"
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
+                    }
+                }
+            }
 			
 			$movie->save();
+
+            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -410,6 +461,8 @@ class MovieApiController extends Controller
             ], 200);
             
         } catch (\Exception $e) {
+            DB::rollBack();
+
             Log::error('Error: ' . $e->getMessage());
             
             return response()->json([
@@ -627,22 +680,22 @@ class MovieApiController extends Controller
             );
 
             foreach ($translations as $languageCode => $translationData) {
-            $language = Language::where('code', $languageCode)->first();
-            
-            if ($language) {
-                foreach (['title', 'tagline', 'overview'] as $field) {
-                    if (!empty($translationData[$field])) {
-                        Translation::updateOrCreate(
-                            [
-                                'language_id' => $language->id,
-                                'key' => "content_{$movie->id}_{$field}"
-                            ],
-                            ['value' => $translationData[$field]]
-                        );
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['title', 'tagline', 'overview'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "content_{$movie->id}_{$field}"
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
                     }
                 }
             }
-        }
 
 			
 			$adminPlan = Plan::where('name', 'admin')->first();

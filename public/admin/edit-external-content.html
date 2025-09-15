@@ -174,13 +174,15 @@
             
             <form id="form" class="needs-validation" novalidate>
                 <!-- Campos básicos -->
-                <div class="row">
+                <div class="row titles">
                     <div class="col-md-6 mb-3">
                         <label for="title" class="form-label">Título</label>
                         <input type="text" class="form-control" id="title" name="title" required>
                         <div id="title-error" class="invalid-feedback"></div>
                     </div>
-                    
+                </div>
+                
+                <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="gender_id" class="form-label">Género</label>
                         <select class="form-select" id="gender_id" name="gender_id" required>
@@ -190,16 +192,20 @@
                     </div>
                 </div>
                 
-                <div class="mb-3">
-                    <label for="tagline" class="form-label">Resumen corto</label>
-                    <textarea class="form-control ckeditor wysiwyg-textarea" id="tagline" name="tagline" rows="3"></textarea>
-                    <div id="tagline-error" class="invalid-feedback"></div>
+                <div class="row taglines">
+                    <div class="mb-3">
+                        <label for="tagline" class="form-label">Resumen corto</label>
+                        <textarea class="form-control ckeeditor wysiwyg-textarea" id="tagline" name="tagline" rows="3"></textarea>
+                        <div id="tagline-error" class="invalid-feedback"></div>
+                    </div>
                 </div>
                 
-                <div class="mb-3">
-                    <label for="overview" class="form-label">Descripción</label>
-                    <textarea class="form-control ckeditor wysiwyg-textarea" id="overview" name="overview" rows="5"></textarea>
-                    <div id="overview-error" class="invalid-feedback"></div>
+                <div class="row overviews">
+                    <div class="mb-3">
+                        <label for="overview" class="form-label">Descripción</label>
+                        <textarea class="form-control ckeditor wysiwyg-textarea" id="overview" name="overview" rows="5"></textarea>
+                        <div id="overview-error" class="invalid-feedback"></div>
+                    </div>
                 </div>
                 
                 <!-- Imágenes -->

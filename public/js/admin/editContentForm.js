@@ -1,4 +1,6 @@
 import { validateAddForm } from '../modules/validateAddForm.js';
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
 
 async function editContentForm() {
   let id = localStorage.getItem('id');
@@ -7,6 +9,8 @@ async function editContentForm() {
   const permission = document
     .getElementById('type-content')
     .getAttribute('data-type');
+  
+  generateTranslationInputs(token);
 
   await loadContentData(id);
 
@@ -66,6 +70,7 @@ async function editContentForm() {
         tagsResponse,
         genderResponse,
         categoryResponse,
+        languagesResponse,
       ] = await Promise.all([
         fetch(`/api/edit-view-content/${id}/${permission}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -78,15 +83,19 @@ async function editContentForm() {
         fetch('/api/dropdown-categories-menu', {
           headers: { Authorization: `Bearer ${token}` },
         }),
+        fetch('/api/all-languages', {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
       ]);
 
-      const [data, plansData, tagsData, genderData, categoryData] =
+      const [data, plansData, tagsData, genderData, categoryData, languagesData] =
         await Promise.all([
           response.json(),
           plansResponse.json(),
           tagsResponse.json(),
           genderResponse.json(),
           categoryResponse.json(),
+          languagesResponse.json(),
         ]);
 
       const content = data.data.movie;
@@ -94,6 +103,9 @@ async function editContentForm() {
       const genders = genderData.genders;
       const categories = categoryData.categories;
       const tags = tagsData.tags;
+      const languages = languagesData.languages;
+
+      getContentTranslations(languages, id);
 
       // Obtener IDs actuales de planes, categorías y etiquetas
       const currentPlansId = content.plans.map((plan) => plan.id);
@@ -215,6 +227,7 @@ async function editContentForm() {
       document.getElementById('end_time').value = content.end_time || '';
 
       // Configurar CKEditor
+      CKEDITOR.replace(`tagline`);
       CKEDITOR.instances.tagline.setData(content.tagline || '');
       CKEDITOR.instances.overview.setData(content.overview || '');
 
@@ -236,6 +249,7 @@ async function editContentForm() {
   document
     .getElementById('pay_per_view')
     .addEventListener('change', function () {
+
       const payPerViewFields = document.getElementById('pay_per_view_fields');
       if (this.checked) {
         payPerViewFields.classList.remove('d-none');
@@ -267,6 +281,17 @@ async function editContentForm() {
         return;
       }
 
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
+
       const shouldChangeContent = document.getElementById(
         'change-content-file'
       ).checked;
@@ -278,6 +303,39 @@ async function editContentForm() {
       formData.append('gender_id', document.getElementById('gender_id').value);
       formData.append('tagline', CKEDITOR.instances.tagline.getData());
       formData.append('overview', CKEDITOR.instances.overview.getData());
+
+      languages.forEach((language) => {
+        if (language.code !== 'es') {
+          const titleValue = document.getElementById(
+            `${language.code}-title`
+          )?.value;
+          if (titleValue) {
+            formData.append(
+              `translations[${language.code}][title]`,
+              titleValue
+            );
+          }
+
+          const taglineInstance =
+            CKEDITOR.instances[`${language.code}-tagline`];
+          if (taglineInstance) {
+            formData.append(
+              `translations[${language.code}][tagline]`,
+              taglineInstance.getData()
+            );
+          }
+
+          const overviewInstance =
+            CKEDITOR.instances[`${language.code}-overview`];
+          if (overviewInstance) {
+            formData.append(
+              `translations[${language.code}][overview]`,
+              overviewInstance.getData()
+            );
+          }
+        }
+      });
+
       formData.append(
         'pay_per_view',
         document.getElementById('pay_per_view').checked ? '1' : '0'
