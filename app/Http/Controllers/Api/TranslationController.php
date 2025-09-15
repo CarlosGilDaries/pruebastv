@@ -44,7 +44,6 @@ class TranslationController extends Controller
             $translation = Translation::updateOrCreate(
                 [
                     'language_id' => $language->id,
-                    'group' => $request->group,
                     'key' => $request->key
                 ],
                 ['value' => $request->value]

@@ -34,7 +34,7 @@ async function editLanguageForm() {
         document.getElementById('is_active').checked =
           data.language.is_active === 1;
 
-        // Rellenar traducciones (ahora los editores están listos)
+        // Rellenar traducciones
         if (
           data.language.translations &&
           data.language.translations.length > 0

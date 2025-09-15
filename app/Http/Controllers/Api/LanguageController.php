@@ -32,6 +32,26 @@ class LanguageController extends Controller
         }
     }
 
+    public function allLang()
+    {
+        try {
+            $languages = Language::with('translations')->get();
+
+            return response()->json([
+                'success' => true,
+                'languages' => $languages
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error en index de LanguageController: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error en index de LanguageController: ' . $e->getMessage(),
+            ], 500);
+        }
+    }
+
     public function show($code)
     {
         try {

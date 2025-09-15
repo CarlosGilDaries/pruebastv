@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Gender;
+use App\Models\Language;
 //use App\Http\Requests\ContentRequest;
 use App\Models\Movie;
 use App\Models\Plan;
+use App\Models\Translation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -419,8 +421,9 @@ class MovieApiController extends Controller
 
     public function store(Request $request)
     {
-        try {
+        DB::beginTransaction();
 
+        try {
 			$validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:100',
                 'tagline' => 'required|string|max:500',
@@ -594,6 +597,53 @@ class MovieApiController extends Controller
 			}
 
 			$movie->save();
+
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "content_{$movie->id}_title"
+                ],
+                ['value' => $title]
+            );
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "content_{$movie->id}_tagline"
+                ],
+                ['value' => $tagline]
+            );
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "content_{$movie->id}_overview"
+                ],
+                ['value' => $overview]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+            $language = Language::where('code', $languageCode)->first();
+            
+            if ($language) {
+                foreach (['title', 'tagline', 'overview'] as $field) {
+                    if (!empty($translationData[$field])) {
+                        Translation::updateOrCreate(
+                            [
+                                'language_id' => $language->id,
+                                'key' => "content_{$movie->id}_{$field}"
+                            ],
+                            ['value' => $translationData[$field]]
+                        );
+                    }
+                }
+            }
+        }
+
 			
 			$adminPlan = Plan::where('name', 'admin')->first();
 			DB::table('movie_plan')->insert([
@@ -616,6 +666,8 @@ class MovieApiController extends Controller
 				]);
 			}
 
+            DB::commit();
+
 			return response()->json([
 				'success' => true,
 				'movie' => $movie,
@@ -627,6 +679,7 @@ class MovieApiController extends Controller
 			/*if (isset($slug)) {
                 Storage::disk('private')->deleteDirectory('content/' . $slug);
             }*/
+            DB::rollBack();
 
 			Log::error('Error al crear contenido: ' . $e->getMessage());
 

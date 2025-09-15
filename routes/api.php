@@ -258,6 +258,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);
     Route::post('add-permission', [PermissionController::class, 'store']);
+    Route::get('all-languages', [LanguageController::class, 'allLang']);
 	
 	Route::post('select-plan', [RedsysController::class, 'selectPlan']);
 	Route::post('ppv-payment', [RedsysController::class, 'ppvPayment']);
