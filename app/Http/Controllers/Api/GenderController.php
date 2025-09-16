@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Gender;
+use App\Models\Language;
+use App\Models\Translation;
 //use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use Illuminate\Support\Facades\DB;
 
 class GenderController extends Controller
 {
@@ -65,12 +68,46 @@ class GenderController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $gender = new Gender();
             $name = sanitize_html($request->input('name'));
 
             $gender->name = $name;
             $gender->save();
+
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "gender_" . $gender->id
+                ],
+                ['value' => $name]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['name'] as $name) {
+                        if (!empty($translationData[$name])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "gender_" . $gender->id,
+                                ],
+                                ['value' => $translationData[$name]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -80,6 +117,8 @@ class GenderController extends Controller
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,
@@ -117,12 +156,46 @@ class GenderController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        DB::beginTransaction();
+
         try {
             $gender = Gender::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
 
             $gender->name = $name;
             $gender->save();
+
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "gender_" . $gender->id
+                ],
+                ['value' => $name]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['name'] as $name) {
+                        if (!empty($translationData[$name])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "gender_" . $gender->id,
+                                ],
+                                ['value' => $translationData[$name]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
 
             return response()->json([
                 'success' => true,
@@ -132,6 +205,8 @@ class GenderController extends Controller
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,

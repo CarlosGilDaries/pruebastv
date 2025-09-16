@@ -167,18 +167,19 @@
     <!-- Añadir Etiqueta -->
     <h1 class="mb-4"><i class="fa-solid fa-euro-sign me-2"></i>Añadir Etiqueta</h1>
     
-    <div id="add-tag-success-message" class="alert alert-success d-none">
+    <div id="success-message" class="alert alert-success d-none">
         Etiqueta añadida con éxito
     </div>
     
-    <form id="add-tag-form" class="needs-validation" novalidate>
-        <div class="mb-3">
-            <label for="add-tag-name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="add-tag-name" name="name" required>
-            <div id="add-tag-name-error" class="invalid-feedback"></div>
+    <form id="form" class="needs-validation" novalidate>
+        <div class="row names">
+            <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <div id="name-error" class="invalid-feedback"></div>
+            </div>
         </div>
-
-        <div class="d-flex align-items-center justify-content-center my-3 d-none" id="add-tag-loading">
+        <div class="d-flex align-items-center justify-content-center my-3 d-none" id="loading">
             <div class="spinner-border text-primary me-2" role="status">
                 <span class="visually-hidden">Cargando...</span>
             </div>
@@ -198,7 +199,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/addTag.js"></script>
+    <script type="module" src="/js/admin/addTag.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

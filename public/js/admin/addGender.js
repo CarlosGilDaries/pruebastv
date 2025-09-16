@@ -1,11 +1,26 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+
 document.addEventListener('DOMContentLoaded', function () {
   async function initAddGender() {
     const backendAPI = '/api/';
     const authToken = localStorage.getItem('auth_token');
 
+    generateTranslationInputs(authToken);
+
+    const languagesResponse = await fetch(`/api/all-languages`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const languagesData = await languagesResponse.json();
+    const languages = languagesData.languages;
+
     // Manejar envío del formulario
     document
-      .getElementById('add-gender-form')
+      .getElementById('form')
       .addEventListener('submit', async function (e) {
         e.preventDefault();
 
@@ -17,20 +32,14 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Resetear mensajes de error
-        document
-          .querySelectorAll('#add-gender-form .invalid-feedback')
-          .forEach((el) => {
-            el.textContent = '';
-            el.style.display = 'none';
-          });
-        document
-          .getElementById('add-gender-success-message')
-          .classList.add('d-none');
+        document.querySelectorAll('#form .invalid-feedback').forEach((el) => {
+          el.textContent = '';
+          el.style.display = 'none';
+        });
+        document.getElementById('success-message').classList.add('d-none');
 
         // Mostrar loader
-        document
-          .getElementById('add-gender-loading')
-          .classList.remove('d-none');
+        document.getElementById('loading').classList.remove('d-none');
 
         // Verificar autenticación
         if (!authToken) {
@@ -40,10 +49,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
           const formData = new FormData();
-          formData.append(
-            'name',
-            document.getElementById('add-gender-name').value
-          );
+          formData.append('name', document.getElementById('name').value);
+
+          languages.forEach((language) => {
+            if (language.code !== 'es') {
+              const nameValue = document.getElementById(
+                `${language.code}-name`
+              )?.value;
+              if (nameValue) {
+                formData.append(
+                  `translations[${language.code}][name]`,
+                  nameValue
+                );
+              }
+            }
+          });
 
           const response = await fetch(backendAPI + 'add-gender', {
             method: 'POST',
@@ -72,9 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           // Mostrar mensaje de éxito
-          const successMessage = document.getElementById(
-            'add-gender-success-message'
-          );
+          const successMessage = document.getElementById('success-message');
           successMessage.classList.remove('d-none');
 
           setTimeout(() => {
@@ -88,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
           console.error('Error:', error);
           alert('Error al añadir el género: ' + error.message);
         } finally {
-          document.getElementById('add-gender-loading').classList.add('d-none');
+          document.getElementById('loading').classList.add('d-none');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });

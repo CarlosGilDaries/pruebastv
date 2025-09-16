@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Language;
+use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
@@ -116,6 +119,8 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $category = new Category();
 
@@ -132,6 +137,38 @@ class CategoryController extends Controller
             $category->render_at_index = $request->input('render_at_index');
     
             $category->save();
+
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "category_" . $category->id
+                ],
+                ['value' => $name]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['name'] as $name) {
+                        if (!empty($translationData[$name])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "category_" . $category->id,
+                                ],
+                                ['value' => $translationData[$name]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
             
             return response()->json([
                 'success' => true,
@@ -140,6 +177,8 @@ class CategoryController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,
@@ -151,6 +190,8 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        DB::beginTransaction();
+
         try {
             $category = Category::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
@@ -176,6 +217,38 @@ class CategoryController extends Controller
             }
     
             $category->save();
+
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "category_" . $category->id
+                ],
+                ['value' => $name]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['name'] as $name) {
+                        if (!empty($translationData[$name])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "category_" . $category->id,
+                                ],
+                                ['value' => $translationData[$name]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
     
             return response()->json([
                 'success' => true,
@@ -184,6 +257,8 @@ class CategoryController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,

@@ -12,6 +12,10 @@ export async function generateTranslationInputs(token) {
   const titles = document.querySelector('.titles');
   const taglines = document.querySelector('.taglines');
   const overviews = document.querySelector('.overviews');
+  const names = document.querySelector('.names');
+  const texts = document.querySelector('.texts');
+  const subtexts = document.querySelector('.subtexts');
+  const buttons = document.querySelector('.buttons');
 
   languages.forEach((language) => {
     if (language.code != 'es') {
@@ -49,6 +53,42 @@ export async function generateTranslationInputs(token) {
                         <div id="${language.code}-overview-error" class="invalid-feedback"></div`;
         overviews.appendChild(newOverview);
         CKEDITOR.replace(`${language.code}-overview`);
+      }
+
+      if (names) {
+        const newName = document.createElement('div');
+        newName.classList.add('col-md-6', 'mb3');
+        newName.innerHTML = `<label for="${language.code}-name" class="form-label">Nombre (${language.name})</label>
+                  <input type="text" class="form-control other-name" id="${language.code}-name" name="${language.code}-name" ${required}>
+                  <div id="${language.code}-name-error" class="invalid-feedback"></div>`;
+        names.appendChild(newName);
+      }
+
+      if (texts) {
+        const newText = document.createElement('div');
+        newText.classList.add('col-md-6', 'mb3');
+        newText.innerHTML = `<label for="${language.code}-text" class="form-label">Texto (${language.name})</label>
+                  <input type="text" class="form-control other-text" id="${language.code}-text" name="${language.code}-text" ${required}>
+                  <div id="${language.code}-text-error" class="invalid-feedback"></div>`;
+        texts.appendChild(newText);
+      }
+
+      if (subtexts) {
+        const newSubtext = document.createElement('div');
+        newSubtext.classList.add('col-md-6', 'mb3');
+        newSubtext.innerHTML = `<label for="${language.code}-subtext" class="form-label">Subtexto (${language.name})</label>
+                  <input type="text" class="form-control other-subtext" id="${language.code}-subtext" name="${language.code}-subtext" ${required}>
+                  <div id="${language.code}-subtext-error" class="invalid-feedback"></div>`;
+        subtexts.appendChild(newSubtext);
+      }
+
+      if (buttons) {
+        const newButton = document.createElement('div');
+        newButton.classList.add('col-md-6', 'mb3');
+        newButton.innerHTML = `<label for="${language.code}-button" class="form-label">Texto del Botón (${language.name})</label>
+                  <input type="text" class="form-control other-button" id="${language.code}-button" name="${language.code}-button" ${required}>
+                  <div id="${language.code}-button-error" class="invalid-feedback"></div>`;
+        buttons.appendChild(newButton);
       }
     }
   });

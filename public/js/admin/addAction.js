@@ -1,7 +1,11 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+
 async function initAddAction() {
   const backendAPI = '/api/';
   const authToken = localStorage.getItem('auth_token');
   const select = document.getElementById('order');
+
+  generateTranslationInputs(authToken);
 
   try {
     const response = await fetch(backendAPI + 'actions', {
@@ -9,6 +13,17 @@ async function initAddAction() {
         Authorization: `Bearer ${authToken}`,
       },
     });
+
+    const languagesResponse = await fetch(`/api/all-languages`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const languagesData = await languagesResponse.json();
+    const languages = languagesData.languages;
 
     const data = await response.json();
     const positions = data.positions;
@@ -68,6 +83,40 @@ async function initAddAction() {
 
         // Crear FormData
         const formData = new FormData();
+
+        languages.forEach((language) => {
+          if (language.code !== 'es') {
+            const textValue = document.getElementById(
+              `${language.code}-text`
+            )?.value;
+            if (textValue) {
+              formData.append(
+                `translations[${language.code}][text]`,
+                textValue
+              );
+            }
+
+            const subTextValue = document.getElementById(
+              `${language.code}-subtext`
+            )?.value;
+            if (subTextValue) {
+              formData.append(
+                `translations[${language.code}][subtext]`,
+                subTextValue
+              );
+            }
+
+            const buttonValue = document.getElementById(
+              `${language.code}-button`
+            )?.value;
+            if (buttonValue) {
+              formData.append(
+                `translations[${language.code}][button]`,
+                buttonValue
+              );
+            }
+          }
+        });
         formData.append('name', document.getElementById('name').value);
         formData.append('order', document.getElementById('order').value);
         formData.append('text', document.getElementById('text').value);

@@ -1,8 +1,13 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
+
 async function editCategoryForm() {
   const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
-  const select = document.getElementById('edit-category-priority');
+  const select = document.getElementById('priority');
+
+  generateTranslationInputs(token);
 
   await loadCategoryData(id);
 
@@ -12,6 +17,13 @@ async function editCategoryForm() {
       const priorityResponse = await fetch(backendAPI + 'categories', {
         headers: { Authorization: `Bearer ${token}` },
       });
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (!priorityResponse.ok) {
         throw new Error('Error al cargar las prioridades');
@@ -19,6 +31,8 @@ async function editCategoryForm() {
 
       const priorityData = await priorityResponse.json();
       const priorities = priorityData.priorities;
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
 
       // Limpiar y llenar select de prioridades
       select.innerHTML =
@@ -42,11 +56,11 @@ async function editCategoryForm() {
       const data = await response.json();
 
       if (data.success && data.category) {
-        document.getElementById('edit-category-name').value =
-          data.category.name || '';
-        document.getElementById('edit-category-priority').value =
+        document.getElementById('name').value = data.category.name || '';
+        getContentTranslations(languages, id);
+        document.getElementById('priority').value =
           data.category.priority || '';
-        document.getElementById('edit-category-render').checked =
+        document.getElementById('render').checked =
           data.category.render_at_index === 1;
       } else {
         throw new Error(data.message || 'Error al cargar la categoría');
@@ -57,14 +71,14 @@ async function editCategoryForm() {
       const errorElement = document.createElement('div');
       errorElement.className = 'alert alert-danger mt-3';
       errorElement.textContent = error.message;
-      document.getElementById('edit-category-form').prepend(errorElement);
+      document.getElementById('form').prepend(errorElement);
       setTimeout(() => errorElement.remove(), 5000);
     }
   }
 
   // Manejar el envío del formulario
   document
-    .getElementById('edit-category-form')
+    .getElementById('form')
     .addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -75,26 +89,40 @@ async function editCategoryForm() {
       }
 
       const id = localStorage.getItem('id');
-      document
-        .getElementById('edit-category-loading')
-        .classList.remove('d-none');
-      document
-        .getElementById('edit-category-success-message')
-        .classList.add('d-none');
+      document.getElementById('loading').classList.remove('d-none');
+      document.getElementById('success-message').classList.add('d-none');
 
       try {
+        const languagesResponse = await fetch(`/api/all-languages`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const languagesData = await languagesResponse.json();
+        const languages = languagesData.languages;
+
         const formData = new FormData();
-        formData.append(
-          'name',
-          document.getElementById('edit-category-name').value
-        );
-        formData.append(
-          'priority',
-          document.getElementById('edit-category-priority').value
-        );
+        formData.append('name', document.getElementById('name').value);
+        languages.forEach((language) => {
+          if (language.code !== 'es') {
+            const nameValue = document.getElementById(
+              `${language.code}-name`
+            )?.value;
+            if (nameValue) {
+              formData.append(
+                `translations[${language.code}][name]`,
+                nameValue
+              );
+            }
+          }
+        });
+        formData.append('priority', document.getElementById('priority').value);
         formData.append(
           'render_at_index',
-          document.getElementById('edit-category-render').checked ? '1' : '0'
+          document.getElementById('render').checked ? '1' : '0'
         );
 
         const response = await fetch(`${backendAPI}edit-category/${id}`, {
@@ -109,9 +137,7 @@ async function editCategoryForm() {
           // Mostrar errores de validación del servidor
           if (data.errors) {
             for (const field in data.errors) {
-              const errorElement = document.getElementById(
-                `edit-category-${field}-error`
-              );
+              const errorElement = document.getElementById(`${field}-error`);
               if (errorElement) {
                 errorElement.textContent = data.errors[field][0];
                 errorElement.style.display = 'block';
@@ -124,13 +150,9 @@ async function editCategoryForm() {
         }
 
         // Mostrar mensaje de éxito
-        document
-          .getElementById('edit-category-success-message')
-          .classList.remove('d-none');
+        document.getElementById('success-message').classList.remove('d-none');
         setTimeout(() => {
-          document
-            .getElementById('edit-category-success-message')
-            .classList.add('d-none');
+          document.getElementById('success-message').classList.add('d-none');
         }, 5000);
       } catch (error) {
         console.error('Error submitting form:', error);
@@ -141,9 +163,7 @@ async function editCategoryForm() {
         this.prepend(errorElement);
         setTimeout(() => errorElement.remove(), 5000);
       } finally {
-        document
-          .getElementById('edit-category-loading')
-          .classList.add('d-none');
+        document.getElementById('loading').classList.add('d-none');
       }
     });
 }

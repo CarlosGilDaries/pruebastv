@@ -5,9 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Action;
+use App\Models\Language;
+use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ActionController extends Controller
 {
@@ -90,6 +93,8 @@ class ActionController extends Controller
 
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $action = new Action();
 
@@ -127,6 +132,54 @@ class ActionController extends Controller
             }
 
             $action->save();
+
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "action_" . $action->id . "_button"
+                ],
+                ['value' => $button]
+            );
+            if ($subtext) {
+                Translation::updateOrCreate(
+                    [
+                        'language_id' => $spanishId,
+                        'key' => "action_" . $action->id . "_subtext"
+                    ],
+                    ['value' => $subtext]
+                );
+            }
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "action_" . $action->id . "_text"
+                ],
+                ['value' => $text]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['button', 'text', 'subtext'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "action_{$action->id}_$field",
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
             
             return response()->json([
                 'success' => true,
@@ -135,6 +188,8 @@ class ActionController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,
@@ -145,6 +200,8 @@ class ActionController extends Controller
 
     public function update(Request $request, string $id)
     {
+        DB::beginTransaction();
+
         try {
             $action = Action::where('id', $id)->first();
 
@@ -190,6 +247,54 @@ class ActionController extends Controller
 
             $action->save();
 
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "action_" . $action->id . "_button"
+                ],
+                ['value' => $button]
+            );
+            if ($subtext) {
+                Translation::updateOrCreate(
+                    [
+                        'language_id' => $spanishId,
+                        'key' => "action_" . $action->id . "_subtext"
+                    ],
+                    ['value' => $subtext]
+                );
+            }
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "action_" . $action->id . "_text"
+                ],
+                ['value' => $text]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['button', 'text', 'subtext'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "action_{$action->id}_$field",
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'action' => $action,
@@ -198,6 +303,8 @@ class ActionController extends Controller
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,

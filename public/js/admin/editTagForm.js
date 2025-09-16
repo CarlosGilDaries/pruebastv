@@ -1,13 +1,18 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
+
 document.addEventListener('DOMContentLoaded', function () {
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
   const id = localStorage.getItem('id');
-  const form = document.getElementById('edit-tag-form');
+  const form = document.getElementById('form');
 
   if (!id) {
     showError('No se proporcionó ID de etiqueta');
     return;
   }
+
+  generateTranslationInputs(token);
 
   // Cargar datos de la etiqueta
   loadTagData(id);
@@ -39,14 +44,25 @@ document.addEventListener('DOMContentLoaded', function () {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
       if (!response.ok) {
         throw new Error('Error al cargar los datos');
       }
 
       const data = await response.json();
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
 
       if (data.success && data.tag) {
-        document.getElementById('edit-tag-name').value = data.tag.name;
+        document.getElementById('name').value = data.tag.name;
+        getContentTranslations(languages, id);
       } else {
         throw new Error(data.message || 'Error al cargar la etiqueta');
       }
@@ -57,16 +73,37 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   async function submitTagForm(id) {
-    const loading = document.getElementById('edit-tag-loading');
-    const successMessage = document.getElementById('edit-tag-success-message');
-    const name = document.getElementById('edit-tag-name').value;
+    const loading = document.getElementById('loading');
+    const successMessage = document.getElementById('success-message');
+    const name = document.getElementById('name').value;
 
     loading.classList.remove('d-none');
     successMessage.classList.add('d-none');
 
     try {
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
+
       const formData = new FormData();
       formData.append('name', name);
+      languages.forEach((language) => {
+        if (language.code !== 'es') {
+          const nameValue = document.getElementById(
+            `${language.code}-name`
+          )?.value;
+          if (nameValue) {
+            formData.append(`translations[${language.code}][name]`, nameValue);
+          }
+        }
+      });
 
       const response = await fetch(`${backendAPI}edit-tag/${id}`, {
         method: 'POST',

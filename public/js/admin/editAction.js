@@ -1,25 +1,38 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
+
 async function editActionForm() {
   const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
+
+  generateTranslationInputs(token);
 
   await loadActionData(id);
 
   async function loadActionData(id) {
     try {
       // Cargar datos en paralelo
-      const [orderResponse, actionResponse] = await Promise.all([
-        fetch(backendAPI + 'actions', {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        fetch(`${backendAPI}action/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-      ]);
+      const [orderResponse, actionResponse, languagesResponse] =
+        await Promise.all([
+          fetch(backendAPI + 'actions', {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`${backendAPI}action/${id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch(`/api/all-languages`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          }),
+        ]);
 
-      const [orderData, actionData] = await Promise.all([
+      const [orderData, actionData, languagesData] = await Promise.all([
         orderResponse.json(),
         actionResponse.json(),
+        languagesResponse.json(),
       ]);
 
       if (!actionData.success || !actionData.action) {
@@ -30,6 +43,7 @@ async function editActionForm() {
 
       const positions = orderData.positions || [];
       const action = actionData.action;
+      const languages = languagesData.languages;
       const select = document.getElementById('order');
 
       // Llenar opciones de orden
@@ -47,6 +61,7 @@ async function editActionForm() {
       document.getElementById('subtext').value = action.subtext || '';
       document.getElementById('button_text').value = action.button_text || '';
       document.getElementById('url').value = action.url || '';
+      getContentTranslations(languages, id);
 
       // Mostrar nombre de la imagen actual si existe
       if (action.picture) {
@@ -92,6 +107,17 @@ async function editActionForm() {
       document.getElementById('loading').classList.remove('d-none');
 
       try {
+        const languagesResponse = await fetch(`/api/all-languages`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const languagesData = await languagesResponse.json();
+        const languages = languagesData.languages;
+        
         const formData = new FormData();
         formData.append('name', document.getElementById('name').value);
         formData.append('order', document.getElementById('order').value);
@@ -102,6 +128,40 @@ async function editActionForm() {
           document.getElementById('button_text').value
         );
         formData.append('url', document.getElementById('url').value);
+
+        languages.forEach((language) => {
+          if (language.code !== 'es') {
+            const textValue = document.getElementById(
+              `${language.code}-text`
+            )?.value;
+            if (textValue) {
+              formData.append(
+                `translations[${language.code}][text]`,
+                textValue
+              );
+            }
+
+            const subTextValue = document.getElementById(
+              `${language.code}-subtext`
+            )?.value;
+            if (subTextValue) {
+              formData.append(
+                `translations[${language.code}][subtext]`,
+                subTextValue
+              );
+            }
+
+            const buttonValue = document.getElementById(
+              `${language.code}-button`
+            )?.value;
+            if (buttonValue) {
+              formData.append(
+                `translations[${language.code}][button]`,
+                buttonValue
+              );
+            }
+          }
+        });
 
         const pictureInput = document.getElementById('picture');
         if (pictureInput.files.length > 0) {

@@ -6,16 +6,53 @@ export function getContentTranslations(languages, id) {
             let title = '';
             let tagline = '';
             let overview = '';
+            let name = '';
+            let text = '';
+            let subtext = '';
+            let button = '';
 
             translations.forEach((translation) => {
-                if (translation.key == `content_${id}_title`) {
-                title = translation.value;
+                if (
+                  translation.key == `content_${id}_title` &&
+                  document.getElementById(`${code}-title`)
+                ) {
+                  title = translation.value;
                 }
-                if (translation.key == `content_${id}_tagline`) {
-                tagline = translation.value;
+                if (
+                  translation.key == `content_${id}_tagline` &&
+                  CKEDITOR.instances[`${code}-tagline`]
+                ) {
+                  tagline = translation.value;
                 }
-                if (translation.key == `content_${id}_overview`) {
-                overview = translation.value;
+                if (
+                  translation.key == `content_${id}_overview` &&
+                  CKEDITOR.instances[`${code}-overview`]
+                ) {
+                  overview = translation.value;
+                }
+                if (
+                  (translation.key == `gender_${id}` &&
+                    document.getElementById('edit-gender')) ||
+                  (translation.key == `category_${id}` &&
+                        document.getElementById('edit-category')) ||
+                    (translation.key == `tag_${id}` && document.getElementById('edit-tag'))
+                ) {
+                  name = translation.value;
+                }
+                if (translation.key == `action_${id}_text` && document.getElementById('edit-action')) {
+                    text = translation.value;
+                }
+                if (
+                  translation.key == `action_${id}_subtext` &&
+                  document.getElementById('edit-action')
+                ) {
+                  subtext = translation.value;
+                }
+                if (
+                  translation.key == `action_${id}_button` &&
+                  document.getElementById('edit-action')
+                ) {
+                  button = translation.value;
                 }
             });
 
@@ -27,6 +64,18 @@ export function getContentTranslations(languages, id) {
             }
             if (overview != '') {
                 CKEDITOR.instances[`${code}-overview`].setData(overview);
+            }
+            if (name != '') {
+                document.getElementById(`${code}-name`).value = name;
+            }
+            if (text != '') {
+                document.getElementById(`${code}-text`).value = text;
+            }
+            if (subtext != '') {
+              document.getElementById(`${code}-subtext`).value = subtext;
+            }
+            if (button != '') {
+              document.getElementById(`${code}-button`).value = button;
             }
         }
     });

@@ -1,9 +1,31 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+
 async function initAddTag() {
   const backendAPI = '/api/';
 
+  // Obtener token de autenticación
+  const authToken = localStorage.getItem('auth_token');
+  if (!authToken) {
+    window.location.href = '/login';
+    return;
+  }
+
+  generateTranslationInputs(authToken);
+
+  const languagesResponse = await fetch(`/api/all-languages`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const languagesData = await languagesResponse.json();
+  const languages = languagesData.languages;
+
   // Manejar envío del formulario
   document
-    .getElementById('add-tag-form')
+    .getElementById('form')
     .addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -15,25 +37,26 @@ async function initAddTag() {
 
       // Resetear mensajes de error
       document
-        .querySelectorAll('#add-tag-form .invalid-feedback')
+        .querySelectorAll('#form .invalid-feedback')
         .forEach((el) => (el.textContent = ''));
-      document
-        .getElementById('add-tag-success-message')
-        .classList.add('d-none');
+      document.getElementById('success-message').classList.add('d-none');
 
       // Mostrar loader
-      document.getElementById('add-tag-loading').classList.remove('d-none');
-
-      // Obtener token de autenticación
-      const authToken = localStorage.getItem('auth_token');
-      if (!authToken) {
-        window.location.href = '/login';
-        return;
-      }
+      document.getElementById('loading').classList.remove('d-none');
 
       // Crear FormData
       const formAdData = new FormData();
-      formAdData.append('name', document.getElementById('add-tag-name').value);
+      formAdData.append('name', document.getElementById('name').value);
+      languages.forEach((language) => {
+        if (language.code !== 'es') {
+          const nameValue = document.getElementById(
+            `${language.code}-name`
+          )?.value;
+          if (nameValue) {
+            formAdData.append(`translations[${language.code}][name]`, nameValue);
+          }
+        }
+      });
 
       try {
         const response = await fetch(backendAPI + 'add-tag', {
@@ -51,13 +74,9 @@ async function initAddTag() {
         }
 
         // Mostrar mensaje de éxito
-        document
-          .getElementById('add-tag-success-message')
-          .classList.remove('d-none');
+        document.getElementById('success-message').classList.remove('d-none');
         setTimeout(() => {
-          document
-            .getElementById('add-tag-success-message')
-            .classList.add('d-none');
+          document.getElementById('success-message').classList.add('d-none');
         }, 5000);
 
         // Resetear formulario
@@ -66,11 +85,11 @@ async function initAddTag() {
       } catch (error) {
         console.error('Error:', error);
         // Mostrar error al usuario
-        const errorElement = document.getElementById('add-tag-name-error');
+        const errorElement = document.getElementById('name-error');
         errorElement.textContent = error.message;
         errorElement.style.display = 'block';
       } finally {
-        document.getElementById('add-tag-loading').classList.add('d-none');
+        document.getElementById('loading').classList.add('d-none');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
     });

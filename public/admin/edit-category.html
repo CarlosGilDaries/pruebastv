@@ -169,33 +169,37 @@
     <!-- Editar Categoría -->
     <h1 class="mb-4"><i class="fas fa-pen me-2"></i> Editar Categoría</h1>
     
-    <div id="edit-category-success-message" class="alert alert-success d-none">
+    <div id="success-message" class="alert alert-success d-none">
         Categoría editada con éxito
     </div>
     
-    <form id="edit-category-form" class="needs-validation" novalidate>
-        <div class="mb-3">
-            <label for="edit-category-name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="edit-category-name" name="name" required>
-            <div id="edit-category-name-error" class="invalid-feedback"></div>
+    <form id="form" class="needs-validation" novalidate>
+        <div class="row names">
+            <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <div id="name-error" class="invalid-feedback"></div>
+            </div>
         </div>
-
-        <div class="mb-3">
-            <label for="edit-category-priority" class="form-label">Prioridad</label>
-            <select class="form-select" id="edit-category-priority" name="priority" required>
-                <option value="" disabled selected>Selecciona prioridad</option>
-            </select>
-            <div id="edit-category-priority-error" class="invalid-feedback"></div>
+        <div class="row">   
+            <div class="col-md-6 mb-3">
+                <label for="priority" class="form-label">Prioridad</label>
+                <select class="form-select" id="priority" name="priority" required>
+                    <option value="" disabled selected>Selecciona prioridad</option>
+                </select>
+                <div id="priority-error" class="invalid-feedback"></div>
+            </div>
         </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="render" name="render_at_index" value="1">
+                    <label class="form-check-label" for="render">Mostrar en el Inicio</label>
+                </div>
+            </div>
+        </div> 
 
-        <div class="mb-3 form-check">
-            <input class="form-check-input" type="checkbox" id="edit-category-render" name="render_at_index" value="1">
-            <label class="form-check-label" for="edit-category-render">
-                Mostrar en el Inicio
-            </label>
-        </div>
-
-        <div class="d-flex align-items-center justify-content-center my-3 d-none" id="edit-category-loading">
+        <div class="d-flex align-items-center justify-content-center my-3 d-none" id="loading">
             <div class="spinner-border text-primary me-2" role="status">
                 <span class="visually-hidden">Cargando...</span>
             </div>
@@ -215,7 +219,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/editCategory.js"></script>
+    <script type="module" src="/js/admin/editCategory.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

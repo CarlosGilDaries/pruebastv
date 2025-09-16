@@ -187,13 +187,15 @@
                     </div>
                 </div>
                 
-                <div class="row">
+                <div class="row texts">
                     <div class="col-md-6 mb-3">
                         <label for="text" class="form-label">Texto</label>
                         <input type="text" class="form-control" id="text" name="text" required>
                         <div id="text-error" class="invalid-feedback"></div>
                     </div>
-                    
+                </div>
+                
+                <div class="row subtexts">
                     <div class="col-md-6 mb-3">
                         <label for="subtext" class="form-label">Subtexto (Opcional)</label>
                         <input type="text" class="form-control" id="subtext" name="subtext">
@@ -201,13 +203,15 @@
                     </div>
                 </div>
                 
-                <div class="row">
+                <div class="row buttons">
                     <div class="col-md-6 mb-3">
                         <label for="button_text" class="form-label">Texto del botón</label>
                         <input type="text" class="form-control" id="button_text" name="button_text" required>
                         <div id="button_text-error" class="invalid-feedback"></div>
                     </div>
-                    
+                </div>
+                
+                <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="url" class="form-label">URL</label>
                         <input type="text" class="form-control" id="url" name="url" required>
@@ -242,7 +246,7 @@
     integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
     crossorigin="anonymous"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/addAction.js"></script>
+    <script type="module" src="/js/admin/addAction.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

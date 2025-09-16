@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Language;
 use Illuminate\Http\Request;
 use App\Models\Tag;
+use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use Illuminate\Support\Facades\DB;
 
 class TagController extends Controller
 {
@@ -62,6 +65,8 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $tag = new Tag();
             $name = sanitize_html($request->input('name'));
@@ -69,14 +74,48 @@ class TagController extends Controller
             $tag->name = $name;
             $tag->save();
 
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "tag_" . $tag->id
+                ],
+                ['value' => $name]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['name'] as $name) {
+                        if (!empty($translationData[$name])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "tag_" . $tag->id,
+                                ],
+                                ['value' => $translationData[$name]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'tag' => $tag,
-                'message' => 'Género creado con éxito'
+                'message' => 'Etiqueta creada con éxito'
             ], 200);
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,
@@ -96,7 +135,7 @@ class TagController extends Controller
             return response()->json([
                 'success' => true,
                 'tag' => $tag,
-                'message' => 'Género obtenido con éxito.'
+                'message' => 'Etiqueta obtenida con éxito.'
             ]);
 
         } catch (\Exception $e) {
@@ -114,6 +153,8 @@ class TagController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        DB::beginTransaction();
+
         try {
             $tag = Tag::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
@@ -121,14 +162,48 @@ class TagController extends Controller
             $tag->name = $name;
             $tag->save();
 
+             $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "tag_" . $tag->id
+                ],
+                ['value' => $name]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['name'] as $name) {
+                        if (!empty($translationData[$name])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "tag_" . $tag->id,
+                                ],
+                                ['value' => $translationData[$name]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'tag' => $tag,
-                'message' => 'Género editado con éxito'
+                'message' => 'Etiqueta editado con éxito'
             ], 200);
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,

@@ -1,7 +1,12 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
+
 async function editGenderForm() {
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
   const id = localStorage.getItem('id');
+  
+  generateTranslationInputs(token);
 
   await loadGenderData(id);
 
@@ -11,16 +16,25 @@ async function editGenderForm() {
       const response = await fetch(`${backendAPI}gender/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (!response.ok) {
         throw new Error('Error al cargar los datos del género');
       }
 
       const data = await response.json();
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
 
       if (data.success && data.gender) {
-        document.getElementById('edit-gender-name').value =
-          data.gender.name || '';
+        document.getElementById('name').value = data.gender.name || '';
+        getContentTranslations(languages, id);
       } else {
         throw new Error(data.message || 'Error al cargar el género');
       }
@@ -35,7 +49,7 @@ async function editGenderForm() {
 
   // Manejar el envío del formulario
   document
-    .getElementById('edit-gender-form')
+    .getElementById('form')
     .addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -45,17 +59,36 @@ async function editGenderForm() {
         return;
       }
 
-      document.getElementById('edit-gender-loading').classList.remove('d-none');
-      document
-        .getElementById('edit-gender-success-message')
-        .classList.add('d-none');
+      document.getElementById('loading').classList.remove('d-none');
+      document.getElementById('success-message').classList.add('d-none');
 
       try {
+        const languagesResponse = await fetch(`/api/all-languages`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const languagesData = await languagesResponse.json();
+        const languages = languagesData.languages;
+
         const formData = new FormData();
-        formData.append(
-          'name',
-          document.getElementById('edit-gender-name').value
-        );
+        formData.append('name', document.getElementById('name').value);
+        languages.forEach((language) => {
+          if (language.code !== 'es') {
+            const nameValue = document.getElementById(
+              `${language.code}-name`
+            )?.value;
+            if (nameValue) {
+              formData.append(
+                `translations[${language.code}][name]`,
+                nameValue
+              );
+            }
+          }
+        });
 
         const response = await fetch(`${backendAPI}edit-gender/${id}`, {
           method: 'POST',
@@ -69,9 +102,7 @@ async function editGenderForm() {
           // Mostrar errores de validación del servidor
           if (data.errors) {
             for (const field in data.errors) {
-              const errorElement = document.getElementById(
-                `edit-gender-${field}-error`
-              );
+              const errorElement = document.getElementById(`${field}-error`);
               if (errorElement) {
                 errorElement.textContent = data.errors[field][0];
                 errorElement.style.display = 'block';
@@ -84,19 +115,15 @@ async function editGenderForm() {
         }
 
         // Mostrar mensaje de éxito
-        document
-          .getElementById('edit-gender-success-message')
-          .classList.remove('d-none');
+        document.getElementById('success-message').classList.remove('d-none');
         setTimeout(() => {
-          document
-            .getElementById('edit-gender-success-message')
-            .classList.add('d-none');
+          document.getElementById('success-message').classList.add('d-none');
         }, 5000);
       } catch (error) {
         console.error('Error submitting form:', error);
         showAlert('Error al editar el género: ' + error.message, 'danger');
       } finally {
-        document.getElementById('edit-gender-loading').classList.add('d-none');
+        document.getElementById('loading').classList.add('d-none');
       }
     });
 

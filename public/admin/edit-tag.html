@@ -166,19 +166,19 @@
 <div class="container" id="edit-tag">
     <!-- Editar Etiqueta -->
     <h1 class="mb-4"><i class="fas fa-pen me-2"></i>Editar Etiqueta</h1>
-    <div id="edit-tag-success-message" class="alert alert-success d-none">
+    <div id="success-message" class="alert alert-success d-none">
         Etiqueta editada con éxito
     </div>
-    <form id="edit-tag-form" class="needs-validation" novalidate>
-        <div class="mb-3">
-            <label for="edit-tag-name" class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="edit-tag-name" name="name" required>
-            <div id="edit-tag-name-error" class="invalid-feedback">
-                Por favor ingrese un nombre para la etiqueta
+    <form id="form" class="needs-validation" novalidate>
+        <div class="row names">
+            <div class="col-md-6 mb-3">
+                <label for="name" class="form-label">Nombre</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+                <div id="name-error" class="invalid-feedback"></div>
             </div>
         </div>
 
-        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="edit-tag-loading">
+        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="loading">
             <div class="spinner-border text-primary me-3" role="status">
                 <span class="visually-hidden">Cargando...</span>
             </div>
@@ -199,7 +199,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/editTagForm.js"></script>
+    <script type="module" src="/js/admin/editTagForm.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

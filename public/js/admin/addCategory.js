@@ -1,10 +1,26 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+
 document.addEventListener('DOMContentLoaded', function () {
   async function initAddCategory() {
     const backendAPI = '/api/';
     const authToken = localStorage.getItem('auth_token');
     const select = document.getElementById('priority');
 
+    generateTranslationInputs(authToken);
+
     try {
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
+
+
       const response = await fetch(backendAPI + 'categories', {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -38,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       // Manejar envío del formulario
       document
-        .getElementById('add-category-form')
+        .getElementById('form')
         .addEventListener('submit', async function (e) {
           e.preventDefault();
 
@@ -51,18 +67,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
           // Resetear mensajes de error
           document
-            .querySelectorAll('#add-category-form .invalid-feedback')
+            .querySelectorAll('#form .invalid-feedback')
             .forEach((el) => {
               el.textContent = '';
               el.style.display = 'none';
             });
           document
-            .getElementById('add-category-success-message')
+            .getElementById('success-message')
             .classList.add('d-none');
 
           // Mostrar loader
           document
-            .getElementById('add-category-loading')
+            .getElementById('loading')
             .classList.remove('d-none');
 
           // Verificar autenticación
@@ -75,8 +91,21 @@ document.addEventListener('DOMContentLoaded', function () {
             const formData = new FormData();
             formData.append(
               'name',
-              document.getElementById('add-category-name').value
+              document.getElementById('name').value
             );
+            languages.forEach((language) => {
+              if (language.code !== 'es') {
+                const nameValue = document.getElementById(
+                  `${language.code}-name`
+                )?.value;
+                if (nameValue) {
+                  formData.append(
+                    `translations[${language.code}][name]`,
+                    nameValue
+                  );
+                }
+              }
+            });
             formData.append(
               'priority',
               document.getElementById('priority').value
@@ -116,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Mostrar mensaje de éxito
             const successMessage = document.getElementById(
-              'add-category-success-message'
+              'success-message'
             );
             successMessage.classList.remove('d-none');
 
@@ -132,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Error al crear la categoría: ' + error.message);
           } finally {
             document
-              .getElementById('add-category-loading')
+              .getElementById('loading')
               .classList.add('d-none');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }
