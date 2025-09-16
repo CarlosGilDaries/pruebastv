@@ -12,8 +12,13 @@ async function loadPrivacyPolitic() {
 
     data.privacyPolitics.forEach(item => {
         const itemContainer = document.createElement('div');
-        itemContainer.innerHTML = `<h2 class="title">${item.title}</h2>
-                                    ${item.text}`
+        itemContainer.innerHTML = `<h2 class="title" data-i18n="privacy_politic_${item.id}_title">${item.title}</h2>
+                                    ${item.text}`;
+        const text = itemContainer.querySelector('p');
+        text.setAttribute(
+          'data-i18n',
+          `privacy_politic_${item.id}_text`
+        );
         container.appendChild(itemContainer);
     });
 }

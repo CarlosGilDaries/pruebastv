@@ -10,11 +10,14 @@ export function getContentTranslations(languages, id) {
             let text = '';
             let subtext = '';
             let button = '';
+            let footerText = '';
 
             translations.forEach((translation) => {
                 if (
-                  translation.key == `content_${id}_title` &&
-                  document.getElementById(`${code}-title`)
+                  (translation.key == `content_${id}_title` &&
+                    document.getElementById(`${code}-title`)) ||
+                  (translation.key == `privacy_politic_${id}_title` &&
+                    document.getElementById(`${code}-title`))
                 ) {
                   title = translation.value;
                 }
@@ -54,6 +57,9 @@ export function getContentTranslations(languages, id) {
                 ) {
                   button = translation.value;
                 }
+                if (translation.key == `privacy_politic_${id}_text` && document.getElementById('edit-privacy-politic')) {
+                    footerText = translation.value;
+                }
             });
 
             if (title != '') {
@@ -76,6 +82,9 @@ export function getContentTranslations(languages, id) {
             }
             if (button != '') {
               document.getElementById(`${code}-button`).value = button;
+            }
+            if (footerText != '') {
+                CKEDITOR.instances[`${code}-text`].setData(footerText);
             }
         }
     });

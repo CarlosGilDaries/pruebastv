@@ -1,7 +1,12 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
+
 async function editPrivacyPoliticForm() {
   const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
+
+  generateTranslationInputs(token);
 
   // Cargar datos iniciales
   await loadPrivacyPoliticData(id);
@@ -12,11 +17,23 @@ async function editPrivacyPoliticForm() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
+
       const data = await response.json();
 
       if (data.success) {
-        document.getElementById('edit-title').value = data.privacyPolitic.title;
+        document.getElementById('title').value = data.privacyPolitic.title;
         CKEDITOR.instances.text.setData(data.privacyPolitic.text);
+        getContentTranslations(languages, id);
       } else {
         console.error('Error:', data.message);
         showError('Error al cargar los datos');
@@ -61,9 +78,43 @@ async function editPrivacyPoliticForm() {
     form.classList.add('was-validated');
 
     try {
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
+
       const formData = new FormData();
-      formData.append('title', document.getElementById('edit-title').value);
+      formData.append('title', document.getElementById('title').value);
       formData.append('text', CKEDITOR.instances.text.getData());
+
+      languages.forEach((language) => {
+        if (language.code !== 'es') {
+          const titleValue = document.getElementById(
+            `${language.code}-title`
+          )?.value;
+          if (titleValue) {
+            formData.append(
+              `translations[${language.code}][title]`,
+              titleValue
+            );
+          }
+
+          const textInstance =
+            CKEDITOR.instances[`${language.code}-text`];
+          if (textInstance) {
+            formData.append(
+              `translations[${language.code}][text]`,
+              textInstance.getData()
+            );
+          }
+        }
+      });
 
       const response = await fetch(`${backendAPI}edit-privacy-politic/${id}`, {
         method: 'POST',
@@ -90,14 +141,5 @@ async function editPrivacyPoliticForm() {
   }
 }
 
-// Inicializar la función cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', function () {
-  // Asegurarse de que CKEditor esté listo
-  if (typeof CKEDITOR !== 'undefined') {
-    CKEDITOR.on('instanceReady', function () {
-      editPrivacyPoliticForm();
-    });
-  } else {
-    editPrivacyPoliticForm();
-  }
-});
+editPrivacyPoliticForm();
+

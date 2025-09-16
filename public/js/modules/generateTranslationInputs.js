@@ -16,6 +16,7 @@ export async function generateTranslationInputs(token) {
   const texts = document.querySelector('.texts');
   const subtexts = document.querySelector('.subtexts');
   const buttons = document.querySelector('.buttons');
+  const footerTexts = document.querySelector('.footer-texts');
 
   languages.forEach((language) => {
     if (language.code != 'es') {
@@ -27,6 +28,7 @@ export async function generateTranslationInputs(token) {
       }
 
       if (titles) {
+        console.log('hola');
         const newTitle = document.createElement('div');
         newTitle.classList.add('col-md-6', 'mb3');
         newTitle.innerHTML = `<label for="${language.code}-title" class="form-label">Título (${language.name})</label>
@@ -89,6 +91,16 @@ export async function generateTranslationInputs(token) {
                   <input type="text" class="form-control other-button" id="${language.code}-button" name="${language.code}-button" ${required}>
                   <div id="${language.code}-button-error" class="invalid-feedback"></div>`;
         buttons.appendChild(newButton);
+      }
+
+      if (footerTexts) {
+        const newFooterText = document.createElement('div');
+        newFooterText.classList.add('mb-3');
+        newFooterText.innerHTML = `<label for="${language.code}-text" class="form-label">Contenido (${language.name})</label>
+                        <textarea class="form-control other-text ckeeditor wysiwyg-textarea" id="${language.code}-text" name="${language.code}-text" rows="5"></textarea>
+                        <div id="${language.code}-text-error" class="invalid-feedback"></div`;
+        footerTexts.appendChild(newFooterText);
+        CKEDITOR.replace(`${language.code}-text`);
       }
     }
   });

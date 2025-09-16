@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\PrivacyPolitic;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use App\Models\Language;
+use App\Models\Translation;
+use Illuminate\Support\Facades\DB;
 
 class PrivacyPoliticController extends Controller
 {
@@ -64,6 +67,8 @@ class PrivacyPoliticController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $privacyPolitic = new PrivacyPolitic();
             $title = $request->input('title');
@@ -73,6 +78,45 @@ class PrivacyPoliticController extends Controller
             $privacyPolitic->text = $text;
             $privacyPolitic->save();
 
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "privacy_politic_" . $privacyPolitic->id . "_title"
+                ],
+                ['value' => $title]
+            );
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "privacy_politic_" . $privacyPolitic->id . "_text"
+                ],
+                ['value' => $text]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['title', 'text'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "privacy_politic_{$privacyPolitic->id}_$field",
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'privacyPolitic' => $privacyPolitic,
@@ -81,6 +125,8 @@ class PrivacyPoliticController extends Controller
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,
@@ -118,6 +164,8 @@ class PrivacyPoliticController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        DB::beginTransaction();
+
         try {
             $privacyPolitic = PrivacyPolitic::where('id', $id)->first();
             $title = $request->input('title');
@@ -127,6 +175,45 @@ class PrivacyPoliticController extends Controller
             $privacyPolitic->text = $text;
             $privacyPolitic->save();
 
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "privacy_politic_" . $privacyPolitic->id . "_title"
+                ],
+                ['value' => $title]
+            );
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "privacy_politic_" . $privacyPolitic->id . "_text"
+                ],
+                ['value' => $text]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['title', 'text'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "privacy_politic_{$privacyPolitic->id}_$field",
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'privacyPolitic' => $privacyPolitic,
@@ -135,6 +222,8 @@ class PrivacyPoliticController extends Controller
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,

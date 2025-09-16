@@ -163,23 +163,27 @@
             </div>
         </aside>
 
-                <div class="container p-3" id="privacy-politic">
+                <div class="container p-3" id="edit-privacy-politic">
     <!-- Editar Política de Privacidad -->
     <h1 class="mb-4"><i class="fa-solid fa-gavel me-2"></i>Editar Política de Privacidad</h1>
     <div id="success-message" class="alert alert-success d-none">
         Política de Privacidad editada con éxito
     </div>
     <form id="privacy-politic-form" class="needs-validation" novalidate>
-        <div class="mb-3">
-            <label for="edit-title" class="form-label">Título</label>
-            <input type="text" class="form-control" id="edit-title" name="edit-title" required>
-            <div id="edit-title-error" class="invalid-feedback"></div>
+        <div class="row titles">
+            <div class="col-md-6 mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+                <div id="title-error" class="invalid-feedback"></div>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="text" class="form-label">Contenido</label>
-            <textarea id="text" name="text" class="form-control ckeditor wysiwyg-textarea" required></textarea>
-            <div id="text-error" class="invalid-feedback"></div>
+        <div class="row footer-texts">
+            <div class="mb-3">
+                <label for="text" class="form-label">Contenido</label>
+                <textarea id="text" name="text" class="form-control ckeditor wysiwyg-textarea" rows="10" required></textarea>
+                <div id="text-error" class="invalid-feedback"></div>
+            </div>
         </div>
 
         <div class="d-flex justify-content-center align-items-center my-4 d-none" id="loading">
@@ -203,7 +207,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/editPrivacyPolitic.js"></script>
+    <script type="module" src="/js/admin/editPrivacyPolitic.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>
