@@ -12,7 +12,6 @@ main {
     background-color: #f5f5f5;
 	position: relative;
 	z-index: 1;
-
 }
 
 .container,
@@ -34,7 +33,7 @@ main {
 }
 
 p {
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.5;
     margin-bottom: 10px;
 }
@@ -47,7 +46,13 @@ p {
 
 h3 {
     font-size: 1.3em;
-    margin-bottom: 10px;
+    font-weight: 600;
+    margin-top: 15px !important;
+    padding-inline: 20px !important;
+}
+
+h3 ~ * {
+    padding-inline: 20px;
 }
 
 .cookies-links {
