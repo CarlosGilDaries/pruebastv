@@ -86,103 +86,10 @@
     <div class="container-fluid py-5 main">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <article class="bg-white p-4 p-md-5 rounded shadow-sm" id="cookies">
+                <article class="bg-white p-4 p-md-5 rounded shadow-sm"  id="cookies">
                     <header class="mb-4">
-                        <h1 data-i18n="cookies_policy_heading" class="h2 fw-bold text-primary">Política de Cookies y Almacenamiento Local</h1>
+                        <h1 data-i18n="privacy_politic_heading" class="h2 fw-bold text-primary">Política de Cookies y Almacenamiento Local</h1>
                     </header>
-
-                    <section class="mb-5">
-                        <p data-i18n="cookies_policy_1" class="lead">Esta aplicación utiliza cookies, almacenamiento local del navegador (localStorage) y almacenamiento de sesión (sessionStorage) para su correcto funcionamiento.</p>
-                        <p data-i18n="cookies_policy_2">Todos los elementos que se almacenan son estrictamente necesarios para prestar el servicio y garantizar la seguridad de la plataforma, por lo que no es posible acceder ni utilizar la aplicación sin ellos.</p>
-                    </section>
-
-                    <section class="mb-5">
-                        <h2 data-i18n="cookies_policy_responsible_title" class="h4 fw-bold mb-3">1. Responsable del tratamiento</h2>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><strong data-i18n="cookies_policy_responsible_label">Responsable:</strong> [Nombre o razón social]</li>
-                            <li class="mb-2"><strong data-i18n="cookies_policy_contact_label">Contacto:</strong> [Correo electrónico de contacto]</li>
-                            <li><strong data-i18n="cookies_policy_legal_label">Base legal:</strong> <span data-i18n="cookies_policy_legal_text">Ejecución de un contrato (art. 6.1.b RGPD), ya que estos datos son imprescindibles para el uso del servicio solicitado por el usuario.</span></li>
-                        </ul>
-                    </section>
-
-                    <section class="mb-5">
-                        <h2 data-i18n="cookies_policy_types_title" class="h4 fw-bold mb-3">2. Tipos de almacenamiento y datos utilizados</h2>
-                        
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h3 data-i18n="cookies_policy_cookies_title" class="h5 fw-bold mb-0">a) Cookies</h3>
-                            </div>
-                            <div class="card-body">
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <strong>XSRF-TOKEN</strong> → <span data-i18n="cookies_policy_xsrf_desc">Protege contra accesos no autorizados mediante falsificación de peticiones.</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>disfrutavalenciatv_session</strong> → <span data-i18n="cookies_policy_session_desc">Mantiene información esencial para la navegación entre páginas.</span>
-                                    </li>
-                                </ul>
-                                <p class="mt-3 mb-0"><strong data-i18n="cookies_policy_duration_label">Duración:</strong> <span data-i18n="cookies_policy_cookies_duration">válidas solo durante la sesión del navegador.</span></p>
-                            </div>
-                        </div>
-
-                        <div class="card mb-4">
-                            <div class="card-header bg-light">
-                                <h3 data-i18n="cookies_policy_local_title" class="h5 fw-bold mb-0">b) Almacenamiento Local (localStorage)</h3>
-                            </div>
-                            <div class="card-body">
-                                <p data-i18n="cookies_policy_local_desc">Estos datos permanecen en el dispositivo incluso después de cerrar el navegador o apagar el equipo, para que el usuario no tenga que iniciar sesión cada vez que accede.</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <strong>auth_token</strong> → <span data-i18n="cookies_policy_token_desc">Token de autenticación enviado por el backend para validar el acceso.</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>current_user_email</strong> → <span data-i18n="cookies_policy_email_desc">Email del usuario actual, usado para comprobación adicional junto con device_id.</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>device_id_[email]</strong> → <span data-i18n="cookies_policy_device_desc">Identificador único del dispositivo asociado a la cuenta (formato device_id_ + current_user_email para permitir múltiples cuentas en el mismo dispositivo).</span>
-                                    </li>
-                                </ul>
-                                <p class="mt-3 mb-0"><strong data-i18n="cookies_policy_duration_label">Duración:</strong> <span data-i18n="cookies_policy_local_duration">hasta que el usuario los elimine manualmente desde la configuración del navegador.</span></p>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-header bg-light">
-                                <h3 data-i18n="cookies_policy_session_title" class="h5 fw-bold mb-0">c) Almacenamiento de Sesión (sessionStorage)</h3>
-                            </div>
-                            <div class="card-body">
-                                <p data-i18n="cookies_policy_session_desc">Estos datos se eliminan automáticamente al cerrar el navegador.</p>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <strong>plan_id</strong> → <span data-i18n="cookies_policy_planid_desc">Identificador del plan a adquirir, usado en el proceso de pago (PayPal o Redsys).</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>months</strong> → <span data-i18n="cookies_policy_months_desc">Duración del plan contratado (3 o 12 meses).</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>actual_plan</strong> → <span data-i18n="cookies_policy_actualplan_desc">Plan activo del usuario, para verificar el acceso a contenidos.</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>needed_plans</strong> → <span data-i18n="cookies_policy_neededplans_desc">Planes requeridos si el contenido solicitado necesita una suscripción superior.</span>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <strong>movie_id</strong> → <span data-i18n="cookies_policy_movieid_desc">Identificador de un recurso de pago por visión o alquiler para procesar el pago.</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </section>
-
-                    <section class="mb-5">
-                        <h2 data-i18n="cookies_policy_rights_title" class="h4 fw-bold mb-3">3. Derechos del usuario</h2>
-                        <p data-i18n="cookies_policy_rights_text">El usuario puede acceder, rectificar o suprimir sus datos, así como ejercer otros derechos reconocidos por el RGPD, escribiendo desde nuestra página de <a href="/contact.html" class="text-decoration-none cookies-links" data-i18n="cookies_policy_contact_link">Contacto</a>.</p>
-                        <p class="mb-0" data-i18n="cookies_policy_rights_text2">También puede eliminar manualmente los datos almacenados en su dispositivo desde las opciones de su navegador.</p>
-                    </section>
-
-                    <section>
-                        <h2 data-i18n="cookies_policy_info_title" class="h4 fw-bold mb-3">4. Más información</h2>
-                        <p class="mb-0" data-i18n="cookies_policy_info_text">Para más detalles sobre el tratamiento de datos personales, consulte nuestra <a href="/privacy-politics.html" class="text-decoration-none cookies-links" data-i18n="cookies_policy_privacy_link">Política de Privacidad</a>.</p>
-                    </section>
                 </article>
             </div>
         </div>

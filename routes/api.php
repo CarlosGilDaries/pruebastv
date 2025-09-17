@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\ActionController;
 use App\Http\Controllers\Api\ActiveStreamApiController;
-//use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MovieApiController;
 use App\Http\Controllers\Api\AdApiController;
@@ -11,7 +10,6 @@ use App\Http\Controllers\Api\BillController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\GenderController;
 use App\Http\Controllers\Api\LoginApiController;
-use App\Http\Controllers\Api\MoviePlanController;
 use App\Http\Controllers\Api\PlanController;
 use App\Http\Controllers\Api\RedsysController;
 use App\Http\Controllers\Api\UserSessionApiController;
@@ -20,6 +18,7 @@ use App\Http\Controllers\Api\PlanOrderController;
 use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
 use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\CookieController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\FavoritesController;
 use App\Http\Controllers\Api\FooterItemController;
@@ -32,6 +31,7 @@ use App\Http\Controllers\Api\VerifyEmailController;
 use App\Http\Controllers\Api\MovieProgressController;
 use App\Http\Controllers\Api\NewPasswordController;
 use App\Http\Controllers\Api\PasswordResetLinkController;
+use App\Http\Controllers\Api\PaymentPoliticController;
 use App\Http\Controllers\Api\PrivacyPoliticController;
 use App\Http\Controllers\Api\RentController;
 use App\Http\Controllers\Api\RentOrderController;
@@ -39,8 +39,6 @@ use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
 use App\Http\Middleware\CheckPermissions;
-
-//use Illuminate\Support\Facades\Storage;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('new-device', [UserSessionApiController::class, 'store']);
@@ -245,6 +243,28 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-privacy-politic', [PrivacyPoliticController::class, 'destroy']);
     });
 
+        // Rutas de Cookies protegidas
+    Route::middleware([
+        CheckPermissions::class . ':cookies',
+    ])->group(function () {
+        Route::get('cookies/datatable', [CookieController::class, 'datatable']);
+        Route::get('cookie/{id}', [CookieController::class, 'show']);
+        Route::post('add-cookie', [CookieController::class, 'store']);
+        Route::post('edit-cookie/{id}', [CookieController::class, 'update']);
+        Route::delete('delete-cookie', [CookieController::class, 'destroy']);
+    });
+
+        // Rutas de Política de Pagos protegidas
+    Route::middleware([
+        CheckPermissions::class . ':politica_pagos',
+    ])->group(function () {
+        Route::get('payment-politic/datatable', [PaymentPoliticController::class, 'datatable']);
+        Route::get('payment-politic/{id}', [PaymentPoliticController::class, 'show']);
+        Route::post('add-payment-politic', [PaymentPoliticController::class, 'store']);
+        Route::post('edit-payment-politic/{id}', [PaymentPoliticController::class, 'update']);
+        Route::delete('delete-payment-politic', [PaymentPoliticController::class, 'destroy']);
+    });
+
         // Rutas de Idiomas protegidas
     Route::middleware([
         CheckPermissions::class . ':idiomas',
@@ -294,6 +314,7 @@ Route::get('tag/{id}', [TagController::class, 'show']);
 Route::get('footer-items', [FooterItemController::class, 'index']);
 Route::get('legal-notice', [LegalNoticeController::class, 'index']);
 Route::get('privacy-politic', [PrivacyPoliticController::class, 'index']);
+Route::get('cookies', [CookieController::class, 'index']);
 Route::get('languages', [LanguageController::class, 'index']);
 Route::get('language/{code}', [LanguageController::class, 'show']);
 

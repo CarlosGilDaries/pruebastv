@@ -48,20 +48,20 @@ h3 {
     font-size: 1.3em;
     font-weight: 600;
     margin-top: 15px !important;
-    padding-inline: 20px !important;
+    margin-bottom: 10px !important;
 }
 
-h3 ~ * {
+/*h3 ~ * {
     padding-inline: 20px;
-}
+}*/
 
-.cookies-links {
-    color: black;
-    font-weight: bold;
+#cookies a {
+    color: blue;
+    text-decoration: underline;
     transition: color 0.3s ease;
 }
 
-.cookies-links:hover {
+#cookies a:hover {
     color: var(--unlink-users-btn-hover);
 }
 

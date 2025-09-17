@@ -57,8 +57,14 @@ export function getContentTranslations(languages, id) {
                 ) {
                   button = translation.value;
                 }
-                if (translation.key == `privacy_politic_${id}_text` && document.getElementById('edit-privacy-politic')) {
-                    footerText = translation.value;
+                if (
+                  (translation.key == `privacy_politic_${id}_text` &&
+                    document.getElementById('edit-privacy-politic')) ||
+                  (translation.key == `cookie_${id}_text` &&
+                    document.getElementById('edit-cookie'))
+                ) {
+                  console.log(translation.value);
+                  footerText = translation.value;
                 }
             });
 
