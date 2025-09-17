@@ -11,12 +11,19 @@ async function loadLegalNotice() {
   const response = await fetch('/api/legal-notice');
   const data = await response.json();
 
-  data.legalNotices.forEach((item) => {
-    const itemContainer = document.createElement('div');
-    itemContainer.innerHTML = `<h2 class="title">${item.title}</h2>
-                                    ${item.text}`;
-    container.appendChild(itemContainer);
-  });
+    data.legalNotices.forEach((item) => {
+      const section = document.createElement('section');
+      section.classList.add('mb-5');
+      const titleContainer = document.createElement('h2');
+      titleContainer.classList.add('title', 'h4', 'fw-bold', 'mb3');
+      titleContainer.setAttribute('data-i18n', `legal_notice_${item.id}_title`);
+      const textContainer = document.createElement('div');
+      textContainer.classList.add('text', 'mb3');
+      textContainer.setAttribute('data-i18n', `legal_notice_${item.id}_text`);
+      section.appendChild(titleContainer);
+      section.appendChild(textContainer);
+      container.appendChild(section);
+    });
 }
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');

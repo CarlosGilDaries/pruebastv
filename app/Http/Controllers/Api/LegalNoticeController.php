@@ -3,10 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Language;
 use Illuminate\Http\Request;
 use App\Models\LegalNotice;
+use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
+use Illuminate\Support\Facades\DB;
 
 class LegalNoticeController extends Controller
 {
@@ -64,6 +67,8 @@ class LegalNoticeController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
+
         try {
             $legalNotice = new LegalNotice();
             $title = $request->input('title');
@@ -73,6 +78,45 @@ class LegalNoticeController extends Controller
             $legalNotice->text = $text;
             $legalNotice->save();
 
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "legal_notice_" . $legalNotice->id . "_title"
+                ],
+                ['value' => $title]
+            );
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "legal_notice_" . $legalNotice->id . "_text"
+                ],
+                ['value' => $text]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['title', 'text'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "legal_notice_{$legalNotice->id}_$field",
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'legalNotice' => $legalNotice,
@@ -81,6 +125,8 @@ class LegalNoticeController extends Controller
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,
@@ -118,6 +164,8 @@ class LegalNoticeController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        DB::beginTransaction();
+
         try {
             $legalNotice = LegalNotice::where('id', $id)->first();
             $title = $request->input('title');
@@ -127,6 +175,45 @@ class LegalNoticeController extends Controller
             $legalNotice->text = $text;
             $legalNotice->save();
 
+            $translations = $request->translations ?? [];
+            $spanish = Language::where('code','es')->first();
+            $spanishId = $spanish->id;
+
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "legal_notice_" . $legalNotice->id . "_title"
+                ],
+                ['value' => $title]
+            );
+            Translation::updateOrCreate(
+                [
+                    'language_id' => $spanishId,
+                    'key' => "legal_notice_" . $legalNotice->id . "_text"
+                ],
+                ['value' => $text]
+            );
+
+            foreach ($translations as $languageCode => $translationData) {
+                $language = Language::where('code', $languageCode)->first();
+                
+                if ($language) {
+                    foreach (['title', 'text'] as $field) {
+                        if (!empty($translationData[$field])) {
+                            Translation::updateOrCreate(
+                                [
+                                    'language_id' => $language->id,
+                                    'key' => "legal_notice_{$legalNotice->id}_$field",
+                                ],
+                                ['value' => $translationData[$field]]
+                            );
+                        }
+                    }
+                }
+            }
+
+            DB::commit();
+
             return response()->json([
                 'success' => true,
                 'legalNotice' => $legalNotice,
@@ -135,6 +222,8 @@ class LegalNoticeController extends Controller
 
         } catch(\Exception $e) {
             Log::error('Error: ' . $e->getMessage());
+
+            DB::rollBack();
 
             return response()->json([
                 'success' => false,

@@ -315,6 +315,7 @@ Route::get('footer-items', [FooterItemController::class, 'index']);
 Route::get('legal-notice', [LegalNoticeController::class, 'index']);
 Route::get('privacy-politic', [PrivacyPoliticController::class, 'index']);
 Route::get('cookies', [CookieController::class, 'index']);
+Route::get('payment-politic', [PaymentPoliticController::class, 'index']);
 Route::get('languages', [LanguageController::class, 'index']);
 Route::get('language/{code}', [LanguageController::class, 'show']);
 

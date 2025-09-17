@@ -147,6 +147,18 @@
                             <span>Política de Privacidad</span>
                         </a>
                     </li>
+                    <li class="nav-item" data-content="list-payment-politics">
+                        <a class="nav-link" href="/admin/list-payment-politics.html">
+                            <i class="fa-solid fa-money-bill me-2"></i>
+                            <span>Política de Pagos</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-content="list-cookies">
+                        <a class="nav-link" href="/admin/list-cookies.html">
+                            <i class="fa-solid fa-cookie me-2"></i>
+                            <span>Cookies</span>
+                        </a>
+                    </li>
                     <li class="nav-item" data-content="list-footer-items">
                         <a class="nav-link" href="/admin/list-footer-items.html">
                             <i class="fa-solid fa-shoe-prints me-2"></i>
@@ -163,7 +175,7 @@
             </div>
         </aside>
 
-                <div class="container p-3 p-md-5" id="legal-notice">
+                <div class="container p-3 p-md-5" id="edit-legal-notice">
     <!-- Editar Aviso Legal -->
     <h1 class="mb-4"><i class="fa-solid fa-gavel me-2"></i> Editar Aviso Legal</h1>
     
@@ -172,16 +184,20 @@
     </div>
     
     <form id="legal-notice-form" class="needs-validation" novalidate>
-        <div class="mb-3">
-            <label for="edit-title" class="form-label">Título</label>
-            <input type="text" class="form-control" id="edit-title" name="edit-title" required>
-            <div id="edit-title-error" class="invalid-feedback"></div>
+        <div class="row titles">
+            <div class="col-md-6 mb-3">
+                <label for="title" class="form-label">Título</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+                <div id="title-error" class="invalid-feedback"></div>
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="text" class="form-label">Contenido</label>
-            <textarea id="text" name="text" class="form-control ckeditor wysiwyg-textarea" required></textarea>
-            <div id="text-error" class="invalid-feedback"></div>
+        <div class="row footer-texts">
+            <div class="mb-3">
+                <label for="text" class="form-label">Contenido</label>
+                <textarea id="text" name="text" class="form-control ckeditor wysiwyg-textarea" rows="10" required></textarea>
+                <div id="text-error" class="invalid-feedback"></div>
+            </div>
         </div>
 
         <div class="d-flex align-items-center justify-content-center my-3 d-none" id="loading">
@@ -204,7 +220,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/editLegalNotice.js"></script>
+    <script type="module" src="/js/admin/editLegalNotice.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

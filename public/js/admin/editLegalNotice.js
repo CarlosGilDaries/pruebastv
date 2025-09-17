@@ -1,7 +1,12 @@
+import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
+
 async function editLegalNoticeForm() {
   const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
+
+  generateTranslationInputs(token);
 
   await loadLegalNoticeData(id);
 
@@ -11,6 +16,17 @@ async function editLegalNoticeForm() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
+
       if (!response.ok) {
         throw new Error('Error al cargar los datos del aviso legal');
       }
@@ -18,15 +34,10 @@ async function editLegalNoticeForm() {
       const data = await response.json();
 
       if (data.success) {
-        document.getElementById('edit-title').value =
+        document.getElementById('title').value =
           data.legalNotice.title || '';
-
-        // Verificar si CKEditor está listo antes de establecer los datos
-        if (CKEDITOR.instances.text) {
           CKEDITOR.instances.text.setData(data.legalNotice.text || '');
-        } else {
-          console.warn('CKEditor no está inicializado');
-        }
+          getContentTranslations(languages, id);
       } else {
         throw new Error(data.message || 'Error al cargar el aviso legal');
       }
@@ -55,14 +66,48 @@ async function editLegalNoticeForm() {
       document.getElementById('success-message').classList.add('d-none');
 
       try {
+        const languagesResponse = await fetch(`/api/all-languages`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const languagesData = await languagesResponse.json();
+        const languages = languagesData.languages;
+
+
         const formData = new FormData();
-        formData.append('title', document.getElementById('edit-title').value);
+        formData.append('title', document.getElementById('title').value);
 
         // Obtener datos de CKEditor si está disponible
         const ckeditorContent = CKEDITOR.instances.text
           ? CKEDITOR.instances.text.getData()
           : '';
         formData.append('text', ckeditorContent);
+
+        languages.forEach((language) => {
+          if (language.code !== 'es') {
+            const titleValue = document.getElementById(
+              `${language.code}-title`
+            )?.value;
+            if (titleValue) {
+              formData.append(
+                `translations[${language.code}][title]`,
+                titleValue
+              );
+            }
+
+            const textInstance = CKEDITOR.instances[`${language.code}-text`];
+            if (textInstance) {
+              formData.append(
+                `translations[${language.code}][text]`,
+                textInstance.getData()
+              );
+            }
+          }
+        });
 
         const response = await fetch(`${backendAPI}edit-legal-notice/${id}`, {
           method: 'POST',

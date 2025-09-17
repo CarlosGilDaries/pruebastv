@@ -2,27 +2,27 @@ import { deleteForm } from '../modules/deleteForm.js';
 import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
 
-async function listCookies() {
-  const listContent = document.getElementById('list-cookies');
+async function listPaymentPolitics() {
+  const listContent = document.getElementById('list-payment-politics');
   const api = '/api/';
   const authToken = localStorage.getItem('auth_token');
-  const backendDeleteApi = '/api/delete-cookie';
+  const backendDeleteApi = '/api/delete-payment-policy';
 
   // Cargar los datos al iniciar
-  loadCookiesList();
+  loadPaymentPoliticsList();
 
   // Función para cargar y mostrar los datos
-  async function loadCookiesList() {
+  async function loadPaymentPoliticsList() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
                     <div class="card shadow-sm">
                       <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                          <h2 class="h5 mb-0"><i class="fa-solid fa-cookie me-2"></i> Lista de Cookies</h2>
-                          <a href="/admin/add-cookie.html" class="add-button">Crear Cookie</a>
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-money-bill me-2"></i> Lista de Políticas de Pago</h2>
+                          <a href="/admin/add-payment-politic.html" class="add-button">Crear Política</a>
                           </div>
                       <div class="card-body">
-                          <div id="delete-cookie-success-message" class="alert alert-success d-none mb-3"></div>
+                          <div id="delete-payment-politic-success-message" class="alert alert-success d-none mb-3"></div>
                           
                           <div class="table-responsive">
                               <table class="table table-striped table-hover table-bordered display datatable" style="width:100%">
@@ -47,7 +47,7 @@ async function listCookies() {
         processing: true,
         serverSide: true,
         ajax: {
-          url: api + 'cookies/datatable',
+          url: api + 'payment-politic/datatable',
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -115,25 +115,25 @@ async function listCookies() {
           setUpMenuActions();
 
           const message = document.getElementById(
-            'delete-cookie-success-message'
+            'delete-payment-politic-success-message'
           );
           deleteForm(
             authToken,
-            '.cookie-delete-form',
+            '.payment-politic-delete-form',
             backendDeleteApi,
             message
           );
         },
       });
     } catch (error) {
-      console.error('Error al cargar la lista de Cookies:', error);
+      console.error('Error al cargar la lista de políticas:', error);
       listContent.innerHTML = `
                     <div class="alert alert-danger">
-                        Error al cargar la lista de Cookies: ${error.message}
+                        Error al cargar la lista de políticas: ${error.message}
                     </div>
                   `;
     }
   }
 }
 
-listCookies();
+listPaymentPolitics();

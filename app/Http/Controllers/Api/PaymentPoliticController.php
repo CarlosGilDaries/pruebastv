@@ -265,8 +265,8 @@ class PaymentPoliticController extends Controller
 			<div class="actions-container">
 				<button class="actions-button orders-button">Acciones</button>
 				<div class="actions-menu">
-					<a href="/admin/edit-payment-policy.html" class="action-item content-action edit-button" data-id="'.$id.'">Editar</a>
-                    <form class="payment-policy-delete-form" data-id="' . $id . '">
+					<a href="/admin/edit-payment-politic.html" class="action-item content-action edit-button" data-id="'.$id.'">Editar</a>
+                    <form class="payment-politic-delete-form" data-id="' . $id . '">
 						<input type="hidden" name="content_id" value="' . $id . '">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>
 					</form>

@@ -12,12 +12,23 @@ export function getContentTranslations(languages, id) {
             let button = '';
             let footerText = '';
 
-            translations.forEach((translation) => {
+          translations.forEach((translation) => {
+            if (language.id == translation.language_id) {
                 if (
                   (translation.key == `content_${id}_title` &&
                     document.getElementById(`${code}-title`)) ||
                   (translation.key == `privacy_politic_${id}_title` &&
-                    document.getElementById(`${code}-title`))
+                    document.getElementById(`${code}-title`) &&
+                    document.getElementById('edit-privacy-politic')) ||
+                  (translation.key == `legal_notice_${id}_title` &&
+                    document.getElementById(`${code}-title`) &&
+                    document.getElementById('edit-legal-notice')) ||
+                  (translation.key == `payment_politic_${id}_title` &&
+                    document.getElementById(`${code}-title`) &&
+                    document.getElementById('edit-payment-politic')) ||
+                  (translation.key == `cookie_${id}_title` &&
+                    document.getElementById(`${code}-title`) &&
+                    document.getElementById('edit-cookie'))
                 ) {
                   title = translation.value;
                 }
@@ -37,13 +48,17 @@ export function getContentTranslations(languages, id) {
                   (translation.key == `gender_${id}` &&
                     document.getElementById('edit-gender')) ||
                   (translation.key == `category_${id}` &&
-                        document.getElementById('edit-category')) ||
-                    (translation.key == `tag_${id}` && document.getElementById('edit-tag'))
+                    document.getElementById('edit-category')) ||
+                  (translation.key == `tag_${id}` &&
+                    document.getElementById('edit-tag'))
                 ) {
                   name = translation.value;
                 }
-                if (translation.key == `action_${id}_text` && document.getElementById('edit-action')) {
-                    text = translation.value;
+                if (
+                  translation.key == `action_${id}_text` &&
+                  document.getElementById('edit-action')
+                ) {
+                  text = translation.value;
                 }
                 if (
                   translation.key == `action_${id}_subtext` &&
@@ -61,11 +76,15 @@ export function getContentTranslations(languages, id) {
                   (translation.key == `privacy_politic_${id}_text` &&
                     document.getElementById('edit-privacy-politic')) ||
                   (translation.key == `cookie_${id}_text` &&
-                    document.getElementById('edit-cookie'))
+                    document.getElementById('edit-cookie')) ||
+                  (translation.key == `payment_politic_${id}_text` &&
+                    document.getElementById('edit-payment-politic')) ||
+                  (translation.key == `legal_notice_${id}_text` &&
+                    document.getElementById('edit-legal-notice'))
                 ) {
-                  console.log(translation.value);
                   footerText = translation.value;
                 }
+              }
             });
 
             if (title != '') {

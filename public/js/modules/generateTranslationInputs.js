@@ -28,7 +28,6 @@ export async function generateTranslationInputs(token) {
       }
 
       if (titles) {
-        console.log('hola');
         const newTitle = document.createElement('div');
         newTitle.classList.add('col-md-6', 'mb3');
         newTitle.innerHTML = `<label for="${language.code}-title" class="form-label">Título (${language.name})</label>
