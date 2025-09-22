@@ -2,6 +2,8 @@ import { logOut } from './modules/logOut.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { applyTranslations } from './translations.js';
+import { showSpinner } from './modules/spinner.js';
+import { hideSpinner } from './modules/spinner.js';
 
 const token = localStorage.getItem('auth_token');
 if (token == null) {
@@ -19,6 +21,7 @@ if (device_id == null) {
 clickLogOut();
 
 document.addEventListener('DOMContentLoaded', function () {
+  showSpinner();
   const currentLanguage = localStorage.getItem('userLocale');
   const categoriesDropDown = document.getElementById('categories');
   const gendersDropDown = document.getElementById('genders');
@@ -189,8 +192,10 @@ document.addEventListener('DOMContentLoaded', function () {
       if (typeof applyTranslations === 'function') {
         applyTranslations(currentLanguage);
       }
+      hideSpinner();
     })
     .catch((error) => {
       console.error('Error:', error);
+      hideSpinner();
     });
 });
