@@ -2,6 +2,7 @@
 @import '/css/nav.css';
 @import '/css/footer.css';
 @import '/css/login.css';
+@import '/css/spinner.css';
 
 section {
     padding-block: 30px;

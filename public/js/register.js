@@ -2,11 +2,15 @@ import { getIp } from './modules/getIp.js';
 import { selectPlan } from './modules/selectPlan.js';
 import { showPassword } from './modules/showPasword.js';
 import { aceptedCookies } from './modules/acceptedCookies.js';
+import { showSpinner } from './modules/spinner.js';
+import { hideSpinner } from './modules/spinner.js';
 
 document
   .getElementById('register-form')
   .addEventListener('submit', async function (event) {
     event.preventDefault();
+
+    showSpinner();
 
     const name = document.getElementById('name').value;
     const surnames = document.getElementById('surnames').value;
@@ -35,6 +39,7 @@ document
     const userAgent = navigator.userAgent;
     
     if (password !== password_confirmation) {
+      hideSpinner();
       document.getElementById('error-message').textContent =
         'Las contraseñas no coinciden';
       document.getElementById('error-message').style.display = 'block';
@@ -83,6 +88,7 @@ document
         }
       }
     } catch (error) {
+      hideSpinner();
       console.error('Error en la solicitud:', error);
       document.getElementById('error-message').textContent =
         'Credenciales incorrectas';
