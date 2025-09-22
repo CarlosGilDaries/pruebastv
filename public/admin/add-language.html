@@ -236,6 +236,10 @@
                                 <input type="text" class="form-control" id="translation_nav_payment_history" name="translations[nav_payment_history]" required>
                             </div>
                             <div class="col-md-6">
+                                <label for="translation_nav_paid_resources" class="form-label">"Recursos Pagados" (nav)</label>
+                                <input type="text" class="form-control" id="translation_nav_paid_resources" name="translations[nav_paid_resources]" required>
+                            </div>
+                            <div class="col-md-6">
                                 <label for="translation_nav_logout" class="form-label">"Cerrar sesión" (nav)</label>
                                 <input type="text" class="form-control" id="translation_nav_logout" name="translations[nav_logout]" required>
                             </div>
@@ -356,6 +360,14 @@
                                 <input type="text" class="form-control" id="translation_next_button" name="translations[next_button]" required>
                             </div>
                             <div class="col-md-6">
+                                <label for="translation_submit_button" class="form-label">"Registro" (botón)</label>
+                                <input type="text" class="form-control" id="translation_submit_button" name="translations[submit_button]" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="translation_accept_text" class="form-label">"Acepto políticas de privacidad" (texto checkbox)</label>
+                                <input type="text" class="form-control" id="translation_accept_text" name="translations[accept_text]" required>
+                            </div>
+                            <div class="col-md-6">
                                 <label for="translation_submit_button" class="form-label">"Pagar Plan" (botón)</label>
                                 <input type="text" class="form-control" id="translation_submit_button" name="translations[submit_button]" required>
                             </div>
@@ -366,6 +378,32 @@
                             <div class="col-md-6">
                                 <label for="translation_login_link" class="form-label">"Inicia Sesión"</label>
                                 <input type="text" class="form-control" id="translation_login_link" name="translations[login_link]" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Recuperar Contraseña</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="translation_restore_password_title" class="form-label">"Recuperar Contraseña" (Document title)</label>
+                                <input type="text" class="form-control" id="translation_restore_password_title" name="translations[restore_password_title]" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="translation_restore_password_heading" class="form-label">"Recuperar Contraseña" (encabezado)</label>
+                                <input type="text" class="form-control" id="translation_restore_password_heading" name="translations[restore_password_heading]" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="translation_restore_password_email_label" class="form-label">"Introduzca su email" (texto)</label>
+                                <input type="text" class="form-control" id="translation_restore_password_email_label" name="translations[restore_password_email_label]" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="translation_restore_password_button" class="form-label">"Enviar email de recuperación" (botón)</label>
+                                <input type="text" class="form-control" id="translation_restore_password_button" name="translations[restore_password_button]" required>
                             </div>
                         </div>
                     </div>
@@ -909,302 +947,6 @@
 
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0">Política de Pagos</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_title" class="form-label">"Política de pagos" (Document Title)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_title" name="translations[payment_policy_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_heading" class="form-label">"Política de Pagos" (Encabezado)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_heading" name="translations[payment_policy_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_last_update" class="form-label">"Última actualización"</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_last_update" name="translations[payment_policy_last_update]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_1" class="form-label">Texto introductorio de política</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_1" name="translations[payment_policy_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_company_name" class="form-label">"DisfrutaValenciaTV" (Nombre empresa)</label>
-                                <input type="text" class="form-control" id="translation_company_name" name="translations[company_name]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_methods_1" class="form-label">"1. Métodos de pago aceptados" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_methods_1" name="translations[payment_policy_methods_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_methods_2" class="form-label">Texto introductorio métodos de pago</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_methods_2" name="translations[payment_policy_methods_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_methods_3" class="form-label">"El usuario elegirá la pasarela..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_methods_3" name="translations[payment_policy_methods_3]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_data_1" class="form-label">"2. Gestión de datos de pago" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_data_1" name="translations[payment_policy_data_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_data_2" class="form-label">"La plataforma no almacena..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_data_2" name="translations[payment_policy_data_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_data_3" class="form-label">"Toda la información necesaria..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_data_3" name="translations[payment_policy_data_3]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_types_1" class="form-label">"3. Tipos de pagos disponibles" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_types_1" name="translations[payment_policy_types_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_types_2" class="form-label">"a) Suscripción por planes" (Subtítulo)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_types_2" name="translations[payment_policy_types_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_types_3" class="form-label">"Plan de 3 meses o plan de 12 meses..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_types_3" name="translations[payment_policy_types_3]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_types_4" class="form-label">"El acceso se activa una vez..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_types_4" name="translations[payment_policy_types_4]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_types_5" class="form-label">"b) Pago por visión (Pay Per View)..." (Subtítulo)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_types_5" name="translations[payment_policy_types_5]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_types_6" class="form-label">"El usuario podrá pagar individualmente..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_types_6" name="translations[payment_policy_types_6]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_types_7" class="form-label">"El acceso se habilitará únicamente..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_types_7" name="translations[payment_policy_types_7]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_invoices_1" class="form-label">"4. Confirmación y facturación" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_invoices_1" name="translations[payment_policy_invoices_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_invoices_2" class="form-label">"Una vez realizado el pago..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_invoices_2" name="translations[payment_policy_invoices_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_invoices_3" class="form-label">"Confirmación del pago" (Lista)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_invoices_3" name="translations[payment_policy_invoices_3]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_invoices_4" class="form-label">"Acceso inmediato al contenido..." (Lista)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_invoices_4" name="translations[payment_policy_invoices_4]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_invoices_5" class="form-label">"Factura electrónica" (Lista)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_invoices_5" name="translations[payment_policy_invoices_5]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_invoices_6" class="form-label">"Todas las transacciones generan..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_invoices_6" name="translations[payment_policy_invoices_6]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_invoices_7" class="form-label">"Historial de Pagos" (Enlace)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_invoices_7" name="translations[payment_policy_invoices_7]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_cancelations_1" class="form-label">"5. Reembolsos y cancelaciones" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_cancelations_1" name="translations[payment_policy_cancelations_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_cancelations_2" class="form-label">"Debido a la naturaleza digital..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_cancelations_2" name="translations[payment_policy_cancelations_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_cancelations_3" class="form-label">"Si el contenido adquirido no estuviera disponible..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_cancelations_3" name="translations[payment_policy_cancelations_3]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_security_1" class="form-label">"6. Seguridad" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_security_1" name="translations[payment_policy_security_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_security_2" class="form-label">"Protección de pagos" (Subtítulo)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_security_2" name="translations[payment_policy_security_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_security_3" class="form-label">"Todas las transacciones se realizan..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_security_3" name="translations[payment_policy_security_3]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_contact_1" class="form-label">"7. Contacto" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_contact_1" name="translations[payment_policy_contact_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_contact_2" class="form-label">"Para cualquier consulta o incidencia..."</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_contact_2" name="translations[payment_policy_contact_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy_contact_3" class="form-label">"contacto" (Enlace)</label>
-                                <input type="text" class="form-control" id="translation_payment_policy_contact_3" name="translations[payment_policy_contact_3]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Política de Cookies y Almacenamiento Local</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_heading" class="form-label">"Política de Cookies y Almacenamiento Local" (Título)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_heading" name="translations[cookies_policy_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_last_update" class="form-label">"Última actualización"</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_last_update" name="translations[cookies_policy_last_update]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_1" class="form-label">Texto introductorio (párrafo 1)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_1" name="translations[cookies_policy_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_2" class="form-label">Texto introductorio (párrafo 2)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_2" name="translations[cookies_policy_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_responsible_title" class="form-label">"1. Responsable del tratamiento" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_responsible_title" name="translations[cookies_policy_responsible_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_responsible_label" class="form-label">"Responsable:" (Etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_responsible_label" name="translations[cookies_policy_responsible_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_contact_label" class="form-label">"Contacto:" (Etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_contact_label" name="translations[cookies_policy_contact_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_legal_label" class="form-label">"Base legal:" (Etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_legal_label" name="translations[cookies_policy_legal_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_legal_text" class="form-label">Texto completo de base legal</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_legal_text" name="translations[cookies_policy_legal_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_types_title" class="form-label">"2. Tipos de almacenamiento y datos utilizados" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_types_title" name="translations[cookies_policy_types_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_cookies_title" class="form-label">"a) Cookies" (Subtítulo)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_cookies_title" name="translations[cookies_policy_cookies_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_xsrf_desc" class="form-label">Descripción XSRF-TOKEN</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_xsrf_desc" name="translations[cookies_policy_xsrf_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_session_desc" class="form-label">Descripción disfrutavalenciatv_session</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_session_desc" name="translations[cookies_policy_session_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_duration_label" class="form-label">"Duración:" (Etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_duration_label" name="translations[cookies_policy_duration_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_cookies_duration" class="form-label">Duración de cookies</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_cookies_duration" name="translations[cookies_policy_cookies_duration]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_local_title" class="form-label">"b) Almacenamiento Local (localStorage)" (Subtítulo)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_local_title" name="translations[cookies_policy_local_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_local_desc" class="form-label">Descripción almacenamiento local</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_local_desc" name="translations[cookies_policy_local_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_token_desc" class="form-label">Descripción auth_token</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_token_desc" name="translations[cookies_policy_token_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_email_desc" class="form-label">Descripción current_user_email</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_email_desc" name="translations[cookies_policy_email_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_device_desc" class="form-label">Descripción device_id</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_device_desc" name="translations[cookies_policy_device_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_local_duration" class="form-label">Duración almacenamiento local</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_local_duration" name="translations[cookies_policy_local_duration]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_session_title" class="form-label">"c) Almacenamiento de Sesión (sessionStorage)" (Subtítulo)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_session_title" name="translations[cookies_policy_session_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_session_desc" class="form-label">Descripción sessionStorage</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_session_desc" name="translations[cookies_policy_session_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_planid_desc" class="form-label">Descripción plan_id</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_planid_desc" name="translations[cookies_policy_planid_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_months_desc" class="form-label">Descripción months</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_months_desc" name="translations[cookies_policy_months_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_actualplan_desc" class="form-label">Descripción actual_plan</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_actualplan_desc" name="translations[cookies_policy_actualplan_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_neededplans_desc" class="form-label">Descripción needed_plans</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_neededplans_desc" name="translations[cookies_policy_neededplans_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_movieid_desc" class="form-label">Descripción movie_id</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_movieid_desc" name="translations[cookies_policy_movieid_desc]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_rights_title" class="form-label">"3. Derechos del usuario" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_rights_title" name="translations[cookies_policy_rights_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_rights_text" class="form-label">Texto derechos del usuario (párrafo 1)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_rights_text" name="translations[cookies_policy_rights_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_contact_link" class="form-label">"Contacto" (Enlace)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_contact_link" name="translations[cookies_policy_contact_link]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_rights_text2" class="form-label">Texto derechos del usuario (párrafo 2)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_rights_text2" name="translations[cookies_policy_rights_text2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_info_title" class="form-label">"4. Más información" (Título sección)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_info_title" name="translations[cookies_policy_info_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_info_text" class="form-label">Texto más información</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_info_text" name="translations[cookies_policy_info_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_policy_privacy_link" class="form-label">"Política de Privacidad" (Enlace)</label>
-                                <input type="text" class="form-control" id="translation_cookies_policy_privacy_link" name="translations[cookies_policy_privacy_link]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
                         <h5 class="mb-0">Formulario de Contacto</h5>
                     </div>
                     <div class="card-body">
@@ -1293,44 +1035,6 @@
                     </div>
                 </div>
 
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Contenido</h5>
-                    </div>
-                    <div class="card-body" id="content"></div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Llamadas a la acción</h5>
-                    </div>
-                    <div class="card-body" id="actions"></div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Géneros</h5>
-                    </div>
-                    <div class="card-body" id="genders"></div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Categorías</h5>
-                    </div>
-                    <div class="card-body" id="categories">
-                    </div>
-                </div>
-                
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Etiquetas</h5>
-                    </div>
-                    <div class="card-body" id="tags">
-                    </div>
-                </div>
-
                 <div class="card mb-4">
                     <div class="card-header">
                         <h5 class="mb-0">Footer</h5>
@@ -1340,6 +1044,10 @@
                             <div class="col-md-6">
                                 <label for="translation_legal_notice" class="form-label">"Aviso Legal"</label>
                                 <input type="text" class="form-control" id="translation_legal_notice" name="translations[legal_notice]" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="translation_payment_policy" class="form-label">"Política de Pagos"</label>
+                                <input type="text" class="form-control" id="translation_payment_policy" name="translations[payment_policy]" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="translation_privacy_policy" class="form-label">"Política de Privacidad"</label>

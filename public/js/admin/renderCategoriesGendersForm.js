@@ -1,3 +1,4 @@
+// DEPRECATED
 export async function renderCategoriesAndGenders(data, callback) {
     try {
       const gendersContainer = document.getElementById('genders');

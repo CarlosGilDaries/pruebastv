@@ -88,5 +88,9 @@ export async function gridShow(
     setupLoginSignupButtons();
   } catch (error) {
     console.log(error);
+    hideSpinner();
+    window.location.href = '/';
+  } finally {
+    hideSpinner();
   }
 }

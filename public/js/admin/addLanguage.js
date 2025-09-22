@@ -1,5 +1,3 @@
-import { renderCategoriesAndGenders } from './renderCategoriesGendersForm.js';
-
 document.addEventListener('DOMContentLoaded', async function () {
   async function initAddLanguage() {
     const backendAPI = '/api/';
@@ -29,23 +27,6 @@ document.addEventListener('DOMContentLoaded', async function () {
           actionsResponse.json(),
           contentResponse.json(),
         ]);
-
-      // Creamos un objeto data similar al que recibiríamos al editar, pero con valores vacíos
-      const mockData = {
-        success: true,
-        language: {
-          translations: [], // No hay traducciones para un nuevo idioma
-          is_active: 1,
-        },
-        categories: categoriesData.categories,
-        genders: gendersData.genders,
-        tags: tagsData.tags,
-        actions: actionsData.actions,
-        contents: contentData.data.movies,
-      };
-
-      // Renderizamos los campos (sin callback ya que no necesitamos hacer nada después)
-      await renderCategoriesAndGenders(mockData, () => {});
 
       // Manejar envío del formulario
       document

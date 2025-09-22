@@ -1,5 +1,3 @@
-import { renderCategoriesAndGenders } from "./renderCategoriesGendersForm.js";
-
 async function editLanguageForm() {
   const id = localStorage.getItem('id');
   const token = localStorage.getItem('auth_token');
@@ -21,11 +19,6 @@ async function editLanguageForm() {
       const data = await response.json();
 
       if (data.success && data.language) {
-        // Primero renderizar el formulario
-        await new Promise((resolve) => {
-          renderCategoriesAndGenders(data, resolve);
-        });
-
         // Rellenar datos del idioma
         document.getElementById('edit-language-name').value =
           data.language.name || '';
