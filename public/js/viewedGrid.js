@@ -10,4 +10,5 @@ dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
 
 gridShow(null, 'viewed', null, token);
+
 clickLogOut();

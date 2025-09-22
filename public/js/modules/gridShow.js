@@ -1,6 +1,8 @@
 
 import { setupLoginSignupButtons } from '../modules/loginSignupButtons.js';
 import { formatDuration } from '../modules/formatDuration.js';
+import { hideSpinner } from './spinner.js';
+import { showSpinner } from './spinner.js';
 
 export async function gridShow(
   title = null,
@@ -9,6 +11,7 @@ export async function gridShow(
   token = null
 ) {
   try {
+    showSpinner();
     const url = id != null ? `/api/${endpoint}/${id}` : `/api/${endpoint}`;
 
     const options = {
@@ -78,6 +81,8 @@ export async function gridShow(
         rent.innerHTML = `<span data-i18n="rent">Alquiler</span>: ${movie.rent_price} €`;
         info.append(rent);
       }
+
+      hideSpinner();
     });
 
     setupLoginSignupButtons();

@@ -1,5 +1,9 @@
+import { showSpinner } from "./spinner.js";
+import { hideSpinner } from "./spinner.js";
+
 export async function renderTypeGrid(route, types, type) {
   try {
+    showSpinner();
     const response = await fetch(route);
     const data = await response.json();
     const items = data[types];
@@ -25,8 +29,12 @@ export async function renderTypeGrid(route, types, type) {
       });
 
       main.appendChild(typeBox);
+      hideSpinner();
     });
   } catch (error) {
     console.error(error);
+    hideSpinner();
+  } finally {
+    hideSpinner();
   }
 }

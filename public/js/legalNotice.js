@@ -1,6 +1,7 @@
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+import { hideSpinner, showSpinner } from './modules/spinner.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
@@ -8,6 +9,7 @@ const gendersDropDown = document.getElementById('genders');
 const container = document.getElementById('legal-notice');
 
 async function loadLegalNotice() {
+  showSpinner();
   const response = await fetch('/api/legal-notice');
   const data = await response.json();
 
@@ -24,6 +26,7 @@ async function loadLegalNotice() {
       section.appendChild(textContainer);
       container.appendChild(section);
     });
+  hideSpinner();
 }
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');

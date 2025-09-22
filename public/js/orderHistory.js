@@ -1,5 +1,6 @@
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
+import { hideSpinner, showSpinner } from './modules/spinner.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
@@ -11,6 +12,7 @@ clickLogOut();
 
 async function loadUserOrders() {
   try {
+    showSpinner();
     const response = await fetch('/api/current-user-orders', {
       headers: {
         'Content-Type': 'application/json',
@@ -22,14 +24,19 @@ async function loadUserOrders() {
     if (data.success && data.orders.length > 0) {
       displayOrders(data.orders);
       setupDownloadButtons();
+      hideSpinner();
     } else {
       document.getElementById('user-orders').innerHTML =
         '<p>No se ha realizado ningún pago.</p>';
+      hideSpinner();
     }
   } catch (error) {
     console.error('Error al cargar los pedidos:', error);
     document.getElementById('user-orders').innerHTML =
       '<p>Error al cargar el historial de pagos.</p>';
+    hideSpinner();
+  } finally {
+    hideSpinner();
   }
 }
 

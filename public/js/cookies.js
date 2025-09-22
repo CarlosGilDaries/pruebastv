@@ -1,12 +1,14 @@
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+import { hideSpinner, showSpinner } from './modules/spinner.js';
 
 const container = document.getElementById('cookies');
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
 
 async function loadCookie() {
+  showSpinner();
   const response = await fetch('/api/cookies');
   const data = await response.json();
 
@@ -26,6 +28,7 @@ async function loadCookie() {
     section.appendChild(textContainer);
     container.appendChild(section);
   });
+  hideSpinner();
 }
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');

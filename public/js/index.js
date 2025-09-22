@@ -19,8 +19,6 @@ const keepWatching = document.getElementById('keep-watching');
 const keepWatchingVideoContent = document.getElementById('video-content-0');
 
 document.addEventListener('DOMContentLoaded', function () {
-  showSpinner();
-
   if (device_id == null && token != null) {
     logOut(token);
   }
@@ -45,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 async function indexData() {
   try {
+    showSpinner();
     if ((device_id != null && token != null)) {
       const progressResponse = await fetch('/api/movie-progress', {
         headers: {
@@ -77,14 +76,12 @@ async function indexData() {
     renderCategories(main, categoriesData);
   } catch (error) {
     console.log(error);
+  } finally {
+    hideSpinner();
   }
 }
 
 indexData();
-
-setTimeout(() => {
-  hideSpinner();
-}, 800);
 
 setupLoginSignupButtons();
 if (token != null) {

@@ -60,6 +60,7 @@ if (device_id == null) {
 
 async function fetchMovieData() {
   try {
+    showSpinner();
     // Cargar el idioma actual primero
     const currentLanguage = localStorage.getItem('userLocale') || 'es';
 
@@ -311,14 +312,12 @@ async function fetchMovieData() {
     }
   } catch (error) {
     console.log(error);
+  } finally {
+    hideSpinner();
   }
 }
 
-showSpinner();
 fetchMovieData();
-setTimeout(() => {
-  hideSpinner();
-}, 1000);
 
 // Función para verificar si una película es favorita
 async function isMovieFavorite(movieId) {
