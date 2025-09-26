@@ -143,8 +143,9 @@ async function fetchMovieData() {
 
         if (!rentData.success && rentResponse.status == 404) {
           play.classList.add('rent-btn');
-          play.textContent =
-            `Alquilar ${data.data.movie.rent_days} días: ` +
+          play.setAttribute('data-i18n', '');
+          play.innerHTML =
+            `<span data-i18n="rent_button_text">Alquilar</span> ${data.data.movie.rent_days} <span data-i18n="rent_button_days">días</span>: ` +
             data.data.movie.rent_price +
             ' €';
           play.addEventListener('click', async function () {
