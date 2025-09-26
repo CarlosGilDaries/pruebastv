@@ -93,6 +93,8 @@ document
       document.getElementById('error-message').textContent =
         'Credenciales incorrectas';
       document.getElementById('error-message').style.display = 'block';
+    } finally {
+      hideSpinner();
     }
   });
 

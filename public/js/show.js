@@ -177,8 +177,11 @@ async function fetchMovieData() {
 
         if (!ppvData.success) {
           play.classList.add('ppv-btn');
-          play.textContent =
-            'Pagar para ver: ' + data.data.movie.pay_per_view_price + ' €';
+          play.setAttribute('data-i18n', '');
+          play.innerHTML =
+            `<span data-i18n="ppv_button_text">Pagar para ver</span>: ` +
+            data.data.movie.pay_per_view_price +
+            ' €';
           play.addEventListener('click', async function () {
             sessionStorage.setItem('movie_id', data.data.movie.id);
             window.location.href = '/ppv-payment-method.html';

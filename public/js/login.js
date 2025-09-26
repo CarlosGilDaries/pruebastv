@@ -1,6 +1,8 @@
 import { getIp } from "./modules/getIp.js";
 import { showPassword } from "./modules/showPasword.js";
 import { aceptedCookies } from './modules/acceptedCookies.js';
+import { showSpinner } from './modules/spinner.js';
+import { hideSpinner } from './modules/spinner.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   const passwordInput = document.getElementById('password');
@@ -21,6 +23,8 @@ document
   .getElementById('login-form')
   .addEventListener('submit', async function (event) {
     event.preventDefault(); // Evita la recarga de la página
+
+    showSpinner();
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
@@ -57,6 +61,7 @@ document
         if (data.device_limit_reached) {
           window.location.href = '/manage-devices';
         } else if (data.message === 'Credenciales incorrectas') {
+          hideSpinner();
           document.getElementById('error-message').textContent = 'Credenciales incorrectas';
           document.getElementById('error-message').style.display = 'block';
         }
@@ -75,6 +80,9 @@ document
       document.getElementById('error-message').textContent =
         'Credenciales incorrectas';
       document.getElementById('error-message').style.display = 'block';
+      hideSpinner();
+    } finally {
+      hideSpinner();
     }
   });
 
