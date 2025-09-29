@@ -88,6 +88,7 @@ class LoginApiController extends Controller
                 $phone_code = sanitize_html(($request->phone_code));
             } else {
                 $phone = null;
+                $phone_code = null;
             }
             $gender = sanitize_html($request->gender);
             $birth_year = sanitize_html($request->birth_year);
