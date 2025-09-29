@@ -89,7 +89,6 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .form-navigation {
     display: flex;
     justify-content: space-between;
-    margin-top: 30px;
 }
 
 .form-navigation button {
@@ -185,7 +184,7 @@ input[type=number] {
 }
 
 .privacy-box {
-    margin: 20px 0;
+    margin-top: 30px !important;
     font-size: 0.9em;
     color: #fff;
 }
