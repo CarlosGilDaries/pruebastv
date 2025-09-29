@@ -27,39 +27,39 @@ export async function renderCategoriesAndGenders(data, callback) {
 
       let genderFormHtml = `<div class="col-md-6">
                                             <label for="translation_gender_title" class="form-label">"Géneros" (Document title)</label>
-                                            <input type="text" class="form-control" id="translation_gender_title" name="translations[gender_title]" required>
+                                            <input type="text" class="form-control" id="translation_gender_title" name="translations[gender_title]" >
                                        </div>
                                 <div class="col-md-6">
                                             <label for="translation_gender_heading" class="form-label">"Géneros" (encabezado)</label>
-                                            <input type="text" class="form-control" id="translation_gender_heading" name="translations[gender_heading]" required>
+                                            <input type="text" class="form-control" id="translation_gender_heading" name="translations[gender_heading]" >
                                         </div>`;
       let categoryFormHtml = `<div class="col-md-6">
                                             <label for="translation_category_title" class="form-label">"Categorías" (Document title)</label>
-                                            <input type="text" class="form-control" id="translation_category_title" name="translations[category_title]" required>
+                                            <input type="text" class="form-control" id="translation_category_title" name="translations[category_title]" >
                                        </div>
                                        <div class="col-md-6">
                                             <label for="translation_category_heading" class="form-label">"Categorías" (encabezado)</label>
-                                            <input type="text" class="form-control" id="translation_category_heading" name="translations[category_heading]" required>
+                                            <input type="text" class="form-control" id="translation_category_heading" name="translations[category_heading]" >
                                         </div>`;
       let tagFormHtml = `<div class="col-md-6">
                                 <label for="translation_tag_title" class="form-label">"Etiquetas" (Document title)</label>
-                                            <input type="text" class="form-control" id="translation_tag_title" name="translations[tag_title]" required>
+                                            <input type="text" class="form-control" id="translation_tag_title" name="translations[tag_title]" >
                                             </div>
                                 <div class="col-md-6">
                                     <label for="translation_tag_heading" class="form-label">"Etiquetas" (encabezado)</label>
-                                    <input type="text" class="form-control" id="translation_tag_heading" name="translations[tag_heading]" required>
+                                    <input type="text" class="form-control" id="translation_tag_heading" name="translations[tag_heading]" >
                                 </div>`;
 
       let actionFormHtml = '';
       let contentFormHtml = `<div class="col-md-6">
         <label for="translation_watch_now" class="form-label">"Botón Ver Ahora"</label>
-        <input type="text" class="form-control" id="translation_watch_now" name="translations[watch_now]" required>
+        <input type="text" class="form-control" id="translation_watch_now" name="translations[watch_now]" >
     </div>`;
 
       genders.forEach((gender) => {
         const columnHtml = `<div class="col-md-6">
                                     <label for="translation_gender_${gender.id}" class="form-label">"${gender.name}"</label>
-                                    <input type="text" class="form-control" id="translation_gender_${gender.id}" name="translations[gender_${gender.id}]" required>
+                                    <input type="text" class="form-control" id="translation_gender_${gender.id}" name="translations[gender_${gender.id}]" >
                                 </div>`;
         genderFormHtml += columnHtml;
       });
@@ -71,7 +71,7 @@ export async function renderCategoriesAndGenders(data, callback) {
       categories.forEach((category) => {
         const columnHtml = `<div class="col-md-6">
                                     <label for="translation_category_${category.id}" class="form-label">"${category.name}"</label>
-                                    <input type="text" class="form-control" id="translation_category_${category.id}" name="translations[category_${category.id}]" required>
+                                    <input type="text" class="form-control" id="translation_category_${category.id}" name="translations[category_${category.id}]" >
                                 </div>`;
         categoryFormHtml += columnHtml;
       });
@@ -79,7 +79,7 @@ export async function renderCategoriesAndGenders(data, callback) {
       categoriesRow.classList.add('row', 'g-3');
       categoryFormHtml += `<div class="col-md-6">
                                     <label for="translation_keep_watching" class="form-label">"Seguir viendo"</label>
-                                    <input type="text" class="form-control" id="translation_keep_watching" name="translations[keep_watching]" required>
+                                    <input type="text" class="form-control" id="translation_keep_watching" name="translations[keep_watching]" >
                                 </div>`;
       categoriesRow.innerHTML = categoryFormHtml;
       categoriesContainer.appendChild(categoriesRow);
@@ -87,7 +87,7 @@ export async function renderCategoriesAndGenders(data, callback) {
       tags.forEach((tag) => {
         const columnHtml = `<div class="col-md-6">
                                     <label for="translation_tag_${tag.id}" class="form-label">"${tag.name}"</label>
-                                    <input type="text" class="form-control" id="translation_tag_${tag.id}" name="translations[tag_${tag.id}]" required>
+                                    <input type="text" class="form-control" id="translation_tag_${tag.id}" name="translations[tag_${tag.id}]" >
                                 </div>`;
         tagFormHtml += columnHtml;
       });
@@ -99,15 +99,15 @@ export async function renderCategoriesAndGenders(data, callback) {
       actions.forEach((action) => {
         const columnHtml = `<div class="col-md-6">
                                     <label for="translation_action_${action.id}_button" class="form-label">"${action.button_text}"</label>
-                                    <input type="text" class="form-control" id="translation_action_${action.id}_button" name="translations[action_${action.id}_button]" required>
+                                    <input type="text" class="form-control" id="translation_action_${action.id}_button" name="translations[action_${action.id}_button]" >
                                 </div>
                                 <div class="col-md-6">
                                     <label for="translation_action_${action.id}_subtext" class="form-label">"${action.subtext}"</label>
-                                    <input type="text" class="form-control" id="translation_action_${action.id}_subtext" name="translations[action_${action.id}_subtext]" required>
+                                    <input type="text" class="form-control" id="translation_action_${action.id}_subtext" name="translations[action_${action.id}_subtext]" >
                                 </div>
                                 <div class="col-md-6">
                                     <label for="translation_action_${action.id}_text" class="form-label">"${action.text}"</label>
-                                    <input type="text" class="form-control" id="translation_action_${action.id}_text" name="translations[action_${action.id}_text]" required>
+                                    <input type="text" class="form-control" id="translation_action_${action.id}_text" name="translations[action_${action.id}_text]" >
                                 </div>`;
         actionFormHtml += columnHtml;
       });
@@ -119,7 +119,7 @@ export async function renderCategoriesAndGenders(data, callback) {
       contents.forEach((content) => {
         const columnHtml = `<div class="col-md-6">
         <label for="translation_content_${content.id}_title" class="form-label">"${content.title}"</label>
-        <input type="text" class="form-control" id="translation_content_${content.id}_title" name="translations[content_${content.id}_title]" required>
+        <input type="text" class="form-control" id="translation_content_${content.id}_title" name="translations[content_${content.id}_title]" >
     </div>
     <div class="col-md-6">
         <label for="translation_content_${content.id}_tagline" class="form-label">"${content.title} Resumen corto"</label>

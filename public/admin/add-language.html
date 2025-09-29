@@ -360,16 +360,16 @@
                                 <input type="text" class="form-control" id="translation_next_button" name="translations[next_button]" required>
                             </div>
                             <div class="col-md-6">
-                                <label for="translation_submit_button" class="form-label">"Registro" (botón)</label>
+                                <label for="translation_submit_button" class="form-label">"Registro" (botón sin plan)</label>
                                 <input type="text" class="form-control" id="translation_submit_button" name="translations[submit_button]" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="translation_submit_pay_plan_button" class="form-label">"Siguiente" (botón con plan)</label>
+                                <input type="text" class="form-control" id="translation_submit_pay_plan_button" name="translations[submit_pay_plan_button]" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="translation_accept_text" class="form-label">"Acepto políticas de privacidad" (texto checkbox)</label>
                                 <input type="text" class="form-control" id="translation_accept_text" name="translations[accept_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_submit_button" class="form-label">"Pagar Plan" (botón)</label>
-                                <input type="text" class="form-control" id="translation_submit_button" name="translations[submit_button]" required>
                             </div>
                             <div class="col-md-6">
                                 <label for="translation_have_account" class="form-label">"¿Ya tienes cuenta?"</label>
@@ -1070,6 +1070,43 @@
                                 <input type="text" class="form-control" id="translation_contact" name="translations[contact]" required>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Contenido</h5>
+                    </div>
+                    <div class="card-body" id="content"></div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Llamadas a la acción</h5>
+                    </div>
+                    <div class="card-body" id="actions"></div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Géneros</h5>
+                    </div>
+                    <div class="card-body" id="genders"></div>
+                </div>
+
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Categorías</h5>
+                    </div>
+                    <div class="card-body" id="categories">
+                    </div>
+                </div>
+                
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Etiquetas</h5>
+                    </div>
+                    <div class="card-body" id="tags">
                     </div>
                 </div>
                 
