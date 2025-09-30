@@ -94,4 +94,8 @@ document
     showPassword(event, passwordInput, ionEyeIcon);
   });
 
-  aceptedCookies()
+document.body.addEventListener('click', function () {
+  document.getElementById('error-message').style.display = 'none';
+})
+
+aceptedCookies();
