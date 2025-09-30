@@ -306,6 +306,7 @@ class UserApiController extends Controller
             $new_password = sanitize_html($request->input('new_password'));
             $phone = sanitize_html($request->input('phone'));
             $phone_code = sanitize_html($request->input('phone_code'));
+            $dni = sanitize_html($request->input('dni'));
 
             if ($email) {
                 $user->email = $email;
@@ -316,7 +317,7 @@ class UserApiController extends Controller
             if ($address) $user->address = $address;
             if ($city) $user->city = $city;
             if ($country) $user->country = $country;
-
+            if ($dni) $user->dni = $dni;
             if ($phone) $user->phone = $phone;
             if ($phone_code) $user->phone_code = $phone_code;
 

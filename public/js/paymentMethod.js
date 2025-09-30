@@ -2,6 +2,7 @@ import { selectPlan } from './modules/selectPlan.js';
 import { paypalPayment } from './modules/paypal.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
+import { checkDni } from './modules/checkDni.js';
 
 const token = localStorage.getItem('auth_token');
 const months = sessionStorage.getItem('months');
@@ -10,6 +11,8 @@ const paypal = document.querySelector('.paypal-btn');
 const redsys = document.querySelector('.redsys-btn');
 paypal.value = months;
 redsys.value = months;
+
+const dniExists = await checkDni(token);
 
 async function chooseMethod() {
   redsys.addEventListener('click', async function () {
@@ -34,3 +37,13 @@ async function chooseMethod() {
 }
 
 chooseMethod();
+
+function checkDniAddress(userData) {
+  console.log(userData);
+  if (userData.dni == null) {
+    window.location.href = '/need-user-dni.html';
+    return false;
+  } else {
+    return true;
+  }
+}

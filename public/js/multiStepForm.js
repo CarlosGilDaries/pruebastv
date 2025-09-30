@@ -99,16 +99,17 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
 
         const docType = dniType.value;
+        value = value.trim().toUpperCase();
 
         if (docType === 'dni') {
-          if (!/^(\d{8})([A-Za-z])$/.test(value)) {
+          if (!/^(\d{8})([A-Z])$/.test(value)) {
             showError(field, 'Por favor ingresa un DNI válido');
             return false;
           }
 
-          const match = value.match(/^(\d{8})([A-Za-z])$/);
+          const match = value.match(/^(\d{8})([A-Z])$/);
           const numero = parseInt(match[1], 10);
-          const letraIngresada = match[2].toUpperCase();
+          const letraIngresada = match[2];
           const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
           const letraCorrecta = letras[numero % 23];
 
@@ -117,14 +118,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             return false;
           }
         } else if (docType === 'nie') {
-          if (!/^[XYZ]\d{7}[A-Za-z]$/.test(value)) {
+          if (!/^[XYZ]\d{7}[A-Z]$/.test(value)) {
             showError(field, 'Por favor ingresa un NIE válido');
             return false;
           }
 
-          const nieMatch = value.match(/^([XYZ])(\d{7})([A-Za-z])$/);
+          const nieMatch = value.match(/^([XYZ])(\d{7})([A-Z])$/);
           let numero = nieMatch[2];
-          const letraIngresada = nieMatch[3].toUpperCase();
+          const letraIngresada = nieMatch[3];
           const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
 
           const primeraLetra = nieMatch[1];

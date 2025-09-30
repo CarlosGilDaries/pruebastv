@@ -11,9 +11,9 @@
     <link rel="stylesheet" href="/css/normalize.css" />
     <link rel="stylesheet" href="/css/edit-user.css" />
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
-    <title data-i18n="change_password_title">Cambiar Contraseña</title>
+    <title data-i18n="change_personal_data_title">Datos Personales</title>
   </head>
-  <body id="change_password">
+  <body id="change_personal_data">
     <header>
         <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
@@ -83,22 +83,53 @@
         </nav>
     </header>
 
-  <main class="py-5">
+    <main class="py-5">
         <div class="container">
             <div class="row justify-content-center" id="form-box">
                 <div class="col-12 col-md-10 col-lg-8 col-xl-6">
-                    <div class="card"id="card-box">
-                        <div class="card-header bg-white text-center py-3" id="card-header-box">
-                            <h2 data-i18n="change_password_heading" class="mb-0">Cambiar Contraseña</h2>
+                    <div class="card" id="card-box">
+                        <div class="card-header text-center py-3" id="card-header-box">
+                            <h2 data-i18n="change_personal_data_heading" class="mb-0">Datos Facturación</h2>
                         </div>
                         <div class="card-body">
-                            <div data-i18n="change_password_success" id="success-message" class="alert alert-success d-none">
-                                Contraseña cambiada con éxito
+                            <div data-i18n="change_personal_data_success" id="success-message" class="alert alert-success d-none">
+                                Dirección y DNI actualizados con éxito
                             </div>
                             
                             <form id="form">
                                 <div class="mb-4">
-                                    <label data-i18n="current_password_label" for="password" class="form-label fw-bold">Contraseña Actual</label>
+                                    <label data-i18n="change_dni" for="dni" class="form-label fw-bold">DNI / NIE</label>
+                                    <div class="input-group">
+                                        <select id="dni-nie" class="form-select" style="max-width: 120px;">
+                                            <option value="dni">DNI</option>
+                                            <option value="nie">NIE</option>
+                                            <option data-i18n="other_documents" value="others">Otro</option>
+                                        </select>
+                                        <input type="text" class="form-control" id="dni" name="dni" required>
+                                    </div>
+                                    <div id="dni-error" class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label data-i18n="change_address_1" for="address" class="form-label fw-bold">Dirección</label>
+                                    <input type="text" class="form-control" id="address" name="address" required>
+                                    <div id="adress-error" class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label data-i18n="change_address_2" for="city" class="form-label fw-bold">Ciudad</label>
+                                    <input type="text" class="form-control" id="city" name="city" required>
+                                    <div id="city-error" class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label data-i18n="change_address_3" for="country" class="form-label fw-bold">País</label>
+                                    <input type="text" class="form-control" id="country" name="country" required>
+                                    <div id="country-error" class="invalid-feedback"></div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label data-i18n="password_label" for="password" class="form-label fw-bold">Contraseña</label>
                                     <div class="password-container">
                                         <input type="password" class="form-control" id="password" name="password" required>
                                         <button type="button" data-shown="no" class="toggle-password" id="toggle-password">
@@ -109,39 +140,14 @@
                                 </div>
 
                                 <div class="mb-4">
-                                    <label data-i18n="confirm_current_password_label" for="password-confirmation" class="form-label fw-bold">Confirmar Contraseña Actual</label>
+                                    <label data-i18n="confirm_password_label" for="password-confirmation" class="form-label fw-bold">Confirmar Contraseña</label>
                                     <div class="password-container">
                                         <input type="password" class="form-control" id="password-confirmation" name="password_confirmation" required>
                                         <button type="button" data-shown="no" class="toggle-password" id="toggle-password-2">
                                             <ion-icon id="eye-icon-2" name="eye-outline"></ion-icon>
                                         </button>
                                     </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label data-i18n="new_password_label" for="new-password" class="form-label fw-bold">Nueva Contraseña</label>
-                                    <div class="password-container">
-                                        <input type="password" class="form-control" id="new-password" name="new_password" required>
-                                        <button type="button" data-shown="no" class="toggle-password" id="toggle-password-3">
-                                            <ion-icon id="eye-icon-3" name="eye-outline"></ion-icon>
-                                        </button>
-                                    </div>
-                                    <div id="new-password-error" class="invalid-feedback"></div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label data-i18n="confirm_new_password_label" for="new-password-confirmation" class="form-label fw-bold">Confirmar Nueva Contraseña</label>
-                                    <div class="password-container">
-                                        <input type="password" class="form-control" id="new-password-confirmation" name="new_password_confirmation" required>
-                                        <button type="button" data-shown="no" class="toggle-password" id="toggle-password-4">
-                                            <ion-icon id="eye-icon-4" name="eye-outline"></ion-icon>
-                                        </button>
-                                    </div>
-                                    <div id="new-password-confirmation-error" class="invalid-feedback"></div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <p> <span data-i18n="">Criterios contraseña</span>: <br>- <span data-i18n="">Mínimo 8 caracteres de longitud</span> <br>- <span data-i18n="">Al menos 1 mayúscula</span><br> - <span data-i18n="">Al menos 1 número</span> <br>- <span data-i18n="">Al menos 1 caracter especial</span></p>
+                                    <div id="password-confirmation-error" class="invalid-feedback"></div>
                                 </div>
 
                                 <div data-i18n="wrong_password" id="form-error" class="alert alert-danger d-none text-center mb-4">
@@ -152,11 +158,11 @@
                                     <div class="spinner-border text-danger" role="status">
                                         <span data-i18n="loading" class="visually-hidden">Cargando...</span>
                                     </div>
-                                    <p data-i18n="change_password_loading" class="ms-3 mb-0">Editando contraseña, por favor espere...</p>
+                                    <p data-i18n="change_personal_data_wait" class="ms-3 mb-0">Actualizando datos, por favor espere...</p>
                                 </div>
 
-                                <button data-i18n="change_password_button" type="submit" class="btn btn-danger w-100 py-2 fw-bold">
-                                    Cambiar Contraseña
+                                <button data-i18n="change_personal_data_button" type="submit" class="btn btn-danger w-100 py-2 fw-bold">
+                                    Actualizar datos
                                 </button>
                             </form>
                         </div>
@@ -210,14 +216,13 @@
     </footer>
 
     <script type="module" src="/js/translations.js"></script>
-    <script type="module" src="/js/editCurrentUser.js"></script>
+    <script type="module" src="/js/updateDni.js"></script>
     <script src="/js/webSettings.js"></script>
     <script src="/js/searchInput.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
     crossorigin="anonymous"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.js"></script>
-</html>
   </body>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/ionicons@latest/dist/ionicons/ionicons.js"></script>
 </html>

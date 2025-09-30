@@ -52,6 +52,57 @@ export async function validateUserForm() {
      }
   }
 
+  if (document.getElementById('dni')) {
+    const docType = document.getElementById('dni-nie').value;
+    const value = document.getElementById('dni').value.trim().toUpperCase();
+
+    if (docType == 'dni') {
+      if (!/^(\d{8})([A-Z])$/.test(value)) {
+        showFormErrors('dni', 'Por favor ingresa un DNI válido');
+        isValid = false;
+      }
+
+      const match = value.match(/^(\d{8})([A-Z])$/);
+      const numero = parseInt(match[1], 10);
+      const letraIngresada = match[2];
+      const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+      const letraCorrecta = letras[numero % 23];
+
+      if (letraIngresada !== letraCorrecta) {
+        showFormErrors('dni', 'La letra del DNI no es correcta');
+        isValid = false;
+      }
+    } else if (docType == 'nie') {
+      if (!/^[XYZ]\d{7}[A-Z]$/.test(value)) {
+        showFormErrors('dni', 'Por favor ingresa un NIE válido');
+        isValid = false;
+      }
+
+      const nieMatch = value.match(/^([XYZ])(\d{7})([A-Z])$/);
+      let numero = nieMatch[2];
+      const letraIngresada = nieMatch[3];
+      const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+
+      const primeraLetra = nieMatch[1];
+      if (primeraLetra === 'X') numero = '0' + numero;
+      else if (primeraLetra === 'Y') numero = '1' + numero;
+      else if (primeraLetra === 'Z') numero = '2' + numero;
+
+      const letraCorrecta = letras[parseInt(numero, 10) % 23];
+
+      if (letraIngresada !== letraCorrecta) {
+        showFormErrors('dni', 'La letra del NIE no es correcta');
+        isValid = false;
+      }
+    }
+
+    const validDni = await checkDnisFromDB(value);
+    if (!validDni) {
+      showFormErrors('dni', 'El documento ya está registrado.');
+      isValid = false;
+    }
+  }
+
   if (document.getElementById('password') && document.getElementById('password-confirmation')) {
     const password = document.getElementById('password').value.trim();
     const passwordConfirm = document.getElementById('password-confirmation').value.trim();
@@ -100,6 +151,17 @@ export async function validateUserForm() {
 
 async function checkEmailsFromDB(email) {
   const response = await fetch(`/api/check-email/${email}`);
+  const data = await response.json();
+
+  if (data.success) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async function checkDnisFromDB(dni) {
+  const response = await fetch(`/api/check-dni/${dni}`);
   const data = await response.json();
 
   if (data.success) {

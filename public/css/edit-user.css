@@ -3,7 +3,26 @@
 @import '/css/footer.css';
 
 body {
-    background-color: white;
+    background: url('/images/cine.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+#form-box {
+    border-radius: 20px;
+}
+
+#card-box {
+    padding: 40px !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#contact-box {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+}
+
+#card-header-box {
+    background-color: transparent !important;
 }
 
 main {

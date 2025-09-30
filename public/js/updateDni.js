@@ -38,10 +38,6 @@ async function editUserForm() {
 
       const formData = new FormData();
 
-      if (document.getElementById('email')) {
-        formData.append('email', document.getElementById('email').value);
-      }
-
       if (document.getElementById('dni')) {
         formData.append('dni', document.getElementById('dni').value);
       }
@@ -50,21 +46,6 @@ async function editUserForm() {
         formData.append('address', document.getElementById('address').value);
         formData.append('city', document.getElementById('city').value);
         formData.append('country', document.getElementById('country').value);
-      }
-
-      if (document.getElementById('phone')) {
-        formData.append('phone', document.getElementById('phone').value);
-        formData.append('phone_code', document.getElementById('country-code').value);
-      }
-      if (document.getElementById('new-password')) {
-        formData.append(
-          'new_password',
-          document.getElementById('new-password').value
-        );
-        formData.append(
-          'new_password_confirmation',
-          document.getElementById('new-password-confirmation').value
-        );
       }
 
       formData.append('password', document.getElementById('password').value);
@@ -88,7 +69,7 @@ async function editUserForm() {
         const data = await editResponse.json();
 
         if (data.success) {
-          window.location.href = '/account';
+          window.history.back();
           return;
         } else if (!data.success && editResponse.status == 401) {
               const errorElement = document.getElementById('form-error');
@@ -115,33 +96,15 @@ async function editUserForm() {
         },
       });
 
-      const rolsResponse = await fetch('/api/roles', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
       const result = await response.json();
       const user = result.data.user;
-      const plans = result.data.plans;
-      const rolesData = await rolsResponse.json();
-      const roles = rolesData.roles;
-
-        if (document.getElementById('email')) {
-            document.getElementById('email').value = user.email || '';
-      }
-
+      
         if (document.getElementById('address')) {
                       document.getElementById('address').value =
                         user.address || '';
                       document.getElementById('city').value = user.city || '';
                       document.getElementById('country').value =
                         user.country || '';
-        }
-
-        if (document.getElementById('phone')) {
-          document.getElementById('phone').value = user.phone || '';
-          document.getElementById('country-code').value = user.phone_code || '';
         }
     } catch (error) {
       console.error('Error cargando datos del usuario:', error);

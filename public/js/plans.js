@@ -34,7 +34,6 @@ try {
     // Generar una diferencia de 48 horas o menos para la condición de renovar
     const now = new Date();
     const expirationDate = new Date(userData.data.user.plan_expires_at);
-    console.log(userData.data.plan.plan_order);
     const msDiff = expirationDate - now;
     const hoursLeft = msDiff / (1000 * 60 * 60);
     const canRenew = hoursLeft <= 48;
@@ -42,7 +41,13 @@ try {
     const plans = data.plans;
     const actualPlan = userData.data.plan.name;
     const actualPlanOrder = userData.data.plan.plan_order;
-    displayPlans(plans, actualPlan, canRenew, actualPlanOrder);
+    displayPlans(
+      plans,
+      actualPlan,
+      canRenew,
+      actualPlanOrder,
+      userData.data.user
+    );
   } else if (
     token != null &&
     userData.success &&
@@ -346,7 +351,6 @@ function choosePlan(planId, buttonValue) {
 }
 
 function checkOrder(planOrder, actualPlanOrder = null) {
-  console.log(actualPlanOrder);
   if (actualPlanOrder != null && planOrder < actualPlanOrder) {
     if (confirm('El plan al que intentas acceder es inferior al plan que ya tienes (perderás privilegios si lo adquieres).')) {
       return true;
