@@ -88,15 +88,21 @@ async function editContentForm() {
         }),
       ]);
 
-      const [data, plansData, tagsData, genderData, categoryData, languagesData] =
-        await Promise.all([
-          response.json(),
-          plansResponse.json(),
-          tagsResponse.json(),
-          genderResponse.json(),
-          categoryResponse.json(),
-          languagesResponse.json(),
-        ]);
+      const [
+        data,
+        plansData,
+        tagsData,
+        genderData,
+        categoryData,
+        languagesData,
+      ] = await Promise.all([
+        response.json(),
+        plansResponse.json(),
+        tagsResponse.json(),
+        genderResponse.json(),
+        categoryResponse.json(),
+        languagesResponse.json(),
+      ]);
 
       const content = data.data.movie;
       const plans = plansData.plans;

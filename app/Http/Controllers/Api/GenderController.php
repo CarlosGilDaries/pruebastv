@@ -11,6 +11,7 @@ use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class GenderController extends Controller
 {
@@ -47,6 +48,9 @@ class GenderController extends Controller
 				->addColumn('name', function($gender) {
 					return $gender->name;
 				})
+                ->addColumn('cover', function($gender) {
+					return $gender->cover;
+				})
 				->addColumn('actions', function($gender) {
 					return $this->getActionButtons($gender);
 				})
@@ -75,6 +79,13 @@ class GenderController extends Controller
             $name = sanitize_html($request->input('name'));
 
             $gender->name = $name;
+            $gender->save();
+
+            $cover = $request->file('cover');
+            $coverExtension = $cover->getClientOriginalExtension();
+            $gender->cover = '/file/gender-' . $gender->id. '/' . $gender->id . '-img.' . $coverExtension;
+            $cover->storeAs('genders/gender-' . $gender->id, $gender->id . '-img.' . $coverExtension, 'private');
+
             $gender->save();
 
             $translations = $request->translations ?? [];
@@ -159,10 +170,17 @@ class GenderController extends Controller
         DB::beginTransaction();
 
         try {
+            Log::debug($request->all());
             $gender = Gender::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
 
             $gender->name = $name;
+            $cover = $request->file('cover');
+            if ($cover) {
+                $coverExtension = $cover->getClientOriginalExtension();
+                $gender->cover = '/file/gender-' . $gender->id. '/' . $gender->id . '-img.' . $coverExtension;
+                $cover->storeAs('genders/gender-' . $gender->id, $gender->id . '-img.' . $coverExtension, 'private');
+            }
             $gender->save();
 
             $translations = $request->translations ?? [];
@@ -223,6 +241,8 @@ class GenderController extends Controller
         try {
             $id = $request->input('content_id');
             $gender = Gender::where('id', $id)->first();
+            $directory = ("genders/gender-{$gender->id}");
+			Storage::disk('private')->deleteDirectory($directory, true);
             $gender->delete();
 
             return response()->json([

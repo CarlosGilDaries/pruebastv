@@ -90,6 +90,11 @@ async function editGenderForm() {
           }
         });
 
+        const coverInput = document.getElementById('cover');
+        if (coverInput.files.length > 0) {
+          formData.append('cover', coverInput.files[0]);
+        }
+
         const response = await fetch(`${backendAPI}edit-gender/${id}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },

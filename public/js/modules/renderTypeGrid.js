@@ -11,8 +11,8 @@ export async function renderTypeGrid(route, types, type) {
 
     items.forEach((item) => {
       const typeBox = document.createElement('div');
-      if (item.movies?.length > 0 && item.movies[0].cover) {
-        typeBox.style.backgroundImage = `url('${item.movies[0].cover}')`;
+      if (item.cover) {
+        typeBox.style.backgroundImage = `url('${item.cover}')`;
       }
       typeBox.style.backgroundSize = 'cover';
       typeBox.style.backgroundPosition = 'center';

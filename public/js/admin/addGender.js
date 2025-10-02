@@ -1,4 +1,5 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { validateAddForm } from '../modules/validateAddForm.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   async function initAddGender() {
@@ -30,6 +31,9 @@ document.addEventListener('DOMContentLoaded', function () {
           this.classList.add('was-validated');
           return;
         }
+        if (!validateAddForm()) {
+          return;
+        }
 
         // Resetear mensajes de error
         document.querySelectorAll('#form .invalid-feedback').forEach((el) => {
@@ -50,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
           const formData = new FormData();
           formData.append('name', document.getElementById('name').value);
+          if (document.getElementById('cover')) {
+            formData.append('cover', document.getElementById('cover').files[0]);
+          }
 
           languages.forEach((language) => {
             if (language.code !== 'es') {
