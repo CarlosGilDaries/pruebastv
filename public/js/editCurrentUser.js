@@ -1,6 +1,7 @@
 import { validateUserForm } from "./modules/validateUserForm.js";
 import { dropDownTypeMenu } from "./modules/dropDownTypeMenu.js";
 import { showPassword } from "./modules/showPasword.js";
+import { clickLogOut } from './modules/clickLogOutButton.js';
 
 const gendersDropDown = document.getElementById('genders');
 const categoriesDropDown = document.getElementById('categories');
@@ -188,4 +189,6 @@ if (passwordIcon4) {
     showPassword(event, confirmationNewPasswordInput, ionEyeIcon4);
   });
 }
+
+clickLogOut();
 
