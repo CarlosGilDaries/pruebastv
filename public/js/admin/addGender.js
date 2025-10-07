@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
           this.classList.add('was-validated');
           return;
         }
-        if (!validateAddForm()) {
+        if (!(await validateAddForm())) {
           return;
         }
 

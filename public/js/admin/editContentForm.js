@@ -283,7 +283,7 @@ async function editContentForm() {
       e.preventDefault();
 
       // Validar antes de enviar
-      if (!validateAddForm()) {
+      if (!(await validateAddForm())) {
         return;
       }
 

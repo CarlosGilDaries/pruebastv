@@ -1,4 +1,5 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { validateAddForm } from '../modules/validateAddForm.js';
 
 async function initAddTag() {
   const backendAPI = '/api/';
@@ -35,6 +36,10 @@ async function initAddTag() {
         return;
       }
 
+      if (!(await validateAddForm())) {
+        return;
+      }
+
       // Resetear mensajes de error
       document
         .querySelectorAll('#form .invalid-feedback')
@@ -57,6 +62,9 @@ async function initAddTag() {
           }
         }
       });
+      if (document.getElementById('cover')) {
+        formAdData.append('cover', document.getElementById('cover').files[0]);
+      }
 
       try {
         const response = await fetch(backendAPI + 'add-tag', {

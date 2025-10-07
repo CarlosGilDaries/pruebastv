@@ -1,5 +1,6 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { getContentTranslations } from '../modules/contentTranslations.js';
+import { validateAddForm } from '../modules/validateAddForm.js';
 
 async function editCategoryForm() {
   const id = localStorage.getItem('id');
@@ -88,6 +89,10 @@ async function editCategoryForm() {
         return;
       }
 
+      if (!(await validateAddForm())) {
+        return;
+      }
+
       const id = localStorage.getItem('id');
       document.getElementById('loading').classList.remove('d-none');
       document.getElementById('success-message').classList.add('d-none');
@@ -119,6 +124,10 @@ async function editCategoryForm() {
             }
           }
         });
+        const coverInput = document.getElementById('cover');
+        if (coverInput.files.length > 0) {
+          formData.append('cover', coverInput.files[0]);
+        }
         formData.append('priority', document.getElementById('priority').value);
         formData.append(
           'render_at_index',

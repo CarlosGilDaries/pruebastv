@@ -58,14 +58,14 @@ class BillPdfController extends Controller
 	
 	public function generatePlanOrderInvoice(PlanOrder $order)
 	{
-		/*$companyResponse = Http::get(route('company-details'));
-		$orderResponse = Http::get(route('plan-order.show', $order->id));*/
-		$companyResponse = Http::withOptions([
+		$companyResponse = Http::get(route('company-details'));
+		$orderResponse = Http::get(route('plan-order.show', $order->id));
+		/*$companyResponse = Http::withOptions([
 			'verify' => false
 			])->get(route('company-details'));
 		$orderResponse = Http::withOptions([
     		'verify' => false
-			])->get(route('plan-order.show', $order->id));
+			])->get(route('plan-order.show', $order->id));*/
 
 		$companyDetails = $companyResponse->json()['details'];
 		$orderDetails = $orderResponse->json()['order'];
@@ -238,4 +238,9 @@ class BillPdfController extends Controller
 
 		return Pdf::loadView('invoices.standard', $data);
 	}
+
+	/*public function basicInvoice()
+	{
+		return Pdf::loadView('invoices.test')->download('invoice.pdf');;
+	}*/
 }

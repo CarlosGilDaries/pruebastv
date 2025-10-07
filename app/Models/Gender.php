@@ -6,7 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Gender extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['
+    name',
+    'cover'
+];
 
     public function movies() 
     {

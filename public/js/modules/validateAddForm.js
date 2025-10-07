@@ -1,19 +1,16 @@
 import { showFormErrors } from "./showFormErrors.js";
 
-export function validateAddForm() {
+export async function validateAddForm() {
   // Validaciones específicas
   let isValid = true;
 
   // Validar título (máximo 100 caracteres)
   if (document.getElementById('title')) {
-      const title = document.getElementById('title').value.trim();
-      if (title.length > 100) {
-        showFormErrors(
-          'title',
-          'El título no puede exceder los 100 caracteres'
-        );
-        isValid = false;
-      }
+    const title = document.getElementById('title').value.trim();
+    if (title.length > 100) {
+      showFormErrors('title', 'El título no puede exceder los 100 caracteres');
+      isValid = false;
+    }
   }
 
   // Validar descripción corta (máximo 500 caracteres)
@@ -67,20 +64,31 @@ export function validateAddForm() {
         showFormErrors('cover', 'La imagen debe ser un archivo JPG');
         isValid = false;
       } else {
-        // Verificar dimensiones
-        const img = new Image();
-        img.onload = function () {
-          if (this.width !== 1024 || this.height !== 768) {
-            showFormErrors(
-              'cover',
-              'La imagen debe tener dimensiones de 1024x768px'
-            );
-            isValid = false;
-          }
-        };
-        img.src = URL.createObjectURL(coverFile);
+        // Esperar a que se cargue la imagen para verificar dimensiones
+        const validDimensions = await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = function () {
+            const ok = this.width === 1024 && this.height === 768;
+            if (!ok) {
+              showFormErrors(
+                'cover',
+                'La imagen debe tener dimensiones de 1024x768px'
+              );
+            }
+            resolve(ok);
+          };
+          img.onerror = () => {
+            showFormErrors('cover', 'No se pudo verificar la imagen.');
+            resolve(false);
+          };
+          img.src = URL.createObjectURL(coverFile);
+        });
+
+        if (!validDimensions) isValid = false;
       }
     }
+
+    return isValid;
   }
 
   if (document.getElementById('tall-cover')) {
@@ -94,31 +102,42 @@ export function validateAddForm() {
         isValid = false;
       } else {
         // Verificar dimensiones
-        const img = new Image();
-        img.onload = function () {
-          if (this.width !== 500 || this.height !== 750) {
-            showFormErrors(
-              'tall-cover',
-              'La imagen debe tener dimensiones de 500x750px'
-            );
-            isValid = false;
-          }
-        };
-        img.src = URL.createObjectURL(tallCoverFile);
+        const validDimensions = await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = function () {
+            const ok = this.width === 500 && this.height === 750;
+            if (!ok) {
+              showFormErrors(
+                'tall-cover',
+                'La imagen debe tener dimensiones de 500x750px'
+              );
+            }
+            resolve(ok);
+          };
+          img.onerror = () => {
+            showFormErrors('tall-cover', 'No se pudo verificar la imagen.');
+            resolve(false);
+          };
+          img.src = URL.createObjectURL(tallCoverFile);
+        });
+
+        if (!validDimensions) isValid = false;
       }
     }
+
+    return isValid;
   }
 
   // Validar trailer (MP4)
   if (document.getElementById('trailer')) {
-      const trailerInput = document.getElementById('trailer');
-      if (trailerInput.files.length > 0) {
-        const trailerFile = trailerInput.files[0];
-        if (trailerFile.type !== 'video/mp4') {
-          showFormErrors('trailer', 'El trailer debe ser un archivo MP4');
-          isValid = false;
-        }
+    const trailerInput = document.getElementById('trailer');
+    if (trailerInput.files.length > 0) {
+      const trailerFile = trailerInput.files[0];
+      if (trailerFile.type !== 'video/mp4') {
+        showFormErrors('trailer', 'El trailer debe ser un archivo MP4');
+        isValid = false;
       }
+    }
   }
 
   // Validar archivos de contenido
@@ -193,6 +212,6 @@ export function validateAddForm() {
       isValid = false;
     }
   }
-  
+
   return isValid;
 }

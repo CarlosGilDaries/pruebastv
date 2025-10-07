@@ -170,7 +170,6 @@ class GenderController extends Controller
         DB::beginTransaction();
 
         try {
-            Log::debug($request->all());
             $gender = Gender::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
 

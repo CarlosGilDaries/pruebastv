@@ -10,6 +10,7 @@ use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class TagController extends Controller
 {
@@ -44,6 +45,9 @@ class TagController extends Controller
 				->addColumn('name', function($tag) {
 					return $tag->name;
 				})
+                ->addColumn('cover', function($tag) {
+					return $tag->cover;
+				})
 				->addColumn('actions', function($tag) {
 					return $this->getActionButtons($tag);
 				})
@@ -72,6 +76,13 @@ class TagController extends Controller
             $name = sanitize_html($request->input('name'));
 
             $tag->name = $name;
+            $tag->save();
+
+            $cover = $request->file('cover');
+            $coverExtension = $cover->getClientOriginalExtension();
+            $tag->cover = '/file/tag-' . $tag->id. '/' . $tag->id . '-img.' . $coverExtension;
+            $cover->storeAs('tags/tag-' . $tag->id, $tag->id . '-img.' . $coverExtension, 'private');
+
             $tag->save();
 
             $translations = $request->translations ?? [];
@@ -160,9 +171,15 @@ class TagController extends Controller
             $name = sanitize_html($request->input('name'));
 
             $tag->name = $name;
+            $cover = $request->file('cover');
+            if ($cover) {
+                $coverExtension = $cover->getClientOriginalExtension();
+                $tag->cover = '/file/tag-' . $tag->id. '/' . $tag->id . '-img.' . $coverExtension;
+                $cover->storeAs('tags/tag-' . $tag->id, $tag->id . '-img.' . $coverExtension, 'private');
+            }
             $tag->save();
 
-             $translations = $request->translations ?? [];
+            $translations = $request->translations ?? [];
             $spanish = Language::where('code','es')->first();
             $spanishId = $spanish->id;
 
@@ -220,6 +237,8 @@ class TagController extends Controller
         try {
             $id = $request->input('content_id');
             $tag = Tag::where('id', $id)->first();
+            $directory = ("tags/tag-{$tag->id}");
+			Storage::disk('private')->deleteDirectory($directory, true);
             $tag->delete();
 
             return response()->json([

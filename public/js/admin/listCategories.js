@@ -32,6 +32,7 @@ async function listCategories() {
                                     <th>ID</th>
                                     <th>Prioridad</th>
                                     <th>Nombre</th>
+                                    <th>Imagen</th>
                                     <th>Mostrar en Inicio</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -71,6 +72,13 @@ async function listCategories() {
           { data: 'id', name: 'id' },
           { data: 'priority', name: 'priority' },
           { data: 'name', name: 'name' },
+          {
+            data: 'cover',
+            name: 'cover',
+            render: function (data) {
+              return `<img src="${data}" class="datatable-img">`;
+            },
+          },
           {
             data: 'render',
             name: 'render',

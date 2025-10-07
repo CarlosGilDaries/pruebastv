@@ -12,6 +12,8 @@ Route::get('/file/{path}', function ($path) {
     $filePathAction = "actions/{$path}";
     $filePathSettings = "settings/{$path}";
     $filePathGenders = "genders/{$path}";
+    $filePathCategories = "categories/{$path}";
+    $filePathTags = "tags/{$path}";
 
     if (Storage::disk('private')->exists($filePathMovie)) {
         return response()->file(storage_path("app/private/{$filePathMovie}"));
@@ -31,6 +33,14 @@ Route::get('/file/{path}', function ($path) {
 
     if (Storage::disk('private')->exists($filePathGenders)) {
         return response()->file(storage_path("app/private/{$filePathGenders}"));
+    }
+
+    if (Storage::disk('private')->exists($filePathCategories)) {
+        return response()->file(storage_path("app/private/{$filePathCategories}"));
+    }
+
+    if (Storage::disk('private')->exists($filePathTags)) {
+        return response()->file(storage_path("app/private/{$filePathTags}"));
     }
 
     abort(404);
@@ -66,5 +76,7 @@ Route::get('/test-pdf', function() {
     $pdf = Pdf::loadHTML('<h1>Test domPDF</h1>');
     return $pdf->stream();
 });
+
+Route::get('/pdf', [BillPdfController::class, 'basicInvoice']);
 
 

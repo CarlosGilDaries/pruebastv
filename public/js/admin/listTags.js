@@ -30,6 +30,7 @@ async function listTags() {
                                 <tr>
                                     <th>ID</th>
                                     <th>Nombre</th>
+                                    <th>Imagen</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -66,6 +67,13 @@ async function listTags() {
         columns: [
           { data: 'id', name: 'id' },
           { data: 'name', name: 'name' },
+          {
+            data: 'cover',
+            name: 'cover',
+            render: function (data) {
+              return `<img src="${data}" class="datatable-img">`;
+            },
+          },
           {
             data: 'actions',
             name: 'actions',

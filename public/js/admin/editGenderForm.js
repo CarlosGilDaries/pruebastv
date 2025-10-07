@@ -1,5 +1,6 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { getContentTranslations } from '../modules/contentTranslations.js';
+import { validateAddForm } from '../modules/validateAddForm.js';
 
 async function editGenderForm() {
   const token = localStorage.getItem('auth_token');
@@ -56,6 +57,10 @@ async function editGenderForm() {
       // Validar formulario
       if (!this.checkValidity()) {
         this.classList.add('was-validated');
+        return;
+      }
+
+      if (!(await validateAddForm())) {
         return;
       }
 

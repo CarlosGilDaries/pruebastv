@@ -10,6 +10,7 @@ use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -76,6 +77,9 @@ class CategoryController extends Controller
 				->addColumn('name', function($category) {
 					return $category->name;
 				})
+                ->addColumn('cover', function($category) {
+					return $category->cover;
+				})
                 ->addColumn('render', function($category) {
 					return $category->render_at_index;
 				})
@@ -138,6 +142,13 @@ class CategoryController extends Controller
     
             $category->save();
 
+            $cover = $request->file('cover');
+            $coverExtension = $cover->getClientOriginalExtension();
+            $category->cover = '/file/category-' . $category->id. '/' . $category->id . '-img.' . $coverExtension;
+            $cover->storeAs('categories/category-' . $category->id, $category->id . '-img.' . $coverExtension, 'private');
+
+            $category->save();
+
             $translations = $request->translations ?? [];
             $spanish = Language::where('code','es')->first();
             $spanishId = $spanish->id;
@@ -196,6 +207,12 @@ class CategoryController extends Controller
             $category = Category::where('id', $id)->first();
             $name = sanitize_html($request->input('name'));
             $category->name = $name;
+            $cover = $request->file('cover');
+            if ($cover) {
+                $coverExtension = $cover->getClientOriginalExtension();
+                $category->cover = '/file/category-' . $category->id. '/' . $category->id . '-img.' . $coverExtension;
+                $cover->storeAs('categories/category-' . $category->id, $category->id . '-img.' . $coverExtension, 'private');
+            }
             $category->render_at_index = $request->input('render_at_index');
             $currentPriority = $category->priority;
             $newPriority = $request->input('priority');
@@ -273,7 +290,8 @@ class CategoryController extends Controller
             $id = $request->input('content_id');
             $category = Category::findOrFail($id);
             $deletedPriority = $category->priority;
-            
+            $directory = ("categories/category-{$category->id}");
+			Storage::disk('private')->deleteDirectory($directory, true);
             $category->delete();
             
             // Reordenar las categorías restantes si la eliminada no era la última

@@ -1,4 +1,5 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { validateAddForm } from '../modules/validateAddForm.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   async function initAddCategory() {
@@ -65,6 +66,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
           }
 
+          if (!(await validateAddForm())) {
+            return;
+          }
+
           // Resetear mensajes de error
           document
             .querySelectorAll('#form .invalid-feedback')
@@ -106,6 +111,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
               }
             });
+            if (document.getElementById('cover')) {
+              formData.append(
+                'cover',
+                document.getElementById('cover').files[0]
+              );
+            }
             formData.append(
               'priority',
               document.getElementById('priority').value
