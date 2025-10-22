@@ -93,18 +93,53 @@
     <div id="main-content" class="main-content">
         <div id="cb-cookie-banner" class="alert alert-dark text-center mb-0" role="alert">
             <div id="cookies-pop-up">
-            <h2 data-i18n="cookies_popup_heading">🍪 Aviso de Cookies</h2>
-            <p class="pop-up-text" data-i18n="cookies_popup_text_1">
-                Este sitio web utiliza cookies y almacenamiento local para garantizar el correcto
-                funcionamiento y la seguridad de la plataforma.
-            </p>
-            <p class="small pop-up-text" data-i18n="cookies_popup_text_2">
-                Para más detalles, consulta nuestra 
-                <a id="pop-up-link" href="/cookies.html" target="_blank" data-i18n="cookies_popup_link">Política de Cookies</a>.
-            </p>
-            <button type="button" class="btn btn-primary mt-3" onclick="window.cb_hideCookieBanner()">
-                Aceptar
-            </button>
+                <h2 data-i18n="cookies_popup_heading">🍪 Aviso de Cookies</h2>
+                <p class="pop-up-text" data-i18n="cookies_popup_text_1">
+                    Este sitio web utiliza cookies y almacenamiento local para garantizar el correcto
+                    funcionamiento y la seguridad de la plataforma.
+                </p>
+                
+                <table class="cookies-table">
+                    <thead>
+                        <tr>
+                            <th class="cookie-name">Cookie</th>
+                            <th class="cookie-desc">Descripción</th>
+                            <th class="cookie-toggle">Activar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="cookie-row">
+                            <td class="cookie-name">Cookies Esenciales</td>
+                            <td class="cookie-desc">
+                                Necesarias para el funcionamiento básico del sitio
+                                <span class="cookie-required">(obligatorias).</span><br>
+                                Para más detalles, consulta nuestra 
+                                <a id="pop-up-link" href="/cookies.html" target="_blank" data-i18n="cookies_popup_link">Política de Cookies</a>
+                            </td>
+                            <td class="cookie-toggle">
+                                <input type="checkbox" checked disabled>
+                            </td>
+                        </tr>
+                        <tr class="cookie-row">
+                            <td class="cookie-name">Google Analytics</td>
+                            <td class="cookie-desc">
+                                Recopila información anónima sobre el uso del sitio para mejorar la experiencia
+                            </td>
+                            <td class="cookie-toggle">
+                                <input type="checkbox" id="analytics-cookie" checked>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="btn-container">
+                    <button type="button" class="btn btn-primary" onclick="window.cb_hideCookieBanner()">
+                        Aceptar Selección
+                    </button>
+                    <button type="button" class="btn btn-outline-secondary" onclick="window.cb_acceptAllCookies()">
+                        Aceptar Todas
+                    </button>
+                </div>
             </div>
         </div>
 

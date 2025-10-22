@@ -239,8 +239,8 @@ class BillPdfController extends Controller
 		return Pdf::loadView('invoices.standard', $data);
 	}
 
-	/*public function basicInvoice()
+	public function basicInvoice()
 	{
 		return Pdf::loadView('invoices.test')->download('invoice.pdf');;
-	}*/
+	}
 }

@@ -142,7 +142,7 @@
 							<img src={{ $company['logo'] }} style="width:200px; height:90px; object-fit: contain;">
 						</td>--}}
 						<td style="width:50%; text-align:right;">
-							<h1>Factura{{--Nº {{ $invoice['number'] }}--}}</h1>
+							<h1>Factura Nº 1{{-- {{ $invoice['number'] }}--}}</h1>
 							<p>Fecha: 03/10/2025{{--{{ $invoice['date'] }}--}}</p>
 						</td>
 					</tr>

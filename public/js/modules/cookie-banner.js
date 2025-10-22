@@ -16,11 +16,32 @@ function showCookieBanner() {
  * @description Hides the Cookie banner and saves the value to localstorage
  */
 function hideCookieBanner() {
+  // Guardar preferencias de cookies
+  const analyticsAccepted = document.getElementById('analytics-cookie').checked;
   localStorage.setItem('cb_isCookieAccepted', 'yes');
+  localStorage.setItem(
+    'cb_analyticsAccepted',
+    analyticsAccepted ? 'yes' : 'no'
+  );
+
   let cookieBanner = document.getElementById('cb-cookie-banner');
   let overlay = document.getElementById('cb-cookie-overlay');
   cookieBanner.style.display = 'none';
   overlay.style.display = 'none';
+
+  console.log('Preferencias guardadas:');
+  console.log('- Cookies esenciales: Aceptadas (obligatorias)');
+  console.log(
+    '- Google Analytics: ' + (analyticsAccepted ? 'Aceptadas' : 'Rechazadas')
+  );
+}
+
+/**
+ * @description Accepts all cookies
+ */
+function acceptAllCookies() {
+  document.getElementById('analytics-cookie').checked = true;
+  hideCookieBanner();
 }
 
 /**
@@ -34,9 +55,17 @@ function initializeCookieBanner() {
   }
   if (isCookieAccepted === 'no') {
     showCookieBanner();
+  } else {
+    // Si ya se aceptaron cookies, cargar las preferencias guardadas
+    const analyticsAccepted = localStorage.getItem('cb_analyticsAccepted');
+    if (analyticsAccepted) {
+      document.getElementById('analytics-cookie').checked =
+        analyticsAccepted === 'yes';
+    }
   }
 }
 
 // Assigning values to window object
 window.onload = initializeCookieBanner();
 window.cb_hideCookieBanner = hideCookieBanner;
+window.cb_acceptAllCookies = acceptAllCookies;
