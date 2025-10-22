@@ -29,6 +29,15 @@ async function loadCookie() {
     container.appendChild(section);
   });
   hideSpinner();
+
+  document.addEventListener('click', function (event) {
+    if (event.target.matches('[name="change-cookies"]')) {
+      const cookiesPopUp = document.getElementById('cb-cookie-banner');
+      const cookiesOverlay = document.getElementById('cb-cookie-overlay');
+      cookiesPopUp.style.display = 'block';
+      cookiesOverlay.style.display = 'block';
+    }
+  });
 }
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
