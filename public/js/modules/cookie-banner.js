@@ -53,7 +53,7 @@ function initializeCookieBanner() {
     localStorage.setItem('cb_isCookieAccepted', 'no');
     showCookieBanner();
   }
-  if (isCookieAccepted === 'no') {
+  if (isCookieAccepted === 'no' && document.body.id != 'cookies_policy') {
     showCookieBanner();
   } else {
     // Si ya se aceptaron cookies, cargar las preferencias guardadas
