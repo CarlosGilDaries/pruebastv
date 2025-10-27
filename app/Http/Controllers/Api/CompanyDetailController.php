@@ -87,6 +87,19 @@ class CompanyDetailController extends Controller
 
             $details->save();
 
+            $appNameKey = 'APP_NAME';
+            $mailUsernameKey = 'MAIL_USERNAME';
+            $appNameValue = '"' . $name . '"';
+            $mailUsernameValue = '"' . $email . '"';
+
+            $this->setEnvValue($appNameKey, $appNameValue);
+            $this->setEnvValue($mailUsernameKey, $mailUsernameValue);
+            $this->setEnvValue('MAIL_FROM_ADDRESS', $mailUsernameValue);
+
+            // limpiar cache de configuración
+            Artisan::call('config:clear');
+            Artisan::call('cache:clear');
+
             return response()->json([
                 'success' => true,
                 'details' => $details,
@@ -101,5 +114,28 @@ class CompanyDetailController extends Controller
                 'message' => 'Error: ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    private function setEnvValue($key, $value)
+    {
+        $path = base_path('.env');
+
+        if (!file_exists($path)) {
+            return false;
+        }
+
+        $content = file_get_contents($path);
+
+        // si la clave existe, reemplazarla
+        if (preg_match("/^{$key}=.*/m", $content)) {
+            $content = preg_replace("/^{$key}=.*/m", "{$key}={$value}", $content);
+        } else {
+            // si no existe, añadirla al final
+            $content .= "\n{$key}={$value}";
+        }
+
+        file_put_contents($path, $content);
+
+        return true;
     }
 }

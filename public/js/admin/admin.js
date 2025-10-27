@@ -24,9 +24,13 @@ const permissionToContentMap = {
   roles: 'list-roles',
   etiquetas: 'list-tags',
   ajustes_web: 'web-config',
+  ajustes_mail: 'mail-config',
   footer_items: 'list-footer-items',
   aviso_legal: 'list-legal-notices',
-  politica_privacidad: 'list-privacy-politics'
+  politica_privacidad: 'list-privacy-politics',
+  politica_pagos: 'list-payment-politics',
+  cookies: 'list-cookies',
+  footer_items: 'footer-items'
 };
 
 if (token == null) {

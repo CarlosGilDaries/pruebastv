@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/css/admin/admin.css">
     <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <title>Configuración Web</title>
+    <title>Configuración Mail</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
@@ -124,13 +124,13 @@
                         </a>
                     </li>
                     <li class="nav-item" data-content="web-config">
-                        <a class="nav-link active" href="/admin/web-config.html">
+                        <a class="nav-link" href="/admin/web-config.html">
                             <i class="fa-solid fa-globe me-2"></i>
                             <span>Configuración Web</span>
                         </a>
                     </li>
                     <li class="nav-item" data-content="mail-config">
-                        <a class="nav-link" href="/admin/mail-config.html">
+                        <a class="nav-link active" href="/admin/mail-config.html">
                             <i class="fa-solid fa-envelope me-2"></i>
                             <span>Configuración Mail</span>
                         </a>
@@ -175,122 +175,48 @@
             </div>
         </aside>
 
-                <div class="container p-5" id="web-config">
+                <div class="container p-5" id="mail-config">
     <!-- Editar Ajustes Web -->
-    <h1 class="mb-4"><i class="fa-solid fa-globe me-2"></i> Editar Ajustes Web</h1>
+    <h1 class="mb-4"><i class="fa-solid fa-globe me-2"></i> Editar Ajustes Mail</h1>
     <div id="success-message" class="alert alert-success d-none">
-        Ajustes Web editados con éxito
+        Ajustes Mail editados con éxito
     </div>
-    <form id="web-form" class="needs-validation" novalidate>
+    <form id="mail-form" class="needs-validation" novalidate>
         <div class="row">
             <div class="col-md-6 mb-3">
-                <label for="name" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="name" name="name" required>
-                <div id="name-error" class="invalid-feedback">Por favor ingrese un nombre válido</div>
+                <label for="mail_mailer" class="form-label">Protocolo (smtp, ssmtp, etc)</label>
+                <input type="text" class="form-control" id="mail_mailer" name="mail_mailer" required>
+                <div id="mail_mailer-error" class="invalid-feedback">Por favor ingrese un protocolo válido</div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="nif_cif" class="form-label">NIF/CIF</label>
-                <input type="text" class="form-control" id="nif_cif" name="nif_cif" required>
-                <div id="nif_cif-error" class="invalid-feedback">Por favor ingrese un NIF/CIF válido</div>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <label for="fiscal_address" class="form-label">Dirección Fiscal</label>
-            <input type="text" class="form-control" id="fiscal_address" name="fiscal_address" required>
-            <div id="fiscal_address-error" class="invalid-feedback">Por favor ingrese una dirección válida</div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
-                <div id="email-error" class="invalid-feedback">Por favor ingrese un email válido</div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="commercial_registry_text" class="form-label">Texto Registro Mercantil</label>
-                <textarea id="commercial_registry_text" name="commercial_registry_text" class="form-control ckeditor wysiwyg-textarea" required></textarea>
-                <div id="commercial_registry_text-error" class="invalid-feedback">Por favor complete este campo</div>
+                <label for="mail_encryption" class="form-label">Mail Crypto (ssl, tls, etc)</label>
+                <input type="text" class="form-control" id="mail_encryption" name="mail_encryption" required>
+                <div id="mail_encryption-error" class="invalid-feedback">Por favor ingrese un Crypto válido</div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="lopd_text" class="form-label">Texto LOPD</label>
-                <textarea id="lopd_text" name="lopd_text" class="form-control ckeditor wysiwyg-textarea" required></textarea>
-                <div id="lopd_text-error" class="invalid-feedback">Por favor complete este campo</div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="favicon_input" class="form-label">Favicon (PNG)</label>
-                <div class="input-group">
-                    <input type="file" class="form-control" id="favicon_input" name="favicon_input" accept="image/*">
-                    <label class="input-group-text" for="favicon_input">
-                        <i class="fas fa-image"></i>
-                    </label>
-                </div>
-                <small class="text-muted">Tamaño recomendado: 32x32 px</small>
-                <div id="favicon_input-error" class="invalid-feedback d-block"></div>
-                <div id="current-favicon" class="mt-2"></div>
+                <label for="mail_host" class="form-label">Servidor smpt</label>
+                <input type="text" class="form-control" id="mail_host" name="mail_host" required>
+                <div id="mail_host-error" class="invalid-feedback">Por favor ingrese una servidor válido</div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="logo_input" class="form-label">Logo (PNG)</label>
-                <div class="input-group">
-                    <input type="file" class="form-control" id="logo_input" name="logo_input" accept="image/*">
-                    <label class="input-group-text" for="logo_input">
-                        <i class="fas fa-image"></i>
-                    </label>
-                </div>
-                <small class="text-muted">Tamaño recomendado: mínimo 200px de ancho</small>
-                <div id="logo_input-error" class="invalid-feedback d-block"></div>
-                <div id="current-logo" class="mt-2"></div>
+                <label for="mail_port" class="form-label">Puerto smpt</label>
+                <input type="number" class="form-control" id="mail_port" name="mail_port" required>
+                <div id="mail_port-error" class="invalid-feedback">Por favor ingrese un puerto válido</div>
             </div>
 
             <div class="col-md-6 mb-3">
-                <label for="invoice_logo_input" class="form-label">Logo Facturas (PNG)</label>
-                <div class="input-group">
-                    <input type="file" class="form-control" id="invoice_logo_input" name="invoice_logo_input" accept="image/*">
-                    <label class="input-group-text" for="invoice_logo_input">
-                        <i class="fas fa-image"></i>
-                    </label>
-                </div>
-                <small class="text-muted">Tamaño recomendado: mínimo 200px de ancho</small>
-                <div id="invoice_logo_input-error" class="invalid-feedback d-block"></div>
-                <div id="current-invoice-logo" class="mt-2"></div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4 mb-3">
-                <label for="facebook" class="form-label">Facebook</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fab fa-facebook"></i></span>
-                    <input type="text" class="form-control" id="facebook" name="facebook" required>
-                </div>
-                <div id="facebook-error" class="invalid-feedback">Por favor ingrese un enlace válido</div>
+                <label for="mail_username" class="form-label">Email</label>
+                <input type="email" id="mail_username" name="mail_username" class="form-control" required>
+                <div id="mail_username-error" class="invalid-feedback">Por favor ingrese un email válido</div>
             </div>
 
-            <div class="col-md-4 mb-3">
-                <label for="instagram" class="form-label">Instagram</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fab fa-instagram"></i></span>
-                    <input type="text" class="form-control" id="instagram" name="instagram" required>
-                </div>
-                <div id="instagram-error" class="invalid-feedback">Por favor ingrese un enlace válido</div>
-            </div>
-
-            <div class="col-md-4 mb-3">
-                <label for="twitter" class="form-label">Twitter</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fab fa-twitter"></i></span>
-                    <input type="text" class="form-control" id="twitter" name="twitter" required>
-                </div>
-                <div id="twitter-error" class="invalid-feedback">Por favor ingrese un enlace válido</div>
+            <div class="col-md-6 mb-3">
+                <label for="mail_password" class="form-label">Contraseña</label>
+                <input type="text" id="mail_password" name="mail_password" class="form-control">
+                <div id="mail_password-error" class="invalid-feedback">Por favor ingrese una contraseña válida</div>
             </div>
         </div>
 
@@ -298,7 +224,7 @@
             <div class="spinner-border text-primary me-3" role="status">
                 <span class="visually-hidden">Cargando...</span>
             </div>
-            <p class="mb-0">Editando ajustes web, por favor espere...</p>
+            <p class="mb-0">Editando ajustes mail, por favor espere...</p>
         </div>
         
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -316,7 +242,7 @@
     crossorigin="anonymous"></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script src="/js/admin/editWebSettings.js"></script>
+    <script src="/js/admin/editMailSettings.js"></script>
     <script src="/js/webSettings.js"></script>
 </body>
 </html>

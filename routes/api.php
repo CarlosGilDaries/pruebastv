@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\PpvOrderController;
 use App\Http\Controllers\Api\CompanyDetailController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\CookieController;
+use App\Http\Controllers\Api\EmailConfigController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\FavoritesController;
 use App\Http\Controllers\Api\FooterItemController;
@@ -208,6 +209,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
         CheckPermissions::class . ':ajustes_web',
     ])->group(function () {
         Route::post('edit-company-details', [CompanyDetailController::class, 'update']);
+    });
+
+    // Rutas de Mail Config protegidas
+    Route::middleware([
+        CheckPermissions::class . ':ajustes_mail',
+    ])->group(function () {
+        Route::get('mail-config', [EmailConfigController::class, 'index']);
+        Route::post('edit-mail-config', [EmailConfigController::class, 'update']);
     });
 
         // Rutas de Footer Items protegidas
