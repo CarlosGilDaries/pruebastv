@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\CompanyDetailController;
 use App\Http\Controllers\Api\ContactController;
 use App\Http\Controllers\Api\CookieController;
 use App\Http\Controllers\Api\EmailConfigController;
+use App\Http\Controllers\Api\EmailTemplateController;
 use App\Http\Controllers\Api\EmailVerificationNotificationController;
 use App\Http\Controllers\Api\FavoritesController;
 use App\Http\Controllers\Api\FooterItemController;
@@ -217,6 +218,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     ])->group(function () {
         Route::get('mail-config', [EmailConfigController::class, 'index']);
         Route::post('edit-mail-config', [EmailConfigController::class, 'update']);
+        Route::get('mail-templates', [EmailTemplateController::class, 'index']);
     });
 
         // Rutas de Footer Items protegidas

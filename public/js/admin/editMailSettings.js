@@ -24,13 +24,15 @@ document.addEventListener('DOMContentLoaded', function () {
         const response = await fetch('/api/mail-config/', {
           headers: { Authorization: `Bearer ${token}` },
         });
+        const templatesResponse = await fetch('/api/mail-templates', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-        if (!response.ok) {
-          throw new Error('Error al cargar los datos');
-        }
-
-        const data = await response.json();
-        const config = data.config;
+          const data = await response.json();
+          const templatesData = await templatesResponse.json();
+          const config = data.config;
+          const templates = templatesData.templates;
+          console.log(templates);
 
         // Llenar campos del formulario
         document.getElementById('mail_username').value = config.mail_username || '';

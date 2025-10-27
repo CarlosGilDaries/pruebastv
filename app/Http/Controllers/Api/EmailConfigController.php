@@ -78,18 +78,6 @@ class EmailConfigController extends Controller
         }
     }
 
-    /*
-    $appNameValue = '"' . $name . '"';
-    $mailUsernameValue = '"' . $email . '"';
-
-    $this->setEnvValue($appNameKey, $appNameValue);
-    $this->setEnvValue($mailUsernameKey, $mailUsernameValue);
-
-    // limpiar cache de configuración
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    */
-
     private function setEnvValue($key, $value)
     {
         $path = base_path('.env');
