@@ -175,66 +175,298 @@
             </div>
         </aside>
 
-                <div class="container p-5" id="mail-config">
-    <!-- Editar Ajustes Web -->
-    <h1 class="mb-4"><i class="fa-solid fa-globe me-2"></i> Editar Ajustes Mail</h1>
-    <div id="success-message" class="alert alert-success d-none">
-        Ajustes Mail editados con éxito
-    </div>
-    <form id="mail-form" class="needs-validation" novalidate>
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="mail_mailer" class="form-label">Protocolo (smtp, ssmtp, etc)</label>
-                <input type="text" class="form-control" id="mail_mailer" name="mail_mailer" required>
-                <div id="mail_mailer-error" class="invalid-feedback">Por favor ingrese un protocolo válido</div>
+        <div class="container p-5" id="mail-config">
+            <!-- Editar Ajustes Web -->
+            <h1 class="mb-4"><i class="fa-solid fa-gear me-2"></i> Editar Ajustes Mail</h1>
+            <div id="success-message" class="alert alert-success d-none">
+                Ajustes Mail editados con éxito
             </div>
+            <form id="mail-form" class="needs-validation" novalidate>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="mail_mailer" class="form-label">Protocolo (smtp, ssmtp, etc)</label>
+                        <input type="text" class="form-control" id="mail_mailer" name="mail_mailer" required>
+                        <div id="mail_mailer-error" class="invalid-feedback">Por favor ingrese un protocolo válido</div>
+                    </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="mail_encryption" class="form-label">Mail Crypto (ssl, tls, etc)</label>
-                <input type="text" class="form-control" id="mail_encryption" name="mail_encryption" required>
-                <div id="mail_encryption-error" class="invalid-feedback">Por favor ingrese un Crypto válido</div>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="mail_encryption" class="form-label">Mail Crypto (ssl, tls, etc)</label>
+                        <input type="text" class="form-control" id="mail_encryption" name="mail_encryption" required>
+                        <div id="mail_encryption-error" class="invalid-feedback">Por favor ingrese un Crypto válido</div>
+                    </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="mail_host" class="form-label">Servidor smpt</label>
-                <input type="text" class="form-control" id="mail_host" name="mail_host" required>
-                <div id="mail_host-error" class="invalid-feedback">Por favor ingrese una servidor válido</div>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="mail_host" class="form-label">Servidor smpt</label>
+                        <input type="text" class="form-control" id="mail_host" name="mail_host" required>
+                        <div id="mail_host-error" class="invalid-feedback">Por favor ingrese una servidor válido</div>
+                    </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="mail_port" class="form-label">Puerto smpt</label>
-                <input type="number" class="form-control" id="mail_port" name="mail_port" required>
-                <div id="mail_port-error" class="invalid-feedback">Por favor ingrese un puerto válido</div>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="mail_port" class="form-label">Puerto smpt</label>
+                        <input type="number" class="form-control" id="mail_port" name="mail_port" required>
+                        <div id="mail_port-error" class="invalid-feedback">Por favor ingrese un puerto válido</div>
+                    </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="mail_username" class="form-label">Email</label>
-                <input type="email" id="mail_username" name="mail_username" class="form-control" required>
-                <div id="mail_username-error" class="invalid-feedback">Por favor ingrese un email válido</div>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="mail_username" class="form-label">Email</label>
+                        <input type="email" id="mail_username" name="mail_username" class="form-control" required>
+                        <div id="mail_username-error" class="invalid-feedback">Por favor ingrese un email válido</div>
+                    </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="mail_password" class="form-label">Contraseña</label>
-                <input type="text" id="mail_password" name="mail_password" class="form-control">
-                <div id="mail_password-error" class="invalid-feedback">Por favor ingrese una contraseña válida</div>
-            </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="mail_password" class="form-label">Contraseña (dejar en blanco para no cambiar)</label>
+                        <input type="text" id="mail_password" name="mail_password" class="form-control">
+                        <div id="mail_password-error" class="invalid-feedback">Por favor ingrese una contraseña válida</div>
+                    </div>
+                </div>
+
+                <h2 class="mb-3 mt-5"><i class="fa-solid fa-file-lines me-2"></i> Texto Emails</h2>
+                <div class="row">
+                    <h4 class="mb-3 mt-3">1. Verificar Email</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="verify_email_subject" class="form-label">Asunto</label>
+                        <input type="text" id="verify_email_subject" name="verify_email_subject" class="form-control">
+                        <div id="verify_email_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="verify_email_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="verify_email_body_spanish" name="verify_email_body_spanish" class="form-control"></textarea>
+                        <div id="verify_email_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="verify_email_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="verify_email_body_english" name="verify_email_body_english" class="form-control"></textarea>
+                        <div id="verify_email_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="verify_email_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="verify_email_button_text_spanish" name="verify_email_button_text_spanish" class="form-control">
+                        <div id="verify_email_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="verify_email_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="verify_email_button_text_english" name="verify_email_button_text_english" class="form-control">
+                        <div id="verify_email_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="mb-3 mt-5">2. Restaurar Contraseña</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="reset_password_subject" class="form-label">Asunto</label>
+                        <input type="text" id="reset_password_subject" name="reset_password_subject" class="form-control">
+                        <div id="reset_password_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="reset_password_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="reset_password_body_spanish" name="reset_password_body_spanish" class="form-control"></textarea>
+                        <div id="reset_password_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="reset_password_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="reset_password_body_english" name="reset_password_body_english" class="form-control"></textarea>
+                        <div id="reset_password_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="reset_password_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="reset_password_button_text_spanish" name="reset_password_button_text_spanish" class="form-control">
+                        <div id="reset_password_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="reset_password_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="reset_password_button_text_english" name="reset_password_button_text_english" class="form-control">
+                        <div id="reset_password_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="mb-3 mt-5">3. Plan Expirado</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="expired_plan_subject" class="form-label">Asunto</label>
+                        <input type="text" id="expired_plan_subject" name="expired_plan_subject" class="form-control">
+                        <div id="expired_plan_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="expired_plan_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="expired_plan_body_spanish" name="expired_plan_body_spanish" class="form-control"></textarea>
+                        <div id="expired_plan_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="expired_plan_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="expired_plan_body_english" name="expired_plan_body_english" class="form-control"></textarea>
+                        <div id="expired_plan_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="expired_plan_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="expired_plan_button_text_spanish" name="expired_plan_button_text_spanish" class="form-control">
+                        <div id="expired_plan_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="expired_plan_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="expired_plan_button_text_english" name="expired_plan_button_text_english" class="form-control">
+                        <div id="expired_plan_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="mb-3 mt-5">4. Primer Aviso Plan Free (10 días)</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_first_warning_subject" class="form-label">Asunto</label>
+                        <input type="text" id="free_first_warning_subject" name="free_first_warning_subject" class="form-control">
+                        <div id="free_first_warning_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_first_warning_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="free_first_warning_body_spanish" name="free_first_warning_body_spanish" class="form-control"></textarea>
+                        <div id="free_first_warning_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_first_warning_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="free_first_warning_body_english" name="free_first_warning_body_english" class="form-control"></textarea>
+                        <div id="free_first_warning_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_first_warning_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="free_first_warning_button_text_spanish" name="free_first_warning_button_text_spanish" class="form-control">
+                        <div id="free_first_warning_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_first_warning_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="free_first_warning_button_text_english" name="free_first_warning_button_text_english" class="form-control">
+                        <div id="free_first_warning_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="mb-3 mt-5">5. Aviso 1 día plan Free</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_one_day_left_subject" class="form-label">Asunto</label>
+                        <input type="text" id="free_one_day_left_subject" name="free_one_day_left_subject" class="form-control">
+                        <div id="free_one_day_left_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_one_day_left_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="free_one_day_left_body_spanish" name="free_one_day_left_body_spanish" class="form-control"></textarea>
+                        <div id="free_one_day_left_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_one_day_left_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="free_one_day_left_body_english" name="free_one_day_left_body_english" class="form-control"></textarea>
+                        <div id="free_one_day_left_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_one_day_left_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="free_one_day_left_button_text_spanish" name="free_one_day_left_button_text_spanish" class="form-control">
+                        <div id="free_one_day_left_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_one_day_left_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="free_one_day_left_button_text_english" name="free_one_day_left_button_text_english" class="form-control">
+                        <div id="free_one_day_left_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="mb-3 mt-5">6. Aviso 2 días plan Free</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_two_days_left_subject" class="form-label">Asunto</label>
+                        <input type="text" id="free_two_days_left_subject" name="free_two_days_left_subject" class="form-control">
+                        <div id="free_two_days_left_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_two_days_left_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="free_two_days_left_body_spanish" name="free_two_days_left_body_spanish" class="form-control"></textarea>
+                        <div id="free_two_days_left_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_two_days_left_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="free_two_days_left_body_english" name="free_two_days_left_body_english" class="form-control"></textarea>
+                        <div id="free_two_days_left_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_two_days_left_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="free_two_days_left_button_text_spanish" name="free_two_days_left_button_text_spanish" class="form-control">
+                        <div id="free_two_days_left_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="free_two_days_left_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="free_two_days_left_button_text_english" name="free_two_days_left_button_text_english" class="form-control">
+                        <div id="free_two_days_left_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="mb-3 mt-5">7. Aviso 1 día plan pago</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_one_day_left_subject" class="form-label">Asunto</label>
+                        <input type="text" id="plan_one_day_left_subject" name="plan_one_day_left_subject" class="form-control">
+                        <div id="plan_one_day_left_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_one_day_left_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="plan_one_day_left_body_spanish" name="plan_one_day_left_body_spanish" class="form-control"></textarea>
+                        <div id="plan_one_day_left_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_one_day_left_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="plan_one_day_left_body_english" name="plan_one_day_left_body_english" class="form-control"></textarea>
+                        <div id="plan_one_day_left_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_one_day_left_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="plan_one_day_left_button_text_spanish" name="plan_one_day_left_button_text_spanish" class="form-control">
+                        <div id="plan_one_day_left_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_one_day_left_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="plan_one_day_left_button_text_english" name="plan_one_day_left_button_text_english" class="form-control">
+                        <div id="plan_one_day_left_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <h4 class="mb-3 mt-5">8. Aviso 7 días plan pago</h4>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_seven_days_left_subject" class="form-label">Asunto</label>
+                        <input type="text" id="plan_seven_days_left_subject" name="plan_seven_days_left_subject" class="form-control">
+                        <div id="plan_seven_days_left_subject-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_seven_days_left_body_spanish" class="form-label">Texto Castellano</label>
+                        <textarea id="plan_seven_days_left_body_spanish" name="plan_seven_days_left_body_spanish" class="form-control"></textarea>
+                        <div id="plan_seven_days_left_body_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_seven_days_left_body_english" class="form-label">Texto Inglés</label>
+                        <textarea id="plan_seven_days_left_body_english" name="plan_seven_days_left_body_english" class="form-control"></textarea>
+                        <div id="plan_seven_days_left_body_english-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_seven_days_left_button_text_spanish" class="form-label">Texto Botón Castellano</label>
+                        <input type="text" id="plan_seven_days_left_button_text_spanish" name="plan_seven_days_left_button_text_spanish" class="form-control">
+                        <div id="plan_seven_days_left_button_text_spanish-error" class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="plan_seven_days_left_button_text_english" class="form-label">Texto Botón Inglés</label>
+                        <input type="text" id="plan_seven_days_left_button_text_english" name="plan_seven_days_left_button_text_english" class="form-control">
+                        <div id="plan_seven_days_left_button_text_english-error" class="invalid-feedback"></div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center align-items-center my-4 d-none" id="loading">
+                    <div class="spinner-border text-primary me-3" role="status">
+                        <span class="visually-hidden">Cargando...</span>
+                    </div>
+                    <p class="mb-0">Por favor espere...</p>
+                </div>
+                
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
         </div>
-
-        <div class="d-flex justify-content-center align-items-center my-4 d-none" id="loading">
-            <div class="spinner-border text-primary me-3" role="status">
-                <span class="visually-hidden">Cargando...</span>
-            </div>
-            <p class="mb-0">Editando ajustes mail, por favor espere...</p>
-        </div>
-        
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button type="submit" class="btn btn-primary">
-                <i class="fas fa-save me-2"></i> Guardar Cambios
-            </button>
-        </div>
-    </form>
-</div>
-
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
