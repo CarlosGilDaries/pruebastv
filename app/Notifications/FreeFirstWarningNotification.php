@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\EmailTemplate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -34,11 +35,20 @@ class FreeFirstWarningNotification extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $template = EmailTemplate::where('key', 'free_first_warning')->first();
+
+        $subject = $template->subject;
+        $body_spanish = $template->body_spanish;
+        $button_text_spanish = $template->button_text_spanish;
+        $body_english = $template->body_english;
+        $button_text_english = $template->button_text_english;
+
         return (new MailMessage)
-            ->subject('Aviso plan Free')
-            ->line('Acabas de suscribirte al plan Free. Para no perder el plan, deberás conectarte al menos 1 vez cada 10 días. Si tras 10 días no has accedido a la aplicación, perderás la posibilidad de renovar el plan gratuito.')
-            ->action('Ir a la plataforma', url('/'))
-            ->line('¡Gracias por usar nuestro servicio!');
+            ->subject($subject)
+            ->line($body_spanish)
+            ->line($body_english)
+            ->action($button_text_spanish . ' / ' . $button_text_english, url('/'))
+            ->salutation(env('APP_NAME'));
     }
 
     /**

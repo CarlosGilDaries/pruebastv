@@ -32,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
           const templatesData = await templatesResponse.json();
           const config = data.config;
           const templates = templatesData.templates;
-          console.log(templates);
 
         // Llenar campos del formulario
         document.getElementById('mail_username').value = config.mail_username || '';

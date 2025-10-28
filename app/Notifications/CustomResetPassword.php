@@ -32,14 +32,14 @@ class CustomResetPassword extends Notification
         $subject = 'Restaurar Contraseña';
         $body_spanish = 'Estás recibiendo este email porque hemos recibido una petición de restauración de contraseña desde esta cuenta.';
         $button_text_spanish = 'Restaurar Contraseña';
-        $footer = 'El enlace expirará en :count minutos.';
+        //$footer = 'El enlace expirará en :count minutos.';
         } else {
             $subject = $template->subject;
             $body_spanish = $template->body_spanish;
             $button_text_spanish = $template->button_text_spanish;
             $body_english = $template->body_english;
             $button_text_english = $template->button_text_english;
-            $footer = $template->footer;
+            //$footer = 'El enlace expirará en :count minutos.';
         }
 
         return (new MailMessage)
@@ -47,7 +47,7 @@ class CustomResetPassword extends Notification
         ->line($body_spanish)
         ->line($body_english)
         ->action($button_text_spanish . ' / ' . $button_text_english, $url)
-        ->line(str_replace(':count', config('auth.passwords.'.config('auth.defaults.passwords').'.expire'), $footer))
+        //->line(str_replace(':count', config('auth.passwords.'.config('auth.defaults.passwords').'.expire'), $footer))
         ->salutation(env('APP_NAME'));
     }
 }

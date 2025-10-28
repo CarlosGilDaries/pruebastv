@@ -219,6 +219,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('mail-config', [EmailConfigController::class, 'index']);
         Route::post('edit-mail-config', [EmailConfigController::class, 'update']);
         Route::get('mail-templates', [EmailTemplateController::class, 'index']);
+        Route::post('edit-template/{id}', [EmailTemplateController::class, 'update']);
     });
 
         // Rutas de Footer Items protegidas

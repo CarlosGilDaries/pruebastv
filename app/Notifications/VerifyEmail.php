@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\EmailTemplate;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Auth\Notifications\VerifyEmail as VerifyEmailBase;
 use Illuminate\Support\Facades\URL;
@@ -24,10 +25,19 @@ class VerifyEmail extends VerifyEmailBase
     public function toMail($notifiable)
     {
         $verificationUrl = $this->verificationUrl($notifiable);
+        $template = EmailTemplate::where('key', 'verify_email')->first();
+
+        $subject = $template->subject;
+        $body_spanish = $template->body_spanish;
+        $button_text_spanish = $template->button_text_spanish;
+        $body_english = $template->body_english;
+        $button_text_english = $template->button_text_english;
 
         return (new MailMessage)
-            ->subject('Verifica tu Email')
-            ->line('Por favor haz click en el enlace de abajo para verificar tu correo.')
-            ->action('Verificar Correo', $verificationUrl);
+            ->subject($subject)
+            ->line($body_spanish)
+            ->line($body_english)
+            ->action($button_text_spanish . ' / ' . $button_text_english, $verificationUrl)
+            ->salutation(env('APP_NAME'));
     }
 }
