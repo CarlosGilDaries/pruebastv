@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('subtext')->nullable();
             $table->string('button_text');
             $table->string('url');
-            $table->foreignId('seo_setting_id')->constrained()->nullable();
+            $table->foreignId('seo_setting_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

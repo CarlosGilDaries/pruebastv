@@ -41,7 +41,7 @@ class SeoSettingController extends Controller
             $settings->key = sanitize_html($request->key);
             $settings->title = sanitize_html($request->title);
             $settings->description = sanitize_html($request->description);
-            $settings->kewords = sanitize_html($request->keywords);
+            $settings->keywords = sanitize_html($request->keywords);
             $settings->robots = sanitize_html($request->robots);
             $settings->url = sanitize_html($request->url);
             $settings->alias = sanitize_html($request->alias);
@@ -49,24 +49,34 @@ class SeoSettingController extends Controller
 
             if ($settings->key == 'movie') {
                 $movie = Movie::where('id', $id)->first();
-                $movie->seoSetting()->sync($settings->id);
+                $movie->seo_setting_id = $settings->id;
+                $movie->save();
             } 
             else if ($settings->key == 'category') {
                 $category = Category::where('id', $id)->first();
-                $category->seoSetting()->sync($settings->id);
+                $category->seo_setting_id = $settings->id;
+                $category->save();
             } 
             else if ($settings->key == 'gender') {
                 $gender = Gender::where('id', $id)->first();
-                $gender->seoSetting()->sync($settings->id);
+                $gender->seo_setting_id = $settings->id;
+                $gender->save();
             } 
             else if ($settings->key == 'tag') {
                 $tag = Tag::where('id', $id)->first();
-                $tag->seoSetting()->sync($settings->id);
+                $tag->seo_setting_id = $settings->id;
+                $tag->save();
             } 
             else if ($settings->key == 'action') {
                 $action = Action::where('id', $id)->first();
-                $action->seoSetting()->sync($settings->id);
+                $action->seo_setting_id = $settings->id;
+                $action->save();
             }
+
+            return response()->json([
+                'success' => true,
+                'settings' => $settings
+            ], 200);
 
         } catch (\Exception $e) {
             Log::error('Error en store SeoSettingController: ' . $e->getMessage());

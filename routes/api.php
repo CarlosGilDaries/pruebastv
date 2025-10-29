@@ -245,7 +245,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-legal-notice', [LegalNoticeController::class, 'destroy']);
     });
 
-    // Rutas de Polítiva de Privacidad protegidas
+    // Rutas de Política de Privacidad protegidas
     Route::middleware([
         CheckPermissions::class . ':politica_privacidad',
     ])->group(function () {

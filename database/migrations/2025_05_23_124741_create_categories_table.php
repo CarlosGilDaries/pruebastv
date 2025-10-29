@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('cover');
             $table->integer('priority');
             $table->boolean('render_at_index');
+            $table->foreignId('seo_setting_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

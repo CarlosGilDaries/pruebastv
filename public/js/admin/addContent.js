@@ -116,7 +116,9 @@ async function initContent() {
       document
         .querySelectorAll('#form .invalid-feedback')
         .forEach((el) => (el.textContent = ''));
-      document.getElementById('success-message').classList.add('d-none');
+      document.querySelectorAll('.success-submit').forEach((element) => {
+        element.classList.add('d-none');
+      });
 
       // Mostrar loader
       document.getElementById('loading').classList.remove('d-none');
@@ -281,6 +283,52 @@ async function initContent() {
         permission = 'external';
       }
 
+      const seoFormData = new FormData();
+      let seo = false;
+
+      if (document.getElementById('seo-title').value) {
+        seoFormData.append('title', document.getElementById('seo-title').value);
+        seo = true;
+      }
+
+      if (document.getElementById('seo-keywords').value) {
+        seoFormData.append(
+          'keywords',
+          document.getElementById('seo-keywords').value
+        );
+        seo = true;
+      }
+
+      if (document.getElementById('seo-robots').value) {
+        seoFormData.append(
+          'robots',
+          document.getElementById('seo-robots').value
+        );
+        seo = true;
+      }
+
+      if (document.getElementById('seo-alias').value) {
+        seoFormData.append('alias', document.getElementById('seo-alias').value);
+        seo = true;
+      }
+
+      if (document.getElementById('seo-url').value) {
+        seoFormData.append('seo-url', document.getElementById('seo-url').value);
+        seo = true;
+      }
+
+      if (document.getElementById('seo-description').value) {
+        seoFormData.append(
+          'seo-description',
+          document.getElementById('seo-description').value
+        );
+        seo = true;
+      }
+
+      if (seo) {
+        seoFormData.append('key', 'movie');
+      }
+
       try {
         const response = await fetch(`/api/add-content/${permission}`, {
           method: 'POST',
@@ -308,15 +356,34 @@ async function initContent() {
           return;
         }
 
+        if (data.success && seo) {
+          const seoResponse = await fetch(
+            backendAPI + `create-seo-settings/${data.movie.id}`,
+            {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: seoFormData,
+            }
+          );
+
+          const seoData = await seoResponse.json();
+          console.log(seoData);
+        }
+
         // Mostrar mensaje de éxito
-        const successMessage = document.getElementById('success-message');
-        successMessage.classList.remove('d-none');
-        successMessage.textContent = `${data.message} - ${
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.remove('d-none');
+        });
+        /*successMessage.textContent = `${data.message} - ${
           data.movie?.title || 'Contenido subido'
-        }`;
+        }`;*/
 
         setTimeout(() => {
-          successMessage.classList.add('d-none');
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
         }, 5000);
 
         // Resetear formulario

@@ -238,7 +238,10 @@
                 <i class="fa-solid fa-euro-sign me-2"></i>Añadir Género
               </h1>
 
-              <div id="success-message" class="alert alert-success d-none">
+              <div
+                id="success-message"
+                class="alert alert-success d-none success-submit"
+              >
                 Género añadido con éxito
               </div>
 
@@ -289,7 +292,6 @@
                     <i class="fas fa-plus-circle me-2"></i> Añadir Género
                   </button>
                 </div>
-              </form>
             </div>
           </div>
 
@@ -305,7 +307,10 @@
                 <i class="fa-solid fa-magnifying-glass me-2"></i>Configuración
                 SEO
               </h1>
-              <form>
+
+              <div class="alert alert-success d-none success-submit">
+                Género añadido con éxito
+              </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="seo-title" class="form-label">Title</label>
@@ -314,7 +319,6 @@
                       class="form-control"
                       id="seo-title"
                       name="seo-title"
-                      required
                     />
                     <div id="seo-title-error" class="invalid-feedback"></div>
                   </div>
@@ -327,7 +331,6 @@
                       class="form-control"
                       id="seo-keywords"
                       name="seo-keywords"
-                      required
                     />
                     <div id="seo-keywords-error" class="invalid-feedback"></div>
                   </div>
@@ -340,7 +343,6 @@
                       class="form-control"
                       id="seo-robots"
                       name="seo-robots"
-                      required
                     />
                     <div id="seo-robots-error" class="invalid-feedback"></div>
                   </div>
@@ -351,7 +353,6 @@
                       class="form-control"
                       id="seo-alias"
                       name="seo-alias"
-                      required
                     />
                     <div id="seo-alias-error" class="invalid-feedback"></div>
                   </div>
@@ -363,7 +364,6 @@
                       class="form-control"
                       id="seo-url"
                       name="seo-url"
-                      required
                     ></textarea>
                     <div id="seo-url-error" class="invalid-feedback"></div>
                   </div>
@@ -377,7 +377,6 @@
                       class="form-control"
                       id="seo-description"
                       name="seo-description"
-                      required
                     ></textarea>
                     <div
                       id="seo-description-error"

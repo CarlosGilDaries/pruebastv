@@ -31,7 +31,7 @@ return new class extends Migration
             $table->datetime('end_time')->nullable();
             $table->time('duration')->nullable();
             $table->string('slug')->unique();
-            $table->foreignId('seo_setting_id')->constrained()->nullable();
+            $table->foreignId('seo_setting_id')->nullable()->constrained()->nullOnDelete();
             $table->timestamps();
         });
     }

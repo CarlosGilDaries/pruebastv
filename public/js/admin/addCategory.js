@@ -77,9 +77,9 @@ document.addEventListener('DOMContentLoaded', function () {
               el.textContent = '';
               el.style.display = 'none';
             });
-          document
-            .getElementById('success-message')
-            .classList.add('d-none');
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
 
           // Mostrar loader
           document
@@ -94,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           try {
             const formData = new FormData();
+
             formData.append(
               'name',
               document.getElementById('name').value
@@ -126,6 +127,61 @@ document.addEventListener('DOMContentLoaded', function () {
               document.getElementById('render').checked ? '1' : '0'
             );
 
+            const seoFormData = new FormData();
+            let seo = false;
+
+            if (document.getElementById('seo-title').value) {
+              seoFormData.append(
+                'title',
+                document.getElementById('seo-title').value
+              );
+              seo = true;
+            }
+
+            if (document.getElementById('seo-keywords').value) {
+              seoFormData.append(
+                'keywords',
+                document.getElementById('seo-keywords').value
+              );
+              seo = true;
+            }
+
+            if (document.getElementById('seo-robots').value) {
+              seoFormData.append(
+                'robots',
+                document.getElementById('seo-robots').value
+              );
+              seo = true;
+            }
+
+            if (document.getElementById('seo-alias').value) {
+              seoFormData.append(
+                'alias',
+                document.getElementById('seo-alias').value
+              );
+              seo = true;
+            }
+
+            if (document.getElementById('seo-url').value) {
+              seoFormData.append(
+                'seo-url',
+                document.getElementById('seo-url').value
+              );
+              seo = true;
+            }
+
+            if (document.getElementById('seo-description').value) {
+              seoFormData.append(
+                'seo-description',
+                document.getElementById('seo-description').value
+              );
+              seo = true;
+            }
+
+            if (seo) {
+              seoFormData.append('key', 'category');
+            }
+
             const response = await fetch(backendAPI + 'add-category', {
               method: 'POST',
               headers: {
@@ -154,14 +210,33 @@ document.addEventListener('DOMContentLoaded', function () {
               return;
             }
 
+            if (data.success && seo) {
+              const seoResponse = await fetch(
+                backendAPI + `create-seo-settings/${data.category.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: seoFormData,
+                }
+              );
+
+              const seoData = await seoResponse.json();
+              console.log(seoData);
+            }
+
             // Mostrar mensaje de éxito
-            const successMessage = document.getElementById(
-              'success-message'
-            );
-            successMessage.classList.remove('d-none');
+            document.querySelectorAll('.success-submit').forEach((element) => {
+              element.classList.remove('d-none');
+            });
 
             setTimeout(() => {
-              successMessage.classList.add('d-none');
+              document
+                .querySelectorAll('.success-submit')
+                .forEach((element) => {
+                  element.classList.add('d-none');
+                });
             }, 5000);
 
             // Resetear formulario
