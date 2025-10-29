@@ -108,7 +108,7 @@ class MovieApiController extends Controller
     public function show($slug)
     {
         try {
-            $movie = Movie::with('gender', 'tags')->where('slug', $slug)->first();
+            $movie = Movie::with('seoSetting', 'gender', 'tags')->where('slug', $slug)->first();
 			$user = Auth::user();
 			
             if (!$movie) {
@@ -145,7 +145,7 @@ class MovieApiController extends Controller
 	public function editShow($id)
     {
         try {
-            $movie = Movie::where('id', $id)->with('plans', 'categories', 'tags')->first();
+            $movie = Movie::where('id', $id)->with('seoSetting', 'plans', 'categories', 'tags')->first();
             $plans = Plan::all();
 
             if (!$movie) {

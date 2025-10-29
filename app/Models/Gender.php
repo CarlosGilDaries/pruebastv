@@ -15,4 +15,9 @@ class Gender extends Model
     {
         return $this->hasMany(Movie::class);
     }
+
+    public function seoSetting()
+    {
+        return $this->belongsTo(SeoSetting::class);
+    }
 }

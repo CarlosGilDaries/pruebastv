@@ -15,4 +15,9 @@ class Action extends Model
         'button_text',
         'url'
     ];
+
+    public function seoSetting()
+    {
+        return $this->belongsTo(SeoSetting::class);
+    }
 }

@@ -141,7 +141,7 @@ class TagController extends Controller
     public function show(string $id)
     {
         try {
-            $tag = Tag::with('movies.gender')->where('id', $id)->first();
+            $tag = Tag::with('seoSetting', 'movies.gender')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,

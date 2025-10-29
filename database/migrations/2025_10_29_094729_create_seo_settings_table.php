@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('seo_settings', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('cover');
-            $table->foreignId('seo_setting_id')->constrained()->nullable();
+            $table->string('key')->unique()->nullable();
+            $table->string('title');
+            $table->string('description');
+            $table->string('keywords');
+            $table->string('robots');
+            $table->string('url');
+            $table->string('alias');
             $table->timestamps();
         });
     }
@@ -25,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('seo_settings');
     }
 };

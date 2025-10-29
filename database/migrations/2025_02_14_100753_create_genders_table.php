@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('cover');
+            $table->foreignId('seo_setting_id')->constrained()->nullable();
             $table->timestamps();
         });
     }

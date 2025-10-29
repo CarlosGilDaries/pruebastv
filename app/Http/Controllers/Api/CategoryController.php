@@ -102,7 +102,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         try {
-            $category = Category::with('movies.gender')->where('id', $id)->first();
+            $category = Category::with('seoSetting', 'movies.gender')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,

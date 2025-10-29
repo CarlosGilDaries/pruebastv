@@ -73,4 +73,9 @@ class Movie extends Model
     {
         return $this->belongsToMany(Tag::class);
     }
+
+    public function seoSetting()
+    {
+        return $this->belongsTo(SeoSetting::class);
+    }
 }

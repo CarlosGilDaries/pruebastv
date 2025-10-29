@@ -18,4 +18,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Movie::class);
     }
+
+    public function seoSetting()
+    {
+        return $this->belongsTo(SeoSetting::class);
+    }
 }

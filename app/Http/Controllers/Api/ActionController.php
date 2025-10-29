@@ -73,7 +73,9 @@ class ActionController extends Controller
     public function show(string $id)
     {
         try {
-            $action = Action::where('id', $id)->first();
+            $action = Action::where('id', $id)
+                ->with('seoSetting')
+                ->first();
 
             return response()->json([
                 'success' => true,
