@@ -3,6 +3,7 @@ import { setupLoginSignupButtons } from '../modules/loginSignupButtons.js';
 import { formatDuration } from '../modules/formatDuration.js';
 import { hideSpinner } from './spinner.js';
 import { showSpinner } from './spinner.js';
+import { setSeoSettings } from './setSeoSettings.js';
 
 export async function gridShow(
   title = null,
@@ -26,7 +27,12 @@ export async function gridShow(
 
     const response = await fetch(url, options);
     const data = await response.json();
-    console.log(data);
+
+    const seoSettings = data[endpoint].seo_setting;
+    if (seoSettings) {
+      setSeoSettings(seoSettings);
+    }
+
     if (title != null) {
       title.innerHTML = data[endpoint].name;
       title.setAttribute('data-i18n', `${endpoint}_${data[endpoint].id}`);

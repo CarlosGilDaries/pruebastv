@@ -9,6 +9,7 @@ import { applyTranslations } from './translations.js';
 import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
+import { setSeoSettings } from './modules/setSeoSettings.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -91,6 +92,11 @@ async function fetchMovieData() {
 
     if (data.redirect_url) {
       window.location.href = data.redirect_url;
+    }
+
+    const seoSettings = data.data.movie.seo_setting;
+    if (seoSettings) {
+      setSeoSettings(seoSettings);
     }
 
     const tags = data.data.movie.tags;
@@ -303,7 +309,6 @@ async function fetchMovieData() {
         `content_${data.data.movie.id}_overview`
       );
       overview.appendChild(overviewText);
-      console.log(data.data.movie.overview);
 
       renderSimilars(data.data.movie, token);
 
