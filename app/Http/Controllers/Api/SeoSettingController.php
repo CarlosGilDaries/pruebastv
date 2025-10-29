@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Action;
+use App\Models\Category;
+use App\Models\Gender;
+use App\Models\Movie;
 use App\Models\SeoSetting;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -25,6 +30,94 @@ class SeoSettingController extends Controller
 			return response()->json([
 				'success' => false,
 				'message' => 'Error en genericPageShow SeoSettingController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
+    public function store(Request $request, $id)
+    {
+        try {
+            $settings = new SeoSetting();
+            $settings->key = sanitize_html($request->key);
+            $settings->title = sanitize_html($request->title);
+            $settings->description = sanitize_html($request->description);
+            $settings->kewords = sanitize_html($request->keywords);
+            $settings->robots = sanitize_html($request->robots);
+            $settings->url = sanitize_html($request->url);
+            $settings->alias = sanitize_html($request->alias);
+            $settings->save();
+
+            if ($settings->key == 'movie') {
+                $movie = Movie::where('id', $id)->first();
+                $movie->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'category') {
+                $category = Category::where('id', $id)->first();
+                $category->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'gender') {
+                $gender = Gender::where('id', $id)->first();
+                $gender->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'tag') {
+                $tag = Tag::where('id', $id)->first();
+                $tag->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'action') {
+                $action = Action::where('id', $id)->first();
+                $action->seoSetting()->sync($settings->id);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error en store SeoSettingController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en store SeoSettingController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
+    public function update(Request $request, $settingId, $id)
+    {
+        try {
+            $settings = SeoSetting::where('id', $settingId)->first();
+            $settings->key = sanitize_html($request->key);
+            $settings->title = sanitize_html($request->title);
+            $settings->description = sanitize_html($request->description);
+            $settings->kewords = sanitize_html($request->keywords);
+            $settings->robots = sanitize_html($request->robots);
+            $settings->url = sanitize_html($request->url);
+            $settings->alias = sanitize_html($request->alias);
+            $settings->save();
+
+            if ($settings->key == 'movie') {
+                $movie = Movie::where('id', $id)->first();
+                $movie->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'category') {
+                $category = Category::where('id', $id)->first();
+                $category->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'gender') {
+                $gender = Gender::where('id', $id)->first();
+                $gender->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'tag') {
+                $tag = Tag::where('id', $id)->first();
+                $tag->seoSetting()->sync($settings->id);
+            } 
+            else if ($settings->key == 'action') {
+                $action = Action::where('id', $id)->first();
+                $action->seoSetting()->sync($settings->id);
+            }
+
+        } catch (\Exception $e) {
+            Log::error('Error en update SeoSettingController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en update SeoSettingController: ' . $e->getMessage(),
 			], 500);
         }
     }

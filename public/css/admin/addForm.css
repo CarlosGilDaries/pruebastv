@@ -269,6 +269,27 @@ textarea {
     width: 100%;
 }
 
+/* Mejora visual de pestañas Bootstrap */
+.nav-tabs .nav-link {
+  background-color: #f8f9fa; /* gris claro para pestañas inactivas */
+  color: #495057; /* gris oscuro para el texto */
+  border: 1px solid #dee2e6;
+  border-bottom-color: transparent;
+  margin-right: 2px;
+}
+
+.nav-tabs .nav-link:hover {
+  background-color: #e9ecef; /* un poco más oscuro al pasar el ratón */
+  color: #212529;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #fff; /* pestaña activa: blanco */
+  color: #0d6efd;
+  border-color: #dee2e6 #dee2e6 #fff; /* sin borde inferior visible */
+  font-weight: 500;
+}
+
 /* Estilos responsivos adicionales */
 @media (max-width: 768px) {
     .form-check-container {

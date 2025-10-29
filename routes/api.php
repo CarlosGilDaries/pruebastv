@@ -37,6 +37,7 @@ use App\Http\Controllers\Api\PaymentPoliticController;
 use App\Http\Controllers\Api\PrivacyPoliticController;
 use App\Http\Controllers\Api\RentController;
 use App\Http\Controllers\Api\RentOrderController;
+use App\Http\Controllers\Api\SeoSettingController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
@@ -255,7 +256,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-privacy-politic', [PrivacyPoliticController::class, 'destroy']);
     });
 
-        // Rutas de Cookies protegidas
+    // Rutas de Cookies protegidas
     Route::middleware([
         CheckPermissions::class . ':cookies',
     ])->group(function () {
@@ -266,7 +267,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-cookie', [CookieController::class, 'destroy']);
     });
 
-        // Rutas de Política de Pagos protegidas
+    // Rutas de Política de Pagos protegidas
     Route::middleware([
         CheckPermissions::class . ':politica_pagos',
     ])->group(function () {
@@ -277,7 +278,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-payment-politic', [PaymentPoliticController::class, 'destroy']);
     });
 
-        // Rutas de Idiomas protegidas
+    // Rutas de Idiomas protegidas
     Route::middleware([
         CheckPermissions::class . ':idiomas',
     ])->group(function () {
@@ -286,6 +287,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('edit-language/{code}', [LanguageController::class, 'update']);
         Route::delete('delete-language', [LanguageController::class, 'destroy']);
     });
+
+    // SEO
+    Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
+    Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'store']);
 
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);
