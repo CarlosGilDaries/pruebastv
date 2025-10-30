@@ -1,5 +1,6 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { validateAddForm } from '../modules/validateAddForm.js';
+import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 
 async function initAddTag() {
   const backendAPI = '/api/';
@@ -69,51 +70,7 @@ async function initAddTag() {
         formAdData.append('cover', document.getElementById('cover').files[0]);
       }
 
-      const seoFormData = new FormData();
-      let seo = false;
-
-      if (document.getElementById('seo-title').value) {
-        seoFormData.append('title', document.getElementById('seo-title').value);
-        seo = true;
-      }
-
-      if (document.getElementById('seo-keywords').value) {
-        seoFormData.append(
-          'keywords',
-          document.getElementById('seo-keywords').value
-        );
-        seo = true;
-      }
-
-      if (document.getElementById('seo-robots').value) {
-        seoFormData.append(
-          'robots',
-          document.getElementById('seo-robots').value
-        );
-        seo = true;
-      }
-
-      if (document.getElementById('seo-alias').value) {
-        seoFormData.append('alias', document.getElementById('seo-alias').value);
-        seo = true;
-      }
-
-      if (document.getElementById('seo-url').value) {
-        seoFormData.append('seo-url', document.getElementById('seo-url').value);
-        seo = true;
-      }
-
-      if (document.getElementById('seo-description').value) {
-        seoFormData.append(
-          'seo-description',
-          document.getElementById('seo-description').value
-        );
-        seo = true;
-      }
-
-      if (seo) {
-        seoFormData.append('key', 'tag');
-      }
+      const { seoFormData, seo } = buildSeoFormData('tag');
 
       try {
         const response = await fetch(backendAPI + 'add-tag', {
@@ -143,7 +100,6 @@ async function initAddTag() {
           );
 
           const seoData = await seoResponse.json();
-          console.log(seoData);
         }
 
         // Mostrar mensaje de éxito

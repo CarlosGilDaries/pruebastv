@@ -97,9 +97,10 @@ export function getContentTranslations(languages, id) {
                 CKEDITOR.instances[`${code}-overview`].setData(overview);
             }
             if (name != '') {
-                document.getElementById(`${code}-name`).value = name;
+              document.getElementById(`${code}-name`).value = name;
             }
-            if (text != '') {
+          if (text != '') {
+              console.log(`${code}-text`);
                 document.getElementById(`${code}-text`).value = text;
             }
             if (subtext != '') {

@@ -1,4 +1,5 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 
 async function initAddAction() {
   const backendAPI = '/api/';
@@ -75,6 +76,48 @@ async function initAddAction() {
           return;
         }
 
+        let isValid = true;
+        
+        if (document.getElementById('picture')) {
+          
+          const coverInput = document.getElementById('picture');
+          if (coverInput.files.length > 0) {
+            const coverFile = coverInput.files[0];
+            const validImageTypes = ['image/jpeg', 'image/jpg'];
+        
+            if (!validImageTypes.includes(coverFile.type)) {
+              showFormErrors('picture', 'La imagen debe ser un archivo JPG');
+              isValid = false;
+            } else {
+              // Esperar a que se cargue la imagen para verificar dimensiones
+              const validDimensions = await new Promise((resolve) => {
+                const img = new Image();
+                img.onload = function () {
+                  const ok = this.width === 1024 && this.height === 768;
+                  if (!ok) {
+                    showFormErrors(
+                      'picture',
+                      'La imagen debe tener dimensiones de 1024x768px'
+                    );
+                  }
+                  resolve(ok);
+                };
+                img.onerror = () => {
+                  showFormErrors('picture', 'No se pudo verificar la imagen.');
+                  resolve(false);
+                };
+                img.src = URL.createObjectURL(coverFile);
+              });
+        
+              if (!validDimensions) isValid = false;
+            }
+          }
+        }
+  
+        if (!isValid) {
+          return;
+        }
+
         // Mostrar loader
         document.getElementById('loading').classList.remove('d-none');
 
@@ -135,60 +178,7 @@ async function initAddAction() {
           formData.append('picture', pictureInput.files[0]);
         }
 
-        const seoFormData = new FormData();
-        let seo = false;
-
-        if (document.getElementById('seo-title').value) {
-          seoFormData.append(
-            'title',
-            document.getElementById('seo-title').value
-          );
-          seo = true;
-        }
-
-        if (document.getElementById('seo-keywords').value) {
-          seoFormData.append(
-            'keywords',
-            document.getElementById('seo-keywords').value
-          );
-          seo = true;
-        }
-
-        if (document.getElementById('seo-robots').value) {
-          seoFormData.append(
-            'robots',
-            document.getElementById('seo-robots').value
-          );
-          seo = true;
-        }
-
-        if (document.getElementById('seo-alias').value) {
-          seoFormData.append(
-            'alias',
-            document.getElementById('seo-alias').value
-          );
-          seo = true;
-        }
-
-        if (document.getElementById('seo-url').value) {
-          seoFormData.append(
-            'seo-url',
-            document.getElementById('seo-url').value
-          );
-          seo = true;
-        }
-
-        if (document.getElementById('seo-description').value) {
-          seoFormData.append(
-            'seo-description',
-            document.getElementById('seo-description').value
-          );
-          seo = true;
-        }
-
-        if (seo) {
-          seoFormData.append('key', 'action');
-        }
+        const { seoFormData, seo } = buildSeoFormData('action');
 
         try {
           const response = await fetch(backendAPI + 'add-action', {
@@ -230,7 +220,6 @@ async function initAddAction() {
             );
 
             const seoData = await seoResponse.json();
-            console.log(seoData);
           }
 
           // Mostrar mensaje de éxito

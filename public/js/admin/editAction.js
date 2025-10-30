@@ -1,5 +1,8 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { getContentTranslations } from '../modules/contentTranslations.js';
+import { showFormErrors } from '../modules/showFormErrors.js';
+import { buildSeoFormData } from '../modules/buildSeoFormData.js';
+import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 
 async function editActionForm() {
   const id = localStorage.getItem('id');
@@ -61,7 +64,12 @@ async function editActionForm() {
       document.getElementById('subtext').value = action.subtext || '';
       document.getElementById('button_text').value = action.button_text || '';
       document.getElementById('url').value = action.url || '';
-      getContentTranslations(languages, id);
+      if (actionData.success && actionData.action) {
+        getContentTranslations(languages, id);
+        if (action.seo_setting != null) {
+          getSeoSettingsValues(action.seo_setting);
+        }
+      }
 
       // Mostrar nombre de la imagen actual si existe
       if (action.picture) {
@@ -85,7 +93,7 @@ async function editActionForm() {
 
   // Manejar envío del formulario
   document
-    .getElementById('edit-action-form')
+    .getElementById('form')
     .addEventListener('submit', async function (e) {
       e.preventDefault();
 
@@ -96,12 +104,57 @@ async function editActionForm() {
         return;
       }
 
+      let isValid = true;
+
+      if (document.getElementById('picture')) {
+        
+        const coverInput = document.getElementById('picture');
+        if (coverInput.files.length > 0) {
+          const coverFile = coverInput.files[0];
+          const validImageTypes = ['image/jpeg', 'image/jpg'];
+      
+          if (!validImageTypes.includes(coverFile.type)) {
+            showFormErrors('picture', 'La imagen debe ser un archivo JPG');
+            isValid = false;
+          } else {
+            // Esperar a que se cargue la imagen para verificar dimensiones
+            const validDimensions = await new Promise((resolve) => {
+              const img = new Image();
+              img.onload = function () {
+                const ok = this.width === 1024 && this.height === 768;
+                if (!ok) {
+                  showFormErrors(
+                    'picture',
+                    'La imagen debe tener dimensiones de 1024x768px'
+                  );
+                }
+                resolve(ok);
+              };
+              img.onerror = () => {
+                showFormErrors('picture', 'No se pudo verificar la imagen.');
+                resolve(false);
+              };
+              img.src = URL.createObjectURL(coverFile);
+            });
+      
+            if (!validDimensions) isValid = false;
+          }
+        }
+      }
+
+      if (!isValid) {
+        return;
+      }
+
       // Resetear mensajes de error
       document.querySelectorAll('.invalid-feedback').forEach((el) => {
         el.textContent = '';
         el.style.display = 'none';
       });
-      document.getElementById('success-message').classList.add('d-none');
+      document.querySelectorAll('.success-submit').forEach((element) => {
+        element.classList.add('d-none');
+      });
+
 
       // Mostrar loader
       document.getElementById('loading').classList.remove('d-none');
@@ -168,6 +221,8 @@ async function editActionForm() {
           formData.append('picture', pictureInput.files[0]);
         }
 
+        const { seoFormData, seo } = buildSeoFormData('action');
+
         const response = await fetch(`${backendAPI}edit-action/${id}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
@@ -192,13 +247,48 @@ async function editActionForm() {
           return;
         }
 
+        if (data.success && seo) {
+          if (data.action.seo_setting_id == null) {
+            const seoResponse = await fetch(
+              backendAPI + `create-seo-settings/${data.action.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          } else {
+            const seoResponse = await fetch(
+              backendAPI +
+                `edit-seo-settings/${data.action.seo_setting_id}/${data.action.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          }
+        }
+
         // Mostrar mensaje de éxito
-        const successMessage = document.getElementById('success-message');
-        successMessage.classList.remove('d-none');
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.remove('d-none');
+        });
 
         setTimeout(() => {
-          successMessage.classList.add('d-none');
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
         }, 5000);
+
       } catch (error) {
         console.error('Error al enviar el formulario:', error);
         alert('Error al guardar los cambios: ' + error.message);

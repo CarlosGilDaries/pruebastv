@@ -290,7 +290,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // SEO
     Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
-    Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'store']);
+    Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'update']);
 
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);

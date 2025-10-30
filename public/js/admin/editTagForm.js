@@ -1,6 +1,8 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { getContentTranslations } from '../modules/contentTranslations.js';
 import { validateAddForm } from '../modules/validateAddForm.js';
+import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
+import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   const token = localStorage.getItem('auth_token');
@@ -68,6 +70,9 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.success && data.tag) {
         document.getElementById('name').value = data.tag.name;
         getContentTranslations(languages, id);
+        if (data.tag.seo_setting != null) {
+          getSeoSettingsValues(data.tag.seo_setting);
+        }
       } else {
         throw new Error(data.message || 'Error al cargar la etiqueta');
       }
@@ -79,11 +84,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
   async function submitTagForm(id) {
     const loading = document.getElementById('loading');
-    const successMessage = document.getElementById('success-message');
     const name = document.getElementById('name').value;
 
     loading.classList.remove('d-none');
-    successMessage.classList.add('d-none');
+    document.querySelectorAll('.success-submit').forEach((element) => {
+      element.classList.add('d-none');
+    });
 
     try {
       const languagesResponse = await fetch(`/api/all-languages`, {
@@ -114,6 +120,8 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('cover', coverInput.files[0]);
       }
 
+      const { seoFormData, seo } = buildSeoFormData('tag');
+
       const response = await fetch(`${backendAPI}edit-tag/${id}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
@@ -127,9 +135,45 @@ document.addEventListener('DOMContentLoaded', function () {
       const data = await response.json();
 
       if (data.success) {
-        successMessage.classList.remove('d-none');
+        if (seo) {
+          if (data.tag.seo_setting_id == null) {
+            const seoResponse = await fetch(
+              backendAPI + `create-seo-settings/${data.tag.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          } else {
+            const seoResponse = await fetch(
+              backendAPI +
+                `edit-seo-settings/${data.tag.seo_setting_id}/${data.tag.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          }
+        }
+        
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.remove('d-none');
+        });
+
         setTimeout(() => {
-          successMessage.classList.add('d-none');
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
         }, 5000);
       } else {
         throw new Error(data.message || 'Error al editar la etiqueta');

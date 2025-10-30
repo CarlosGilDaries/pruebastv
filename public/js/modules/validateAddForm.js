@@ -15,6 +15,7 @@ export async function validateAddForm() {
 
   // Validar descripción corta (máximo 500 caracteres)
   let tagline = '';
+  
   if (CKEDITOR.instances.tagline || document.getElementById('tagline')) {
     if (typeof CKEDITOR !== 'undefined' && CKEDITOR.instances.tagline) {
       tagline = CKEDITOR.instances.tagline

@@ -1,6 +1,8 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { getContentTranslations } from '../modules/contentTranslations.js';
 import { validateAddForm } from '../modules/validateAddForm.js';
+import { buildSeoFormData } from '../modules/buildSeoFormData.js';
+import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 
 async function editCategoryForm() {
   const id = localStorage.getItem('id');
@@ -62,7 +64,10 @@ async function editCategoryForm() {
         document.getElementById('priority').value =
           data.category.priority || '';
         document.getElementById('render').checked =
-          data.category.render_at_index === 1;
+          data.category.render_at_index === 1;       
+        if (data.category.seo_setting != null) {
+          getSeoSettingsValues(data.category.seo_setting);
+        }
       } else {
         throw new Error(data.message || 'Error al cargar la categoría');
       }
@@ -95,7 +100,9 @@ async function editCategoryForm() {
 
       const id = localStorage.getItem('id');
       document.getElementById('loading').classList.remove('d-none');
-      document.getElementById('success-message').classList.add('d-none');
+      document.querySelectorAll('.success-submit').forEach((element) => {
+        element.classList.add('d-none');
+      });
 
       try {
         const languagesResponse = await fetch(`/api/all-languages`, {
@@ -134,6 +141,8 @@ async function editCategoryForm() {
           document.getElementById('render').checked ? '1' : '0'
         );
 
+        const { seoFormData, seo } = buildSeoFormData('category');
+
         const response = await fetch(`${backendAPI}edit-category/${id}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
@@ -158,11 +167,48 @@ async function editCategoryForm() {
           return;
         }
 
+        if (data.success && seo) {
+          if (data.category.seo_setting_id == null) {
+            const seoResponse = await fetch(
+              backendAPI + `create-seo-settings/${data.category.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          } else {
+            const seoResponse = await fetch(
+              backendAPI +
+                `edit-seo-settings/${data.category.seo_setting_id}/${data.category.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          }
+        }
+
         // Mostrar mensaje de éxito
-        document.getElementById('success-message').classList.remove('d-none');
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.remove('d-none');
+        });
+
         setTimeout(() => {
-          document.getElementById('success-message').classList.add('d-none');
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
         }, 5000);
+
       } catch (error) {
         console.error('Error submitting form:', error);
         // Mostrar error al usuario

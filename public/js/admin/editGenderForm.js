@@ -1,6 +1,8 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { getContentTranslations } from '../modules/contentTranslations.js';
 import { validateAddForm } from '../modules/validateAddForm.js';
+import { buildSeoFormData } from '../modules/buildSeoFormData.js';
+import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 
 async function editGenderForm() {
   const token = localStorage.getItem('auth_token');
@@ -36,6 +38,9 @@ async function editGenderForm() {
       if (data.success && data.gender) {
         document.getElementById('name').value = data.gender.name || '';
         getContentTranslations(languages, id);
+        if (data.gender.seo_setting != null) {
+          getSeoSettingsValues(data.gender.seo_setting);
+        }
       } else {
         throw new Error(data.message || 'Error al cargar el género');
       }
@@ -65,7 +70,9 @@ async function editGenderForm() {
       }
 
       document.getElementById('loading').classList.remove('d-none');
-      document.getElementById('success-message').classList.add('d-none');
+      document.querySelectorAll('.success-submit').forEach((element) => {
+        element.classList.add('d-none');
+      });
 
       try {
         const languagesResponse = await fetch(`/api/all-languages`, {
@@ -100,6 +107,8 @@ async function editGenderForm() {
           formData.append('cover', coverInput.files[0]);
         }
 
+        const { seoFormData, seo } = buildSeoFormData('gender');
+
         const response = await fetch(`${backendAPI}edit-gender/${id}`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
@@ -124,11 +133,48 @@ async function editGenderForm() {
           return;
         }
 
+        if (data.success && seo) {
+          if (data.gender.seo_setting_id == null) {
+            const seoResponse = await fetch(
+              backendAPI + `create-seo-settings/${data.gender.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          } else {
+            const seoResponse = await fetch(
+              backendAPI +
+                `edit-seo-settings/${data.gender.seo_setting_id}/${data.gender.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          }
+        }
+
         // Mostrar mensaje de éxito
-        document.getElementById('success-message').classList.remove('d-none');
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.remove('d-none');
+        });
+
         setTimeout(() => {
-          document.getElementById('success-message').classList.add('d-none');
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
         }, 5000);
+
       } catch (error) {
         console.error('Error submitting form:', error);
         showAlert('Error al editar el género: ' + error.message, 'danger');
