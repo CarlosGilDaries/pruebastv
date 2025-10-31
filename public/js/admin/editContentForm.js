@@ -1,6 +1,8 @@
 import { validateAddForm } from '../modules/validateAddForm.js';
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { getContentTranslations } from '../modules/contentTranslations.js';
+import { buildSeoFormData } from '../modules/buildSeoFormData.js';
+import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 
 async function editContentForm() {
   let id = localStorage.getItem('id');
@@ -112,6 +114,10 @@ async function editContentForm() {
       const languages = languagesData.languages;
 
       getContentTranslations(languages, id);
+      console.log(content);
+      if (content.seo_setting != null) {
+        getSeoSettingsValues(content.seo_setting);
+      }
 
       // Obtener IDs actuales de planes, categorías y etiquetas
       const currentPlansId = content.plans.map((plan) => plan.id);
@@ -287,6 +293,11 @@ async function editContentForm() {
         return;
       }
 
+      document.getElementById('loading').classList.remove('d-none');
+      document.querySelectorAll('.success-submit').forEach((element) => {
+        element.classList.add('d-none');
+      });
+
       const languagesResponse = await fetch(`/api/all-languages`, {
         method: 'GET',
         headers: {
@@ -432,6 +443,8 @@ async function editContentForm() {
         }
       );
 
+      const { seoFormData, seo } = buildSeoFormData('movie');
+
       try {
         const response = await fetch(
           `/api/update-content/${id}/${permission}`,
@@ -445,13 +458,46 @@ async function editContentForm() {
         const data = await response.json();
 
         if (data.success) {
+          if (seo) {
+            if (data.movie.seo_setting_id == null) {
+              const seoResponse = await fetch(
+                backendAPI + `create-seo-settings/${data.movie.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: seoFormData,
+                }
+              );
+
+              const seoData = await seoResponse.json();
+            } else {
+              const seoResponse = await fetch(
+                backendAPI +
+                  `edit-seo-settings/${data.movie.seo_setting_id}/${data.movie.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: seoFormData,
+                }
+              );
+
+              const seoData = await seoResponse.json();
+            }
+          }
+          
           // Mostrar mensaje de éxito
-          const successMessage = document.getElementById('success-message');
-          successMessage.classList.remove('d-none');
-          successMessage.textContent = 'Contenido actualizado correctamente';
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.remove('d-none');
+          });
 
           setTimeout(() => {
-            successMessage.classList.add('d-none');
+            document.querySelectorAll('.success-submit').forEach((element) => {
+              element.classList.add('d-none');
+            });
           }, 5000);
 
           window.scrollTo({ top: 0, behavior: 'smooth' });

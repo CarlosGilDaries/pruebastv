@@ -456,6 +456,7 @@ class MovieApiController extends Controller
 
             return response()->json([
                 'success' => true,
+                'movie' => $movie,
                 'new_slug' => $movie->slug,
                 'message' => 'Película editada con éxito.'
             ], 200);
