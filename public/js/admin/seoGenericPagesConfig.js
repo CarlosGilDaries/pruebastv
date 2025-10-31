@@ -24,7 +24,7 @@ async function seoSettingsForm() {
           data.settings,
           'categories'
         );
-          const genderValues = getSeoValuesFromKey(data.settings, 'genders');
+        const genderValues = getSeoValuesFromKey(data.settings, 'genders');
         const tagsValues = getSeoValuesFromKey(data.settings, 'tags');
         const plansValues = getSeoValuesFromKey(data.settings, 'plans');
         const profileValues = getSeoValuesFromKey(data.settings, 'profile');
@@ -83,10 +83,18 @@ async function seoSettingsForm() {
     'index',
     'genders',
     'categories',
-    'tags',
-    'plans',
-    'user',
-    'footer',
+      'tags',
+    'profile',
+      'plans',
+      'seen',
+      'favorites',
+      'paid-resources',
+      'payment-history',
+      'legal-notice',
+      'payment-policy',
+      'privacy-policy',
+      'cookies',
+      'contact'
   ];
 
   forms.forEach((key) => {
@@ -108,15 +116,16 @@ async function seoSettingsForm() {
 
         try {
           let formData;
-          if (key != 'user' && key != 'footer') {
-            formData = buildSeoFormData(key);
-          }
+          formData = buildSeoFormData(key);
 
-          const response = await fetch(`${backendAPI}edit-generic-seo-settings/${key}`, {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData,
-          });
+          const response = await fetch(
+            `${backendAPI}edit-generic-seo-settings/${key}`,
+            {
+              method: 'POST',
+              headers: { Authorization: `Bearer ${token}` },
+              body: formData,
+            }
+          );
 
           const data = await response.json();
 
@@ -134,8 +143,8 @@ async function seoSettingsForm() {
               throw new Error(data.message || 'Error al editar el género');
             }
             return;
-            }
-            
+          }
+
           // Mostrar mensaje de éxito
           document.querySelectorAll('.success-submit').forEach((element) => {
             element.classList.remove('d-none');

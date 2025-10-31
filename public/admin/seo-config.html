@@ -273,29 +273,141 @@
           <li class="nav-item" role="presentation">
             <button
               class="nav-link"
-              id="user-tab"
+              id="profile-tab"
               data-bs-toggle="tab"
-              data-bs-target="#user"
+              data-bs-target="#profile"
               type="button"
               role="tab"
-              aria-controls="user"
+              aria-controls="profile"
               aria-selected="true"
             >
-              Usuario
+              Perfil Usuario
             </button>
           </li>
           <li class="nav-item" role="presentation">
             <button
               class="nav-link"
-              id="footer-tab"
+              id="seen-tab"
               data-bs-toggle="tab"
-              data-bs-target="#footer"
+              data-bs-target="#seen"
               type="button"
               role="tab"
-              aria-controls="footer"
+              aria-controls="seen"
               aria-selected="true"
             >
-              Footer
+              Vistos
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="favorites-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#favorites"
+              type="button"
+              role="tab"
+              aria-controls="favorites"
+              aria-selected="true"
+            >
+              Favoritos
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="paid-resources-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#paid-resources"
+              type="button"
+              role="tab"
+              aria-controls="paid-resources"
+              aria-selected="true"
+            >
+              Recursos Pagados
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="payment-history-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#payment-history"
+              type="button"
+              role="tab"
+              aria-controls="payment-history"
+              aria-selected="true"
+            >
+              Historial de Pagos
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="legal-notice-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#legal-notice"
+              type="button"
+              role="tab"
+              aria-controls="legal-notice"
+              aria-selected="true"
+            >
+              Aviso Legal
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="payment-policy-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#payment-policy"
+              type="button"
+              role="tab"
+              aria-controls="payment-policy"
+              aria-selected="true"
+            >
+              Política de Pagos
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="privacy-policy-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#privacy-policy"
+              type="button"
+              role="tab"
+              aria-controls="privacy-policy"
+              aria-selected="true"
+            >
+              Política de Privacidad
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="cookies-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#cookies"
+              type="button"
+              role="tab"
+              aria-controls="cookies"
+              aria-selected="true"
+            >
+              Cookies
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="contact-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#contact"
+              type="button"
+              role="tab"
+              aria-controls="contact"
+              aria-selected="true"
+            >
+              Contacto
             </button>
           </li>
         </ul>
@@ -330,14 +442,19 @@
               <form id="index-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="index-seo-title" class="form-label">Title</label>
+                    <label for="index-seo-title" class="form-label"
+                      >Title</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="index-seo-title"
                       name="index-seo-title"
                     />
-                    <div id="index-seo-title-error" class="invalid-feedback"></div>
+                    <div
+                      id="index-seo-title-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="index-seo-keywords" class="form-label"
@@ -349,29 +466,42 @@
                       id="index-seo-keywords"
                       name="index-seo-keywords"
                     />
-                    <div id="index-seo-keywords-error" class="invalid-feedback"></div>
+                    <div
+                      id="index-seo-keywords-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="index-seo-robots" class="form-label">Robots</label>
+                    <label for="index-seo-robots" class="form-label"
+                      >Robots</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="index-seo-robots"
                       name="index-seo-robots"
                     />
-                    <div id="index-seo-robots-error" class="invalid-feedback"></div>
+                    <div
+                      id="index-seo-robots-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="index-seo-alias" class="form-label">Alias</label>
+                    <label for="index-seo-alias" class="form-label"
+                      >Alias</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="index-seo-alias"
                       name="index-seo-alias"
                     />
-                    <div id="index-seo-alias-error" class="invalid-feedback"></div>
+                    <div
+                      id="index-seo-alias-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -382,7 +512,10 @@
                       id="index-seo-url"
                       name="index-seo-url"
                     ></textarea>
-                    <div id="index-seo-url-error" class="invalid-feedback"></div>
+                    <div
+                      id="index-seo-url-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -427,14 +560,19 @@
               <form id="genders-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="genders-seo-title" class="form-label">Title</label>
+                    <label for="genders-seo-title" class="form-label"
+                      >Title</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="genders-seo-title"
                       name="genders-seo-title"
                     />
-                    <div id="genders-seo-title-error" class="invalid-feedback"></div>
+                    <div
+                      id="genders-seo-title-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="genders-seo-keywords" class="form-label"
@@ -446,29 +584,42 @@
                       id="genders-seo-keywords"
                       name="genders-seo-keywords"
                     />
-                    <div id="genders-seo-keywords-error" class="invalid-feedback"></div>
+                    <div
+                      id="genders-seo-keywords-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="genders-seo-robots" class="form-label">Robots</label>
+                    <label for="genders-seo-robots" class="form-label"
+                      >Robots</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="genders-seo-robots"
                       name="genders-seo-robots"
                     />
-                    <div id="genders-seo-robots-error" class="invalid-feedback"></div>
+                    <div
+                      id="genders-seo-robots-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="genders-seo-alias" class="form-label">Alias</label>
+                    <label for="genders-seo-alias" class="form-label"
+                      >Alias</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="genders-seo-alias"
                       name="genders-seo-alias"
                     />
-                    <div id="genders-seo-alias-error" class="invalid-feedback"></div>
+                    <div
+                      id="genders-seo-alias-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -479,7 +630,10 @@
                       id="genders-seo-url"
                       name="genders-seo-url"
                     ></textarea>
-                    <div id="genders-seo-url-error" class="invalid-feedback"></div>
+                    <div
+                      id="genders-seo-url-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -524,14 +678,19 @@
               <form id="categories-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="categories-seo-title" class="form-label">Title</label>
+                    <label for="categories-seo-title" class="form-label"
+                      >Title</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="categories-seo-title"
                       name="categories-seo-title"
                     />
-                    <div id="categories-seo-title-error" class="invalid-feedback"></div>
+                    <div
+                      id="categories-seo-title-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="categories-seo-keywords" class="form-label"
@@ -543,40 +702,58 @@
                       id="categories-seo-keywords"
                       name="categories-seo-keywords"
                     />
-                    <div id="categories-seo-keywords-error" class="invalid-feedback"></div>
+                    <div
+                      id="categories-seo-keywords-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="categories-seo-robots" class="form-label">Robots</label>
+                    <label for="categories-seo-robots" class="form-label"
+                      >Robots</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="categories-seo-robots"
                       name="categories-seo-robots"
                     />
-                    <div id="categories-seo-robots-error" class="invalid-feedback"></div>
+                    <div
+                      id="categories-seo-robots-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="categories-seo-alias" class="form-label">Alias</label>
+                    <label for="categories-seo-alias" class="form-label"
+                      >Alias</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="categories-seo-alias"
                       name="categories-seo-alias"
                     />
-                    <div id="categories-seo-alias-error" class="invalid-feedback"></div>
+                    <div
+                      id="categories-seo-alias-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="categories-seo-url" class="form-label">Url</label>
+                    <label for="categories-seo-url" class="form-label"
+                      >Url</label
+                    >
                     <textarea
                       class="form-control"
                       id="categories-seo-url"
                       name="categories-seo-url"
                     ></textarea>
-                    <div id="categories-seo-url-error" class="invalid-feedback"></div>
+                    <div
+                      id="categories-seo-url-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -628,7 +805,10 @@
                       id="tags-seo-title"
                       name="tags-seo-title"
                     />
-                    <div id="tags-seo-title-error" class="invalid-feedback"></div>
+                    <div
+                      id="tags-seo-title-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="tags-seo-keywords" class="form-label"
@@ -640,19 +820,27 @@
                       id="tags-seo-keywords"
                       name="tags-seo-keywords"
                     />
-                    <div id="tags-seo-keywords-error" class="invalid-feedback"></div>
+                    <div
+                      id="tags-seo-keywords-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="tags-seo-robots" class="form-label">Robots</label>
+                    <label for="tags-seo-robots" class="form-label"
+                      >Robots</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="tags-seo-robots"
                       name="tags-seo-robots"
                     />
-                    <div id="tags-seo-robots-error" class="invalid-feedback"></div>
+                    <div
+                      id="tags-seo-robots-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="tags-seo-alias" class="form-label">Alias</label>
@@ -662,7 +850,10 @@
                       id="tags-seo-alias"
                       name="tags-seo-alias"
                     />
-                    <div id="tags-seo-alias-error" class="invalid-feedback"></div>
+                    <div
+                      id="tags-seo-alias-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -718,14 +909,19 @@
               <form id="plans-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="plans-seo-title" class="form-label">Title</label>
+                    <label for="plans-seo-title" class="form-label"
+                      >Title</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="plans-seo-title"
                       name="plans-seo-title"
                     />
-                    <div id="plans-seo-title-error" class="invalid-feedback"></div>
+                    <div
+                      id="plans-seo-title-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
                     <label for="plans-seo-keywords" class="form-label"
@@ -737,29 +933,42 @@
                       id="plans-seo-keywords"
                       name="plans-seo-keywords"
                     />
-                    <div id="plans-seo-keywords-error" class="invalid-feedback"></div>
+                    <div
+                      id="plans-seo-keywords-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="plans-seo-robots" class="form-label">Robots</label>
+                    <label for="plans-seo-robots" class="form-label"
+                      >Robots</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="plans-seo-robots"
                       name="plans-seo-robots"
                     />
-                    <div id="plans-seo-robots-error" class="invalid-feedback"></div>
+                    <div
+                      id="plans-seo-robots-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="plans-seo-alias" class="form-label">Alias</label>
+                    <label for="plans-seo-alias" class="form-label"
+                      >Alias</label
+                    >
                     <input
                       type="text"
                       class="form-control"
                       id="plans-seo-alias"
                       name="plans-seo-alias"
                     />
-                    <div id="plans-seo-alias-error" class="invalid-feedback"></div>
+                    <div
+                      id="plans-seo-alias-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -770,7 +979,10 @@
                       id="plans-seo-url"
                       name="plans-seo-url"
                     ></textarea>
-                    <div id="plans-seo-url-error" class="invalid-feedback"></div>
+                    <div
+                      id="plans-seo-url-error"
+                      class="invalid-feedback"
+                    ></div>
                   </div>
                 </div>
                 <div class="row">
@@ -796,21 +1008,23 @@
             </div>
           </div>
 
-          <!-- Pestaña Usuario -->
+          <!-- Pestaña Perfil -->
           <div
-            class="tab-pane fade"
-            id="user"
+            class="tab-pane fade show"
+            id="profile"
             role="tabpanel"
-            aria-labelledby="user-tab"
+            aria-labelledby="profile-tab"
           >
             <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Perfil
+              </h1>
+
               <div class="alert alert-success d-none success-submit">
                 Configuración editada con éxito
               </div>
 
-              <form id="user-form" class="needs-validation" novalidate>
-                <!-- Perfil -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Perfil</h2>
+              <form id="profile-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="profile-seo-title" class="form-label"
@@ -905,9 +1119,30 @@
                     ></div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
 
-                <!-- Vistos -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Vistos</h2>
+          <!-- Pestaña Vistos -->
+          <div
+            class="tab-pane fade show"
+            id="seen"
+            role="tabpanel"
+            aria-labelledby="seen-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Vistos
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form id="seen-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="seen-seo-title" class="form-label">Title</label>
@@ -995,9 +1230,30 @@
                     ></div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
 
-                <!-- Favoritos -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Favoritos</h2>
+          <!-- Pestaña Favoritos -->
+          <div
+            class="tab-pane fade show"
+            id="favorites"
+            role="tabpanel"
+            aria-labelledby="favorites-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Favoritos
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form id="favorites-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="favorites-seo-title" class="form-label"
@@ -1094,9 +1350,34 @@
                     ></div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
 
-                <!-- Recursos pagados -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Recursos Pagados</h2>
+          <!-- Pestaña Recursos Pagados -->
+          <div
+            class="tab-pane fade show"
+            id="paid-resources"
+            role="tabpanel"
+            aria-labelledby="paid-resources-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Inicio
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form
+                id="paid-resources-form"
+                class="needs-validation"
+                novalidate
+              >
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="paid-resources-seo-title" class="form-label"
@@ -1195,9 +1476,34 @@
                     ></div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
 
-                <!-- Historial de PAgos -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Historial de Pagos</h2>
+          <!-- Pestaña Historial de Pagos -->
+          <div
+            class="tab-pane fade show"
+            id="payment-history"
+            role="tabpanel"
+            aria-labelledby="payment-history-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Historial de Pagos
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form
+                id="payment-history-form"
+                class="needs-validation"
+                novalidate
+              >
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="payment-history-seo-title" class="form-label"
@@ -1296,7 +1602,6 @@
                     ></div>
                   </div>
                 </div>
-
                 <button type="submit" class="btn btn-success">
                   Guardar Configuración
                 </button>
@@ -1304,122 +1609,27 @@
             </div>
           </div>
 
-          <!-- Pestaña Footer -->
+          <!-- Pestaña Política de Privacidad -->
           <div
-            class="tab-pane fade"
-            id="footer"
+            class="tab-pane fade show"
+            id="privacy-policy"
             role="tabpanel"
-            aria-labelledby="footer-tab"
+            aria-labelledby="privacy-policy-tab"
           >
             <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Política de Privacidad
+              </h1>
+
               <div class="alert alert-success d-none success-submit">
                 Configuración editada con éxito
               </div>
 
-              <form id="footer-form" class="needs-validation" novalidate>
-                <!-- Aviso Legal -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Aviso Legal</h2>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="legal-notice-seo-title" class="form-label"
-                      >Title</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="legal-notice-seo-title"
-                      name="legal-notice-seo-title"
-                    />
-                    <div
-                      id="legal-notice-seo-title-error"
-                      class="invalid-feedback"
-                    ></div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="legal-notice-seo-keywords" class="form-label"
-                      >Keywords</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="legal-notice-seo-keywords"
-                      name="legal-notice-seo-keywords"
-                    />
-                    <div
-                      id="legal-notice-seo-keywords-error"
-                      class="invalid-feedback"
-                    ></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="legal-notice-seo-robots" class="form-label"
-                      >Robots</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="legal-notice-seo-robots"
-                      name="legal-notice-seo-robots"
-                    />
-                    <div
-                      id="legal-notice-seo-robots-error"
-                      class="invalid-feedback"
-                    ></div>
-                  </div>
-                  <div class="col-md-6 mb-3">
-                    <label for="legal-notice-seo-alias" class="form-label"
-                      >Alias</label
-                    >
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="legal-notice-seo-alias"
-                      name="legal-notice-seo-alias"
-                    />
-                    <div
-                      id="legal-notice-seo-alias-error"
-                      class="invalid-feedback"
-                    ></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 mb-3">
-                    <label for="legal-notice-seo-url" class="form-label"
-                      >Url</label
-                    >
-                    <textarea
-                      class="form-control"
-                      id="legal-notice-seo-url"
-                      name="legal-notice-seo-url"
-                    ></textarea>
-                    <div
-                      id="legal-notice-seo-url-error"
-                      class="invalid-feedback"
-                    ></div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-12 mb-3">
-                    <label
-                      for="legal-notice-seo-description"
-                      class="form-label"
-                      >Description</label
-                    >
-                    <textarea
-                      class="form-control"
-                      id="legal-notice-seo-description"
-                      name="legal-notice-seo-description"
-                    ></textarea>
-                    <div
-                      id="legal-notice-seo-description-error"
-                      class="invalid-feedback"
-                    ></div>
-                  </div>
-                </div>
-
-                <!-- Política de privacidad -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Política de Privacidad</h2>
+              <form
+                id="privacy-policy-form"
+                class="needs-validation"
+                novalidate
+              >
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="privacy-policy-seo-title" class="form-label"
@@ -1518,9 +1728,34 @@
                     ></div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
 
-                <!-- Política de Pagos -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Política de Pagos</h2>
+          <!-- Pestaña Política de Pagos -->
+          <div
+            class="tab-pane fade show"
+            id="payment-policy"
+            role="tabpanel"
+            aria-labelledby="payment-policy-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Política de Pagos
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form
+                id="payment-policy-form"
+                class="needs-validation"
+                novalidate
+              >
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="payment-policy-seo-title" class="form-label"
@@ -1619,9 +1854,30 @@
                     ></div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
 
-                <!-- Cookies -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Página Cookies</h2>
+          <!-- Pestaña Cookies -->
+          <div
+            class="tab-pane fade show"
+            id="cookies"
+            role="tabpanel"
+            aria-labelledby="cookies-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Cookies
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form id="cookies-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="cookies-seo-title" class="form-label"
@@ -1688,9 +1944,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="cookies-seo-url" class="form-label"
-                      >Url</label
-                    >
+                    <label for="cookies-seo-url" class="form-label">Url</label>
                     <textarea
                       class="form-control"
                       id="cookies-seo-url"
@@ -1704,9 +1958,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label
-                      for="cookies-seo-description"
-                      class="form-label"
+                    <label for="cookies-seo-description" class="form-label"
                       >Description</label
                     >
                     <textarea
@@ -1720,9 +1972,30 @@
                     ></div>
                   </div>
                 </div>
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
 
-                <!-- Contacto -->
-                <h2 class="mb-4 mt-4"><i class="fa-solid fa-magnifying-glass me-2"></i> Página Contacto</h2>
+          <!-- Pestaña Contact -->
+          <div
+            class="tab-pane fade show"
+            id="contact"
+            role="tabpanel"
+            aria-labelledby="contact-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Contacto
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form id="contact-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
                     <label for="contact-seo-title" class="form-label"
@@ -1789,9 +2062,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="contact-seo-url" class="form-label"
-                      >Url</label
-                    >
+                    <label for="contact-seo-url" class="form-label">Url</label>
                     <textarea
                       class="form-control"
                       id="contact-seo-url"
@@ -1805,9 +2076,7 @@
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label
-                      for="contact-seo-description"
-                      class="form-label"
+                    <label for="contact-seo-description" class="form-label"
                       >Description</label
                     >
                     <textarea
@@ -1821,7 +2090,126 @@
                     ></div>
                   </div>
                 </div>
-                
+                <button type="submit" class="btn btn-success">
+                  Guardar Configuración
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Pestaña Aviso Legal -->
+          <div
+            class="tab-pane fade show"
+            id="legal-notice"
+            role="tabpanel"
+            aria-labelledby="legal-notice-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-magnifying-glass me-2"></i>Aviso Legal
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form id="legal-notice-form" class="needs-validation" novalidate>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="legal-notice-seo-title" class="form-label"
+                      >Title</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="legal-notice-seo-title"
+                      name="legal-notice-seo-title"
+                    />
+                    <div
+                      id="legal-notice-seo-title-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="legal-notice-seo-keywords" class="form-label"
+                      >Keywords</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="legal-notice-seo-keywords"
+                      name="legal-notice-seo-keywords"
+                    />
+                    <div
+                      id="legal-notice-seo-keywords-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="legal-notice-seo-robots" class="form-label"
+                      >Robots</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="legal-notice-seo-robots"
+                      name="legal-notice-seo-robots"
+                    />
+                    <div
+                      id="legal-notice-seo-robots-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="legal-notice-seo-alias" class="form-label"
+                      >Alias</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="legal-notice-seo-alias"
+                      name="legal-notice-seo-alias"
+                    />
+                    <div
+                      id="legal-notice-seo-alias-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <label for="legal-notice-seo-url" class="form-label"
+                      >Url</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="legal-notice-seo-url"
+                      name="legal-notice-seo-url"
+                    ></textarea>
+                    <div
+                      id="legal-notice-seo-url-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <label for="legal-notice-seo-description" class="form-label"
+                      >Description</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="legal-notice-seo-description"
+                      name="legal-notice-seo-description"
+                    ></textarea>
+                    <div
+                      id="legal-notice-seo-description-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+                </div>
                 <button type="submit" class="btn btn-success">
                   Guardar Configuración
                 </button>
