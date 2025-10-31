@@ -14,6 +14,26 @@ use Illuminate\Support\Facades\Log;
 
 class SeoSettingController extends Controller
 {
+    public function index()
+    {
+        try {
+            $settings = SeoSetting::all();
+
+            return response()->json([
+                'success' => true,
+                'settings' => $settings
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error en genericPageShow SeoSettingController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en genericPageShow SeoSettingController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
     public function genericPageShow($key)
     {
         try {
@@ -170,17 +190,21 @@ class SeoSettingController extends Controller
         }
     }
 
-    public function genericPageUpdate(Request $request, $id)
+    public function genericPageUpdate(Request $request, $key)
     {
         try {
-            $settings = SeoSetting::where('id', $id)->first();
-            $settings->title = sanitize_html($request->title);
-            $settings->description = sanitize_html($request->description);
-            $settings->keywords = sanitize_html($request->keywords);
-            $settings->robots = sanitize_html($request->robots);
-            $settings->url = sanitize_html($request->url);
-            $settings->alias = sanitize_html($request->alias);
-            $settings->save();
+            $settings = SeoSetting::updateOrCreate(
+                ['key' => $key],
+                [
+                    'key' => $key,
+                    'title' => sanitize_html($request->title),
+                    'description' => sanitize_html($request->description),
+                    'keywords' => sanitize_html($request->keywords),
+                    'robots' => sanitize_html($request->robots),
+                    'url' => sanitize_html($request->url),
+                    'alias' => sanitize_html($request->alias),
+                ]
+            );
 
             return response()->json([
                 'success' => true,

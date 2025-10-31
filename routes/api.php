@@ -293,7 +293,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         CheckPermissions::class . ':seo_config',
     ])->group(function () {
         Route::post('create-generic-seo-settings', [SeoSettingController::class, 'genericPageStore']);
-        Route::post('edit-generic-seo-settings/{id}', [SeoSettingController::class, 'genericPageUpdate']);
+        Route::post('edit-generic-seo-settings/{key}', [SeoSettingController::class, 'genericPageUpdate']);
     });
     Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
     Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'update']);
@@ -341,6 +341,7 @@ Route::get('cookies', [CookieController::class, 'index']);
 Route::get('payment-politic', [PaymentPoliticController::class, 'index']);
 Route::get('languages', [LanguageController::class, 'index']);
 Route::get('language/{code}', [LanguageController::class, 'show']);
+Route::get('all-seo-settings', [SeoSettingController::class, 'index']);
 
 Route::get('check-email/{email}', [LoginApiController::class, 'checkEmail']);
 Route::get('check-dni/{dni}', [LoginApiController::class, 'checkDni']);

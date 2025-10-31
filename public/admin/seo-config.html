@@ -17,7 +17,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <title>Añadir Género</title>
+    <title>Configuración SEO</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
@@ -198,7 +198,7 @@
         </div>
       </aside>
 
-      <div class="container p-3 p-md-5">
+      <div class="container p-3 p-md-5 admin-panel" id="seo-config">
         <ul class="nav nav-tabs" id="SeoTabs" role="tablist">
           <li class="nav-item" role="presentation">
             <button
@@ -302,6 +302,15 @@
 
         <!-- Contenido de las pestañas -->
         <div class="tab-content" id="SeoTabsContent">
+          <div
+            class="d-flex justify-content-center align-items-center my-4 d-none"
+            id="loading"
+          >
+            <div class="spinner-border me-3" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Editando configuración, por favor espere...</p>
+          </div>
           <!-- Pestaña Inicio -->
           <div
             class="tab-pane fade show active"
@@ -321,73 +330,73 @@
               <form id="index-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-title" class="form-label">Title</label>
+                    <label for="index-seo-title" class="form-label">Title</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-title"
-                      name="seo-title"
+                      id="index-seo-title"
+                      name="index-seo-title"
                     />
-                    <div id="seo-title-error" class="invalid-feedback"></div>
+                    <div id="index-seo-title-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-keywords" class="form-label"
+                    <label for="index-seo-keywords" class="form-label"
                       >Keywords</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-keywords"
-                      name="seo-keywords"
+                      id="index-seo-keywords"
+                      name="index-seo-keywords"
                     />
-                    <div id="seo-keywords-error" class="invalid-feedback"></div>
+                    <div id="index-seo-keywords-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-robots" class="form-label">Robots</label>
+                    <label for="index-seo-robots" class="form-label">Robots</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-robots"
-                      name="seo-robots"
+                      id="index-seo-robots"
+                      name="index-seo-robots"
                     />
-                    <div id="seo-robots-error" class="invalid-feedback"></div>
+                    <div id="index-seo-robots-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-alias" class="form-label">Alias</label>
+                    <label for="index-seo-alias" class="form-label">Alias</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-alias"
-                      name="seo-alias"
+                      id="index-seo-alias"
+                      name="index-seo-alias"
                     />
-                    <div id="seo-alias-error" class="invalid-feedback"></div>
+                    <div id="index-seo-alias-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-url" class="form-label">Url</label>
+                    <label for="index-seo-url" class="form-label">Url</label>
                     <textarea
                       class="form-control"
-                      id="seo-url"
-                      name="seo-url"
+                      id="index-seo-url"
+                      name="index-seo-url"
                     ></textarea>
-                    <div id="seo-url-error" class="invalid-feedback"></div>
+                    <div id="index-seo-url-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-description" class="form-label"
+                    <label for="index-seo-description" class="form-label"
                       >Description</label
                     >
                     <textarea
                       class="form-control"
-                      id="seo-description"
-                      name="seo-description"
+                      id="index-seo-description"
+                      name="index-seo-description"
                     ></textarea>
                     <div
-                      id="seo-description-error"
+                      id="index-seo-description-error"
                       class="invalid-feedback"
                     ></div>
                   </div>
@@ -418,73 +427,73 @@
               <form id="genders-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-title" class="form-label">Title</label>
+                    <label for="genders-seo-title" class="form-label">Title</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-title"
-                      name="seo-title"
+                      id="genders-seo-title"
+                      name="genders-seo-title"
                     />
-                    <div id="seo-title-error" class="invalid-feedback"></div>
+                    <div id="genders-seo-title-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-keywords" class="form-label"
+                    <label for="genders-seo-keywords" class="form-label"
                       >Keywords</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-keywords"
-                      name="seo-keywords"
+                      id="genders-seo-keywords"
+                      name="genders-seo-keywords"
                     />
-                    <div id="seo-keywords-error" class="invalid-feedback"></div>
+                    <div id="genders-seo-keywords-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-robots" class="form-label">Robots</label>
+                    <label for="genders-seo-robots" class="form-label">Robots</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-robots"
-                      name="seo-robots"
+                      id="genders-seo-robots"
+                      name="genders-seo-robots"
                     />
-                    <div id="seo-robots-error" class="invalid-feedback"></div>
+                    <div id="genders-seo-robots-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-alias" class="form-label">Alias</label>
+                    <label for="genders-seo-alias" class="form-label">Alias</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-alias"
-                      name="seo-alias"
+                      id="genders-seo-alias"
+                      name="genders-seo-alias"
                     />
-                    <div id="seo-alias-error" class="invalid-feedback"></div>
+                    <div id="genders-seo-alias-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-url" class="form-label">Url</label>
+                    <label for="genders-seo-url" class="form-label">Url</label>
                     <textarea
                       class="form-control"
-                      id="seo-url"
-                      name="seo-url"
+                      id="genders-seo-url"
+                      name="genders-seo-url"
                     ></textarea>
-                    <div id="seo-url-error" class="invalid-feedback"></div>
+                    <div id="genders-seo-url-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-description" class="form-label"
+                    <label for="genders-seo-description" class="form-label"
                       >Description</label
                     >
                     <textarea
                       class="form-control"
-                      id="seo-description"
-                      name="seo-description"
+                      id="genders-seo-description"
+                      name="genders-seo-description"
                     ></textarea>
                     <div
-                      id="seo-description-error"
+                      id="genders-seo-description-error"
                       class="invalid-feedback"
                     ></div>
                   </div>
@@ -515,73 +524,73 @@
               <form id="categories-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-title" class="form-label">Title</label>
+                    <label for="categories-seo-title" class="form-label">Title</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-title"
-                      name="seo-title"
+                      id="categories-seo-title"
+                      name="categories-seo-title"
                     />
-                    <div id="seo-title-error" class="invalid-feedback"></div>
+                    <div id="categories-seo-title-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-keywords" class="form-label"
+                    <label for="categories-seo-keywords" class="form-label"
                       >Keywords</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-keywords"
-                      name="seo-keywords"
+                      id="categories-seo-keywords"
+                      name="categories-seo-keywords"
                     />
-                    <div id="seo-keywords-error" class="invalid-feedback"></div>
+                    <div id="categories-seo-keywords-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-robots" class="form-label">Robots</label>
+                    <label for="categories-seo-robots" class="form-label">Robots</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-robots"
-                      name="seo-robots"
+                      id="categories-seo-robots"
+                      name="categories-seo-robots"
                     />
-                    <div id="seo-robots-error" class="invalid-feedback"></div>
+                    <div id="categories-seo-robots-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-alias" class="form-label">Alias</label>
+                    <label for="categories-seo-alias" class="form-label">Alias</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-alias"
-                      name="seo-alias"
+                      id="categories-seo-alias"
+                      name="categories-seo-alias"
                     />
-                    <div id="seo-alias-error" class="invalid-feedback"></div>
+                    <div id="categories-seo-alias-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-url" class="form-label">Url</label>
+                    <label for="categories-seo-url" class="form-label">Url</label>
                     <textarea
                       class="form-control"
-                      id="seo-url"
-                      name="seo-url"
+                      id="categories-seo-url"
+                      name="categories-seo-url"
                     ></textarea>
-                    <div id="seo-url-error" class="invalid-feedback"></div>
+                    <div id="categories-seo-url-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-description" class="form-label"
+                    <label for="categories-seo-description" class="form-label"
                       >Description</label
                     >
                     <textarea
                       class="form-control"
-                      id="seo-description"
-                      name="seo-description"
+                      id="categories-seo-description"
+                      name="categories-seo-description"
                     ></textarea>
                     <div
-                      id="seo-description-error"
+                      id="categories-seo-description-error"
                       class="invalid-feedback"
                     ></div>
                   </div>
@@ -612,73 +621,73 @@
               <form id="tags-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-title" class="form-label">Title</label>
+                    <label for="tags-seo-title" class="form-label">Title</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-title"
-                      name="seo-title"
+                      id="tags-seo-title"
+                      name="tags-seo-title"
                     />
-                    <div id="seo-title-error" class="invalid-feedback"></div>
+                    <div id="tags-seo-title-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-keywords" class="form-label"
+                    <label for="tags-seo-keywords" class="form-label"
                       >Keywords</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-keywords"
-                      name="seo-keywords"
+                      id="tags-seo-keywords"
+                      name="tags-seo-keywords"
                     />
-                    <div id="seo-keywords-error" class="invalid-feedback"></div>
+                    <div id="tags-seo-keywords-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-robots" class="form-label">Robots</label>
+                    <label for="tags-seo-robots" class="form-label">Robots</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-robots"
-                      name="seo-robots"
+                      id="tags-seo-robots"
+                      name="tags-seo-robots"
                     />
-                    <div id="seo-robots-error" class="invalid-feedback"></div>
+                    <div id="tags-seo-robots-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-alias" class="form-label">Alias</label>
+                    <label for="tags-seo-alias" class="form-label">Alias</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-alias"
-                      name="seo-alias"
+                      id="tags-seo-alias"
+                      name="tags-seo-alias"
                     />
-                    <div id="seo-alias-error" class="invalid-feedback"></div>
+                    <div id="tags-seo-alias-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-url" class="form-label">Url</label>
+                    <label for="tags-seo-url" class="form-label">Url</label>
                     <textarea
                       class="form-control"
-                      id="seo-url"
-                      name="seo-url"
+                      id="tags-seo-url"
+                      name="tags-seo-url"
                     ></textarea>
-                    <div id="seo-url-error" class="invalid-feedback"></div>
+                    <div id="tags-seo-url-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-description" class="form-label"
+                    <label for="tags-seo-description" class="form-label"
                       >Description</label
                     >
                     <textarea
                       class="form-control"
-                      id="seo-description"
-                      name="seo-description"
+                      id="tags-seo-description"
+                      name="tags-seo-description"
                     ></textarea>
                     <div
-                      id="seo-description-error"
+                      id="tags-seo-description-error"
                       class="invalid-feedback"
                     ></div>
                   </div>
@@ -709,73 +718,73 @@
               <form id="plans-form" class="needs-validation" novalidate>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-title" class="form-label">Title</label>
+                    <label for="plans-seo-title" class="form-label">Title</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-title"
-                      name="seo-title"
+                      id="plans-seo-title"
+                      name="plans-seo-title"
                     />
-                    <div id="seo-title-error" class="invalid-feedback"></div>
+                    <div id="plans-seo-title-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-keywords" class="form-label"
+                    <label for="plans-seo-keywords" class="form-label"
                       >Keywords</label
                     >
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-keywords"
-                      name="seo-keywords"
+                      id="plans-seo-keywords"
+                      name="plans-seo-keywords"
                     />
-                    <div id="seo-keywords-error" class="invalid-feedback"></div>
+                    <div id="plans-seo-keywords-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <label for="seo-robots" class="form-label">Robots</label>
+                    <label for="plans-seo-robots" class="form-label">Robots</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-robots"
-                      name="seo-robots"
+                      id="plans-seo-robots"
+                      name="plans-seo-robots"
                     />
-                    <div id="seo-robots-error" class="invalid-feedback"></div>
+                    <div id="plans-seo-robots-error" class="invalid-feedback"></div>
                   </div>
                   <div class="col-md-6 mb-3">
-                    <label for="seo-alias" class="form-label">Alias</label>
+                    <label for="plans-seo-alias" class="form-label">Alias</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="seo-alias"
-                      name="seo-alias"
+                      id="plans-seo-alias"
+                      name="plans-seo-alias"
                     />
-                    <div id="seo-alias-error" class="invalid-feedback"></div>
+                    <div id="plans-seo-alias-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-url" class="form-label">Url</label>
+                    <label for="plans-seo-url" class="form-label">Url</label>
                     <textarea
                       class="form-control"
-                      id="seo-url"
-                      name="seo-url"
+                      id="plans-seo-url"
+                      name="plans-seo-url"
                     ></textarea>
-                    <div id="seo-url-error" class="invalid-feedback"></div>
+                    <div id="plans-seo-url-error" class="invalid-feedback"></div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-12 mb-3">
-                    <label for="seo-description" class="form-label"
+                    <label for="plans-seo-description" class="form-label"
                       >Description</label
                     >
                     <textarea
                       class="form-control"
-                      id="seo-description"
-                      name="seo-description"
+                      id="plans-seo-description"
+                      name="plans-seo-description"
                     ></textarea>
                     <div
-                      id="seo-description-error"
+                      id="plans-seo-description-error"
                       class="invalid-feedback"
                     ></div>
                   </div>
