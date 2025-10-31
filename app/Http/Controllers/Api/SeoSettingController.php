@@ -88,6 +88,34 @@ class SeoSettingController extends Controller
         }
     }
 
+    public function genericPageStore(Request $request)
+    {
+        try {
+            $settings = new SeoSetting();
+            $settings->key = sanitize_html($request->key);
+            $settings->title = sanitize_html($request->title);
+            $settings->description = sanitize_html($request->description);
+            $settings->keywords = sanitize_html($request->keywords);
+            $settings->robots = sanitize_html($request->robots);
+            $settings->url = sanitize_html($request->url);
+            $settings->alias = sanitize_html($request->alias);
+            $settings->save();
+
+            return response()->json([
+                'success' => true,
+                'settings' => $settings
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error en genericPageStore SeoSettingController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en genericPageStore SeoSettingController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
     public function update(Request $request, $settingId, $id)
     {
         try {
@@ -138,6 +166,33 @@ class SeoSettingController extends Controller
 			return response()->json([
 				'success' => false,
 				'message' => 'Error en update SeoSettingController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
+    public function genericPageUpdate(Request $request, $id)
+    {
+        try {
+            $settings = SeoSetting::where('id', $id)->first();
+            $settings->title = sanitize_html($request->title);
+            $settings->description = sanitize_html($request->description);
+            $settings->keywords = sanitize_html($request->keywords);
+            $settings->robots = sanitize_html($request->robots);
+            $settings->url = sanitize_html($request->url);
+            $settings->alias = sanitize_html($request->alias);
+            $settings->save();
+
+            return response()->json([
+                'success' => true,
+                'settings' => $settings
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error en genericPageUpdate SeoSettingController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en genericPageUpdate SeoSettingController: ' . $e->getMessage(),
 			], 500);
         }
     }

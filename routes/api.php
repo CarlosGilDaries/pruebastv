@@ -288,7 +288,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::delete('delete-language', [LanguageController::class, 'destroy']);
     });
 
-    // SEO
+    // Rutas de SEO protegidas
+    Route::middleware([
+        CheckPermissions::class . ':seo_config',
+    ])->group(function () {
+        Route::post('create-generic-seo-settings', [SeoSettingController::class, 'genericPageStore']);
+        Route::post('edit-generic-seo-settings/{id}', [SeoSettingController::class, 'genericPageUpdate']);
+    });
     Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
     Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'update']);
 

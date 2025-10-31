@@ -1,13 +1,14 @@
 import { logOut } from '../modules/logOut.js';
 import { adminCheck } from '../modules/adminCheck.js';
+import { generateAdminSidebar } from './generateAdminSidebar.js';
 
 const email = localStorage.getItem('current_user_email');
 const device_id = localStorage.getItem('device_id_' + email);
 const token = localStorage.getItem('auth_token');
 const backendAPI = '/api/';
 const logOutButton = document.getElementById('logout-button');
-const container = document.querySelector('.admin-panel');
-const links = document.querySelectorAll('.admin-menu .nav-link');
+
+generateAdminSidebar();
 
 const permissionToContentMap = {
   contenido_local: 'list-local-content',
@@ -98,14 +99,5 @@ adminCheck(token);
 
 logOutButton.addEventListener('click', function() {
 	logOut(token);
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-  links.forEach((link) => {
-    const li = link.closest('li');
-    if (container && li && li.getAttribute('data-content') == container.id) {
-      link.classList.add('active');
-    }
-  });
 });
 
