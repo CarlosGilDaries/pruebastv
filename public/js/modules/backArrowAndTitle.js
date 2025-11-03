@@ -5,8 +5,15 @@ export function setupBackArrowAndTitle(player, content) {
   const backButton = document.createElement('img');
   backButton.src = '/images/left.png';
   backButton.className = 'vjs-back-button';
+  
+  let location;
+  if (content.seo_setting && content.seo_setting.url) {
+    location = content.seo_setting.url;
+  } else {
+    location = `/contenido/${content.slug}`;
+  }
   backButton.addEventListener('click', () => {
-    window.location.href = `/content/${content.slug}`;
+    window.location.href = location;
   });
 
   const videoTitle = document.createElement('div');

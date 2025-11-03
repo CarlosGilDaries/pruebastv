@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Language;
+use App\Models\SeoSetting;
 use App\Models\Translation;
 use Illuminate\Support\Facades\Log;
 use DataTables;
@@ -17,9 +18,10 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-			$categories = Category::with(['movies' => function ($query) {
+			$categories = Category::with(['seoSetting', 'movies' => function ($query) {
 				$query->orderBy('created_at', 'desc')
-                ->with('gender');
+                ->with('gender')
+                ->with('seoSetting');
 			}])
             ->where('render_at_index', 1)
             ->orderBy('priority')
@@ -102,7 +104,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         try {
-            $category = Category::with('seoSetting', 'movies.gender')->where('id', $id)->first();
+            $category = Category::with('seoSetting', 'movies.gender', 'movies.SeoSetting')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,

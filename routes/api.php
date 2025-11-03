@@ -295,6 +295,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('create-generic-seo-settings', [SeoSettingController::class, 'genericPageStore']);
         Route::post('edit-generic-seo-settings/{key}', [SeoSettingController::class, 'genericPageUpdate']);
     });
+
     Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
     Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'update']);
 

@@ -18,7 +18,7 @@ class GenderController extends Controller
     public function index()
     {
         try {
-        $genders = Gender::with('movies')->get();
+        $genders = Gender::with('movies', 'seoSetting')->get();
 
         return response()->json([
             'success' => true,
@@ -144,7 +144,7 @@ class GenderController extends Controller
     public function show(string $id)
     {
         try {
-            $gender = Gender::with('seoSetting', 'movies.gender')->where('id', $id)->first();
+            $gender = Gender::with('seoSetting', 'movies.gender', 'movies.seoSetting')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,

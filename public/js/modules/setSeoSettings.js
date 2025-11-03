@@ -21,6 +21,9 @@ export function setSeoSettings(seoSettings) {
 
     if (seoSettings[field] !== undefined && seoSettings[field] !== null) {
       meta.setAttribute('content', seoSettings[field]);
+      /*if (field == 'url') {
+        window.history.replaceState({}, '', seoSettings[field]);
+      }*/
     }
   });
 }

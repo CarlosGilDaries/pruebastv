@@ -12,7 +12,11 @@ export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.classList.add('dropdown-item');
-        a.href = `/${type}-show.html?id=${item.id}`;
+        if (item.seo_setting && item.seo_setting.url) {
+          a.href = item.seo_setting.url;
+        } else {
+          a.href = `/${type}-show.html?id=${item.id}`;
+        }
         a.textContent = item.name;
         a.setAttribute('data-i18n', `${type}_${item.id}`);
         li.appendChild(a);

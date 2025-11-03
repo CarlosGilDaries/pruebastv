@@ -7,7 +7,12 @@ const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
 const title = document.querySelector('.grid-title');
 const urlParams = new URLSearchParams(window.location.search);
-const categoryId = urlParams.get('id');
+let categoryId;
+if (window.PAGE_ID) {
+  categoryId = window.PAGE_ID;
+} else {
+  categoryId = urlParams.get('id');
+}
 const documentTitle = document.getElementById('title');
 document.body.id = `category_${categoryId}`;
 documentTitle.setAttribute('data-i18n', `category_${categoryId}`);

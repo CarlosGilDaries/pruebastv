@@ -17,7 +17,7 @@ class TagController extends Controller
     public function index()
     {
         try {
-            $tags = Tag::all();
+            $tags = Tag::with('seoSetting')->get();
 
             return response()->json([
                 'success' => true,

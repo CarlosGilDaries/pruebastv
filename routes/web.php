@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Api\MovieApiController;
+use App\Http\Controllers\Api\SeoSettingController;
 use App\Http\Controllers\ProxyController;
 use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\BillPdfController;
@@ -79,4 +80,7 @@ Route::get('/test-pdf', function() {
 
 Route::get('/pdf', [BillPdfController::class, 'basicInvoice']);
 
+
+Route::any('{any}', [SeoSettingController::class, 'resolve'])
+    ->where('any', '^(?!api/).*$');
 

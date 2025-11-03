@@ -50,6 +50,16 @@ async function initPlayer() {
       return;
     }
 
+    let location;
+    if (
+      showData.data.movie.seo_setting &&
+      showData.data.movie.seo_setting.url
+    ) {
+      location = showData.data.movie.seo_setting.url;
+    } else {
+      location = `/contenido/${showData.data.movie.slug}`;
+    }
+
     const userResponse = await fetch(`/api/user`, {
       method: 'GET',
       headers: {
@@ -100,7 +110,7 @@ async function initPlayer() {
 
       const ppvData = await ppvResponse.json();
       if (!ppvData.success) {
-        window.location.href = `/content/${showData.data.movie.slug}`;
+        window.location.href = location;
         return;
       }
     }
@@ -120,14 +130,14 @@ async function initPlayer() {
       const rentData = await rentResponse.json();
 
       if (!rentData.success && rentResponse.status == 404) {
-        window.location.href = `/content/${showData.data.movie.slug}`;
+        window.location.href = location;
         return;
       }
     }
 
     if (showData.data.movie.start_time) {
       if (!hasStarted(showData.data.movie.start_time)) {
-        window.location.href = `/content/${showData.data.movie.slug}`;
+        window.location.href = location;
         return;
       }
       if (hasEnded(showData.data.movie.end_time)) {
@@ -141,7 +151,7 @@ async function initPlayer() {
             },
           }
         );
-        window.location.href = `/content/${showData.data.movie.slug}`;
+        window.location.href = location;
         return;
       }
     }
@@ -166,7 +176,6 @@ async function initPlayer() {
     );
     const viewedData = await viewedResponse.json();
     if (viewedData.success) {
-      console.log('Añadido a visto correctamente');
     } else {
       console.log(viewedData);
     }

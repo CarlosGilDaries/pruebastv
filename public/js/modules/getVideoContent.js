@@ -7,7 +7,11 @@ export function getVideoContent(data, node) {
     article.classList.add('content');
 
     const link = document.createElement('a');
-    link.href = `/content/${video.slug}`;
+    if (video.seo_setting && video.seo_setting.url != null) {
+      link.href = video.seo_setting.url;
+    } else {
+      link.href = `/contenido/${video.slug}`;
+    }
 
     const img = document.createElement('img');
     img.src = video.tall_cover;

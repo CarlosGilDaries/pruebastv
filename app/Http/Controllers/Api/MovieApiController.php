@@ -28,7 +28,7 @@ class MovieApiController extends Controller
     public function index()
     {
         try {
-            $movies = Movie::with(['categories', 'gender' => function($query) {
+            $movies = Movie::with(['seoSetting', 'categories', 'gender' => function($query) {
                    			$query->select('id', 'name');
                   		}])->get();;
 			$genders = Gender::all(['id', 'name']);

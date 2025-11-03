@@ -1,4 +1,4 @@
-ErrorDocument 404 /404.html
+#ErrorDocument 404 /404.html
 
 <IfModule mod_rewrite.c>
     <IfModule mod_negotiation.c>
@@ -39,7 +39,7 @@ ErrorDocument 404 /404.html
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} !^/api/
-    RewriteRule ^content/(.*)$ /show.html [L]
+    RewriteRule ^contenido/(.*)$ /show.html [L]
 	
     # ----------------------------------------------------------------------
     # Reglas para el BACKEND (Laravel)

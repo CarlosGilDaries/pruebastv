@@ -220,4 +220,92 @@ class SeoSettingController extends Controller
 			], 500);
         }
     }
+
+    public function resolve(Request $request)
+    {
+        try {
+            $path = '/' . trim($request->path(), '/'); // ejemplo: /generos/accion
+
+            Log::debug('Petición capturada: ' . $request->path(), [
+                'referer' => $request->header('referer'),
+                'user-agent' => $request->header('user-agent')
+            ]);
+
+            $seo = SeoSetting::where('url', $path)
+                ->with('movie', 'gender', 'action', 'tag', 'category')
+                ->first();
+
+            if (!$seo) {
+                return response()->view('errors.404', [], 404);
+            }
+
+            switch ($seo->key) {
+                case 'gender':
+                    $file = public_path("gender-show.html");
+                    break;
+                case 'movie':
+                    $file = public_path("show.html");
+                    break;
+                case 'category':
+                    $file = public_path("category-show.html");
+                    break;
+                case 'tag':
+                    $file = public_path("tag-show.html");
+                    break;
+                /*case 'action':
+                    $file = public_path("action-show.html");
+                    break;*/
+                default:
+                    return response()->view('errors.404', [], 404);
+            }
+
+            // ⚡ Devolver el contenido del archivo físico
+            if (file_exists($file)) {
+                // Leemos el HTML del archivo y lo devolvemos sin cambiar la URL
+                $html = file_get_contents($file);
+
+                // Inyectar dinámicamente el ID dentro del HTML
+                switch ($seo->key) {
+                    case 'gender':
+                        $id = $seo->gender->id;
+                        break;
+                    case 'movie':
+                        $id = $seo->movie->id;
+                        break;
+                    case 'category':
+                        $id = $seo->category->id;
+                        break;
+                    case 'tag':
+                        $id = $seo->tag->id;
+                        break;
+                    case 'action':
+                        $id = $seo->action->id;
+                        break;
+                    default:
+                        $id = null;
+                        break;
+                }
+
+                // ⚡ Inserta el ID dentro de una variable JS global
+                $html = str_replace(
+                    '</head>', // justo antes de cerrar <head>
+                    "<script>window.PAGE_ID = {$id}; window.PAGE_TYPE = '{$seo->key}';</script>\n</head>",
+                    $html
+                );
+
+                return response($html, 200)
+                    ->header('Content-Type', 'text/html');
+            } else {
+                return response()->view('errors.404', [], 404);
+            }
+        
+        } catch (\Exception $e) {
+            Log::error('Error en resolve SeoSettingController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en resolve SeoSettingController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
 }

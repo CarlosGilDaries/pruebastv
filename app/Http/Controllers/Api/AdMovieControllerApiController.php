@@ -17,6 +17,7 @@ class AdMovieControllerApiController extends Controller
     {
         try {
             $movies = Movie::withCount('ads')
+                ->with('seoSetting')
                 ->has('ads')
                 ->get();
 
@@ -38,7 +39,7 @@ class AdMovieControllerApiController extends Controller
     public function show($id)
     {
         try {
-            $movie = Movie::with(['ads' => function($query) {
+            $movie = Movie::with(['seoSetting', 'ads' => function($query) {
                 $query->select('ads.id', 'ads.title', 'ads.url')
                     ->withPivot('type', 'midroll_time', 'skippable', 'skip_time');
             }])->where('id', $id)->first();
@@ -179,7 +180,9 @@ class AdMovieControllerApiController extends Controller
                     ->withPivot('type', 'midroll_time','skippable', 'skip_time', 'image', 'description', 'redirect_url');
             }])->first();
 
-           $movie = Movie::where('slug', $movieSlug)->first();
+           $movie = Movie::where('slug', $movieSlug)
+            ->with('seoSetting')
+            ->first();
 
             return response()->json([
                 'movie' => $movie,

@@ -16,7 +16,7 @@ class MovieProgressController extends Controller
         try {
             $user = Auth::user();
             
-            $progress = UserMovieProgress::with(['movie.gender', 'movie.movieProgress'])
+            $progress = UserMovieProgress::with(['movie.gender', 'movie.movieProgress', 'movie.seoSetting'])
                 ->where('user_id', $user->id)
                 ->orderBy('updated_at', 'desc')
                 ->get();

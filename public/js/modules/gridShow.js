@@ -46,11 +46,16 @@ export async function gridShow(
     }
 
     movies.forEach((movie) => {
+      console.log(movie);
       const article = document.createElement('article');
       article.classList.add('content');
 
       const link = document.createElement('a');
-      link.href = `/content/${movie.slug}`;
+      if (movie.seo_setting && movie.seo_setting.url) {
+        link.href = movie.seo_setting.url;
+      } else {
+        link.href = `/contenido/${movie.slug}`;
+      }
 
       const img = document.createElement('img');
       img.src = movie.cover;

@@ -22,10 +22,6 @@ async function initStream() {
             return;
         }
 
-        if (data.success) {
-            console.log(data.message);
-        }
-
         startKeepAliveInterval();
         
     } catch (error) {
@@ -60,7 +56,6 @@ async function keepAlive(api, token, device_id) {
         if (!data.success) {
             throw new Error(data.message || 'Error al actualizar stream');
         } else {
-            console.log(data.message);
         }
     } catch (error) {
         console.error('Error:', error);
