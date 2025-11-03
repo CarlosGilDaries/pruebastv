@@ -15,7 +15,6 @@ const categoriesResponse = await fetch('/api/categories');
 const categoriesData = await categoriesResponse.json();
 
 renderTypeGrid('/api/dropdown-categories-menu', 'categories', 'category');
-
 setupLoginSignupButtons();
 clickLogOut();
 aceptedCookies();

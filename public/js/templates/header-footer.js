@@ -1,21 +1,7 @@
-<!DOCTYPE html>
-<html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" 
-    rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" 
-    crossorigin="anonymous">
-        <link rel="stylesheet" href="/css/normalize.css">
-        <link rel="stylesheet" href="/css/type-grid.css">
-        <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
-        <title data-i18n="gender_title">Géneros</title>
-    </head>
-    <body id="gender">
-        <header>
-        <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
+const header = document.querySelector('header');
+const footer = document.querySelector('footer');
+
+header.innerHTML = `<nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
                 <!-- Logo -->
                 <a class="navbar-brand logo" href="/">
@@ -44,7 +30,7 @@
                         </li>
                             
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/plans.html" data-i18n="plans_title">Planes</a>
+                            <a id="plans-link" class="nav-link" href="/planes" data-i18n="plans_title">Planes</a>
                         </li>
                     </ul>
 
@@ -54,11 +40,11 @@
                                 Cuenta
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
-                                <li><a class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
-                                <li><a class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
-                                <li><a class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
-                                <li><a class="dropdown-item" href="/paid-resources.html" data-i18n="nav_paid_resources">Recursos Pagados</a></li>
-                                <li><a class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
+                                <li><a id="profile-link" class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
+                                <li><a id="favorites-link" class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
+                                <li><a id="seen-link" class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
+                                <li><a id="paid-link" class="dropdown-item" href="/paid-resources.html" data-i18n="nav_paid_resources">Recursos Pagados</a></li>
+                                <li><a id="order-link" class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
                                 <li><a class="dropdown-item" id="logout" href="#" data-i18n="nav_logout">Cerrar sesión</a></li>
                             </ul>
                         </li>
@@ -80,30 +66,17 @@
                     </div>
                 </div>
             </div>
-        </nav>
-    </header>
+        </nav>`;
 
-    <div id="loading-spinner" class="spinner-overlay">
-        <div class="spinner"></div>
-    </div>
-
-    <div id="main-content" class="main-content">
-        <main>
-            <h1 class="grid-title" data-i18n="gender_heading">Géneros</h1>
-            <div class="main-grid"></div>
-        </main>
-    </div>
-
-    <footer class="footer mt-auto">
-        <div class="container-fluid py-4 px-3">
+footer.innerHTML = `<div class="container-fluid py-4 px-3">
             <div class="row align-items-center text-center text-lg-start">
                 <div class="col-12 col-lg-6 mb-4 mb-lg-0">
                     <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-5">
-                        <a href="/legal-notice.html" data-i18n="legal_notice">Aviso Legal</a>
-                        <a href="/privacy-politic.html" data-i18n="privacy_policy">Política de Privacidad</a>
-                        <a href="/payment-politic.html" data-i18n="payment_policy">Política de Pagos</a>
-                        <a href="/cookies.html" data-i18n="cookies">Cookies</a>
-                        <a href="/contact.html" data-i18n="contact">Contacto</a>
+                        <a id="legal-notice-link" href="/legal-notice.html" data-i18n="legal_notice">Aviso Legal</a>
+                        <a id="privacy-politic-link" href="/privacy-politic.html" data-i18n="privacy_policy">Política de Privacidad</a>
+                        <a id="payment-politic-link" href="/payment-politic.html" data-i18n="payment_policy">Política de Pagos</a>
+                        <a id="cookies-link" href="/cookies.html" data-i18n="cookies">Cookies</a>
+                        <a id="contact-link" href="/contact.html" data-i18n="contact">Contacto</a>
                     </div>
                 </div>
 
@@ -134,16 +107,69 @@
                     </p>
                 </div>
             </div>
-        </div>
-    </footer>
+        </div>`;
 
-    <script type="module" src="/js/templates/header-footer.js"></script>
-    <script type="module" src="/js/translations.js"></script>
-    <script type="module" src="/js/gendersGrid.js"></script>
-    <script src="/js/webSettings.js"></script>
-    <script src="/js/searchInput.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
-    crossorigin="anonymous"></script>
-</body>
-</html>
+async function setUrls() {
+  try {
+    const plansLink = document.getElementById('plans-link');
+    const profileLink = document.getElementById('profile-link');
+    const favoritesLink = document.getElementById('favorites-link');
+    const seenLink = document.getElementById('seen-link');
+    const paidLink = document.getElementById('paid-link');
+    const orderLink = document.getElementById('order-link');
+    const legalLink = document.getElementById('legal-notice-link');
+    const privacyLink = document.getElementById('privacy-politic-link');
+    const paymentPoliticLink = document.getElementById('payment-politic-link');
+    const cookiesLink = document.getElementById('cookies-link');
+    const contactLink = document.getElementById('contact-link');
+
+    const response = await fetch('/api/all-seo-settings');
+    if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+
+    const data = await response.json();
+
+    const seoSettings = data.settings || [];
+
+    seoSettings.forEach((setting) => {
+      switch (setting.key) {
+        case 'plans':
+          if (plansLink) plansLink.href = setting.url;
+          break;
+        case 'profile':
+          if (profileLink) profileLink.href = setting.url;
+          break;
+        case 'favorites':
+          if (favoritesLink) favoritesLink.href = setting.url;
+          break;
+        case 'seen':
+          if (seenLink) seenLink.href = setting.url;
+          break;
+        case 'paid-resources':
+          if (paidLink) paidLink.href = setting.url;
+          break;
+        case 'payment-history':
+          if (orderLink) orderLink.href = setting.url;
+          break;
+        case 'legal-notice':
+          if (legalLink) legalLink.href = setting.url;
+          break;
+        case 'privacy-policy':
+          if (privacyLink) privacyLink.href = setting.url;
+          break;
+        case 'payment-policy':
+          if (paymentPoliticLink) paymentPoliticLink.href = setting.url;
+          break;
+        case 'cookies':
+          if (cookiesLink) cookiesLink.href = setting.url;
+          break;
+        case 'contact':
+          if (contactLink) contactLink.href = setting.url;
+          break;
+      }
+    });
+  } catch (error) {
+    console.error('Error al establecer las URLs SEO:', error);
+  }
+}
+
+setUrls();

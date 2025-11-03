@@ -47,7 +47,7 @@ class CategoryController extends Controller
     public function dropDownMenu()
 	{
 		try {
-			$categories = Category::orderBy('priority')->with('movies.gender')->get();
+			$categories = Category::orderBy('priority')->with('movies.gender', 'seoSetting')->get();
 
 			return response()->json([
 				'success' => true,

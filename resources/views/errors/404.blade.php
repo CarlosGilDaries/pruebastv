@@ -136,7 +136,7 @@
             </div>
         </div>
     </footer>
-
+        <script type="module" src="/js/templates/header-footer.js"></script>
 		<script type="module">
 			import { dropDownTypeMenu } from '/js/modules/dropDownTypeMenu.js';
 

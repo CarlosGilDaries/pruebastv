@@ -24,8 +24,14 @@ export async function renderTypeGrid(route, types, type) {
     <h2 data-i18n="${type}_${item.id}" class="${type}-name">${item.name}</h2>
   </div>
 `;
+      let location;
+      if (item.seo_setting != null) {
+        location = item.seo_setting.url;
+      } else {
+        location = `/${type}-show.html?id=${item.id}`;
+      }
       typeBox.addEventListener('click', () => {
-        window.location.href = `/${type}-show.html?id=${item.id}`;
+        window.location.href = location;
       });
 
       main.appendChild(typeBox);

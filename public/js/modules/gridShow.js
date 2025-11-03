@@ -12,6 +12,7 @@ export async function gridShow(
   token = null
 ) {
   try {
+    console.log('1');
     showSpinner();
     const url = id != null ? `/api/${endpoint}/${id}` : `/api/${endpoint}`;
 
@@ -27,10 +28,13 @@ export async function gridShow(
 
     const response = await fetch(url, options);
     const data = await response.json();
-
-    const seoSettings = data[endpoint].seo_setting;
-    if (seoSettings) {
-      setSeoSettings(seoSettings);
+    
+    let seoSettings;
+    if (data[endpoint]) {
+          seoSettings = data[endpoint].seo_setting;
+          if (seoSettings) {
+            setSeoSettings(seoSettings);
+        }
     }
 
     if (title != null) {

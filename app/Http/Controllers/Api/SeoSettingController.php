@@ -25,11 +25,11 @@ class SeoSettingController extends Controller
             ], 200);
 
         } catch (\Exception $e) {
-            Log::error('Error en genericPageShow SeoSettingController: ' . $e->getMessage());
+            Log::error('Error en index SeoSettingController: ' . $e->getMessage());
 
 			return response()->json([
 				'success' => false,
-				'message' => 'Error en genericPageShow SeoSettingController: ' . $e->getMessage(),
+				'message' => 'Error en index SeoSettingController: ' . $e->getMessage(),
 			], 500);
         }
     }
@@ -226,11 +226,6 @@ class SeoSettingController extends Controller
         try {
             $path = '/' . trim($request->path(), '/'); // ejemplo: /generos/accion
 
-            Log::debug('Petición capturada: ' . $request->path(), [
-                'referer' => $request->header('referer'),
-                'user-agent' => $request->header('user-agent')
-            ]);
-
             $seo = SeoSetting::where('url', $path)
                 ->with('movie', 'gender', 'action', 'tag', 'category')
                 ->first();
@@ -255,6 +250,48 @@ class SeoSettingController extends Controller
                 /*case 'action':
                     $file = public_path("action-show.html");
                     break;*/
+                case 'categories':
+                    $file = public_path('categories.html');
+                    break;
+                case 'genders':
+                    $file = public_path('genders.html');
+                    break;
+                case 'tags':
+                    $file = public_path('tags.html');
+                    break;
+                case 'plans':
+                    $file = public_path('plans.html');
+                    break;
+                case 'profile':
+                    $file = public_path('account.html');
+                    break;   
+                case 'favorites':
+                    $file = public_path('favorites.html');
+                    break;
+                case 'paid-resources':
+                    $file = public_path('paid-resources.html');
+                    break; 
+                case 'payment-history':
+                    $file = public_path('order-history.html');
+                    break; 
+                case 'seen':
+                    $file = public_path('seen.html');
+                    break;
+                case 'legal-notice':
+                    $file = public_path('legal-notice.html');
+                    break;
+                case 'privacy-policy':
+                    $file = public_path('privacy-politic.html');
+                    break;
+                case 'payment-policy':
+                    $file = public_path('payment-politic.html');
+                    break;
+                case 'cookies':
+                    $file = public_path('cookies.html');
+                    break;
+                case 'contact':
+                    $file = public_path('contact.html');
+                    break;
                 default:
                     return response()->view('errors.404', [], 404);
             }
@@ -286,12 +323,14 @@ class SeoSettingController extends Controller
                         break;
                 }
 
+                if ($id != null) {
                 // ⚡ Inserta el ID dentro de una variable JS global
-                $html = str_replace(
-                    '</head>', // justo antes de cerrar <head>
-                    "<script>window.PAGE_ID = {$id}; window.PAGE_TYPE = '{$seo->key}';</script>\n</head>",
-                    $html
-                );
+                    $html = str_replace(
+                        '</head>', // justo antes de cerrar <head>
+                        "<script>window.PAGE_ID = {$id}; window.PAGE_TYPE = '{$seo->key}';</script>\n</head>",
+                        $html
+                    );
+                }
 
                 return response($html, 200)
                     ->header('Content-Type', 'text/html');
