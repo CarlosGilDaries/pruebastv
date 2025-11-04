@@ -31,7 +31,8 @@ const permissionToContentMap = {
   politica_privacidad: 'list-privacy-politics',
   politica_pagos: 'list-payment-politics',
   cookies: 'list-cookies',
-  footer_items: 'footer-items'
+  footer_items: 'footer-items',
+  seo_config: 'seo-config'
 };
 
 if (token == null) {
