@@ -15,7 +15,7 @@ export function setSeoSettings(seoSettings) {
 
     if (!meta) {
       meta = document.createElement('meta');
-      meta.setAttribute('name', field);
+      meta.setAttribute('property', field);
       head.appendChild(meta);
     }
 
