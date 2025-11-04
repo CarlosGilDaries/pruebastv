@@ -1,4 +1,5 @@
 export function setSeoSettings(seoSettings) {
+  console.log(seoSettings['key']);
   const head = document.head;
 
   const metaFields = [
@@ -15,15 +16,19 @@ export function setSeoSettings(seoSettings) {
 
     if (!meta) {
       meta = document.createElement('meta');
-      meta.setAttribute('property', field);
+      meta.setAttribute('name', field);
       head.appendChild(meta);
     }
 
     if (seoSettings[field] !== undefined && seoSettings[field] !== null) {
-      meta.setAttribute('content', seoSettings[field]);
-      /*if (field == 'url') {
-        window.history.replaceState({}, '', seoSettings[field]);
-      }*/
+      if (field === 'url' && seoSettings['key'] !== 'index') {
+        meta.setAttribute(
+          'content',
+          'https://pruebastv.kmc.es' + seoSettings[field]
+        );
+      } else {
+        meta.setAttribute('content', seoSettings[field]);
+      }
     }
   });
 }
