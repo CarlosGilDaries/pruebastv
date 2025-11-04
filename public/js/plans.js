@@ -303,11 +303,11 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
           } else {
             if (plan.trimestral_price == 0) {
               sessionStorage.setItem('plan_id', plan.id);
-              window.location.href = '/short-register.html';
+              window.location.href = '/registro-free';
             } else {
               sessionStorage.setItem('plan_id', plan.id);
               sessionStorage.setItem('months', 3);
-              window.location.href = '/register.html';
+              window.location.href = '/registro';
             }
           }
         });
@@ -318,7 +318,7 @@ function displayPlans(plans, actualPlan, canRenew, actualPlanOrder) {
           } else {
             sessionStorage.setItem('plan_id', plan.id);
             sessionStorage.setItem('months', 12);
-            window.location.href = '/register.html';
+            window.location.href = '/registro';
           }
         });
       }
@@ -346,7 +346,7 @@ setTimeout(() => {
 function choosePlan(planId, buttonValue) {
   sessionStorage.setItem('plan_id', planId);
   sessionStorage.setItem('months', buttonValue);
-  window.location.href = '/payment-method.html';
+  window.location.href = '/registro/metodo-de-pago';
   return;
 }
 

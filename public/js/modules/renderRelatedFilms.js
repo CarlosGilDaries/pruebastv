@@ -2,12 +2,19 @@ import { formatDuration } from "./formatDuration.js";
 import { applyTranslations } from '../translations.js';
 
 export async function renderGridFilms(data, node) {
+    let counter = 0;
     data.forEach((movie) => {
+        counter++;
+        if (counter <= 12) {
         const article = document.createElement("article");
         article.classList.add("content", 'col-6', 'col-sm-4', 'col-md-3', 'col-lg-2');
 
         const link = document.createElement("a");
-        link.href = `/content/${movie.slug}`;
+        if (movie.seo_setting && movie.seo_setting.url) {
+            link.href = movie.seo_setting.url;
+        } else {
+            link.href = `/contenido/${movie.slug}`;
+        }
         link.classList.add('text-decoration-none');
 
         const img = document.createElement("img");
@@ -17,7 +24,11 @@ export async function renderGridFilms(data, node) {
 
         const info = document.createElement("a");
         info.classList.add('text-white');
-        info.href = `/content/${movie.slug}`;
+        if (movie.seo_setting && movie.seo_setting.url) {
+            info.href = movie.seo_setting.url;
+        } else {
+            info.href = `/contenido/${movie.slug}`;
+        }
         info.classList.add("info");
 
         const title = document.createElement("h3");
@@ -38,6 +49,7 @@ export async function renderGridFilms(data, node) {
         info.append(title, gender, duration);
         article.append(link, info);
         node.append(article);
+    }
     });
 
     const currentLanguage = localStorage.getItem('userLocale') || 'es';

@@ -31,7 +31,6 @@ class RedsysController extends Controller
                     'plan_id' => $request->plan_id,
                     'plan_expires_at' => Carbon::now()->addDays(10)
                 ]);
-                $user->notify(new FreeFirstWarningNotification());
 
                 if ($register) {
                     return response()->json([

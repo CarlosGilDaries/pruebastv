@@ -85,7 +85,7 @@ async function fetchMovieData() {
     });
 
     if (response.status == 404) {
-      window.location.href = '/404.html';
+      window.location.href = '/pagina-no-encontrada';
     }
 
     const data = await response.json();
@@ -103,7 +103,11 @@ async function fetchMovieData() {
     const tagsContainer = document.querySelector('.keyword-links');
     tags.forEach((tag) => {
       const link = document.createElement('a');
-      link.href = `/tag-show.html?id=${tag.id}`;
+      if (tag.seo_setting && tag.seo_setting.url) {
+        link.href = tag.seo_setting.url;
+      } else {
+        link.href = `/tag-show.html?id=${tag.id}`;
+      }
       link.classList.add('keyword-link');
       link.setAttribute('data-i18n', `tag_${tag.id}`);
       link.innerHTML = tag.name;
@@ -124,7 +128,7 @@ async function fetchMovieData() {
       if (userData.data.plan == null) {
         sessionStorage.setItem('actual_plan', 'Ninguno');
         sessionStorage.setItem('needed_plans', neededPlans);
-        window.location.href = '/manage-plans.html';
+        window.location.href = '/gestionar-planes';
         return;
       }
 
@@ -133,7 +137,7 @@ async function fetchMovieData() {
       if (!neededPlans.includes(actualPlan) && actualPlan != 'Admin') {
         sessionStorage.setItem('actual_plan', actualPlan);
         sessionStorage.setItem('needed_plans', neededPlans);
-        window.location.href = '/manage-plans.html';
+        window.location.href = '/gestionar-planes';
       }
 
       if (data.data.movie.rent && userData.data.user.rol != 'admin') {
@@ -156,7 +160,7 @@ async function fetchMovieData() {
             ' €';
           play.addEventListener('click', async function () {
             sessionStorage.setItem('movie_id', data.data.movie.id);
-            window.location.href = '/rent-payment-method.html';
+            window.location.href = '/alquiler-metodo-de-pago';
             return;
           });
         } else if (rentData.success) {
@@ -191,7 +195,7 @@ async function fetchMovieData() {
             ' €';
           play.addEventListener('click', async function () {
             sessionStorage.setItem('movie_id', data.data.movie.id);
-            window.location.href = '/ppv-payment-method.html';
+            window.location.href = '/ppv-metodo-de-pago';
             return;
           });
         } else {
@@ -293,7 +297,14 @@ async function fetchMovieData() {
       document.title = data.data.movie.title + ' - Pruebas TV';
       gender.textContent = data.data.movie.gender.name;
       gender.setAttribute('data-i18n', `gender_${data.data.movie.gender.id}`);
-      gender.href = `/gender-show.html?id=${data.data.movie.gender_id}`;
+      if (
+        data.data.movie.gender.seo_setting &&
+        data.data.movie.gender.seo_setting.url
+      ) {
+        gender.href = data.data.movie.gender.seo_setting.url;
+      } else {
+        gender.href = `/gender-show.html?id=${data.data.movie.gender_id}`;
+      }
       const taglineText = document.createElement('p');
       taglineText.innerHTML = data.data.movie.tagline;
       taglineText.setAttribute(

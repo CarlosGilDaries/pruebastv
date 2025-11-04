@@ -27,6 +27,7 @@ section {
     padding: 40px;
     backdrop-filter: blur(15px);
     color: #fff;
+    margin: 20px;
 }
 
 .devices-box h2 {

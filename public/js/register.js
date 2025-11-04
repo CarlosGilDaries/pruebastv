@@ -80,7 +80,7 @@ document
         localStorage.setItem('current_user_email', data.data.user);
 
         if (data.data.require_payment) {
-          window.location.href = '/register-payment-method.html'
+          window.location.href = '/registro-metodo-de-pago'
         }
         if (data.data.require_device_registration) {
           const plan_id = sessionStorage.getItem('plan_id');

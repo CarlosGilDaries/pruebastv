@@ -12,7 +12,7 @@ export async function checkDni(token) {
             const userData = await userResponse.json();
 
             if (userData.data.user.dni == null) {
-              window.location.href = '/need-user-dni.html';
+              window.location.href = '/datos-de-facturacion';
               return false;
             } else {
               return true;

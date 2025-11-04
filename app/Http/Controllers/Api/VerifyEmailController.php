@@ -27,6 +27,6 @@ class VerifyEmailController extends Controller
             event(new Verified($user));
         }
 
-        return redirect()->to(config('app.frontend_url').'/email-verification-success.html');
+        return redirect()->to(config('app.frontend_url').'/email-verificado-con-exito');
     }
 }

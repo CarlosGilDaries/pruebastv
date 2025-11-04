@@ -111,11 +111,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
                   changeButton.addEventListener('click', function () {
                     if (key === 'email')
-                      window.location.href = '/change-email.html';
+                      window.location.href = '/cambiar-email';
                     if (key === 'address')
-                      window.location.href = '/change-address.html';
+                      window.location.href = '/cambiar-direccion';
                     if (key === 'phone')
-                      window.location.href = '/change-phone.html';
+                      window.location.href = '/cambiar-telefono';
                   });
                 }
               }
@@ -180,13 +180,13 @@ document.addEventListener('DOMContentLoaded', function () {
           passwordValue.appendChild(changePasswordButton);
 
           changePasswordButton.addEventListener('click', function () {
-            window.location.href = '/change-password.html';
+            window.location.href = '/cambiar-password';
           });
         }
 
         button.addEventListener('click', function () {
           window.location.href =
-            user.rol == 'admin' ? '/admin/admin-panel.html' : '/plans.html';
+            user.rol == 'admin' ? '/admin/admin-panel.html' : '/planes';
         });
       }
       if (typeof applyTranslations === 'function') {

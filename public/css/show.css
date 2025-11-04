@@ -144,7 +144,7 @@
 
 /* Ajustes responsivos */
 @media (min-width: 1400px) {
-    #prueba,
+    #tab-content,
     #tabs-container-id {
             margin-inline: 80px;
     }

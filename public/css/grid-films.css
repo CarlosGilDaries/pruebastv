@@ -1,6 +1,6 @@
 .content {
-	height: 180px;
-    width: 320px;
+	height: 150px;
+    width: 290px;
     transition: transform 0.3s ease;
     z-index: 1;
 }
@@ -31,10 +31,10 @@
     max-height: 100px;
     overflow: hidden;
     transition: opacity 0.3s ease, max-height 0.3s ease;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 2px;
     justify-content: center;
   }
   

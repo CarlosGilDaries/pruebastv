@@ -21,12 +21,12 @@ class EnsureEmailIsVerified
         if ($request->expectsJson() || $request->is('api/*')) {
             return response()->json([
                 'error' => 'Email no verificado',
-                'redirect_url' => config('app.frontend_url').'/email-verification-required.html'
+                'redirect_url' => config('app.frontend_url').'/verificar-email'
             ], 403);
         }
         
         // Si es navegación normal (desde el navegador)
-        return redirect()->to(config('app.frontend_url').'/email-verification-required.html');
+        return redirect()->to(config('app.frontend_url').'/verificar-email');
     }
 
     return $next($request);

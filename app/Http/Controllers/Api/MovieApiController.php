@@ -107,19 +107,17 @@ class MovieApiController extends Controller
 
     public function show($slug)
     {
-        try {
-            $movie = Movie::with('seoSetting', 'gender', 'tags')->where('slug', $slug)->first();
-			$user = Auth::user();
-			
-            if (!$movie) {
-                return response()->json([
-                    'success' => false,
-                    'error' => 'Película no encontrada'
-                ], 404);
-            }
-			
-            $plans = $movie->plans;
+        $movie = Movie::with('seoSetting', 'gender.seoSetting', 'tags.seoSetting')->where('slug', $slug)->first();
 
+        if (!$movie) {
+            return response()->json([
+                'success' => false,
+            ], 404);
+        }
+
+        try {
+            $user = Auth::user();
+            $plans = $movie->plans;
             $ads = DB::table('ad_movie')->where('movie_id', $movie->id)->count();
 
             return response()->json([
@@ -134,7 +132,7 @@ class MovieApiController extends Controller
 
         } catch (\Exception $e) {
             Log::error('Error al obtener película: ' . $e->getMessage());
-            
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error: ' . $e->getMessage()

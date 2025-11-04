@@ -46,6 +46,12 @@ export function initPriorityBanner(categoriesData) {
       isTransitioning = true;
 
       const movie = movies[index];
+      let location;
+      if (movie.seo_setting && movie.seo_setting.url) {
+        location = movie.seo_setting.url;
+      } else {
+        location = `/contenido/${movie.slug}`;
+      }
 
       // Fade out del contenido actual
       movieInfo.classList.add('title-transition');
@@ -62,7 +68,7 @@ export function initPriorityBanner(categoriesData) {
       applyGenderTranslation(gender, movie.gender);
       duration.textContent = formatDuration(movie.duration);
       playButton.onclick = () =>
-        (window.location.href = `/content/${movie.slug}`);
+        (window.location.href = location);
 
       if (movie.trailer) {
         // Detener video anterior

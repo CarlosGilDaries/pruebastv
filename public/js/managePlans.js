@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   const email = localStorage.getItem('current_user_email');
 
   if (token == null) {
-    window.location.href = '/login.html';
+    window.location.href = '/login';
     return;
   }
 

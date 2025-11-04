@@ -40,7 +40,7 @@ document
       if (data.success) {
         localStorage.setItem(deviceKey, data.data);
         if (userData.data.user.email_verified_at == null) {
-          window.location.href = '/email-verification-required.html';
+          window.location.href = '/verificar-email';
           return;
         } else {
           window.location.href = '/';

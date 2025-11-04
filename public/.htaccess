@@ -16,12 +16,26 @@
     
     # Redirigir rutas específicas del frontend
     RewriteRule ^login$ /login.html [L]
-    RewriteRule ^new-device$ /new-device.html [L,QSA]
+    RewriteRule ^registro$ /register.html [L]
+    RewriteRule ^registro-free$ /short-register.html [L]
+    RewriteRule ^registro/metodo-de-pago$ /register-payment-method.html [L]
+    RewriteRule ^alquiler-metodo-de-pago$ /rent-payment-method.html [L]
+    RewriteRule ^ppv-metodo-de-pago$ /ppv-payment-method.html [L]
+    RewriteRule ^nuevo-dispositivo$ /new-device.html [L,QSA]
+    RewriteRule ^verificar-email$ /email-verification-required.html [L,QSA]
+    RewriteRule ^email-verificado-con-exito$ /email-verification-success.html [L,QSA]
     RewriteRule ^manage-devices$ /manage-devices.html [L,QSA]
+    RewriteRule ^gestionar-planes$ /manage-plans.html [L,QSA]
     RewriteRule ^stream-limit$ /stream-limit.html [L,QSA]
     RewriteRule ^player/([^/]+)$ /player.html [L,QSA]
     RewriteRule ^admin/player/ad/([^/]+)$ /admin/ad-player.html [L,QSA]
     RewriteRule ^account$ /account.html [L,QSA]
+    RewriteRule ^datos-de-facturacion$ /need-user-dni.html [L,QSA]
+    RewriteRule ^cambiar-email$ /change-email.html [L,QSA]
+    RewriteRule ^cambiar-telefono$ /change-phone.html [L,QSA]
+    RewriteRule ^cambiar-direccion$ /change-address.html [L,QSA]
+    RewriteRule ^cambiar-password$ /change-password.html [L,QSA]
+    RewriteRule ^pagina-no-encontrada$ /404.html [L,QSA]
 	
     # Solo permitir si el Referer es nuestro dominio
     RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC]
@@ -31,7 +45,7 @@
     # Facturas
     RewriteCond %{REQUEST_URI} ^/bill/[^/]+/download$
     RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.kmc\.es/ [NC]
-     RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.test/ [NC]
+    RewriteCond %{HTTP_REFERER} !^https://(www\.)?pruebastv\.test/ [NC]
     RewriteRule ^ - [F,L]
     
     # Redirigir a show.html solo si es HTML y no API, archivo o directorio

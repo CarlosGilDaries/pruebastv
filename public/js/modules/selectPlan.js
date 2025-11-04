@@ -21,7 +21,7 @@ export async function selectPlan(planId, token, months = 0, register = false,) {
       await processRedsysPayment(data);
     } else if (data.success && !data.payment_required) {
       if (data.require_device_registration) {
-        window.location.href = '/new-device.html';
+        window.location.href = '/nuevo-dispositivo';
       } else {
         window.location.href = '/';
       }

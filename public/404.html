@@ -1,92 +1,156 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/404.css">
-    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" id="favicon">
-    <title>Página no encontrada</title>
-</head>
-<body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+		<link rel="stylesheet" href="/css/normalize.css">
+		<link rel="stylesheet" href="/css/404.css">
+		<link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" id="favicon">
+		<title data-i18n="404">Página no encontrada</title>
+	</head>
+	<body id="404">
+        <header>
+            <nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
+                <div class="container-fluid">
+                    <!-- Logo -->
+                    <a class="navbar-brand logo" href="/">
+                        <img src="/file/logo.png" id="logo" alt="Pruebas TV logo">
+                    </a>
 
-    <header>
-        <div class="menu">
-            <nav>
-                <ul class="nav left-nav">
-                    <li class="logo"><a href="/"><img id="logo" src="/images/logo.png" alt="Pruebas TV logo"></a></li>
-                    <li class="left-nav-links"><a href="/">Inicio</a></li>
-					<li class="dropdown left-nav-links">
-                        <a href="/categories.html" class="dropdown-toggle">Categorías</a>
-                        <ul class="dropdown-menu" id="categories">
+                    <!-- Botón hamburguesa -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <!-- Contenido colapsable -->
+                    <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
+                            <li class="nav-item left-nav-links">
+                                <a class="nav-link" href="/" data-i18n="nav_home">Inicio</a>
+                            </li>
+
+                            <li class="nav-item dropdown left-nav-links">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="category_title">Categorías</a>
+                                <ul class="dropdown-menu" id="categories"></ul>
+                            </li>
+                            <li class="nav-item dropdown left-nav-links">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-i18n="gender_title">Géneros</a>
+                                <ul class="dropdown-menu" id="genders"></ul>
+                            </li>
+                                
+                            <li class="nav-item left-nav-links">
+                                <a class="nav-link" href="/plans.html" data-i18n="plans_title">Planes</a>
+                            </li>
                         </ul>
-                    </li>
-                    <li class="dropdown left-nav-links">
-                        <a href="/genders.html" class="dropdown-toggle">Géneros</a>
-                        <ul class="dropdown-menu" id="genders">
+
+                        <ul class="navbar-nav ms-lg-auto right-nav">
+                            <li class="nav-item dropdown user">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="user-link" data-i18n="nav_account">
+                                    Cuenta
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" id="dropdown-user">
+                                    <li><a class="dropdown-item" href="/account" data-i18n="nav_profile">Perfil</a></li>
+                                    <li><a class="dropdown-item" href="/favorites.html" data-i18n="nav_favorites">Favoritos</a></li>
+                                    <li><a class="dropdown-item" href="/seen.html" data-i18n="nav_watched">Vistos</a></li>
+                                    <li><a class="dropdown-item" href="/paid-resources.html" data-i18n="nav_paid_resources">Recursos Pagados</a></li>
+                                    <li><a class="dropdown-item" href="/order-history.html" data-i18n="nav_payment_history">Historial de pagos</a></li>
+                                    <li><a class="dropdown-item" id="logout" href="#" data-i18n="nav_logout">Cerrar sesión</a></li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-item d-flex align-items-center ms-2" id="language-container">
+                                <select id="languageSelector" class="form-select form-select-sm bg-dark text-white border-secondary"></select>
+                            </li>
                         </ul>
-                    </li>
-                    <li class="left-nav-links"><a href="/plans.html">Planes</a></li>
-                </ul>
+                    </div>
+
+                    <!-- Filtro de búsqueda -->
+                    <div class="search-container d-flex align-items-center ms-auto">
+                        <div class="search-icon me-2">
+                            <img src="/images/search-icon.png" alt="Buscar" id="searchToggle">
+                        </div>
+                        <div class="search-box" id="searchBox">
+                            <input type="text" id="searchInput" placeholder="Buscar contenido..." data-i18n-placeholder="search_placeholder">
+                            <div class="search-results" id="searchResults"></div>
+                        </div>
+                    </div>
+                </div>
             </nav>
-            <nav>
-                <ul class="nav right-nav">
-                    <li><a href="#"><img src="/images/search-icon.png" alt="Search"></a></li>
-                    <li class="dropdown user">
-                        <div class="dropdown-toggle"><img src="/images/user-icon.png" alt="User"></div>
-                        <ul class="dropdown-menu">
-                            <li><a href="/account">Perfil</a></li>
-                            <li><a href="/favorites.html">Favoritos</a></li>
-                            <li><a href="/seen.html">Vistos</a></li>
-                            <li><a href="/order-history.html">Historial de pagos</a></li>
-                            <li id="logout"><a href="#">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+        </header>
 
-
-	<div class="error-container">
-		<div class="error-content">
-			<h1>404</h1>
-			<h2>Página no encontrada</h2>
-			<p>No hemos encontrado lo que buscabas.</p>
-			<div class="error-actions">
-				<a href="/" class="btn">Volver al inicio</a>
+		<div class="error-container">
+			<div class="error-content">
+				<h1 data-i18n="404_heading">404</h1>
+				<h2 data-i18n="404_heading_2">Página no encontrada</h2>
+				<p data-i18n="404_text">No hemos encontrado lo que buscabas.</p>
+				<div class="error-actions">
+					<a data-i18n="404_action" href="/" class="btn">Volver al inicio</a>
+				</div>
+			</div>
+			<div class="error-image">
+				<img src="/images/404.webp" alt="Error 404" class="pixelated">
 			</div>
 		</div>
-		<div class="error-image">
-			<img src="/images/404.webp" alt="Error 404" class="pixelated">
-		</div>
-	</div>
-	
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="info">
-                <a href="#">Aviso Legal</a>
-                <a href="#">Política de Privacidad</a>
-                <a href="#">Contacto</a>
+
+		    <footer class="footer mt-auto">
+        <div class="container-fluid py-4 px-3">
+            <div class="row align-items-center text-center text-lg-start">
+                <div class="col-12 col-lg-6 mb-4 mb-lg-0">
+                    <div class="info d-flex flex-column flex-lg-row justify-content-center justify-content-lg-start align-items-center gap-5">
+                        <a href="/legal-notice.html" data-i18n="legal_notice">Aviso Legal</a>
+                        <a href="/privacy-politic.html" data-i18n="privacy_policy">Política de Privacidad</a>
+                        <a href="/payment-politic.html" data-i18n="payment_policy">Política de Pagos</a>
+                        <a href="/cookies.html" data-i18n="cookies">Cookies</a>
+                        <a href="/contact.html" data-i18n="contact">Contacto</a>
+                    </div>
+                </div>
+
+                <!-- Redes sociales -->
+                <div class="col-12 col-lg-6">
+                    <ul class="icons list-unstyled d-flex justify-content-center justify-content-lg-end gap-4 m-0">
+                        <li><a id="instagram" href="https://www.instagram.com/"><img src="/images/instagram-53.png" alt="Instagram"></a></li>
+                        <li><a id="facebook" href="https://www.facebook.com/"><img src="/images/facebook.png" alt="Facebook"></a></li>
+                        <li><a id="twitter" href="https://www.twitter.com/"><img src="/images/twitterx--v2.png" alt="Twitter"></a></li>
+                    </ul>
+                </div>
             </div>
-            <ul class="icons">
-                <a id="instagram" href="#"><li><img src="/images/instagram-53.png" alt="Instagram"></li></a>
-                <a id="facebook" href="#"><li><img src="/images/facebook.png" alt="Facebook"></li></a>
-                <a id="twitter" href="#"><li><img src="/images/twitterx--v2.png" alt="Twitter"></li></a>
-            </ul>
-        </div>
-        <div class="separation-line"></div>
-        <div class="footer-container-2">
-            <div class="items-container"></div>
-            <p id="copyright"><a href="https://www.kmcmobile.es/">KMCMobile</a> &#x00A9 2025</p>
+
+            <!-- Separador -->
+            <div class="separation-line my-3"></div>
+
+            <!-- Segunda fila: logos institucionales y copyright -->
+            <div class="row align-items-center text-center text-lg-start">
+                <!-- Logos -->
+                <div class="col-12 col-lg-8 mb-3 mb-lg-0">
+                    <div class="items-container d-flex flex-wrap justify-content-center justify-content-lg-start align-items-center gap-5"></div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="col-12 col-lg-4 text-lg-end">
+                    <p id="copyright" class="mb-0">
+                    <a href="https://www.kmcmobile.es/">KMCMobile</a> © 2025
+                    </p>
+                </div>
+            </div>
         </div>
     </footer>
+        <script type="module" src="/js/templates/header-footer.js"></script>
+		<script type="module">
+			import { dropDownTypeMenu } from '/js/modules/dropDownTypeMenu.js';
 
-    <script type="module">
-        import { clickLogOut } from './js/modules/clickLogOutButton.js';
-        clickLogOut();
-    </script>
-    <script src="/js/webSettings.js"></script>
-</body>
+			const categoriesDropDown = document.getElementById('categories');
+			const gendersDropDown = document.getElementById('genders');
+
+			dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
+			dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+
+			import { clickLogOut } from './js/modules/clickLogOutButton.js';
+			clickLogOut();
+		</script>
+        <script type="module" src="/js/translations.js"></script>
+		<script src="/js/webSettings.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+	</body>
 </html>

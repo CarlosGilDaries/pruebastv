@@ -91,13 +91,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Mostrar resultados
     searchResults.innerHTML = results
-      .map(
-        (movie) => `
-                        <li data-slug="${movie.slug}">
-                            <a href="/content/${movie.slug}">${movie.title}</a>
-                        </li>
-                    `
-      )
+      .map((movie) => {
+        const href =
+          movie.seo_setting && movie.seo_setting.url
+            ? movie.seo_setting.url
+            : `/contenido/${movie.slug}`;
+
+        return `
+      <li data-slug="${movie.slug}">
+        <a href="${href}">${movie.title}</a>
+      </li>
+    `;
+      })
       .join('');
   }
 

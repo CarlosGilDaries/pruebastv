@@ -12,7 +12,7 @@ export function setupLoginSignupButtons() {
       const loginButton = document.createElement('a');
       loginButton.href = '/login';
       const registerButton = document.createElement('a');
-      registerButton.href = '/plans.html';
+      registerButton.href = '/planes';
       loginButton.innerHTML = `<button class="login-btn nav-link" data-i18n="login">Iniciar sesión</button>`;
       registerButton.innerHTML = `<button class="signup-btn nav-link" data-i18n="register">Registrarse</button>`;
       loginButtonContainer.appendChild(loginButton);
