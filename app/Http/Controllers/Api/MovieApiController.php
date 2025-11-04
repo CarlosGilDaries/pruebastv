@@ -8,6 +8,7 @@ use App\Models\Language;
 //use App\Http\Requests\ContentRequest;
 use App\Models\Movie;
 use App\Models\Plan;
+use App\Models\SeoSetting;
 use App\Models\Translation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -901,11 +902,22 @@ class MovieApiController extends Controller
             $url = 'edit-stream.html';
         }
 
+        if ($movie->seo_setting_id != null) {
+            $seo = SeoSetting::where('id', $movie->seo_setting_id)->first();
+            if ($seo->url != null) {
+                $location = $seo->url;
+            } else {
+                $location = '/contenido/' . $slug;
+            }
+        } else {
+            $location = '/contenido/' . $slug;
+        }
+
 		return '
 			<div class="actions-container">
 				<button class="actions-button">Acciones</button>
 				<div class="actions-menu">
-                <a href="/content/' . $slug . '" class="action-item">Ver</a>
+                <a href="' . $location . '" class="action-item">Ver</a>
 					<a href="/admin/' . $url . '" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
 					<a href="/admin/link-content-with-ads.html" class="action-item content-action link-button" data-id="'.$id.'" data-title="'.$title.'" data-slug="'.$slug.'">Anuncios</a>
                     <form class="content-delete-form" data-id="' . $id . '">
