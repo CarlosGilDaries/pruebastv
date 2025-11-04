@@ -1,3 +1,5 @@
+import { getSeoValuesFromKey } from "../modules/getSeoValuesFromKey.js";
+
 async function seoSettingsForm() {
   const token = localStorage.getItem('auth_token');
   const backendAPI = '/api/';
@@ -180,17 +182,6 @@ function showAlert(message, type) {
     const bsAlert = new bootstrap.Alert(alertDiv);
     bsAlert.close();
   }, 5000);
-}
-
-function getSeoValuesFromKey(seoSettings, key) {
-  let values;
-  seoSettings.forEach((setting) => {
-    if (setting.key == key) {
-      values = setting;
-    }
-  });
-
-  return values;
 }
 
 function setInputSeoValues(seoSettings, key) {

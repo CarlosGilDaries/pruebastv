@@ -1,5 +1,14 @@
 export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
   try {
+    const seoResponse = await fetch(`/api/generic-seo-settings/${types}`);
+    const seoData = await seoResponse.json();
+    const seoSettings = seoData.settings;
+    let location;
+    if (seoSettings && seoSettings.url) {
+      location = seoSettings.url;
+    } else {
+      location = `/${types}.html`;
+    }
     const response = await fetch(`/api/${types}`);
     const data = await response.json();
     const items = data[types];
@@ -26,7 +35,7 @@ export async function dropDownTypeMenu(dropDownMenuElement, types, type) {
     const seeMore = document.createElement('li');
     const seeMoreLink = document.createElement('a');
     seeMoreLink.classList.add('dropdown-item');
-    seeMoreLink.href = `/${types}.html`;
+    seeMoreLink.href = location;
     seeMoreLink.textContent = 'Ver Más';
     seeMoreLink.setAttribute('data-i18n', 'see_more');
     seeMore.appendChild(seeMoreLink);
