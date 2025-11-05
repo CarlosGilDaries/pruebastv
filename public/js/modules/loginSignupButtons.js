@@ -1,3 +1,5 @@
+import { getPlansUrl } from "./getPlansUrl.js";
+
 export function setupLoginSignupButtons() {
     const token = localStorage.getItem('auth_token');
     const userIcon = document.querySelector('.user');
@@ -12,7 +14,7 @@ export function setupLoginSignupButtons() {
       const loginButton = document.createElement('a');
       loginButton.href = '/login';
       const registerButton = document.createElement('a');
-      registerButton.href = '/planes';
+      getPlansUrl(registerButton);
       loginButton.innerHTML = `<button class="login-btn nav-link" data-i18n="login">Iniciar sesión</button>`;
       registerButton.innerHTML = `<button class="signup-btn nav-link" data-i18n="register">Registrarse</button>`;
       loginButtonContainer.appendChild(loginButton);

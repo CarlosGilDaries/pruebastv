@@ -3,6 +3,7 @@ import { showPassword } from "./modules/showPasword.js";
 import { aceptedCookies } from './modules/acceptedCookies.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
+import { getPlansUrl } from "./modules/getPlansUrl.js";
 
 document.addEventListener('DOMContentLoaded', function () {
   const passwordInput = document.getElementById('password');
@@ -97,5 +98,7 @@ document
 document.body.addEventListener('click', function () {
   document.getElementById('error-message').style.display = 'none';
 })
+
+getPlansUrl(document.getElementById('plans-link'));
 
 aceptedCookies();

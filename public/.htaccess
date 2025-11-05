@@ -17,6 +17,7 @@
     # Redirigir rutas específicas del frontend
     RewriteRule ^login$ /login.html [L]
     RewriteRule ^registro$ /register.html [L]
+    RewriteRule ^recuperar-password$ /restore-password.html [L]
     RewriteRule ^registro-free$ /short-register.html [L]
     RewriteRule ^registro/metodo-de-pago$ /register-payment-method.html [L]
     RewriteRule ^alquiler-metodo-de-pago$ /rent-payment-method.html [L]
