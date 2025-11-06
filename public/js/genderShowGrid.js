@@ -15,9 +15,6 @@ if (window.PAGE_ID) {
 } else {
   genderId = urlParams.get('id');
 }
-const documentTitle = document.getElementById('title');
-document.body.id = `gender_${genderId}`;
-documentTitle.setAttribute('data-i18n', `gender_${genderId}`);
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');

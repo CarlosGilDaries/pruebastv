@@ -12,9 +12,6 @@ if (window.PAGE_ID) {
 } else {
   tagId = urlParams.get('id');
 }
-const documentTitle = document.getElementById('title');
-document.body.id = `tag_${tagId}`;
-documentTitle.setAttribute('data-i18n', `tag_${tagId}`);
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');

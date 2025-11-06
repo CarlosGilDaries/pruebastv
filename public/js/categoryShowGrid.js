@@ -13,9 +13,6 @@ if (window.PAGE_ID) {
 } else {
   categoryId = urlParams.get('id');
 }
-const documentTitle = document.getElementById('title');
-document.body.id = `category_${categoryId}`;
-documentTitle.setAttribute('data-i18n', `category_${categoryId}`);
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
