@@ -16,7 +16,6 @@ function showCookieBanner() {
  * @description Hides the Cookie banner and saves the value to localstorage
  */
 function hideCookieBanner() {
-  // Guardar preferencias de cookies
   const analyticsAccepted = document.getElementById('analytics-cookie').checked;
   localStorage.setItem('cb_isCookieAccepted', 'yes');
   localStorage.setItem(
@@ -34,6 +33,11 @@ function hideCookieBanner() {
   console.log(
     '- Google Analytics: ' + (analyticsAccepted ? 'Aceptadas' : 'Rechazadas')
   );
+
+  // 👉 Cargar GA solo si se aceptaron
+  if (analyticsAccepted) {
+    loadGoogleAnalytics();
+  }
 }
 
 /**
@@ -61,9 +65,40 @@ function initializeCookieBanner() {
     if (analyticsAccepted) {
       document.getElementById('analytics-cookie').checked =
         analyticsAccepted === 'yes';
+
+      if (analyticsAccepted === 'yes') {
+        loadGoogleAnalytics();
+      }
     }
   }
 }
+
+/**
+ * @description Loads the Google Analitycs script.
+ */
+function loadGoogleAnalytics() {
+  if (document.getElementById('ga-script')) {
+    return; // Evita cargarlo dos veces
+  }
+
+  const script1 = document.createElement('script');
+  script1.async = true;
+  script1.src = 'https://www.googletagmanager.com/gtag/js?id=G-ABCDE12345';
+  script1.id = 'ga-script'; // para identificarlo
+  document.head.appendChild(script1);
+
+  const script2 = document.createElement('script');
+  script2.text = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-ABCDE12345');
+  `;
+  document.head.appendChild(script2);
+
+  console.log('Google Analytics cargado');
+}
+
 
 // Assigning values to window object
 window.onload = initializeCookieBanner();

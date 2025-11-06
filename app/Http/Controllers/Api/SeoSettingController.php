@@ -64,7 +64,7 @@ class SeoSettingController extends Controller
             $settings->keywords = sanitize_html($request->keywords);
             $settings->robots = sanitize_html($request->robots);
             $settings->url = sanitize_html($request->url);
-            $settings->alias = sanitize_html($request->alias);
+            $settings->canonical = sanitize_html($request->canonical);
             $settings->save();
 
             if ($settings->key == 'movie') {
@@ -118,7 +118,7 @@ class SeoSettingController extends Controller
             $settings->keywords = sanitize_html($request->keywords);
             $settings->robots = sanitize_html($request->robots);
             $settings->url = sanitize_html($request->url);
-            $settings->alias = sanitize_html($request->alias);
+            $settings->canonical = sanitize_html($request->canonical);
             $settings->save();
 
             return response()->json([
@@ -146,7 +146,7 @@ class SeoSettingController extends Controller
             $settings->keywords = sanitize_html($request->keywords);
             $settings->robots = sanitize_html($request->robots);
             $settings->url = sanitize_html($request->url);
-            $settings->alias = sanitize_html($request->alias);
+            $settings->canonical = sanitize_html($request->canonical);
             $settings->save();
 
             if ($settings->key == 'movie') {
@@ -202,7 +202,7 @@ class SeoSettingController extends Controller
                     'keywords' => sanitize_html($request->keywords),
                     'robots' => sanitize_html($request->robots),
                     'url' => sanitize_html($request->url),
-                    'alias' => sanitize_html($request->alias),
+                    'canonical' => sanitize_html($request->canonical),
                 ]
             );
 
@@ -235,6 +235,9 @@ class SeoSettingController extends Controller
             }
 
             switch ($seo->key) {
+                case 'index':
+                    $file = public_path("index.html");
+                    break;
                 case 'gender':
                     $file = public_path("gender-show.html");
                     break;

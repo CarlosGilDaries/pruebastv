@@ -3,6 +3,11 @@ import { getContentTranslations } from '../modules/contentTranslations.js';
 import { validateAddForm } from '../modules/validateAddForm.js';
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
+import { buildSeoInputs } from '../modules/buildSeoInputs.js';
+import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+
+buildSeoInputs();
+setupSlugGenerator();
 
 async function editCategoryForm() {
   const id = localStorage.getItem('id');

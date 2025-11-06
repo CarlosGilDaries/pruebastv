@@ -3,6 +3,11 @@ import { getContentTranslations } from '../modules/contentTranslations.js';
 import { validateAddForm } from '../modules/validateAddForm.js';
 import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
+import { buildSeoInputs } from '../modules/buildSeoInputs.js';
+import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+
+buildSeoInputs();
+setupSlugGenerator();
 
 document.addEventListener('DOMContentLoaded', function () {
   const token = localStorage.getItem('auth_token');

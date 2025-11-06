@@ -12,7 +12,6 @@ export async function gridShow(
   token = null
 ) {
   try {
-    console.log('1');
     showSpinner();
     const url = id != null ? `/api/${endpoint}/${id}` : `/api/${endpoint}`;
 
@@ -50,7 +49,6 @@ export async function gridShow(
     }
 
     movies.forEach((movie) => {
-      console.log(movie);
       const article = document.createElement('article');
       article.classList.add('content');
 

@@ -13,7 +13,7 @@ class SeoSetting extends Model
         'keywords', 
         'robots', 
         'url', 
-        'alias'
+        'canonical'
     ];
 
     public function movie()

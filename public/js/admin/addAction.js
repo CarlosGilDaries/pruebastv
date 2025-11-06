@@ -1,5 +1,10 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
+import { buildSeoInputs } from '../modules/buildSeoInputs.js';
+import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+
+buildSeoInputs();
+setupSlugGenerator();
 
 async function initAddAction() {
   const backendAPI = '/api/';

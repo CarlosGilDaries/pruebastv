@@ -1,4 +1,5 @@
 import { getSeoValuesFromKey } from "../modules/getSeoValuesFromKey.js";
+import { setupSlugGenerator } from "../modules/setUpSlugGeneratos.js";
 
 async function seoSettingsForm() {
   const token = localStorage.getItem('auth_token');
@@ -167,6 +168,60 @@ async function seoSettingsForm() {
   });
 }
 
+function buildSeoInputs() {
+  document.querySelectorAll('form').forEach((form) => {
+    // Obtener el id del formulario (por ejemplo "legal-notice-form")
+    const formId = form.id;
+    // Eliminar la parte final "-form" → "legal-notice"
+    const baseId = formId.replace(/-form$/, '');
+
+    // Plantilla HTML con los campos SEO
+    const seoFields = `
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="${baseId}-seo-title" class="form-label">Title</label>
+          <input type="text" class="form-control" id="${baseId}-seo-title" name="${baseId}-seo-title" />
+          <div id="${baseId}-seo-title-error" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="${baseId}-seo-url" class="form-label">Alias</label>
+          <input type="text" class="form-control" id="${baseId}-seo-url" name="${baseId}-seo-url">
+          <div id="${baseId}-seo-url-error" class="invalid-feedback"></div>
+        </div>
+      </div>
+      <div class="row">
+      <div class="col-md-6 mb-3">
+          <label for="${baseId}-seo-keywords" class="form-label">Keywords</label>
+          <input type="text" class="form-control" id="${baseId}-seo-keywords" name="${baseId}-seo-keywords" />
+          <div id="${baseId}-seo-keywords-error" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="${baseId}-seo-robots" class="form-label">Robots</label>
+          <input type="text" class="form-control" id="${baseId}-seo-robots" name="${baseId}-seo-robots" />
+          <div id="${baseId}-seo-robots-error" class="invalid-feedback"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mb-3">
+          <label for="${baseId}-seo-canonical" class="form-label">Canonical</label>
+          <input type="text" class="form-control" id="${baseId}-seo-canonical" name="${baseId}-seo-canonical" />
+          <div id="${baseId}-seo-canonical-error" class="invalid-feedback"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mb-3">
+          <label for="${baseId}-seo-description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="${baseId}-seo-description" name="${baseId}-seo-description">
+          <div id="${baseId}-seo-description-error" class="invalid-feedback"></div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success">Guardar Configuración</button>
+    `;
+
+    form.innerHTML = seoFields;
+  });
+}
+
 // Función auxiliar para mostrar alertas
 function showAlert(message, type) {
   const alertDiv = document.createElement('div');
@@ -188,7 +243,7 @@ function setInputSeoValues(seoSettings, key) {
   if (seoSettings != null) {
     document.getElementById(key + '-seo-title').value = seoSettings.title;
     document.getElementById(key + '-seo-robots').value = seoSettings.robots;
-    document.getElementById(key + '-seo-alias').value = seoSettings.alias;
+    document.getElementById(key + '-seo-canonical').value = seoSettings.canonical;
     document.getElementById(key + '-seo-description').value =
       seoSettings.description;
     document.getElementById(key + '-seo-url').value = seoSettings.url;
@@ -203,7 +258,7 @@ function buildSeoFormData(key) {
     { id: key + '-seo-title', name: 'title' },
     { id: key + '-seo-keywords', name: 'keywords' },
     { id: key + '-seo-robots', name: 'robots' },
-    { id: key + '-seo-alias', name: 'alias' },
+    { id: key + '-seo-canonical', name: 'canonical' },
     { id: key + '-seo-url', name: 'url' },
     { id: key + '-seo-description', name: 'description' },
   ];
@@ -222,5 +277,21 @@ function buildSeoFormData(key) {
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function () {
+  buildSeoInputs();
+  setupSlugGenerator('index-seo-title', 'index-seo-url');
+  setupSlugGenerator('categories-seo-title', 'categories-seo-url');
+  setupSlugGenerator('genders-seo-title', 'genders-seo-url');
+  setupSlugGenerator('tags-seo-title', 'tags-seo-url');
+  setupSlugGenerator('plans-seo-title', 'plans-seo-url');
+  setupSlugGenerator('profile-seo-title', 'profile-seo-url');
+  setupSlugGenerator('seen-seo-title', 'seen-seo-url');
+  setupSlugGenerator('favorites-seo-title', 'favorites-seo-url');
+  setupSlugGenerator('paid-resources-seo-title', 'paid-resources-seo-url');
+  setupSlugGenerator('payment-history-seo-title', 'payment-history-seo-url');
+  setupSlugGenerator('legal-notice-seo-title', 'legal-notice-seo-url');
+  setupSlugGenerator('privacy-policy-seo-title', 'privacy-policy-seo-url');
+  setupSlugGenerator('payment-policy-seo-title', 'payment-policy-seo-url');
+  setupSlugGenerator('cookies-seo-title', 'cookies-seo-url');
+  setupSlugGenerator('contact-seo-title', 'contact-seo-url');
   seoSettingsForm();
 });

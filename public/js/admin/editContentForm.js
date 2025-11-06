@@ -3,6 +3,11 @@ import { generateTranslationInputs } from '../modules/generateTranslationInputs.
 import { getContentTranslations } from '../modules/contentTranslations.js';
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
+import { buildSeoInputs } from '../modules/buildSeoInputs.js';
+import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+
+buildSeoInputs();
+setupSlugGenerator();
 
 async function editContentForm() {
   let id = localStorage.getItem('id');

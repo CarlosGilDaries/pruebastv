@@ -4,7 +4,7 @@ const footer = document.querySelector('footer');
 header.innerHTML = `<nav class="navbar navbar-expand-lg menu container-fluid navbar-dark">
             <div class="container-fluid">
                 <!-- Logo -->
-                <a class="navbar-brand logo" href="/">
+                <a class="navbar-brand logo home-link" href="/">
                     <img src="/file/logo.png" id="logo" alt="Pruebas TV logo">
                 </a>
 
@@ -17,7 +17,7 @@ header.innerHTML = `<nav class="navbar navbar-expand-lg menu container-fluid nav
                 <div class="collapse navbar-collapse mt-3 mt-lg-0" id="mainNavbar">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 left-nav">
                         <li class="nav-item left-nav-links">
-                            <a class="nav-link" href="/" data-i18n="nav_home">Inicio</a>
+                            <a class="nav-link home-link" href="/" data-i18n="nav_home">Inicio</a>
                         </li>
 
                         <li class="nav-item dropdown left-nav-links">
@@ -111,6 +111,7 @@ footer.innerHTML = `<div class="container-fluid py-4 px-3">
 
 async function setUrls() {
   try {
+    const indexLinks = document.querySelectorAll('.home-link');
     const plansLink = document.getElementById('plans-link');
     const profileLink = document.getElementById('profile-link');
     const favoritesLink = document.getElementById('favorites-link');
@@ -132,6 +133,13 @@ async function setUrls() {
 
     seoSettings.forEach((setting) => {
       switch (setting.key) {
+        case 'index':
+          if (indexLinks) {
+            indexLinks.forEach(link => {
+              link.href = setting.url;
+            })
+          }
+          break;
         case 'plans':
           if (plansLink) plansLink.href = setting.url;
           break;

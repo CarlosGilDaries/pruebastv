@@ -6,7 +6,7 @@ export function buildSeoFormData(key) {
     { id: 'seo-title', name: 'title' },
     { id: 'seo-keywords', name: 'keywords' },
     { id: 'seo-robots', name: 'robots' },
-    { id: 'seo-alias', name: 'alias' },
+    { id: 'seo-canonical', name: 'canonical' },
     { id: 'seo-url', name: 'url' },
     { id: 'seo-description', name: 'description' },
   ];

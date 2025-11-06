@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('keywords')->nullable();
             $table->string('robots')->nullable();
             $table->string('url')->nullable();
-            $table->string('alias')->nullable();
+            $table->string('canonical')->nullable();
             $table->timestamps();
         });
     }

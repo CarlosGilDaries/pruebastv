@@ -3,6 +3,11 @@ import { getContentTranslations } from '../modules/contentTranslations.js';
 import { showFormErrors } from '../modules/showFormErrors.js';
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
+import { buildSeoInputs } from '../modules/buildSeoInputs.js';
+import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+
+buildSeoInputs();
+setupSlugGenerator();
 
 async function editActionForm() {
   const id = localStorage.getItem('id');
