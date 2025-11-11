@@ -5,8 +5,14 @@ import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 import { buildSeoInputs } from '../modules/buildSeoInputs.js';
 import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+import {
+  buildScriptInputs,
+  buildScriptFormData,
+  getScriptValues,
+} from '../modules/buildScriptsSettings.js';
 
 buildSeoInputs();
+buildScriptInputs();
 setupSlugGenerator();
 
 async function editContentForm() {
@@ -16,7 +22,7 @@ async function editContentForm() {
   const permission = document
     .getElementById('type-content')
     .getAttribute('data-type');
-  
+
   generateTranslationInputs(token);
 
   await loadContentData(id);
@@ -69,6 +75,305 @@ async function editContentForm() {
     }
   }
 
+  // Manejar el envío del formulario
+  const contentForm = document.getElementById('form');
+  const seoForm = document.getElementById('seo-form');
+  const scriptsForm = document.getElementById('scripts-form');
+
+  [contentForm, seoForm, scriptsForm].forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      if (!(await validateAddForm())) {
+        return;
+      }
+
+      // Desactivar el botón mientras se procesa
+      const btn = form.querySelector("button[type='submit']");
+      btn.disabled = true;
+
+      try {
+        // Resetear mensajes de error
+        document
+          .querySelectorAll('#form .invalid-feedback')
+          .forEach((el) => (el.textContent = ''));
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.add('d-none');
+        });
+
+        // Mostrar loader
+        document.getElementById('loading').classList.remove('d-none');
+
+        // Crear FormData
+        const languagesResponse = await fetch(`/api/all-languages`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const languagesData = await languagesResponse.json();
+        const languages = languagesData.languages;
+
+        const shouldChangeContent = document.getElementById(
+          'change-content-file'
+        ).checked;
+        document.getElementById('loading').classList.remove('d-none');
+
+        const formData = new FormData();
+        formData.append('title', document.getElementById('title').value);
+        formData.append('duration', document.getElementById('duration').value);
+        formData.append(
+          'gender_id',
+          document.getElementById('gender_id').value
+        );
+        formData.append('tagline', CKEDITOR.instances.tagline.getData());
+        formData.append('overview', CKEDITOR.instances.overview.getData());
+
+        languages.forEach((language) => {
+          if (language.code !== 'es') {
+            const titleValue = document.getElementById(
+              `${language.code}-title`
+            )?.value;
+            if (titleValue) {
+              formData.append(
+                `translations[${language.code}][title]`,
+                titleValue
+              );
+            }
+
+            const taglineInstance =
+              CKEDITOR.instances[`${language.code}-tagline`];
+            if (taglineInstance) {
+              formData.append(
+                `translations[${language.code}][tagline]`,
+                taglineInstance.getData()
+              );
+            }
+
+            const overviewInstance =
+              CKEDITOR.instances[`${language.code}-overview`];
+            if (overviewInstance) {
+              formData.append(
+                `translations[${language.code}][overview]`,
+                overviewInstance.getData()
+              );
+            }
+          }
+        });
+
+        formData.append(
+          'pay_per_view',
+          document.getElementById('pay_per_view').checked ? '1' : '0'
+        );
+        formData.append(
+          'rent',
+          document.getElementById('rent').checked ? '1' : '0'
+        );
+
+        // Agregar campos condicionales
+        if (document.getElementById('pay_per_view').checked) {
+          formData.append(
+            'pay_per_view_price',
+            document.getElementById('pay_per_view_price').value
+          );
+        }
+        if (document.getElementById('rent').checked) {
+          formData.append(
+            'rent_price',
+            document.getElementById('rent_price').value
+          );
+          formData.append(
+            'rent_days',
+            document.getElementById('rent_days').value
+          );
+        }
+        if (document.getElementById('start_time').value) {
+          formData.append(
+            'start_time',
+            document.getElementById('start_time').value
+          );
+        }
+        if (document.getElementById('end_time').value) {
+          formData.append(
+            'end_time',
+            document.getElementById('end_time').value
+          );
+        }
+
+        // Procesar archivos (solo si se seleccionaron nuevos)
+        const coverInput = document.getElementById('cover');
+        if (coverInput.files.length > 0) {
+          formData.append('cover', coverInput.files[0]);
+        }
+
+        const tallCoverInput = document.getElementById('tall-cover');
+        if (tallCoverInput.files.length > 0) {
+          formData.append('tall_cover', tallCoverInput.files[0]);
+        }
+
+        const trailerInput = document.getElementById('trailer');
+        if (trailerInput.files.length > 0) {
+          formData.append('trailer', trailerInput.files[0]);
+        }
+
+        // Procesar contenido solo si se debe cambiar
+        if (shouldChangeContent) {
+          const type = document.getElementById('type').value;
+          formData.append('type', type);
+
+          if (type === 'video/mp4' || type === 'audio/mpeg') {
+            const contentInput = document.getElementById('content');
+            if (contentInput.files.length > 0) {
+              formData.append('content', contentInput.files[0]);
+            }
+          } else if (type === 'application/vnd.apple.mpegurl') {
+            ['m3u8', 'ts1', 'ts2', 'ts3'].forEach((field) => {
+              const input = document.getElementById(field);
+              if (input.files.length > 0) {
+                formData.append(field, input.files[0]);
+              }
+            });
+          } else {
+            formData.append(
+              'external_url',
+              document.getElementById('external_url').value
+            );
+          }
+        }
+
+        // Agregar checkboxes seleccionados
+        ['plans-container', 'categories-container', 'tags-container'].forEach(
+          (container) => {
+            const checkboxes = document.querySelectorAll(
+              `#${container} input[type="checkbox"]:checked`
+            );
+            const fieldName = container.split('-')[0] + '[]';
+            checkboxes.forEach((checkbox) => {
+              formData.append(fieldName, checkbox.value);
+            });
+          }
+        );
+
+        const response = await fetch(
+          `/api/update-content/${id}/${permission}`,
+          {
+            method: 'POST',
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Error al añadir la etiqueta');
+        }
+
+        // Crear SEO si el usuario llenó datos
+        if (seoForm.querySelectorAll('input, textarea').length > 0) {
+          const { seoFormData, seo } = buildSeoFormData('movie');
+          if (data.success && seo) {
+            let seoResponse;
+            if (data.movie.seo_setting_id == null) {
+              seoResponse = await fetch(
+                backendAPI + `create-seo-settings/${data.movie.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: seoFormData,
+                }
+              );
+            } else {
+              seoResponse = await fetch(
+                backendAPI +
+                  `edit-seo-settings/${data.movie.seo_setting_id}/${data.movie.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: seoFormData,
+                }
+              );
+            }
+            const seoData = await seoResponse.json();
+          }
+        }
+        // Crear Script (si el usuario llenó datos)
+        if (scriptsForm.querySelectorAll('input, textarea').length > 0) {
+          const { scriptFormData: googleScriptFormData, script: googleScript } =
+            buildScriptFormData('google');
+          if (data.success && googleScript) {
+            if (data.movie.scripts.length != 0) {
+              const scripts = data.movie.scripts;
+              let googleScriptId;
+              scripts.forEach((script) => {
+                if (script.movie_id == data.movie.id) {
+                  googleScriptId = script.id;
+                }
+              });
+
+              const googleScriptResponse = await fetch(
+                backendAPI + `edit-script/${googleScriptId}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: googleScriptFormData,
+                }
+              );
+              const googleScriptData = await googleScriptResponse.json();
+            } else {
+              const scriptResponse = await fetch(
+                backendAPI + `create-script/${data.movie.id}/movie`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: googleScriptFormData,
+                }
+              );
+
+              const scriptData = await scriptResponse.json();
+            }
+          }
+        }
+
+        // Mostrar mensaje de éxito
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.remove('d-none');
+        });
+
+        setTimeout(() => {
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
+          window.location.reload();
+        }, 2000);
+      } catch (error) {
+        console.error('Error:', error);
+        // Mostrar error al usuario
+        const errorElement = document.getElementById('name-error');
+        errorElement.textContent = error.message;
+        errorElement.style.display = 'block';
+      } finally {
+        document.getElementById('loading').classList.add('d-none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+
   async function loadContentData(id) {
     try {
       const [
@@ -119,10 +424,16 @@ async function editContentForm() {
       const languages = languagesData.languages;
 
       getContentTranslations(languages, id);
-      console.log(content);
       if (content.seo_setting != null) {
         getSeoSettingsValues(content.seo_setting);
       }
+      if (content.scripts.length != 0) {
+        const scripts = content.scripts;
+        scripts.forEach((script) => {
+          getScriptValues(script);
+        });
+      }
+
 
       // Obtener IDs actuales de planes, categorías y etiquetas
       const currentPlansId = content.plans.map((plan) => plan.id);
@@ -266,7 +577,6 @@ async function editContentForm() {
   document
     .getElementById('pay_per_view')
     .addEventListener('change', function () {
-
       const payPerViewFields = document.getElementById('pay_per_view_fields');
       if (this.checked) {
         payPerViewFields.classList.remove('d-none');
@@ -286,246 +596,6 @@ async function editContentForm() {
       document.getElementById('rent_days').value = '';
     }
   });
-
-  // Manejar envío del formulario
-  document
-    .getElementById('form')
-    .addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      // Validar antes de enviar
-      if (!(await validateAddForm())) {
-        return;
-      }
-
-      document.getElementById('loading').classList.remove('d-none');
-      document.querySelectorAll('.success-submit').forEach((element) => {
-        element.classList.add('d-none');
-      });
-
-      const languagesResponse = await fetch(`/api/all-languages`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const languagesData = await languagesResponse.json();
-      const languages = languagesData.languages;
-
-      const shouldChangeContent = document.getElementById(
-        'change-content-file'
-      ).checked;
-      document.getElementById('loading').classList.remove('d-none');
-
-      const formData = new FormData();
-      formData.append('title', document.getElementById('title').value);
-      formData.append('duration', document.getElementById('duration').value);
-      formData.append('gender_id', document.getElementById('gender_id').value);
-      formData.append('tagline', CKEDITOR.instances.tagline.getData());
-      formData.append('overview', CKEDITOR.instances.overview.getData());
-
-      languages.forEach((language) => {
-        if (language.code !== 'es') {
-          const titleValue = document.getElementById(
-            `${language.code}-title`
-          )?.value;
-          if (titleValue) {
-            formData.append(
-              `translations[${language.code}][title]`,
-              titleValue
-            );
-          }
-
-          const taglineInstance =
-            CKEDITOR.instances[`${language.code}-tagline`];
-          if (taglineInstance) {
-            formData.append(
-              `translations[${language.code}][tagline]`,
-              taglineInstance.getData()
-            );
-          }
-
-          const overviewInstance =
-            CKEDITOR.instances[`${language.code}-overview`];
-          if (overviewInstance) {
-            formData.append(
-              `translations[${language.code}][overview]`,
-              overviewInstance.getData()
-            );
-          }
-        }
-      });
-
-      formData.append(
-        'pay_per_view',
-        document.getElementById('pay_per_view').checked ? '1' : '0'
-      );
-      formData.append(
-        'rent',
-        document.getElementById('rent').checked ? '1' : '0'
-      );
-
-      // Agregar campos condicionales
-      if (document.getElementById('pay_per_view').checked) {
-        formData.append(
-          'pay_per_view_price',
-          document.getElementById('pay_per_view_price').value
-        );
-      }
-      if (document.getElementById('rent').checked) {
-        formData.append(
-          'rent_price',
-          document.getElementById('rent_price').value
-        );
-        formData.append(
-          'rent_days',
-          document.getElementById('rent_days').value
-        );
-      }
-      if (document.getElementById('start_time').value) {
-        formData.append(
-          'start_time',
-          document.getElementById('start_time').value
-        );
-      }
-      if (document.getElementById('end_time').value) {
-        formData.append('end_time', document.getElementById('end_time').value);
-      }
-
-      // Procesar archivos (solo si se seleccionaron nuevos)
-      const coverInput = document.getElementById('cover');
-      if (coverInput.files.length > 0) {
-        formData.append('cover', coverInput.files[0]);
-      }
-
-      const tallCoverInput = document.getElementById('tall-cover');
-      if (tallCoverInput.files.length > 0) {
-        formData.append('tall_cover', tallCoverInput.files[0]);
-      }
-
-      const trailerInput = document.getElementById('trailer');
-      if (trailerInput.files.length > 0) {
-        formData.append('trailer', trailerInput.files[0]);
-      }
-
-      // Procesar contenido solo si se debe cambiar
-      if (shouldChangeContent) {
-        const type = document.getElementById('type').value;
-        formData.append('type', type);
-
-        if (type === 'video/mp4' || type === 'audio/mpeg') {
-          const contentInput = document.getElementById('content');
-          if (contentInput.files.length > 0) {
-            formData.append('content', contentInput.files[0]);
-          }
-        } else if (type === 'application/vnd.apple.mpegurl') {
-          ['m3u8', 'ts1', 'ts2', 'ts3'].forEach((field) => {
-            const input = document.getElementById(field);
-            if (input.files.length > 0) {
-              formData.append(field, input.files[0]);
-            }
-          });
-        } else {
-          formData.append(
-            'external_url',
-            document.getElementById('external_url').value
-          );
-        }
-      }
-
-      // Agregar checkboxes seleccionados
-      ['plans-container', 'categories-container', 'tags-container'].forEach(
-        (container) => {
-          const checkboxes = document.querySelectorAll(
-            `#${container} input[type="checkbox"]:checked`
-          );
-          const fieldName = container.split('-')[0] + '[]';
-          checkboxes.forEach((checkbox) => {
-            formData.append(fieldName, checkbox.value);
-          });
-        }
-      );
-
-      const { seoFormData, seo } = buildSeoFormData('movie');
-
-      try {
-        const response = await fetch(
-          `/api/update-content/${id}/${permission}`,
-          {
-            method: 'POST',
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData,
-          }
-        );
-
-        const data = await response.json();
-
-        if (data.success) {
-          if (seo) {
-            if (data.movie.seo_setting_id == null) {
-              const seoResponse = await fetch(
-                backendAPI + `create-seo-settings/${data.movie.id}`,
-                {
-                  method: 'POST',
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                  body: seoFormData,
-                }
-              );
-
-              const seoData = await seoResponse.json();
-            } else {
-              const seoResponse = await fetch(
-                backendAPI +
-                  `edit-seo-settings/${data.movie.seo_setting_id}/${data.movie.id}`,
-                {
-                  method: 'POST',
-                  headers: {
-                    Authorization: `Bearer ${token}`,
-                  },
-                  body: seoFormData,
-                }
-              );
-
-              const seoData = await seoResponse.json();
-            }
-          }
-          
-          // Mostrar mensaje de éxito
-          document.querySelectorAll('.success-submit').forEach((element) => {
-            element.classList.remove('d-none');
-          });
-
-          setTimeout(() => {
-            document.querySelectorAll('.success-submit').forEach((element) => {
-              element.classList.add('d-none');
-            });
-          }, 5000);
-
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          // Mostrar errores si existen
-          if (data.errors) {
-            Object.entries(data.errors).forEach(([field, messages]) => {
-              const errorElement = document.getElementById(`${field}-error`);
-              if (errorElement) {
-                errorElement.textContent = messages.join(', ');
-                errorElement.style.display = 'block';
-              }
-            });
-          } else {
-            console.error('Error al editar:', data.message);
-          }
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      } finally {
-        document.getElementById('loading').classList.add('d-none');
-      }
-    });
 }
 
 editContentForm();

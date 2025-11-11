@@ -104,7 +104,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         try {
-            $category = Category::with('seoSetting', 'movies.gender', 'movies.SeoSetting')->where('id', $id)->first();
+            $category = Category::with('seoSetting', 'movies.gender', 'movies.SeoSetting', 'scripts')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,
@@ -206,7 +206,7 @@ class CategoryController extends Controller
         DB::beginTransaction();
 
         try {
-            $category = Category::where('id', $id)->first();
+            $category = Category::where('id', $id)->with('scripts')->first();
             $name = sanitize_html($request->input('name'));
             $category->name = $name;
             $cover = $request->file('cover');

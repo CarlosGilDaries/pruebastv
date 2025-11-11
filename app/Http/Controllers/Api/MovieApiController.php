@@ -108,7 +108,7 @@ class MovieApiController extends Controller
 
     public function show($slug)
     {
-        $movie = Movie::with('seoSetting', 'gender.seoSetting', 'tags.seoSetting')->where('slug', $slug)->first();
+        $movie = Movie::with('seoSetting', 'gender.seoSetting', 'tags.seoSetting', 'scripts')->where('slug', $slug)->first();
 
         if (!$movie) {
             return response()->json([
@@ -144,7 +144,7 @@ class MovieApiController extends Controller
 	public function editShow($id)
     {
         try {
-            $movie = Movie::where('id', $id)->with('seoSetting', 'plans', 'categories', 'tags')->first();
+            $movie = Movie::where('id', $id)->with('seoSetting', 'plans', 'categories', 'tags', 'scripts')->first();
             $plans = Plan::all();
 
             if (!$movie) {
@@ -245,7 +245,7 @@ class MovieApiController extends Controller
                 ], 422);
             } 
 
-            $movie = Movie::where('id', $id)->first();
+            $movie = Movie::where('id', $id)->with('scripts')->first();
             $title = sanitize_html($request->input('title'));
             $overview = sanitize_html($request->input('overview'));
             $tagline = sanitize_html($request->input('tagline'));

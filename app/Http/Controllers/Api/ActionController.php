@@ -74,7 +74,7 @@ class ActionController extends Controller
     {
         try {
             $action = Action::where('id', $id)
-                ->with('seoSetting')
+                ->with('seoSetting', 'scripts')
                 ->first();
 
             return response()->json([
@@ -205,7 +205,8 @@ class ActionController extends Controller
         DB::beginTransaction();
 
         try {
-            $action = Action::where('id', $id)->first();
+            Log::debug($request->all());
+            $action = Action::where('id', $id)->with('scripts')->first();
 
             $name = sanitize_html($request->input('name'));
             $text = sanitize_html($request->input('text'));
@@ -304,13 +305,13 @@ class ActionController extends Controller
             ], 200);
 
         } catch(\Exception $e) {
-            Log::error('Error: ' . $e->getMessage());
+            Log::error('Error en update ActionController: ' . $e->getMessage());
 
             DB::rollBack();
 
             return response()->json([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
+                'message' => 'Error en update ActionController: ' . $e->getMessage(),
             ], 500);
         }
     }

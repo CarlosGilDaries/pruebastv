@@ -144,7 +144,7 @@ class GenderController extends Controller
     public function show(string $id)
     {
         try {
-            $gender = Gender::with('seoSetting', 'movies.gender', 'movies.seoSetting')->where('id', $id)->first();
+            $gender = Gender::with('seoSetting', 'movies.gender', 'movies.seoSetting', 'scripts')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,
@@ -170,7 +170,7 @@ class GenderController extends Controller
         DB::beginTransaction();
 
         try {
-            $gender = Gender::where('id', $id)->first();
+            $gender = Gender::where('id', $id)->with('scripts')->first();
             $name = sanitize_html($request->input('name'));
 
             $gender->name = $name;
