@@ -5,8 +5,14 @@ import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 import { buildSeoInputs } from '../modules/buildSeoInputs.js';
 import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+import {
+  buildScriptInputs,
+  buildScriptFormData,
+  getScriptValues
+} from '../modules/buildScriptsSettings.js';
 
 buildSeoInputs();
+buildScriptInputs();
 setupSlugGenerator();
 
 async function editActionForm() {

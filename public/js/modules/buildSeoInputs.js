@@ -2,7 +2,6 @@ import { setupSlugGenerator } from "./setUpSlugGeneratos.js";
 
 export function buildSeoInputs() {
     const div = document.getElementById('seo-inputs');
-    console.log(div);
     const seoFields = `
       <div class="row">
         <div class="col-md-6 mb-3">

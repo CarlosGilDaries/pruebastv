@@ -23,4 +23,9 @@ class Category extends Model
     {
         return $this->belongsTo(SeoSetting::class);
     }
+
+    public function scripts()
+    {
+        return $this->hasMany(Script::class);
+    }
 }

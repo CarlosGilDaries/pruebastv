@@ -37,6 +37,7 @@ use App\Http\Controllers\Api\PaymentPoliticController;
 use App\Http\Controllers\Api\PrivacyPoliticController;
 use App\Http\Controllers\Api\RentController;
 use App\Http\Controllers\Api\RentOrderController;
+use App\Http\Controllers\Api\ScriptController;
 use App\Http\Controllers\Api\SeoSettingController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\ViewedContentController;
@@ -298,6 +299,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
     Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'update']);
 
+    // Rutas de Scripts protegidas
+    Route::middleware([
+        CheckPermissions::class . ':scripts_config',
+    ])->group(function () {
+        Route::post('create-script/{id}/{type}', [ScriptController::class, 'store']);
+        Route::post('edit-script/{id}', [ScriptController::class, 'update']);
+    });
+
     Route::get('permissions', [PermissionController::class, 'index']);
     Route::get('permission/{id}', [PermissionController::class, 'show']);
     Route::post('add-permission', [PermissionController::class, 'store']);
@@ -343,6 +352,7 @@ Route::get('languages', [LanguageController::class, 'index']);
 Route::get('language/{code}', [LanguageController::class, 'show']);
 Route::get('all-seo-settings', [SeoSettingController::class, 'index']);
 Route::get('generic-seo-settings/{key}', [SeoSettingController::class, 'genericPageShow']);
+Route::get('scripts', [ScriptController::class, 'index']);
 
 Route::get('check-email/{email}', [LoginApiController::class, 'checkEmail']);
 Route::get('check-dni/{dni}', [LoginApiController::class, 'checkDni']);

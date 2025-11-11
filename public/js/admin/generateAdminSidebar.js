@@ -98,11 +98,16 @@ export function generateAdminSidebar() {
                         <i class="fa-solid fa-magnifying-glass me-2"></i>
                         <span>Configuración Seo</span>
                     </a>
-                    </li>
                     <li class="nav-item" data-content="mail-config">
                     <a class="nav-link" href="/admin/mail-config.html">
                         <i class="fa-solid fa-envelope me-2"></i>
                         <span>Configuración Mail</span>
+                    </a>
+                    </li>
+                    <li class="nav-item" data-content="scripts-config">
+                    <a class="nav-link" href="/admin/scripts.html">
+                        <i class="fa-solid fa-scroll me-2"></i>
+                        <span>Scripts</span>
                     </a>
                     </li>
                     <li class="nav-item" data-content="list-legal-notices">

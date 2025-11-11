@@ -3,11 +3,16 @@ import { validateAddForm } from '../modules/validateAddForm.js';
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 import { buildSeoInputs } from '../modules/buildSeoInputs.js';
 import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+import {
+  buildScriptInputs,
+  buildScriptFormData,
+} from '../modules/buildScriptsSettings.js';
 
 buildSeoInputs();
+buildScriptInputs();
 setupSlugGenerator();
 
-document.addEventListener('DOMContentLoaded', function () {
+
   async function initAddGender() {
     const backendAPI = '/api/';
     const authToken = localStorage.getItem('auth_token');
@@ -25,129 +30,141 @@ document.addEventListener('DOMContentLoaded', function () {
     const languagesData = await languagesResponse.json();
     const languages = languagesData.languages;
 
-    // Manejar envío del formulario
-    document
-      .getElementById('form')
-      .addEventListener('submit', async function (e) {
+    const contentForm = document.getElementById('form');
+    const seoForm = document.getElementById('seo-form');
+    const scriptsForm = document.getElementById('scripts-form');
+
+    [contentForm, seoForm, scriptsForm].forEach((form) => {
+      form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        // Validar formulario
-        if (!this.checkValidity()) {
-          e.stopPropagation();
-          this.classList.add('was-validated');
+        if (!form.checkValidity()) {
+          form.classList.add('was-validated');
           return;
         }
+
         if (!(await validateAddForm())) {
           return;
         }
 
-        // Resetear mensajes de error
-        document.querySelectorAll('#form .invalid-feedback').forEach((el) => {
-          el.textContent = '';
-          el.style.display = 'none';
-        });
-        document.querySelectorAll('.success-submit').forEach(element => {
-          element.classList.add('d-none');
-        });
-
-        // Mostrar loader
-        document.getElementById('loading').classList.remove('d-none');
-
-        // Verificar autenticación
-        if (!authToken) {
-          window.location.href = '/login';
-          return;
-        }
+        // Desactivar el botón mientras se procesa
+        const btn = form.querySelector("button[type='submit']");
+        btn.disabled = true;
 
         try {
-          const formData = new FormData();
+          // Resetear mensajes de error
+          document
+            .querySelectorAll('#form .invalid-feedback')
+            .forEach((el) => (el.textContent = ''));
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
 
-          formData.append('name', document.getElementById('name').value);
-          if (document.getElementById('cover')) {
-            formData.append('cover', document.getElementById('cover').files[0]);
-          }
+          // Mostrar loader
+          document.getElementById('loading').classList.remove('d-none');
 
+          // Crear FormData
+          const formAdData = new FormData();
+          formAdData.append('name', document.getElementById('name').value);
           languages.forEach((language) => {
             if (language.code !== 'es') {
               const nameValue = document.getElementById(
                 `${language.code}-name`
               )?.value;
               if (nameValue) {
-                formData.append(
+                formAdData.append(
                   `translations[${language.code}][name]`,
                   nameValue
                 );
               }
             }
           });
-
-          const { seoFormData, seo } = buildSeoFormData('gender');
-
+          if (document.getElementById('cover')) {
+            formAdData.append(
+              'cover',
+              document.getElementById('cover').files[0]
+            );
+          }
           const response = await fetch(backendAPI + 'add-gender', {
             method: 'POST',
             headers: {
               Authorization: `Bearer ${authToken}`,
             },
-            body: formData,
+            body: formAdData,
           });
 
           const data = await response.json();
 
           if (!response.ok) {
-            // Mostrar errores del servidor si existen
-            if (data.errors) {
-              Object.entries(data.errors).forEach(([field, messages]) => {
-                const errorElement = document.getElementById(`${field}-error`);
-                if (errorElement) {
-                  errorElement.textContent = messages.join(', ');
-                  errorElement.style.display = 'block';
-                }
-              });
-            } else {
-              throw new Error(data.error || 'Error al añadir el género');
-            }
-            return;
+            throw new Error(data.error || 'Error al añadir la etiqueta');
           }
 
-          if (data.success && seo) {
-            const seoResponse = await fetch(
-              backendAPI + `create-seo-settings/${data.gender.id}`,
-              {
-                method: 'POST',
-                headers: {
-                  Authorization: `Bearer ${authToken}`,
-                },
-                body: seoFormData,
-              }
-            );
+          // Crear SEO si el usuario llenó datos
+          if (seoForm.querySelectorAll('input, textarea').length > 0) {
+            const { seoFormData, seo } = buildSeoFormData('gender');
+            if (data.success && seo) {
+              const seoResponse = await fetch(
+                backendAPI + `create-seo-settings/${data.gender.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: seoFormData,
+                }
+              );
 
-            const seoData = await seoResponse.json();
+              const seoData = await seoResponse.json();
+            }
+          }
+          // Crear Script (si el usuario llenó datos)
+          if (scriptsForm.querySelectorAll('input, textarea').length > 0) {
+            const {
+              scriptFormData: googleScriptFormData,
+              script: googleScript,
+            } = buildScriptFormData('google');
+            if (data.success && googleScript) {
+              const scriptResponse = await fetch(
+                backendAPI + `create-script/${data.gender.id}/gender`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: googleScriptFormData,
+                }
+              );
+
+              const scriptData = await scriptResponse.json();
+            }
           }
 
           // Mostrar mensaje de éxito
-          const successMessage = document.querySelectorAll('.success-submit');
-          successMessage.forEach((element) => {
+          document.querySelectorAll('.success-submit').forEach((element) => {
             element.classList.remove('d-none');
           });
-         
+
           setTimeout(() => {
-            successMessage.forEach((element) => {
+            document.querySelectorAll('.success-submit').forEach((element) => {
               element.classList.add('d-none');
             });
-          }, 5000);
-
-          // Resetear formulario
-          this.reset();
-          this.classList.remove('was-validated');
+            window.location.reload();
+          }, 2000);
         } catch (error) {
           console.error('Error:', error);
-          alert('Error al añadir el género: ' + error.message);
+          // Mostrar error al usuario
+          const errorElement = document.getElementById('name-error');
+          errorElement.textContent = error.message;
+          errorElement.style.display = 'block';
         } finally {
           document.getElementById('loading').classList.add('d-none');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       });
+    });
   }
 
-  initAddGender();
-});
+  // Inicializar cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', function () {
+    initAddGender();
+  });

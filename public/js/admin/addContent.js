@@ -3,8 +3,13 @@ import { generateTranslationInputs } from '../modules/generateTranslationInputs.
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
 import { buildSeoInputs } from '../modules/buildSeoInputs.js';
 import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
+import {
+  buildScriptInputs,
+  buildScriptFormData,
+} from '../modules/buildScriptsSettings.js';
 
 buildSeoInputs();
+buildScriptInputs();
 setupSlugGenerator();
 
 async function initContent() {
@@ -107,6 +112,411 @@ async function initContent() {
     }
   });
 
+  const contentForm = document.getElementById('form');
+  const seoForm = document.getElementById('seo-form');
+  const scriptsForm = document.getElementById('scripts-form');
+
+  [contentForm, seoForm, scriptsForm].forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        form.classList.add('was-validated');
+        return;
+      }
+
+      if (!(await validateAddForm())) {
+        return;
+      }
+
+      // Desactivar el botón mientras se procesa
+      const btn = form.querySelector("button[type='submit']");
+      btn.disabled = true;
+
+      try {
+        // Resetear mensajes de error
+        document
+          .querySelectorAll('#form .invalid-feedback')
+          .forEach((el) => (el.textContent = ''));
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.add('d-none');
+        });
+
+        // Mostrar loader
+        document.getElementById('loading').classList.remove('d-none');
+
+        // Crear FormData
+        const formData = new FormData();
+
+        formData.append('title', document.getElementById('title').value);
+        formData.append('type', document.getElementById('type').value);
+        formData.append(
+          'gender_id',
+          document.getElementById('gender_id').value
+        );
+        formData.append('tagline', CKEDITOR.instances.tagline.getData());
+        formData.append('overview', CKEDITOR.instances.overview.getData());
+
+        languages.forEach((language) => {
+          if (language.code !== 'es') {
+            const titleValue = document.getElementById(
+              `${language.code}-title`
+            )?.value;
+            if (titleValue) {
+              formData.append(
+                `translations[${language.code}][title]`,
+                titleValue
+              );
+            }
+
+            const taglineInstance =
+              CKEDITOR.instances[`${language.code}-tagline`];
+            if (taglineInstance) {
+              formData.append(
+                `translations[${language.code}][tagline]`,
+                taglineInstance.getData()
+              );
+            }
+
+            const overviewInstance =
+              CKEDITOR.instances[`${language.code}-overview`];
+            if (overviewInstance) {
+              formData.append(
+                `translations[${language.code}][overview]`,
+                overviewInstance.getData()
+              );
+            }
+          }
+        });
+
+        formData.append(
+          'pay_per_view',
+          document.getElementById('pay_per_view').checked ? '1' : '0'
+        );
+
+        if (document.getElementById('pay_per_view').checked) {
+          formData.append(
+            'pay_per_view_price',
+            document.getElementById('pay_per_view_price').value
+          );
+        }
+
+        formData.append(
+          'rent',
+          document.getElementById('rent').checked ? '1' : '0'
+        );
+
+        if (document.getElementById('rent').checked) {
+          formData.append(
+            'rent_price',
+            document.getElementById('rent_price').value
+          );
+          formData.append(
+            'rent_days',
+            document.getElementById('rent_days').value
+          );
+        }
+
+        if (document.getElementById('start_time').value) {
+          formData.append(
+            'start_time',
+            document.getElementById('start_time').value
+          );
+        }
+
+        if (document.getElementById('end_time').value) {
+          formData.append(
+            'end_time',
+            document.getElementById('end_time').value
+          );
+        }
+
+        if (document.getElementById('duration').value) {
+          formData.append(
+            'duration',
+            document.getElementById('duration').value
+          );
+        }
+
+        if (document.getElementById('cover')) {
+          formData.append('cover', document.getElementById('cover').files[0]);
+        }
+
+        if (document.getElementById('tall-cover')) {
+          formData.append(
+            'tall_cover',
+            document.getElementById('tall-cover').files[0]
+          );
+        }
+
+        if (
+          document.getElementById('trailer') &&
+          document.getElementById('trailer').files[0]
+        ) {
+          formData.append(
+            'trailer',
+            document.getElementById('trailer').files[0]
+          );
+        }
+
+        const type = document.getElementById('type').value;
+        if (type === 'application/vnd.apple.mpegurl') {
+          formData.append('m3u8', document.getElementById('m3u8').files[0]);
+          formData.append('ts1', document.getElementById('ts1').files[0]);
+          formData.append('ts2', document.getElementById('ts2').files[0]);
+        } else if (
+          type === 'url_mp4' ||
+          type === 'url_hls' ||
+          type === 'stream' ||
+          type == 'url_mp3'
+        ) {
+          formData.append(
+            'external_url',
+            document.getElementById('external_url').value
+          );
+        } else {
+          formData.append(
+            'content',
+            document.getElementById('content').files[0]
+          );
+        }
+
+        // Obtener checkboxes seleccionados
+        const planCheckboxes = document.querySelectorAll(
+          '#plans-container input[type="checkbox"]:checked'
+        );
+        planCheckboxes.forEach((checkbox) => {
+          formData.append('plans[]', checkbox.value);
+        });
+
+        const categoryCheckboxes = document.querySelectorAll(
+          '#categories-container input[type="checkbox"]:checked'
+        );
+        categoryCheckboxes.forEach((checkbox) => {
+          formData.append('categories[]', checkbox.value);
+        });
+
+        const tagCheckboxes = document.querySelectorAll(
+          '#tags-container input[type="checkbox"]:checked'
+        );
+        tagCheckboxes.forEach((checkbox) => {
+          formData.append('tags[]', checkbox.value);
+        });
+
+        let permission;
+        if (
+          type == 'video/mp4' ||
+          type == 'application/vnd.apple.mpegurl' ||
+          type == 'audio/mpeg'
+        ) {
+          permission = 'local';
+        } else if (type == 'stream') {
+          permission = 'streams';
+        } else {
+          permission = 'external';
+        }
+
+        const response = await fetch(`/api/add-content/${permission}`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          // Mostrar errores específicos si existen
+          if (data.errors) {
+            Object.entries(data.errors).forEach(([field, messages]) => {
+              const errorElement = document.getElementById(`${field}-error`);
+              if (errorElement) {
+                errorElement.textContent = messages.join(', ');
+                errorElement.style.display = 'block';
+              }
+            });
+          } else {
+            throw new Error(data.error || 'Error al subir el contenido');
+          }
+          return;
+        }
+
+        // Crear SEO si el usuario llenó datos
+        if (seoForm.querySelectorAll('input, textarea').length > 0) {
+          const { seoFormData, seo } = buildSeoFormData('movie');
+          if (data.success && seo) {
+            console.log(data);
+            const seoResponse = await fetch(
+              backendAPI + `create-seo-settings/${data.movie.id}`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${authToken}`,
+                },
+                body: seoFormData,
+              }
+            );
+
+            const seoData = await seoResponse.json();
+          }
+        }
+        // Crear Script (si el usuario llenó datos)
+        if (scriptsForm.querySelectorAll('input, textarea').length > 0) {
+          const { scriptFormData: googleScriptFormData, script: googleScript } =
+            buildScriptFormData('google');
+          if (data.success && googleScript) {
+            const scriptResponse = await fetch(
+              backendAPI + `create-script/${data.movie.id}/movie`,
+              {
+                method: 'POST',
+                headers: {
+                  Authorization: `Bearer ${authToken}`,
+                },
+                body: googleScriptFormData,
+              }
+            );
+
+            const scriptData = await scriptResponse.json();
+          }
+        }
+
+        // Mostrar mensaje de éxito
+        document.querySelectorAll('.success-submit').forEach((element) => {
+          element.classList.remove('d-none');
+        });
+
+        setTimeout(() => {
+          document.querySelectorAll('.success-submit').forEach((element) => {
+            element.classList.add('d-none');
+          });
+          window.location.reload();
+        }, 2000);
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al subir el contenido: ' + error.message);
+      } finally {
+        document.getElementById('loading').classList.add('d-none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  });
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function () {
+  initContent();
+});
+
+async function setupPlansGendersCategoriesTags(authToken) {
+  try {
+    const plansContainer = document.getElementById('plans-container');
+    const selectGender = document.getElementById('gender_id');
+    const categoriesContainer = document.getElementById('categories-container');
+    const tagsContainer = document.getElementById('tags-container');
+
+    const response = await fetch('/api/plans');
+    const tagsResponse = await fetch('/api/tags');
+    const genderResponse = await fetch('/api/genders', {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    const categoryResponse = await fetch('/api/dropdown-categories-menu', {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+
+    const data = await response.json();
+    const genderData = await genderResponse.json();
+    const categoryData = await categoryResponse.json();
+    const tagsData = await tagsResponse.json();
+
+    const plans = data.plans;
+    const genders = genderData.genders;
+    const categories = categoryData.categories;
+    const tags = tagsData.tags;
+
+    // Llenar planes
+    plans.forEach((plan) => {
+      const div = document.createElement('div');
+      div.className = 'form-check';
+
+      const input = document.createElement('input');
+      input.className = 'form-check-input';
+      input.type = 'checkbox';
+      input.value = plan.id;
+      input.id = `plan-${plan.id}`;
+      input.name = 'plans[]';
+
+      const label = document.createElement('label');
+      label.className = 'form-check-label';
+      label.htmlFor = `plan-${plan.id}`;
+      label.textContent = plan.name;
+
+      div.appendChild(input);
+      div.appendChild(label);
+      plansContainer.appendChild(div);
+    });
+
+    // Llenar categorías
+    categories.forEach((category) => {
+      const div = document.createElement('div');
+      div.className = 'form-check';
+
+      const input = document.createElement('input');
+      input.className = 'form-check-input';
+      input.type = 'checkbox';
+      input.value = category.id;
+      input.id = `category-${category.id}`;
+      input.name = 'categories[]';
+
+      const label = document.createElement('label');
+      label.className = 'form-check-label';
+      label.htmlFor = `category-${category.id}`;
+      label.textContent = category.name;
+
+      div.appendChild(input);
+      div.appendChild(label);
+      categoriesContainer.appendChild(div);
+    });
+
+    // Llenar etiquetas
+    tags.forEach((tag) => {
+      const div = document.createElement('div');
+      div.className = 'form-check';
+
+      const input = document.createElement('input');
+      input.className = 'form-check-input';
+      input.type = 'checkbox';
+      input.value = tag.id;
+      input.id = `tag-${tag.id}`;
+      input.name = 'tags[]';
+
+      const label = document.createElement('label');
+      label.className = 'form-check-label';
+      label.htmlFor = `tag-${tag.id}`;
+      label.textContent = tag.name;
+
+      div.appendChild(input);
+      div.appendChild(label);
+      tagsContainer.appendChild(div);
+    });
+
+    // Llenar géneros
+    genders.forEach((gender) => {
+      let option = document.createElement('option');
+      option.value = gender.id;
+      option.textContent = gender.name;
+      selectGender.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error al cargar datos:', error);
+  }
+}
+
+/*
   // Manejar envío del formulario
   document
     .getElementById('form')
@@ -290,6 +700,7 @@ async function initContent() {
       }
 
       const { seoFormData, seo } = buildSeoFormData('movie');
+      const { scriptFormData, script } = buildScriptFormData('movie');
 
       try {
         const response = await fetch(`/api/add-content/${permission}`, {
@@ -333,6 +744,21 @@ async function initContent() {
           const seoData = await seoResponse.json();
         }
 
+        if (data.success && script) {
+          const scriptResponse = await fetch(
+            backendAPI + `create-script/${data.movie.id}`,
+            {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: scriptFormData,
+            }
+          );
+
+          const scriptData = await scriptResponse.json();
+        }
+
         // Mostrar mensaje de éxito
         document.querySelectorAll('.success-submit').forEach((element) => {
           element.classList.remove('d-none');
@@ -340,7 +766,7 @@ async function initContent() {
         /*successMessage.textContent = `${data.message} - ${
           data.movie?.title || 'Contenido subido'
         }`;*/
-
+/*
         setTimeout(() => {
           document.querySelectorAll('.success-submit').forEach((element) => {
             element.classList.add('d-none');
@@ -483,3 +909,4 @@ async function setupPlansGendersCategoriesTags(authToken) {
     console.error('Error al cargar datos:', error);
   }
 }
+*/

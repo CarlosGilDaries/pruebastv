@@ -43,7 +43,7 @@
 
 
         <div class="container p-5 admin-panel" id="list-categories">
-        <ul class="nav nav-tabs" id="categorySeoTabs" role="tablist">
+        <ul class="nav nav-tabs" id="allTabs" role="tablist">
           <li class="nav-item" role="presentation">
             <button
               class="nav-link active"
@@ -72,10 +72,24 @@
               Configuración SEO
             </button>
           </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="scripts-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#scripts"
+              type="button"
+              role="tab"
+              aria-controls="scripts"
+              aria-selected="false"
+            >
+              Scripts
+            </button>
+          </li>
         </ul>
 
         <!-- Contenido de las pestañas -->
-        <div class="tab-content" id="tagSeoTabsContent">
+        <div class="tab-content" id="allTabsContent">
           <!-- Pestaña Contenido -->
           <div
             class="tab-pane fade show active"
@@ -195,9 +209,32 @@
                 <button type="submit" class="btn btn-success">
                   Guardar Configuración
                 </button>
-              </form>
             </div>
           </div>
+
+          <!-- Pestaña Scripts -->
+            <div
+              class="tab-pane fade"
+              id="scripts"
+              role="tabpanel"
+              aria-labelledby="scripts-tab"
+            >
+              <div class="container p-3 p-md-5">
+                <h1 class="mb-4">
+                  <i class="fa-solid fa-scroll me-2"></i>Scripts
+                </h1>
+
+                <div id="success-message" class="alert alert-success d-none success-submit">
+                  ¡Contenido subido con éxito!
+                </div>
+                <div id="scripts-inputs"></div>
+                  
+                  <button type="submit" class="btn btn-success">
+                    Guardar Configuración
+                  </button>
+                </form>
+              </div>
+            </div>
         </div>
       </div>
     </div>
