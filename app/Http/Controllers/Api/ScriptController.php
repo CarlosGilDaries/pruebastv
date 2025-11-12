@@ -29,9 +29,11 @@ class ScriptController extends Controller
         }
     }
 
-    /*public function show($id) {
+    public function genericPageShow($key, $type) {
         try {
-            $script = Script::where('id', $id)->with('movie', 'gender', 'category', 'tag', 'action')->first();
+            $script = Script::where('key', $key)
+                ->where('type', $type)
+                ->first();
 
             return response()->json([
                 'success' => true,
@@ -46,7 +48,7 @@ class ScriptController extends Controller
 				'message' => 'Error en show ScriptController: ' . $e->getMessage(),
 			], 500);
         }
-    }*/
+    }
 
     public function store(Request $request, $id, $key)
     {

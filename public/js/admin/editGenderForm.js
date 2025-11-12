@@ -166,7 +166,7 @@ async function editGenderForm() {
                 {
                   method: 'POST',
                   headers: {
-                    Authorization: `Bearer ${authToken}`,
+                    Authorization: `Bearer ${token}`,
                   },
                   body: googleScriptFormData,
                 }

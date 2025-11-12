@@ -22,7 +22,9 @@ async function scriptsForm() {
       const data = await response.json();
 
       if (data.success) {
-        const googleBaseValues = getScriptsByKey(data.scripts, 'base-google')
+        const googleBaseValues = getScriptsByKey(data.scripts, 'base-google');
+        const googleBaseCode =
+          googleBaseValues === null ? null : googleBaseValues.google;
         const indexValues = getScriptsByKey(data.scripts, 'index');
         const categoriesValues = getScriptsByKey(data.scripts, 'categories');
         const genderValues = getScriptsByKey(data.scripts, 'genders');
@@ -51,22 +53,38 @@ async function scriptsForm() {
         const cookiesValues = getScriptsByKey(data.scripts, 'cookies');
         const contactValues = getScriptsByKey(data.scripts, 'contact');
 
-        setInputScriptValues(indexValues, 'index');
+        setInputScriptValues(indexValues, 'index', googleBaseCode);
         setInputScriptValues(googleBaseValues, 'base');
-        setInputScriptValues(categoriesValues, 'categories');
-        setInputScriptValues(genderValues, 'genders');
-        setInputScriptValues(tagsValues, 'tags');
-        setInputScriptValues(plansValues, 'plans');
-        setInputScriptValues(profileValues, 'profile');
-        setInputScriptValues(seenValues, 'seen');
-        setInputScriptValues(favoritesValues, 'favorites');
-        setInputScriptValues(paidResourcesValues, 'paid-resources');
-        setInputScriptValues(paymentHistoryValues, 'payment-history');
-        setInputScriptValues(legalNoticeValues, 'legal-notice');
-        setInputScriptValues(privacyPolicyValues, 'privacy-policy');
-        setInputScriptValues(paymentPolicyValues, 'payment-policy');
-        setInputScriptValues(cookiesValues, 'cookies');
-        setInputScriptValues(contactValues, 'contact');
+        setInputScriptValues(categoriesValues, 'categories', googleBaseCode);
+        setInputScriptValues(genderValues, 'genders', googleBaseCode);
+        setInputScriptValues(tagsValues, 'tags', googleBaseCode);
+        setInputScriptValues(plansValues, 'plans', googleBaseCode);
+        setInputScriptValues(profileValues, 'profile', googleBaseCode);
+        setInputScriptValues(seenValues, 'seen', googleBaseCode);
+        setInputScriptValues(favoritesValues, 'favorites', googleBaseCode);
+        setInputScriptValues(
+          paidResourcesValues,
+          'paid-resources',
+          googleBaseCode
+        );
+        setInputScriptValues(
+          paymentHistoryValues,
+          'payment-history',
+          googleBaseCode
+        );
+        setInputScriptValues(legalNoticeValues, 'legal-notice', googleBaseCode);
+        setInputScriptValues(
+          privacyPolicyValues,
+          'privacy-policy',
+          googleBaseCode
+        );
+        setInputScriptValues(
+          paymentPolicyValues,
+          'payment-policy',
+          googleBaseCode
+        );
+        setInputScriptValues(cookiesValues, 'cookies', googleBaseCode);
+        setInputScriptValues(contactValues, 'contact', googleBaseCode);
       } else {
         throw new Error(data.message || 'Error al cargar el script');
       }
@@ -114,9 +132,7 @@ async function scriptsForm() {
         });
 
         try {
-          let baseCodeGoogleFormData;
           let googleFormData;
-          baseCodeGoogleFormData
           googleFormData = buildScriptFormData(key, 'google');
 
           const response = await fetch(
@@ -200,8 +216,12 @@ function buildScriptInputs(scriptTypes) {
   });
 }
 
-function setInputScriptValues(scriptMap, key) {
-  if (!scriptMap) return;
+function setInputScriptValues(scriptMap, key, googleScript = null) {
+  if (!scriptMap) {
+    /*const googleInput = document.getElementById(`${key}-google-code`);
+    if (googleInput) googleInput.value = googleScript;*/
+    return;
+  }
 
   for (const [type, code] of Object.entries(scriptMap)) {
     const input = document.getElementById(`${key}-${type}-code`);

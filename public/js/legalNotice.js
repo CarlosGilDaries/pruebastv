@@ -2,6 +2,7 @@ import { clickLogOut } from './modules/clickLogOutButton.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 import { hideSpinner, showSpinner } from './modules/spinner.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const categoriesDropDown = document.getElementById('categories');
 const gendersDropDown = document.getElementById('genders');
@@ -31,6 +32,8 @@ async function loadLegalNotice() {
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+
+setGoogleAnalyticsScript(null, 'legal-notice');
 
 setupLoginSignupButtons();
 clickLogOut();

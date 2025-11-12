@@ -2,6 +2,7 @@ import { clickLogOut } from './modules/clickLogOutButton.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 import { hideSpinner, showSpinner } from './modules/spinner.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const container = document.getElementById('payment-politic');
 const categoriesDropDown = document.getElementById('categories');
@@ -33,6 +34,8 @@ async function loadPaymentPolitic() {
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+
+setGoogleAnalyticsScript(null, 'payment-policy');
 
 setupLoginSignupButtons();
 clickLogOut();

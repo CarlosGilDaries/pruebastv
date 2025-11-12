@@ -10,7 +10,7 @@ export function getScriptsByKey(scripts, key) {
     }
   });
 
-  return result;
+  return Object.keys(result).length === 0 ? null : result;
 }
 
 export function getScriptsValues(script) {

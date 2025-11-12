@@ -9,6 +9,7 @@ import { getVideoContent } from './modules/getVideoContent.js';
 import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const token = localStorage.getItem('auth_token');
 const api = 'https://pruebastv.kmc.es/api/';
@@ -22,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
   if (device_id == null && token != null) {
     logOut(token);
   }
+  setGoogleAnalyticsScript(null, 'index');
 
   clickLogOut();
   

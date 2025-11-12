@@ -4,6 +4,7 @@ import { formatDuration } from '../modules/formatDuration.js';
 import { hideSpinner } from './spinner.js';
 import { showSpinner } from './spinner.js';
 import { setSeoSettings } from './setSeoSettings.js';
+import { setGoogleAnalyticsScript } from './setScripts.js';
 
 export async function gridShow(
   title = null,
@@ -29,11 +30,17 @@ export async function gridShow(
     const data = await response.json();
     
     let seoSettings;
+    let scripts;
     if (data[endpoint]) {
-          seoSettings = data[endpoint].seo_setting;
-          if (seoSettings) {
-            setSeoSettings(seoSettings);
-        }
+      seoSettings = data[endpoint].seo_setting;
+      scripts = data[endpoint].scripts;
+      if (seoSettings) {
+        setSeoSettings(seoSettings);
+      }
+      const alreadyActivated = document.getElementById('ga-script-2');
+      if (!alreadyActivated) {
+        setGoogleAnalyticsScript(scripts, null);
+      }
     }
 
     if (title != null) {

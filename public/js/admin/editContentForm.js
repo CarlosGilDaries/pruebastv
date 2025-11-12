@@ -339,7 +339,7 @@ async function editContentForm() {
                 {
                   method: 'POST',
                   headers: {
-                    Authorization: `Bearer ${authToken}`,
+                    Authorization: `Bearer ${token}`,
                   },
                   body: googleScriptFormData,
                 }

@@ -205,7 +205,6 @@ class ActionController extends Controller
         DB::beginTransaction();
 
         try {
-            Log::debug($request->all());
             $action = Action::where('id', $id)->with('scripts')->first();
 
             $name = sanitize_html($request->input('name'));

@@ -10,6 +10,7 @@ import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
 import { setSeoSettings } from './modules/setSeoSettings.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -98,6 +99,8 @@ async function fetchMovieData() {
     if (seoSettings) {
       setSeoSettings(seoSettings);
     }
+    const scripts = data.data.movie.scripts;
+    setGoogleAnalyticsScript(scripts, null);
 
     const tags = data.data.movie.tags;
     const tagsContainer = document.querySelector('.keyword-links');

@@ -1,6 +1,7 @@
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 import { hideSpinner, showSpinner } from './modules/spinner.js';
 
 const container = document.getElementById('cookies');
@@ -42,6 +43,8 @@ async function loadCookie() {
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+
+setGoogleAnalyticsScript(null, 'cookies');
 
 setupLoginSignupButtons();
 clickLogOut();

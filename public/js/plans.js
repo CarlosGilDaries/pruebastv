@@ -3,6 +3,7 @@ import { applyTranslations } from './translations.js';
 import { aceptedCookies } from './modules/acceptedCookies.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const token = localStorage.getItem('auth_token');
 const backendApi = 'https://pruebastv.kmc.es/api/';
@@ -367,3 +368,4 @@ if (typeof applyTranslations === 'function') {
 }
 
 aceptedCookies();
+setGoogleAnalyticsScript(null, 'plans');

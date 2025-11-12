@@ -4,6 +4,7 @@ import { clickLogOut } from './modules/clickLogOutButton.js';
 import { applyTranslations } from './translations.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const token = localStorage.getItem('auth_token');
 if (token == null) {
@@ -199,3 +200,5 @@ document.addEventListener('DOMContentLoaded', function () {
       hideSpinner();
     });
 });
+
+setGoogleAnalyticsScript(null, 'profile');

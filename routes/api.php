@@ -354,6 +354,7 @@ Route::get('language/{code}', [LanguageController::class, 'show']);
 Route::get('all-seo-settings', [SeoSettingController::class, 'index']);
 Route::get('generic-seo-settings/{key}', [SeoSettingController::class, 'genericPageShow']);
 Route::get('scripts', [ScriptController::class, 'index']);
+Route::get('generic-script/{key}/{type}', [ScriptController::class, 'genericPageShow']);
 
 Route::get('check-email/{email}', [LoginApiController::class, 'checkEmail']);
 Route::get('check-dni/{dni}', [LoginApiController::class, 'checkDni']);
