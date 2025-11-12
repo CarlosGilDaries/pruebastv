@@ -295,9 +295,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     ])->group(function () {
         Route::post('create-generic-seo-settings', [SeoSettingController::class, 'genericPageStore']);
         Route::post('edit-generic-seo-settings/{key}', [SeoSettingController::class, 'genericPageUpdate']);
+        Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
+        Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'update']);
     });
-    Route::post('create-seo-settings/{id}', [SeoSettingController::class, 'store']);
-    Route::post('edit-seo-settings/{seoSettingId}/{contentId}', [SeoSettingController::class, 'update']);
 
     // Rutas de Scripts protegidas
     Route::middleware([
@@ -305,6 +305,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     ])->group(function () {
         Route::post('create-script/{id}/{type}', [ScriptController::class, 'store']);
         Route::post('edit-script/{id}', [ScriptController::class, 'update']);
+        Route::post('edit-generic-script/{type}', [ScriptController::class, 'genericPageUpdate']);
     });
 
     Route::get('permissions', [PermissionController::class, 'index']);

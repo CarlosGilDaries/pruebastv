@@ -7,8 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Script extends Model
 {
     protected $fillable = [
-        'key', 
-        'code'
+        'key',
+        'type', 
+        'code',
+        'site_id',
+        'movie_id',
+        'tag_id',
+        'gender_id',
+        'category_id'
     ];
 
     public function movie()

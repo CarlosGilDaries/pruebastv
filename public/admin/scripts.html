@@ -62,13 +62,27 @@
           <li class="nav-item" role="presentation">
             <button
               class="nav-link active"
+              id="google-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#google"
+              type="button"
+              role="tab"
+              aria-controls="google"
+              aria-selected="true"
+            >
+              Google Analytics
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
               id="index-tab"
               data-bs-toggle="tab"
               data-bs-target="#index"
               type="button"
               role="tab"
               aria-controls="index"
-              aria-selected="true"
+              aria-selected="false"
             >
               Inicio
             </button>
@@ -82,7 +96,7 @@
               type="button"
               role="tab"
               aria-controls="genders"
-              aria-selected="true"
+              aria-selected="false"
             >
               Géneros
             </button>
@@ -110,7 +124,7 @@
               type="button"
               role="tab"
               aria-controls="tags"
-              aria-selected="true"
+              aria-selected="false"
             >
               Etiquetas
             </button>
@@ -124,7 +138,7 @@
               type="button"
               role="tab"
               aria-controls="plans"
-              aria-selected="true"
+              aria-selected="false"
             >
               Planes
             </button>
@@ -138,7 +152,7 @@
               type="button"
               role="tab"
               aria-controls="profile"
-              aria-selected="true"
+              aria-selected="false"
             >
               Perfil Usuario
             </button>
@@ -152,7 +166,7 @@
               type="button"
               role="tab"
               aria-controls="seen"
-              aria-selected="true"
+              aria-selected="false"
             >
               Vistos
             </button>
@@ -166,7 +180,7 @@
               type="button"
               role="tab"
               aria-controls="favorites"
-              aria-selected="true"
+              aria-selected="false"
             >
               Favoritos
             </button>
@@ -180,7 +194,7 @@
               type="button"
               role="tab"
               aria-controls="paid-resources"
-              aria-selected="true"
+              aria-selected="false"
             >
               Recursos Pagados
             </button>
@@ -194,7 +208,7 @@
               type="button"
               role="tab"
               aria-controls="payment-history"
-              aria-selected="true"
+              aria-selected="false"
             >
               Historial de Pagos
             </button>
@@ -208,7 +222,7 @@
               type="button"
               role="tab"
               aria-controls="legal-notice"
-              aria-selected="true"
+              aria-selected="false"
             >
               Aviso Legal
             </button>
@@ -222,7 +236,7 @@
               type="button"
               role="tab"
               aria-controls="payment-policy"
-              aria-selected="true"
+              aria-selected="false"
             >
               Política de Pagos
             </button>
@@ -236,7 +250,7 @@
               type="button"
               role="tab"
               aria-controls="privacy-policy"
-              aria-selected="true"
+              aria-selected="false"
             >
               Política de Privacidad
             </button>
@@ -250,7 +264,7 @@
               type="button"
               role="tab"
               aria-controls="cookies"
-              aria-selected="true"
+              aria-selected="false"
             >
               Cookies
             </button>
@@ -264,7 +278,7 @@
               type="button"
               role="tab"
               aria-controls="contact"
-              aria-selected="true"
+              aria-selected="false"
             >
               Contacto
             </button>
@@ -282,9 +296,46 @@
             </div>
             <p class="mb-0">Editando configuración, por favor espere...</p>
           </div>
-          <!-- Pestaña Inicio -->
+
+          <!-- Pestaña Google Analytics -->
           <div
             class="tab-pane fade show active"
+            id="google"
+            role="tabpanel"
+            aria-labelledby="google-tab"
+          >
+            <div class="container p-3 p-md-5">
+              <h1 class="mb-4">
+                <i class="fa-solid fa-scroll me-2"></i>Google Analytics
+              </h1>
+
+              <div class="alert alert-success d-none success-submit">
+                Configuración editada con éxito
+              </div>
+
+              <form id="base-google-form" class="needs-validation" novalidate>
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <label for="base-google-site-id" class="form-label">ID</label>
+                    <input type="text" class="form-control" id="base-google-site-id" name="base-google-site-id"/>
+                    <div id="base-google-site-id-error" class="invalid-feedback"></div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 mb-3">
+                    <label for="base-google-code" class="form-label">Código</label>
+                    <textarea class="form-control" id="base-google-code" name="base-google-code"></textarea>
+                    <div id="base-google-code-error" class="invalid-feedback"></div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-success">Guardar Configuración</button>
+              </form>
+            </div>
+          </div>
+
+          <!-- Pestaña Inicio -->
+          <div
+            class="tab-pane fade show"
             id="index"
             role="tabpanel"
             aria-labelledby="index-tab"

@@ -1,15 +1,18 @@
-export function getScriptsFromKey(scripts, key) {
-  let values;
+export function getScriptsByKey(scripts, key) {
+  const result = {};
+
   scripts.forEach((script) => {
-    if (script.key == key) {
-      values = script;
+    if (script.key === key) {
+      result[script.type] = script.code;
+      if (script.site_id != null) {
+        result[script.type + '_id'] = script.site_id;
+      }
     }
   });
 
-  return values;
+  return result;
 }
 
 export function getScriptsValues(script) {
   document.getElementById('code').value = script.code;
-  document.getElementById('google_id').value = script.google_id;
 }

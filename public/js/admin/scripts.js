@@ -1,4 +1,5 @@
-import { getScriptsFromKey } from '../modules/getScriptsFromDB.js';
+import { getScriptsByKey } from '../modules/getScriptsFromDB.js';
+import { showAlert } from '../modules/showAlert.js';
 
 async function scriptsForm() {
   const token = localStorage.getItem('auth_token');
@@ -10,7 +11,7 @@ async function scriptsForm() {
   // Función para cargar datos del género
   async function loadScriptData() {
     try {
-      const response = await fetch(`${backendAPI}all-scripts`, {
+      const response = await fetch(`${backendAPI}scripts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -21,38 +22,37 @@ async function scriptsForm() {
       const data = await response.json();
 
       if (data.success) {
-        const indexValues = getScriptsFromKey(data.scripts, 'index');
-        const categoriesValues = getScriptsFromKey(data.scripts, 'categories');
-        const genderValues = getScriptsFromKey(data.scripts, 'genders');
-        const tagsValues = getScriptsFromKey(data.scripts, 'tags');
-        const plansValues = getScriptsFromKey(data.scripts, 'plans');
-        const profileValues = getScriptsFromKey(data.scripts, 'profile');
-        const seenValues = getScriptsFromKey(data.scripts, 'seen');
-        const favoritesValues = getScriptsFromKey(data.scripts, 'favorites');
-        const paidResourcesValues = getScriptsFromKey(
+        const googleBaseValues = getScriptsByKey(data.scripts, 'base-google')
+        const indexValues = getScriptsByKey(data.scripts, 'index');
+        const categoriesValues = getScriptsByKey(data.scripts, 'categories');
+        const genderValues = getScriptsByKey(data.scripts, 'genders');
+        const tagsValues = getScriptsByKey(data.scripts, 'tags');
+        const plansValues = getScriptsByKey(data.scripts, 'plans');
+        const profileValues = getScriptsByKey(data.scripts, 'profile');
+        const seenValues = getScriptsByKey(data.scripts, 'seen');
+        const favoritesValues = getScriptsByKey(data.scripts, 'favorites');
+        const paidResourcesValues = getScriptsByKey(
           data.scripts,
           'paid-resources'
         );
-        const paymentHistoryValues = getScriptsFromKey(
+        const paymentHistoryValues = getScriptsByKey(
           data.scripts,
           'payment-history'
         );
-        const legalNoticeValues = getScriptsFromKey(
-          data.scripts,
-          'legal-notice'
-        );
-        const privacyPolicyValues = getScriptsFromKey(
+        const legalNoticeValues = getScriptsByKey(data.scripts, 'legal-notice');
+        const privacyPolicyValues = getScriptsByKey(
           data.scripts,
           'privacy-policy'
         );
-        const paymentPolicyValues = getScriptsFromKey(
+        const paymentPolicyValues = getScriptsByKey(
           data.scripts,
           'payment-policy'
         );
-        const cookiesValues = getScriptsFromKey(data.scripts, 'cookies');
-        const contactValues = getScriptsFromKey(data.scripts, 'contact');
+        const cookiesValues = getScriptsByKey(data.scripts, 'cookies');
+        const contactValues = getScriptsByKey(data.scripts, 'contact');
 
         setInputScriptValues(indexValues, 'index');
+        setInputScriptValues(googleBaseValues, 'base');
         setInputScriptValues(categoriesValues, 'categories');
         setInputScriptValues(genderValues, 'genders');
         setInputScriptValues(tagsValues, 'tags');
@@ -72,13 +72,13 @@ async function scriptsForm() {
       }
     } catch (error) {
       console.error('Error:', error);
-      showAlert('Error al cargar los scripts: ' + error.message, 'danger');
     }
   }
 
   // Manejar envío de formularios
 
   const forms = [
+    'base-google',
     'index',
     'genders',
     'categories',
@@ -114,15 +114,17 @@ async function scriptsForm() {
         });
 
         try {
-          let formData;
-          formData = buildScriptFormData(key);
+          let baseCodeGoogleFormData;
+          let googleFormData;
+          baseCodeGoogleFormData
+          googleFormData = buildScriptFormData(key, 'google');
 
           const response = await fetch(
-            `${backendAPI}edit-generic-script/${key}`,
+            `${backendAPI}edit-generic-script/google`,
             {
               method: 'POST',
               headers: { Authorization: `Bearer ${token}` },
-              body: formData,
+              body: googleFormData,
             }
           );
 
@@ -153,10 +155,14 @@ async function scriptsForm() {
             document.querySelectorAll('.success-submit').forEach((element) => {
               element.classList.add('d-none');
             });
-          }, 5000);
+          }, 2000);
         } catch (error) {
           console.error('Error submitting form:', error);
-          showAlert('Error al editar el script: ' + error.message, 'danger');
+          showAlert(
+            'Error al editar el script: ' + error.message,
+            'danger',
+            type
+          );
         } finally {
           document.getElementById('loading').classList.add('d-none');
         }
@@ -164,54 +170,66 @@ async function scriptsForm() {
   });
 }
 
-function buildScriptInputs() {
+function buildScriptInputs(scriptTypes) {
   document.querySelectorAll('form').forEach((form) => {
-    // Obtener el id del formulario (por ejemplo "legal-notice-form")
-    const formId = form.id;
-    // Eliminar la parte final "-form" → "legal-notice"
-    const baseId = formId.replace(/-form$/, '');
+    if (!form.id.includes('base')) {
+      const formId = form.id;
+      const baseId = formId.replace(/-form$/, '');
 
-    const scriptFields = `
-        <div class="row">
-            <div class="col-md-6 mb-3">
-            <label for="${baseId}-google_id" class="form-label">Google ID</label>
-            <input type="text" class="form-control" id="${baseId}-google_id" name="${baseId}-google_id">
-            <div id="${baseId}-google_id-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 mb-3">
-            <label for="${baseId}-code" class="form-label">Código</label>
-            <textarea class="form-control" id="${baseId}-code" name="${baseId}-code"></textarea>
-            <div id="${baseId}-code-error" class="invalid-feedback"></div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-success">Guardar Configuración</button>
-    `;
+      let scriptFields = '';
 
-    form.innerHTML = scriptFields;
+      scriptTypes.forEach((type) => {
+        const label = type.charAt(0).toUpperCase() + type.slice(1);
+
+        scriptFields += `
+        <div class="row">
+          <h3 class="mb-2">${label}</h3>
+          <div class="col-12 mb-3">
+            <label for="${baseId}-${type}-code" class="form-label">Código</label>
+            <textarea class="form-control" id="${baseId}-${type}-code" name="${baseId}-${type}-code"></textarea>
+            <div id="${baseId}-${type}-code-error" class="invalid-feedback"></div>
+          </div>
+        </div>
+      `;
+      });
+
+      scriptFields += `<button type="submit" class="btn btn-success">Guardar Configuración</button>`;
+
+      form.innerHTML = scriptFields;
+    }
   });
 }
 
-function setInputScriptValues(script, key) {
-  if (script != null) {
-    document.getElementById(key + '-code').value = script.code;
-    document.getElementById(key + '-google_id').value = script.google_id;
+function setInputScriptValues(scriptMap, key) {
+  if (!scriptMap) return;
+
+  for (const [type, code] of Object.entries(scriptMap)) {
+    const input = document.getElementById(`${key}-${type}-code`);
+    if (input) input.value = code;
+    if (type == 'google_id') {
+      const idInput = document.getElementById(`base-google-site-id`);
+      if (idInput) idInput.value = code;
+    }
   }
 }
 
-function buildScriptFormData(key) {
+function buildScriptFormData(key, type) {
   const scriptFormData = new FormData();
-
-  const fields = [
-    { id: key + '-code', name: 'code' },
-    { id: key + '-google_id', name: 'google_id' },
-  ];
+  let fields;
+  if (key.includes('base')) {
+    fields = [{ id: key + '-code', name: 'code', site_id: key + '-site-id' }];
+  } else {
+    fields = [{ id: key + '-' + type + '-code', name: 'code' }];
+  }
 
   fields.forEach((field) => {
     const element = document.getElementById(field.id);
+    const siteIdElement = document.getElementById(field.site_id);
     if (element && element.value.trim() !== '') {
       scriptFormData.append(field.name, element.value.trim());
+    }
+    if (siteIdElement && siteIdElement.value.trim() !== '') {
+      scriptFormData.append('site_id', siteIdElement.value.trim());
     }
   });
 
@@ -222,6 +240,7 @@ function buildScriptFormData(key) {
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function () {
-  buildScriptInputs();
+  const types = ['google'];
+  buildScriptInputs(types);
   scriptsForm();
 });

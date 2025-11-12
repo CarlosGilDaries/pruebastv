@@ -255,7 +255,6 @@ async function editActionForm() {
           document.querySelectorAll('.success-submit').forEach((element) => {
             element.classList.add('d-none');
           });
-          window.location.reload();
         }, 2000);
       } catch (error) {
         console.error('Error:', error);
