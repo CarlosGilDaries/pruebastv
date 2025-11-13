@@ -1,5 +1,6 @@
 import { showPassword } from './modules/showPasword.js';
 import { validateUserForm } from './modules/validateUserForm.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 document.getElementById('form').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -89,3 +90,5 @@ if (passwordIcon4) {
     showPassword(event, confirmationNewPasswordInput, ionEyeIcon4);
   });
 }
+
+setGoogleAnalyticsScript();

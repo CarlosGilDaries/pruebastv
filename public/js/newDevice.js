@@ -1,4 +1,5 @@
 import { getIp } from './modules/getIp.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 document
   .getElementById('new-device-form')
@@ -50,3 +51,5 @@ document
       console.error('Error en la solicitud:', error);
     }
   });
+
+setGoogleAnalyticsScript();

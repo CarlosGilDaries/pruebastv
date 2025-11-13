@@ -79,9 +79,9 @@ class RedsysController extends Controller
             $requestParams = $redsysRequest->requestParameters;
 
             if ($register) {
-                $urlOk =  url('/need-device-payment.html');
+                $urlOk =  url('/pago-registro-realizado');
             } else {
-                $urlOk = url('/successful-payment.html');
+                $urlOk = url('/pago-realizado');
             }
 
             // Crear Ds_MerchantParameters (JSON en Base64)
@@ -93,7 +93,7 @@ class RedsysController extends Controller
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
                 'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-plan-resp'),
-                'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
+                'DS_MERCHANT_URLKO' => url('/error-en-el-pago'),
                 'DS_MERCHANT_URLOK' => strval($urlOk),
             ];
 
@@ -164,8 +164,8 @@ class RedsysController extends Controller
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
 				'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-ppv-resp'),
-				'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
-				'DS_MERCHANT_URLOK' => url('/successful-payment.html'),
+				'DS_MERCHANT_URLKO' => url('/error-en-el-pago'),
+				'DS_MERCHANT_URLOK' => url('/pago-realizado'),
             ];
 
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));
@@ -334,8 +334,8 @@ class RedsysController extends Controller
                 'DS_MERCHANT_TERMINAL' => strval($requestParams->terminal),
                 'DS_MERCHANT_TRANSACTIONTYPE' => strval($requestParams->transactionType->value),
 				'DS_MERCHANT_MERCHANTURL' => url('/api/redsys-rent-resp'),
-				'DS_MERCHANT_URLKO' => url('/unsuccessful-payment.html'),
-				'DS_MERCHANT_URLOK' => url('/successful-payment.html'),
+				'DS_MERCHANT_URLKO' => url('/error-en-el-pago'),
+				'DS_MERCHANT_URLOK' => url('/pago-realizado'),
             ];
 
             $dsMerchantParameters = base64_encode(json_encode($dsMerchantData));

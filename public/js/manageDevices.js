@@ -1,3 +1,5 @@
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
+
 document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('auth_token');
 
@@ -15,8 +17,8 @@ document.addEventListener('DOMContentLoaded', async function () {
       },
     });
 
-      if (!response.ok) {
-          console.log('error');
+    if (!response.ok) {
+      console.log('error');
       throw new Error('Error al obtener dispositivos');
     }
 
@@ -61,7 +63,7 @@ function renderDevices(devices) {
       document.querySelector('[data-i18n="unnamed_device"]').textContent;
 
     const deleteButton = document.createElement('button');
-    deleteButton.innerHTML = ``
+    deleteButton.innerHTML = ``;
     deleteButton.className = 'delete-device';
     deleteButton.innerHTML = '<span data-i18n="delete_button">Eliminar</span>';
     deleteButton.addEventListener('click', () => handleDeleteDevice(device.id));
@@ -94,7 +96,7 @@ async function handleDeleteDevice(deviceId) {
 
     if (data.success) {
       alert('Dispositivo eliminado correctamente');
-      window.location.href = '/new-device.html';
+      window.location.href = '/nuevo-dispositivo';
     } else {
       throw new Error(data.message || 'Error al eliminar dispositivo');
     }
@@ -102,3 +104,5 @@ async function handleDeleteDevice(deviceId) {
     console.error('Error:', error);
   }
 }
+
+setGoogleAnalyticsScript();

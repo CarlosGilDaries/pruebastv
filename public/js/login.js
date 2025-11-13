@@ -4,6 +4,7 @@ import { aceptedCookies } from './modules/acceptedCookies.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
 import { getPlansUrl } from "./modules/getPlansUrl.js";
+import { setGoogleAnalyticsScript } from "./modules/setScripts.js";
 
 document.addEventListener('DOMContentLoaded', function () {
   const passwordInput = document.getElementById('password');
@@ -54,13 +55,13 @@ document
       localStorage.setItem('current_user_email', email);
 
       if (data.data.require_device_registration) {
-          	window.location.href = '/new-device.html';
+          	window.location.href = '/nuevo-dispositivo';
             return;
           }
 
       if (!data.success) {
         if (data.device_limit_reached) {
-          window.location.href = '/manage-devices';
+          window.location.href = '/gestionar-dispositivos';
         } else if (data.message === 'Credenciales incorrectas') {
           hideSpinner();
           document.getElementById('error-message').textContent = 'Credenciales incorrectas';
@@ -102,3 +103,4 @@ document.body.addEventListener('click', function () {
 getPlansUrl(document.getElementById('plans-link'));
 
 aceptedCookies();
+setGoogleAnalyticsScript()

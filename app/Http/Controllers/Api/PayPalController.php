@@ -156,7 +156,7 @@ class PayPalController extends Controller
             $register = $request->query('register');
             
             if (empty($orderId)) {
-                return redirect()->away('/unsuccessful-payment.html?status=error');
+                return redirect()->away('/error-en-el-pago?status=error');
             }
 
             $clientId = env('PAYPAL_CLIENT_ID');
@@ -174,7 +174,7 @@ class PayPalController extends Controller
                 $order->update([
                     'status' => 'error'
                 ]);
-                return redirect()->away('/unsuccessful-payment.html?status=auth_error');
+                return redirect()->away('/error-en-el-pago?status=auth_error');
             }
 
             $accessToken = $authResponse->json()['access_token'];
@@ -199,18 +199,18 @@ class PayPalController extends Controller
                 $user->save();
                 app(\App\Http\Controllers\BillPdfController::class)->generatePlanOrderInvoice($order);
                 if (!$register) {
-                    return redirect()->away('/successful-payment.html?status=success&order_id=' . $orderId);
+                    return redirect()->away('/pago-realizado?status=success&order_id=' . $orderId);
                 } else {
-                    return redirect()->away('/need-device-payment.html?status=success&order_id=' . $orderId);
+                    return redirect()->away('/pago-registro-realizado?status=success&order_id=' . $orderId);
                 }
             }
             
             Log::error('PayPal capture failed: ' . $captureResponse->body());
-            return redirect()->away('/unsuccessful-payment.html?status=capture_error');
+            return redirect()->away('/error-en-el-pago?status=capture_error');
             
         } catch (\Exception $e) {
             Log::error('PayPal Capture Error: ' . $e->getMessage());
-            return redirect()->away('/unsuccessful-payment.html?status=exception');
+            return redirect()->away('/error-en-el-pago?status=exception');
         }
     }
 
@@ -341,7 +341,7 @@ class PayPalController extends Controller
             $user = User::where('id', $userId)->first();
             
             if (empty($orderId)) {
-                return redirect()->away('/unsuccessful-payment.html?status=error');
+                return redirect()->away('/error-en-el-pago?status=error');
             }
 
             $clientId = env('PAYPAL_CLIENT_ID');
@@ -359,7 +359,7 @@ class PayPalController extends Controller
                 $order->update([
                     'status' => 'error'
                 ]);
-                return redirect()->away('/unsuccessful-payment.html?status=auth_error');
+                return redirect()->away('/error-en-el-pago?status=auth_error');
             }
 
             $accessToken = $authResponse->json()['access_token'];
@@ -380,15 +380,15 @@ class PayPalController extends Controller
                 ]);
 
                 app(\App\Http\Controllers\BillPdfController::class)->generatePpvOrderInvoice($order);
-                return redirect()->away('/successful-payment.html?status=success&order_id=' . $orderId);
+                return redirect()->away('/pago-realizado?status=success&order_id=' . $orderId);
             }
             
             Log::error('PayPal capture failed: ' . $captureResponse->body());
-            return redirect()->away('/unsuccessful-payment.html?status=capture_error');
+            return redirect()->away('/error-en-el-pago?status=capture_error');
             
         } catch (\Exception $e) {
             Log::error('PayPal Capture Error: ' . $e->getMessage());
-            return redirect()->away('/unsuccessful-payment.html?status=exception');
+            return redirect()->away('/error-en-el-pago?status=exception');
         }
     }
 
@@ -519,7 +519,7 @@ class PayPalController extends Controller
             $user = User::where('id', $userId)->first();
             
             if (empty($orderId)) {
-                return redirect()->away('/unsuccessful-payment.html?status=error');
+                return redirect()->away('/error-en-el-pago?status=error');
             }
 
             $clientId = env('PAYPAL_CLIENT_ID');
@@ -537,7 +537,7 @@ class PayPalController extends Controller
                 $order->update([
                     'status' => 'error'
                 ]);
-                return redirect()->away('/unsuccessful-payment.html?status=auth_error');
+                return redirect()->away('/error-en-el-pago?status=auth_error');
             }
 
             $accessToken = $authResponse->json()['access_token'];
@@ -567,21 +567,21 @@ class PayPalController extends Controller
                 ]));*/
 
                 app(\App\Http\Controllers\BillPdfController::class)->generateRentOrderInvoice($order);
-                return redirect()->away('/successful-payment.html?status=success&order_id=' . $orderId);
+                return redirect()->away('/pago-realizado?status=success&order_id=' . $orderId);
             }
             
             Log::error('PayPal capture failed: ' . $captureResponse->body());
-            return redirect()->away('/unsuccessful-payment.html?status=capture_error');
+            return redirect()->away('/error-en-el-pago?status=capture_error');
             
         } catch (\Exception $e) {
             Log::error('PayPal Capture Error: ' . $e->getMessage());
-            return redirect()->away('/unsuccessful-payment.html?status=exception');
+            return redirect()->away('/error-en-el-pago?status=exception');
         }
     }
 
     public function paypalCancel()
     {
-        return redirect()->away('/unsuccessful-payment.html?status=cancel');
+        return redirect()->away('/error-en-el-pago?status=cancel');
     }
 
     private function uniqueCode() 

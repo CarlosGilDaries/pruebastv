@@ -4,6 +4,7 @@ import { showPassword } from './modules/showPasword.js';
 import { aceptedCookies } from './modules/acceptedCookies.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 document
   .getElementById('register-form')
@@ -129,4 +130,5 @@ document
     showPassword(event, confirmationPasswordInput, ionEyeIcon2);
   });
 
+setGoogleAnalyticsScript();
 aceptedCookies();

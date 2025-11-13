@@ -1,3 +1,7 @@
+import { setGoogleAnalyticsScript } from "./modules/setScripts.js";
+
+setGoogleAnalyticsScript();
+
 document.getElementById('form').addEventListener('submit', async function (e) {
   e.preventDefault();
 

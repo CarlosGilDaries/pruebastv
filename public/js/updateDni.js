@@ -1,12 +1,14 @@
 import { validateUserForm } from "./modules/validateUserForm.js";
 import { dropDownTypeMenu } from "./modules/dropDownTypeMenu.js";
 import { showPassword } from "./modules/showPasword.js";
+import { clickLogOut } from './modules/clickLogOutButton.js';
 
 const gendersDropDown = document.getElementById('genders');
 const categoriesDropDown = document.getElementById('categories');
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+clickLogOut();
 
 async function editUserForm() {
     const token = localStorage.getItem('auth_token');

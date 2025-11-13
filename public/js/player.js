@@ -6,6 +6,7 @@ import { signedUrl } from './modules/signedUrl.js';
 import { setupBackArrowAndTitle } from './modules/backArrowAndTitle.js';
 import { VideoProgressTracker } from './modules/videoProgressTrackerClass.js';
 import { hasStarted, hasEnded } from './modules/compareDateTime.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 async function initPlayer() {
   try {
@@ -49,6 +50,8 @@ async function initPlayer() {
       console.error('Error al obtener el video:', showData.message);
       return;
     }
+
+    setGoogleAnalyticsScript(showData.data.movie.scripts);
 
     let location;
     if (

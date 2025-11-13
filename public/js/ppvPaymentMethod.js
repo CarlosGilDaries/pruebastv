@@ -3,6 +3,8 @@ import { paypalPpvPayment } from './modules/paypalPpv.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
 import { checkDni } from './modules/checkDni.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
+import { clickLogOut } from './modules/clickLogOutButton.js';
 
 
 const token = localStorage.getItem('auth_token');
@@ -11,6 +13,9 @@ const paypal = document.querySelector('.paypal-btn');
 const redsys = document.querySelector('.redsys-btn');
 
 const dniExists = await checkDni(token);
+
+setGoogleAnalyticsScript();
+clickLogOut();
 
 async function chooseMethod() {
   redsys.addEventListener('click', async function () {

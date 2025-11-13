@@ -1,6 +1,8 @@
 import { clickLogOut } from './modules/clickLogOutButton.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 clickLogOut();
+setGoogleAnalyticsScript();
 
 const token = localStorage.getItem('auth_token');
 

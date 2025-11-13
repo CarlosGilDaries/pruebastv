@@ -2,7 +2,7 @@ import { selectPlan } from './modules/selectPlan.js';
 import { paypalPayment } from './modules/paypal.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
-
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const token = localStorage.getItem('auth_token');
 const months = sessionStorage.getItem('months');
@@ -35,3 +35,4 @@ async function chooseMethod() {
 }
 
 chooseMethod();
+setGoogleAnalyticsScript();

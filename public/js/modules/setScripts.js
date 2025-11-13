@@ -1,4 +1,4 @@
-export async function setGoogleAnalyticsScript(scriptsArray, page) {
+export async function setGoogleAnalyticsScript(scriptsArray = null, page = null) {
     const acceptedGACookie = localStorage.getItem('cb_analyticsAccepted');
     if (acceptedGACookie != 'yes' || !acceptedGACookie) return;
 

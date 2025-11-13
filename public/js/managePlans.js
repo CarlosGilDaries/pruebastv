@@ -1,4 +1,5 @@
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 document.addEventListener('DOMContentLoaded', async function () {
   const token = localStorage.getItem('auth_token');
@@ -51,3 +52,5 @@ const gendersDropDown = document.getElementById('genders');
 
 dropDownTypeMenu(categoriesDropDown, 'categories', 'category');
 dropDownTypeMenu(gendersDropDown, 'genders', 'gender');
+
+setGoogleAnalyticsScript();

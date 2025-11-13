@@ -3,6 +3,8 @@ import { paypalRentPayment } from './modules/paypalRent.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
 import { checkDni } from './modules/checkDni.js';
+import { clickLogOut } from './modules/clickLogOutButton.js';
+import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const token = localStorage.getItem('auth_token');
 const movieId = sessionStorage.getItem('movie_id');
@@ -50,3 +52,5 @@ async function chooseMethod() {
 }
 
 chooseMethod();
+setGoogleAnalyticsScript();
+clickLogOut();
