@@ -192,6 +192,7 @@ async function initEditTag() {
         setTimeout(() => {
           document.querySelectorAll('.success-submit').forEach((element) => {
             element.classList.add('d-none');
+            btn.disabled = false;
           });
         }, 2000);
       } catch (error) {
