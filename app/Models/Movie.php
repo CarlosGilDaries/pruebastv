@@ -14,7 +14,6 @@ class Movie extends Model
         'trailer',
         'overview',
         'tagline',
-        'gender_id',
         'type',
         'url',
         'pay_per_view',
@@ -30,9 +29,9 @@ class Movie extends Model
         return $this->belongsToMany(Plan::class);
     }
 
-    public function gender()
+    public function genders()
     {
-        return $this->belongsTo(Gender::class);
+        return $this->belongsToMany(Gender::class);
     }
 	
 	public function ppvOrders()

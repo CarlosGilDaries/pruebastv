@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('trailer')->nullable();
             $table->longText('overview');
             $table->longText('tagline');
-            $table->foreignId('gender_id')->constrained();
             $table->enum('type', ['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl', 'url_mp4', 'url_hls', 'url_mp3', 'stream']);
             $table->string('url');
             $table->boolean('pay_per_view');

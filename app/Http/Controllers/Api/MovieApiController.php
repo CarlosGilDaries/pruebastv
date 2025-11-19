@@ -29,7 +29,7 @@ class MovieApiController extends Controller
     public function index()
     {
         try {
-            $movies = Movie::with(['seoSetting', 'categories', 'gender' => function($query) {
+            $movies = Movie::with(['seoSetting', 'categories', 'genders' => function($query) {
                    			$query->select('id', 'name');
                   		}])->get();;
 			$genders = Gender::all(['id', 'name']);
@@ -64,7 +64,7 @@ class MovieApiController extends Controller
             } else {
                 $filter = ['stream'];
             }
-            $movies = Movie::with('gender')
+            $movies = Movie::with('genders')
                 ->whereIn('type', $filter)
                 ->get();
 
@@ -79,7 +79,7 @@ class MovieApiController extends Controller
 					return $movie->cover;
 				})
 				->addColumn('gender', function($movie) {
-					return $movie->gender->name;
+					return $movie->genders->pluck('name')->implode(', ');
 				})
 				->addColumn('type', function($movie) {
 					return $movie->type;
@@ -108,7 +108,7 @@ class MovieApiController extends Controller
 
     public function show($slug)
     {
-        $movie = Movie::with('seoSetting', 'gender.seoSetting', 'tags.seoSetting', 'scripts')->where('slug', $slug)->first();
+        $movie = Movie::with('seoSetting', 'genders.seoSetting', 'tags.seoSetting', 'scripts')->where('slug', $slug)->first();
 
         if (!$movie) {
             return response()->json([
@@ -144,7 +144,7 @@ class MovieApiController extends Controller
 	public function editShow($id)
     {
         try {
-            $movie = Movie::where('id', $id)->with('seoSetting', 'plans', 'categories', 'tags', 'scripts')->first();
+            $movie = Movie::where('id', $id)->with('seoSetting', 'plans', 'categories', 'tags', 'genders', 'scripts')->first();
             $plans = Plan::all();
 
             if (!$movie) {
@@ -229,7 +229,6 @@ class MovieApiController extends Controller
                     }),
                     'mimetypes:application/zip,application/x-zip-compressed'
                 ],
-                'gender_id' => 'required|integer|exists:genders,id',
                 'categories' => 'required|array|min:1',
                 'categories.*' => 'integer|exists:categories,id',
                 'duration' => 'required|date_format:H:i:s',
@@ -271,7 +270,6 @@ class MovieApiController extends Controller
             $movie->title = $title;
             $movie->overview = $overview;
             $movie->tagline = $tagline;
-            $movie->gender_id = $request->input('gender_id');
             $movie->rent = $request->input('rent');
 
             if ($price) {
@@ -394,6 +392,7 @@ class MovieApiController extends Controller
             $movie->plans()->sync($request->input('plans'));
             $movie->categories()->sync($request->input('categories'));
             $movie->tags()->sync($request->input('tags'));
+            $movie->genders()->sync($request->input('genders'));
 			
 			$adminPlan = Plan::where('name', 'admin')->first();
 			DB::table('movie_plan')->insert([
@@ -524,7 +523,6 @@ class MovieApiController extends Controller
                     }),
                     'mimetypes:application/zip,application/x-zip-compressed'
                 ],
-                'gender_id' => 'required|integer|exists:genders,id',
                 'categories' => 'required|array|min:1',
                 'categories.*' => 'integer|exists:categories,id',
                 'duration' => 'required|date_format:H:i:s',
@@ -556,7 +554,6 @@ class MovieApiController extends Controller
             $movie->type = $request->input('type');
             $movie->overview = $overview;
             $movie->tagline = $tagline;
-            $movie->gender_id = $request->input('gender_id');
             $movie->pay_per_view = $request->input('pay_per_view');
             $movie->rent = $request->input('rent');
 
@@ -709,6 +706,7 @@ class MovieApiController extends Controller
 			$plans = $request->input('plans');
             $movie->categories()->sync($request->input('categories'));
             $movie->tags()->sync($request->input('tags'));
+            $movie->genders()->sync($request->input('genders'));
 
 			foreach($plans as $plan) {
 				DB::table('movie_plan')->insert([
