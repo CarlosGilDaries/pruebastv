@@ -65,7 +65,10 @@ export function initPriorityBanner(categoriesData) {
 
       // Actualizar contenido
       titleElement.textContent = movie.title;
-      applyGenderTranslation(gender, movie.gender);
+      const gendersArray = movie.genders;
+      gendersArray.forEach(genderElement => {
+        applyGenderTranslation(gender, genderElement);
+      });
       duration.textContent = formatDuration(movie.duration);
       playButton.onclick = () =>
         (window.location.href = location);

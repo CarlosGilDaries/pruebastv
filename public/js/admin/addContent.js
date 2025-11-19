@@ -150,10 +150,6 @@ async function initContent() {
 
         formData.append('title', document.getElementById('title').value);
         formData.append('type', document.getElementById('type').value);
-        formData.append(
-          'gender_id',
-          document.getElementById('gender_id').value
-        );
         formData.append('tagline', CKEDITOR.instances.tagline.getData());
         formData.append('overview', CKEDITOR.instances.overview.getData());
 
@@ -303,6 +299,13 @@ async function initContent() {
           formData.append('tags[]', checkbox.value);
         });
 
+        const genderCheckboxes = document.querySelectorAll(
+          '#genders-container input[type="checkbox"]:checked'
+        );
+        genderCheckboxes.forEach((checkbox) => {
+          formData.append('genders[]', checkbox.value);
+        });
+
         let permission;
         if (
           type == 'video/mp4' ||
@@ -411,10 +414,10 @@ document.addEventListener('DOMContentLoaded', function () {
 async function setupPlansGendersCategoriesTags(authToken) {
   try {
     const plansContainer = document.getElementById('plans-container');
-    const selectGender = document.getElementById('gender_id');
     const categoriesContainer = document.getElementById('categories-container');
     const tagsContainer = document.getElementById('tags-container');
-
+    
+const gendersContainer = document.getElementById('genders-container');
     const response = await fetch('/api/plans');
     const tagsResponse = await fetch('/api/tags');
     const genderResponse = await fetch('/api/genders', {
@@ -506,10 +509,24 @@ async function setupPlansGendersCategoriesTags(authToken) {
 
     // Llenar géneros
     genders.forEach((gender) => {
-      let option = document.createElement('option');
-      option.value = gender.id;
-      option.textContent = gender.name;
-      selectGender.appendChild(option);
+      const div = document.createElement('div');
+      div.className = 'form-check';
+
+      const input = document.createElement('input');
+      input.className = 'form-check-input';
+      input.type = 'checkbox';
+      input.value = gender.id;
+      input.id = `gender-${gender.id}`;
+      input.name = 'genders[]';
+
+      const label = document.createElement('label');
+      label.className = 'form-check-label';
+      label.htmlFor = `gender-${gender.id}`;
+      label.textContent = gender.name;
+
+      div.appendChild(input);
+      div.appendChild(label);
+      gendersContainer.appendChild(div);
     });
   } catch (error) {
     console.error('Error al cargar datos:', error);

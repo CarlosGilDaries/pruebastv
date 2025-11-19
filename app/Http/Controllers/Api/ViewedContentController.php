@@ -37,7 +37,7 @@ class ViewedContentController extends Controller
     {
         try {
             $user = Auth::user();
-            $viewed = $user->viewed()->with('gender')->get();
+            $viewed = $user->viewed()->with('genders')->get();
 
             return response()->json([
                 'success' => true,

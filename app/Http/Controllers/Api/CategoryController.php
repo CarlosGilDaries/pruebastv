@@ -20,7 +20,7 @@ class CategoryController extends Controller
         try {
 			$categories = Category::with(['seoSetting', 'movies' => function ($query) {
 				$query->orderBy('created_at', 'desc')
-                ->with('gender')
+                ->with('genders')
                 ->with('seoSetting');
 			}])
             ->where('render_at_index', 1)
@@ -47,7 +47,7 @@ class CategoryController extends Controller
     public function dropDownMenu()
 	{
 		try {
-			$categories = Category::orderBy('priority')->with('movies.gender', 'seoSetting')->get();
+			$categories = Category::orderBy('priority')->with('movies.genders', 'seoSetting')->get();
 
 			return response()->json([
 				'success' => true,
@@ -104,7 +104,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         try {
-            $category = Category::with('seoSetting', 'movies.gender', 'movies.SeoSetting', 'scripts')->where('id', $id)->first();
+            $category = Category::with('seoSetting', 'movies.genders', 'movies.SeoSetting', 'scripts')->where('id', $id)->first();
 
             return response()->json([
                 'success' => true,

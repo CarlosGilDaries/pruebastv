@@ -129,10 +129,6 @@ async function editContentForm() {
         const formData = new FormData();
         formData.append('title', document.getElementById('title').value);
         formData.append('duration', document.getElementById('duration').value);
-        formData.append(
-          'gender_id',
-          document.getElementById('gender_id').value
-        );
         formData.append('tagline', CKEDITOR.instances.tagline.getData());
         formData.append('overview', CKEDITOR.instances.overview.getData());
 
@@ -249,7 +245,7 @@ async function editContentForm() {
         }
 
         // Agregar checkboxes seleccionados
-        ['plans-container', 'categories-container', 'tags-container'].forEach(
+        ['plans-container', 'categories-container', 'tags-container', 'genders-container'].forEach(
           (container) => {
             const checkboxes = document.querySelectorAll(
               `#${container} input[type="checkbox"]:checked`
@@ -441,6 +437,7 @@ async function editContentForm() {
         (category) => category.id
       );
       const currentTagsId = content.tags.map((tag) => tag.id);
+      const currentGendersId = content.genders.map((gender) => gender.id);
 
       // Llenar planes
       const plansContainer = document.getElementById('plans-container');
@@ -517,19 +514,33 @@ async function editContentForm() {
       });
 
       // Llenar géneros
-      const selectGender = document.getElementById('gender_id');
+      const gendersContainer = document.getElementById('genders-container');
       genders.forEach((gender) => {
-        const option = document.createElement('option');
-        option.value = gender.id;
-        option.textContent = gender.name;
-        selectGender.appendChild(option);
+        const div = document.createElement('div');
+        div.className = 'form-check';
+
+        const input = document.createElement('input');
+        input.className = 'form-check-input';
+        input.type = 'checkbox';
+        input.value = gender.id;
+        input.id = `gender-${gender.id}`;
+        input.name = 'genders[]';
+        input.checked = currentGendersId.includes(gender.id);
+
+        const label = document.createElement('label');
+        label.className = 'form-check-label';
+        label.htmlFor = `gender-${gender.id}`;
+        label.textContent = gender.name;
+
+        div.appendChild(input);
+        div.appendChild(label);
+        gendersContainer.appendChild(div);
       });
 
       // Configurar inputs con los valores del contenido
       document.getElementById('title').value = content.title;
       document.getElementById('duration').value = content.duration;
       document.getElementById('type').value = content.type;
-      document.getElementById('gender_id').value = content.gender_id;
 
       // Configurar campos de pago
       document.getElementById('pay_per_view').checked =

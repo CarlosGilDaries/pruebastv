@@ -61,7 +61,7 @@ class FavoritesController extends Controller
     {
         try {
             $user = Auth::user();
-            $favorites = $user->favorites()->with('gender')->get();
+            $favorites = $user->favorites()->with('genders')->get();
 
             return response()->json([
                 'success' => true,

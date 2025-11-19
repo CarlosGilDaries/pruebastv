@@ -211,10 +211,7 @@ async function fetchMovieData() {
       } else {
         if (!data.data.movie.rent) {
           if (data.data.movie.start_time) {
-            play.setAttribute(
-              'data-i18n',
-              `prueba`
-            );
+            play.setAttribute('data-i18n', `prueba`);
             if (!hasStarted(data.data.movie.start_time)) {
               play.innerHTML =
                 dateTimeIntoDate(data.data.movie.start_time) +
@@ -298,16 +295,30 @@ async function fetchMovieData() {
       image.src = data.data.movie.cover;
       title.textContent = data.data.movie.title;
       document.title = data.data.movie.title + ' - Pruebas TV';
-      gender.textContent = data.data.movie.gender.name;
-      gender.setAttribute('data-i18n', `gender_${data.data.movie.gender.id}`);
-      if (
-        data.data.movie.gender.seo_setting &&
-        data.data.movie.gender.seo_setting.url
-      ) {
-        gender.href = data.data.movie.gender.seo_setting.url;
-      } else {
-        gender.href = `/gender-show.html?id=${data.data.movie.gender_id}`;
-      }
+      console.log(data.data.movie);
+      gender.innerHTML = '';
+      // Recorre todos los géneros
+      data.data.movie.genders.forEach((g, index) => {
+        // Crear enlace para cada género
+        const a = document.createElement('a');
+        a.textContent = g.name;
+        a.setAttribute('data-i18n', `gender_${g.id}`);
+
+        if (g.seo_setting && g.seo_setting.url) {
+          a.href = g.seo_setting.url;
+          console.log(g.seo_setting.url);
+        } else {
+          a.href = `/gender-show.html?id=${g.id}`;
+        }
+
+        // Insertar el enlace
+        gender.appendChild(a);
+
+        // Insertar separador " - " excepto en el último
+        if (index < data.data.movie.genders.length - 1) {
+          gender.appendChild(document.createTextNode(' - '));
+        }
+      });
       const taglineText = document.createElement('p');
       taglineText.innerHTML = data.data.movie.tagline;
       taglineText.setAttribute(
@@ -329,7 +340,6 @@ async function fetchMovieData() {
       if (typeof applyTranslations === 'function') {
         applyTranslations(currentLanguage);
       }
-
     } else {
       console.error('Error al consultar la API: ', data.message);
     }

@@ -79,8 +79,19 @@ export async function gridShow(
       title2.textContent = movie.title;
 
       const gender = document.createElement('p');
-      gender.setAttribute('data-i18n', `gender_${movie.gender.id}`);
-      gender.textContent = `${movie.gender.name}`;
+      gender.innerHTML = '';
+      // Recorre todos los géneros
+      movie.genders.forEach((g, index) => {
+        const span = document.createElement('span');
+        span.textContent = g.name;
+        span.setAttribute('data-i18n', `gender_${g.id}`);
+        gender.appendChild(span);
+
+        // Insertar separador " - " excepto en el último
+        if (index < movie.genders.length - 1) {
+          gender.appendChild(document.createTextNode(' - '));
+        }
+      });
 
       const duration = document.createElement('p');
       const formatedDuration = formatDuration(movie.duration);

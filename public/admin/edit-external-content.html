@@ -140,23 +140,6 @@
                   </div>
                 </div>
 
-                <div class="row">
-                  <div class="col-md-6 mb-3">
-                    <label for="gender_id" class="form-label">Género</label>
-                    <select
-                      class="form-select"
-                      id="gender_id"
-                      name="gender_id"
-                      required
-                    >
-                      <option value="" disabled selected>
-                        Selecciona un género
-                      </option>
-                    </select>
-                    <div id="gender_id-error" class="invalid-feedback"></div>
-                  </div>
-                </div>
-
                 <div class="row taglines">
                   <div class="mb-3">
                     <label for="tagline" class="form-label"
@@ -198,7 +181,6 @@
                         id="cover"
                         name="cover"
                         accept="image/*"
-                        required
                       />
                     </div>
                     <div id="cover-error" class="invalid-feedback"></div>
@@ -215,7 +197,6 @@
                         id="tall-cover"
                         name="cover"
                         accept="image/*"
-                        required
                       />
                     </div>
                     <div id="tall-cover-error" class="invalid-feedback"></div>
@@ -285,7 +266,6 @@
                       class="form-control"
                       id="content"
                       name="content"
-                      required
                     />
                   </div>
                   <div id="content-error" class="invalid-feedback"></div>
@@ -393,7 +373,7 @@
                 <!-- Checkboxes de relación -->
                 <div class="row">
                   <!-- Planes -->
-                  <div class="col-md-4 mb-3">
+                  <div class="col-md-6 mb-3">
                     <label class="form-label">Vincular a plan/es</label>
                     <div
                       id="plans-container"
@@ -406,7 +386,7 @@
                   </div>
 
                   <!-- Categorías -->
-                  <div class="col-md-4 mb-3">
+                  <div class="col-md-6 mb-3">
                     <label class="form-label">Vincular a categoría/s</label>
                     <div
                       id="categories-container"
@@ -419,11 +399,21 @@
                   </div>
 
                   <!-- Etiquetas -->
-                  <div class="col-md-4 mb-3">
+                  <div class="col-md-6 mb-3">
                     <label class="form-label">Vincular a etiqueta/s</label>
                     <div id="tags-container" class="form-check-container"></div>
                     <div
                       id="tags-container-error"
+                      class="invalid-feedback"
+                    ></div>
+                  </div>
+
+                  <!-- Géneros -->
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Vincular a género/s</label>
+                    <div id="genders-container" class="form-check-container"></div>
+                    <div
+                      id="genders-container-error"
                       class="invalid-feedback"
                     ></div>
                   </div>

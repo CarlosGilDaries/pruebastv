@@ -26,8 +26,19 @@ export function getVideoContent(data, node) {
     title.textContent = video.title;
 
     const gender = document.createElement('p');
-    gender.setAttribute('data-i18n', `gender_${video.gender.id}`);
-    gender.textContent = `${video.gender.name}`;
+    gender.innerHTML = '';
+    // Recorre todos los géneros
+    video.genders.forEach((g, index) => {
+      const span = document.createElement('span');
+      span.textContent = g.name;
+      span.setAttribute('data-i18n', `gender_${g.id}`);
+      gender.appendChild(span);
+
+      // Insertar separador " - " excepto en el último
+      if (index < video.genders.length - 1) {
+        gender.appendChild(document.createTextNode(' - '));
+      }
+    });
 
     const duration = document.createElement('p');
     const formatedDuration = formatDuration(video.duration);
