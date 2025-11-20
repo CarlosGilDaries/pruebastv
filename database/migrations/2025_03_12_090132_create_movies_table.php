@@ -20,7 +20,8 @@ return new class extends Migration
             $table->longText('overview');
             $table->longText('tagline');
             $table->enum('type', ['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl', 'url_mp4', 'url_hls', 'url_mp3', 'stream']);
-            $table->string('url');
+            $table->string('url')->nullable();
+            $table->boolean('serie')->default(0);
             $table->boolean('pay_per_view');
             $table->decimal('pay_per_view_price', 5, 2)->nullable();
             $table->boolean('rent');

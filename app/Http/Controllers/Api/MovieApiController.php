@@ -9,6 +9,7 @@ use App\Models\Language;
 use App\Models\Movie;
 use App\Models\Plan;
 use App\Models\SeoSetting;
+use App\Models\Serie;
 use App\Models\Translation;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -176,7 +177,7 @@ class MovieApiController extends Controller
         }
     }
 
-        public function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
 
         DB::beginTransaction();
@@ -851,23 +852,28 @@ class MovieApiController extends Controller
 		}
 	}
 
-	public function getSignedUrl(Request $request, $movieId)
+	public function getSignedUrl(Request $request, $movieId, $isSerie)
 	{
 		try {	
 			$user = Auth::user();
+            if ($isSerie == 'true') {
+                $content = Serie::where('id', $movieId)->first();
+            } else {
+                $content = Movie::where('id', $movieId)->first();
+            }
 
-			$movie = Movie::where('id', $movieId)->first();
-
-			if ($movie->type == 'url_hls' || $movie->type == 'application/vnd.apple.mpegurl' || $movie->type == 'stream') {
+			if ($content->type == 'url_hls' || $content->type == 'application/vnd.apple.mpegurl' || $content->type == 'stream') {
 				$signedUrl = URL::signedRoute('proxy.m3u8', [
-					'movieId' => $movie->id,
+					'movieId' => $content->id,
 					'userId' => $user->id,
+                    'isSerie' => $isSerie
 				]);
 
 			} else {
 				$signedUrl = URL::signedRoute('secure.stream', [
-					'movie' => $movie->id,
+					'movie' => $content->id,
 					'user' => $user->id,
+                    'isSerie' => $isSerie
 				]);
 			}
 

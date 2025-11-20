@@ -9,21 +9,26 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Request;
 use App\Models\Movie;
+use App\Models\Serie;
 use Illuminate\Support\Facades\Storage;
 
 class ProxyController extends Controller
 {
-	public function proxyHLS(Request $request, $movieId, $userId)
+	public function proxyHLS(Request $request, $movieId, $userId, $isSerie)
 	{
 		if (! $request->hasValidSignature()) {
 			return response()->json(['success' => false, 'message' => 'Firma inválida'], 403);
 		}
 
 		try {
-			$movie = Movie::findOrFail($movieId);
+			if ($isSerie == 'true') {
+				$content = Serie::findOrFail($movieId);
+			} else {
+				$content = Movie::findOrFail($movieId);
+			}
 
 			$realUrl = request()->query('u');
-			$url = $realUrl ? urldecode($realUrl) : $movie->url;
+			$url = $realUrl ? urldecode($realUrl) : $content->url;
 
 			// Detectar si es ruta interna (archivo en storage privado)
 			$isInternal = !str_starts_with($url, 'http');
@@ -49,7 +54,7 @@ class ProxyController extends Controller
 			}
 
 			// Reescribir las líneas con enlaces .ts o .m3u8
-			$rewritten = preg_replace_callback('/^(?!#)(https?:\/\/[^\s?#]+|\S+\.(ts|m3u8))([?#][^\r\n]*)?/im', function ($matches) use ($movieId, $userId, $base, $isInternal) {
+			$rewritten = preg_replace_callback('/^(?!#)(https?:\/\/[^\s?#]+|\S+\.(ts|m3u8))([?#][^\r\n]*)?/im', function ($matches) use ($movieId, $userId, $base, $isInternal, $isSerie) {
 				$path = $matches[1];
 				$extra = $matches[3] ?? '';
 
@@ -75,6 +80,7 @@ class ProxyController extends Controller
 					return URL::signedRoute('proxy.m3u8', [
 						'movieId' => $movieId,
 						'userId' => $userId,
+						'isSerie' => $isSerie,
 						'u' => $encoded,
 					]) . $extra;
 				}

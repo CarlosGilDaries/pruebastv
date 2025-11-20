@@ -61,7 +61,7 @@ Route::get('bill-path-from-order/{reference}', [BillPdfController::class, 'retur
 Route::get('bill-path/{billId}', [BillPdfController::class, 'returnBillPathFromBillId']);
 Route::get('/bill/{id}/download', [BillPdfController::class, 'download'])->name('bill.download');
 
-Route::get('/proxy/hls/{movieId}/{userId}', [ProxyController::class, 'proxyHLS'])
+Route::get('/proxy/hls/{movieId}/{userId}/{isSerie}', [ProxyController::class, 'proxyHLS'])
 	->name('proxy.m3u8')
 	->middleware('signed');
 

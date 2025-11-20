@@ -39,6 +39,7 @@ use App\Http\Controllers\Api\RentController;
 use App\Http\Controllers\Api\RentOrderController;
 use App\Http\Controllers\Api\ScriptController;
 use App\Http\Controllers\Api\SeoSettingController;
+use App\Http\Controllers\Api\SerieController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
@@ -86,6 +87,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('quit-favorite/{id}', [FavoritesController::class, 'quitFavorite']);
     Route::get('viewed', [ViewedContentController::class, 'getViewedContent']);
     Route::post('add-viewed/{id}', [ViewedContentController::class, 'viewed']);
+
+    // Rutas de series protegidas
+    Route::middleware([
+        CheckPermissions::class . ':series',
+    ])->group(function () {
+        Route::get('series/datatable', [SerieController::class, 'serieDatatable']);
+        Route::get('episodes/{serieId}/datatable', [SerieController::class, 'episodeDatatable']);
+        Route::post('add-serie', [SerieController::class, 'serieStore']);
+        Route::post('edit-serie/{id}', [SerieController::class, 'serieUpdate']);
+        Route::post('add-episode/{serieId}', [SerieController::class, 'episodeStore']);
+        Route::post('edit-episode/{serieId}/{episodeId}', [SerieController::class, 'episodeUpdate']);
+        Route::delete('delete-serie', [SerieController::class, 'destroy']);
+    });
+
+    Route::get('serie/{slug}', [SerieController::class, 'show'])
+        ->middleware(EnsureEmailIsVerified::class);
 
     // Rutas de anuncios protegidas
     Route::middleware([
@@ -321,7 +338,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::post('/paypal/ppv/create', [PayPalController::class, 'paypalCreatePpvOrder'])->name('paypal.ppv.create');
     Route::post('/paypal/rent/create', [PayPalController::class, 'paypalCreateRentOrder'])->name('paypal.rent.create');
 
-	Route::get('/signed-url/{movieId}', [MovieApiController::class, 'getSignedUrl']);
+	Route::get('/signed-url/{movieId}/{isSerie}', [MovieApiController::class, 'getSignedUrl']);
 
     Route::get('/movie-progress', [MovieProgressController::class, 'index']);
     Route::post('/movie-progress', [MovieProgressController::class, 'store']);
@@ -335,6 +352,7 @@ Route::get('check-device-id', [UserSessionApiController::class, 'checkDeviceId']
 Route::post('register', [LoginApiController::class, 'register']);
 Route::post('login', [LoginApiController::class, 'login']);
 Route::get('content', [MovieApiController::class, 'index']);
+Route::get('series', [SerieController::class, 'index']);
 Route::get('plans', [PlanController::class, 'index']);
 Route::get('categories', [CategoryController::class, 'index']);
 Route::get('dropdown-categories-menu', [CategoryController::class, 'dropDownMenu']);

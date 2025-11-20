@@ -63,6 +63,11 @@ async function initPlayer() {
       location = `/contenido/${showData.data.movie.slug}`;
     }
 
+    let isSerie = false;
+    if (showData.data.movie.serie == 1) {
+      isSerie = true;
+    }
+
     const userResponse = await fetch(`/api/user`, {
       method: 'GET',
       headers: {
@@ -159,7 +164,7 @@ async function initPlayer() {
       }
     }
 
-    const url = await signedUrl(token, showData.data.movie.id);
+    const url = await signedUrl(token, showData.data.movie.id, isSerie);
 
     if (showData.data.ads_count === 0) {
       await playVideoWithoutAds(showData.data.movie, token, url);

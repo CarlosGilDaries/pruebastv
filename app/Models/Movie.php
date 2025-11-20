@@ -16,6 +16,7 @@ class Movie extends Model
         'tagline',
         'type',
         'url',
+        'serie',
         'pay_per_view',
         'pay_per_view_price',
         'start_time',
@@ -81,5 +82,10 @@ class Movie extends Model
     public function scripts()
     {
         return $this->hasMany(Script::class);
+    }
+
+    public function series()
+    {
+        return $this->hasMany(Serie::class);
     }
 }

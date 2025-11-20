@@ -21,6 +21,11 @@ class SeoSetting extends Model
         return $this->hasOne(Movie::class);
     }
 
+    public function episode()
+    {
+        return $this->hasOne(Serie::class);
+    }
+
     public function tag()
     {
         return $this->hasOne(Tag::class);
