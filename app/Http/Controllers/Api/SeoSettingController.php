@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Gender;
 use App\Models\Movie;
 use App\Models\SeoSetting;
+use App\Models\Serie;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -71,6 +72,11 @@ class SeoSettingController extends Controller
                 $movie = Movie::where('id', $id)->first();
                 $movie->seo_setting_id = $settings->id;
                 $movie->save();
+            } 
+            else if ($settings->key == 'episode') {
+                $episode = Serie::where('id', $id)->first();
+                $episode->seo_setting_id = $settings->id;
+                $episode->save();
             } 
             else if ($settings->key == 'category') {
                 $category = Category::where('id', $id)->first();

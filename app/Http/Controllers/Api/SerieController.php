@@ -146,8 +146,9 @@ class SerieController extends Controller
                 ->where('movie_id', $serie->id)
                 ->orderBy('season_number', 'asc')
                 ->orderBy('episode_number', 'asc')
-                ->get();
-            $no_seasons = $episodes->contains('season_number', 0);
+                ->get()
+                ->groupBy('season_number');
+            $no_seasons = $episodes->has(0);
             
             return response()->json([
                 'success' => true,
@@ -543,16 +544,8 @@ class SerieController extends Controller
             $cover = $request->file('cover');
             if ($cover) {
                 $coverExtension = $cover->getClientOriginalExtension();
-                $episode->cover = '/file/content-' . $serie->id. '/' . $episode->id . '-img.' . $coverExtension;
+                $episode->image_url = '/file/content-' . $serie->id. '/' . $episode->id . '-img.' . $coverExtension;
                 $cover->storeAs('content/content-' . $serie->id, $episode->id . '-img.' . $coverExtension, 'private');
-            }
-
-            $trailer = $request->file('trailer');
-
-            if ($trailer) {
-                $trailerExtension = $trailer->getClientOriginalExtension();
-                $episode->trailer = '/file/content-' . $serie->id . '/' . $episode->id . '-trailer.' . $trailerExtension;
-                $trailer->storeAs('content/content-' . $serie->id, $episode->id . '-trailer.' . $trailerExtension, 'private');
             }
 
             if ($serie->type != "url_mp4" && $serie->type != "url_hls" && $serie->type != 'url_mp3' && $serie->type != 'stream') {
@@ -624,6 +617,11 @@ class SerieController extends Controller
             }
 
             DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'episode' => $episode
+            ], 200);
 
         } catch(\Exception $e) {
             DB::rollBack();
@@ -747,6 +745,11 @@ class SerieController extends Controller
             }
 
             DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'episode' => $episode
+            ], 200);
 
         } catch(\Exception $e) {
             DB::rollBack();

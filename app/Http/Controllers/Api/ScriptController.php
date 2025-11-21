@@ -63,6 +63,10 @@ class ScriptController extends Controller
                 $script->movie_id = $id;
                 $script->save();
             } 
+            else if ($script->key == 'episode') {
+                $script->serie_id = $id;
+                $script->save();
+            } 
             else if ($script->key == 'category') {
                 $script->category_id = $id;
                 $script->save();

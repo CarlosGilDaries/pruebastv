@@ -18,6 +18,7 @@ return new class extends Migration
             $table->longText('code');
             $table->string('site_id')->nullable();
             $table->foreignId('movie_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('serie_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('action_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('tag_id')->nullable()->constrained()->cascadeOnDelete();
             $table->foreignId('gender_id')->nullable()->constrained()->cascadeOnDelete();
