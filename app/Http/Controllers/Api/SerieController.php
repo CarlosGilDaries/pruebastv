@@ -23,14 +23,14 @@ use DataTables;
 
 class SerieController extends Controller
 {
-    public function serieDatatable()
+    public function seriesDatatable()
     {
         try {
             $series = Movie::with('genders')
                 ->where('serie', 1)
                 ->get();
-
-			return DataTables::of($series)
+            
+            return DataTables::of($series)
                 ->addColumn('id', function($serie) {
                     return $serie->id;
                 })
@@ -38,18 +38,24 @@ class SerieController extends Controller
 					return $serie->title;
 				})
 				->addColumn('cover', function($serie) {
-					return $serie->image_url;
+					return $serie->cover;
 				})
-                ->addColumn('season_number', function($serie) {
-					return $serie->season_number;
+				->addColumn('gender', function($serie) {
+					return $serie->genders->pluck('name')->implode(', ');
 				})
-                ->addColumn('episode_number', function($serie) {
-					return $serie->episode_number;
+				->addColumn('type', function($serie) {
+					return $serie->type;
+				})
+				->addColumn('pay_per_view', function($serie) {
+					return $serie->pay_per_view;
+				})
+                ->addColumn('rent', function($serie) {
+					return $serie->rent;
 				})
                 ->addColumn('created_at', function($serie) {
 					return Carbon::parse($serie->created_at)->format('d-m-Y');
 				})
-				->addColumn('actions', function($serie) {
+                ->addColumn('actions', function($serie) {
 					return $this->getSerieActionButtons($serie);
 				})
 				->rawColumns(['actions'])
@@ -65,7 +71,7 @@ class SerieController extends Controller
         }
     }
 
-    public function episodeDatatable($serieId)
+    public function episodesDatatable($serieId)
     {
         try {
             $episodes = Serie::where('movie_id', $serieId)
@@ -81,16 +87,13 @@ class SerieController extends Controller
 					return $episode->title;
 				})
 				->addColumn('cover', function($episode) {
-					return $episode->cover;
+					return $episode->image_url;
 				})
-				->addColumn('gender', function($episode) {
-					return $episode->genders->pluck('name')->implode(', ');
+                ->addColumn('season_number', function($episode) {
+					return $episode->season_number;
 				})
-				->addColumn('type', function($episode) {
-					return $episode->type;
-				})
-				->addColumn('pay_per_view', function($episode) {
-					return $episode->pay_per_view;
+                ->addColumn('episode_number', function($episode) {
+					return $episode->episode_number;
 				})
                 ->addColumn('created_at', function($episode) {
 					return Carbon::parse($episode->created_at)->format('d-m-Y');
@@ -163,6 +166,28 @@ class SerieController extends Controller
         }
     }
 
+    public function showEdit($id)
+    {
+        try {
+            $serie = Movie::where('id', $id)
+                ->with('seoSetting', 'genders', 'tags', 'scripts', 'plans', 'categories')
+                ->first();
+            
+            return response()->json([
+                'success' => true,
+                'serie' => $serie
+            ], 200);
+
+        } catch(\Exception $e) {
+            Log::error('Error en show SerieController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en show SerieController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
     public function serieStore(Request $request)
     {
         DB::beginTransaction();
@@ -185,6 +210,7 @@ class SerieController extends Controller
             $movie->tagline = $tagline;
             $movie->pay_per_view = $request->input('pay_per_view');
             $movie->rent = $request->input('rent');
+            $movie->serie = 1;
 
             if ($ppv_price) {
                 $movie->pay_per_view_price = $ppv_price;
@@ -765,7 +791,7 @@ class SerieController extends Controller
 		$id = $serie->id;
         $slug = $serie->slug;
         $title = $serie->title;
-        $url = 'edit-episode.html';
+        $url = 'edit-serie.html';
 
         if ($serie->seo_setting_id != null) {
             $seo = SeoSetting::where('id', $serie->seo_setting_id)->first();

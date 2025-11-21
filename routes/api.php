@@ -92,9 +92,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware([
         CheckPermissions::class . ':series',
     ])->group(function () {
-        Route::get('series/datatable', [SerieController::class, 'serieDatatable']);
-        Route::get('episodes/{serieId}/datatable', [SerieController::class, 'episodeDatatable']);
+        Route::get('series/datatable', [SerieController::class, 'seriesDatatable']);
+        Route::get('episodes/{serieId}/datatable', [SerieController::class, 'episodesDatatable']);
         Route::post('add-serie', [SerieController::class, 'serieStore']);
+        Route::get('serie-edit-show/{id}', [SerieController::class, 'showEdit']);
         Route::post('edit-serie/{id}', [SerieController::class, 'serieUpdate']);
         Route::post('add-episode/{serieId}', [SerieController::class, 'episodeStore']);
         Route::post('edit-episode/{serieId}/{episodeId}', [SerieController::class, 'episodeUpdate']);

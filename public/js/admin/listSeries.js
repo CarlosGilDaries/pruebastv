@@ -2,39 +2,26 @@ import { deleteForm } from '../modules/deleteForm.js';
 import { setUpMenuActions } from '../modules/setUpMenuActions.js';
 import { storageData } from '../modules/storageData.js';
 
-async function listContent() {
-  const listContent = document.querySelector('.list-content');
-  const type = listContent.getAttribute('data-type');
+async function listSeries() {
+  const listSeries = document.querySelector('.list-series');
   const api = '/api/';
-  const backendDeleteApi = `/api/delete-content/${type}`;
+  const backendDeleteApi = `/api/delete-serie`;
   const authToken = localStorage.getItem('auth_token');
   let title;
   let url;
 
-  if (type == 'local') {
-    title = 'Contenido Local';
-    url = 'add-content.html';
-  }
-  else if (type == 'external') {
-    title = 'Contenido Externo';
-    url = 'add-external-content.html';
-  } else {
-    title = 'Streams';
-    url = 'add-stream.html';
-  }
-
   // Cargar los datos al iniciar
-  loadContentList();
+  loadSeriesList();
 
   // Función para cargar y mostrar los datos
-  async function loadContentList() {
+  async function loadSeriesList() {
     try {
       // Generar HTML de la tabla
       let tableHTML = `
-					<div class="card shadow-sm">
+                    <div class="card shadow-sm">
                       <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-                          <h2 class="h5 mb-0"><i class="fas fa-film me-2"></i>Lista de ${title}</h2>
-                          <a href="/admin/${url}" class="add-button">Crear Contenido</a>
+                          <h2 class="h5 mb-0"><i class="fa-solid fa-atom me-2"></i>Lista de Series</h2>
+                          <a href="/admin/add-serie.html" class="add-button">Crear Serie</a>
                           </div>
                       <div class="card-body">
                           <div id="delete-content-success-message" class="alert alert-success d-none mb-3"></div>
@@ -63,7 +50,7 @@ async function listContent() {
 
 
       // Insertar la tabla en el DOM
-      listContent.innerHTML = tableHTML;
+      listSeries.innerHTML = tableHTML;
 
       // Iniciando Datatable con Server-Side Processing
       const table = $('.datatable').DataTable({
@@ -73,7 +60,7 @@ async function listContent() {
         processing: true,
         serverSide: true,
         ajax: {
-          url: api + `content/${type}/datatable`,
+          url: api + `series/datatable`,
           type: 'GET',
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -189,7 +176,7 @@ async function listContent() {
       });
     } catch (error) {
       console.error('Error al cargar la lista de contenido:', error);
-      listContent.innerHTML = `
+      listSeries.innerHTML = `
                     <div class="alert alert-danger">
                         Error al cargar la lista de Contenido: ${error.message}
                     </div>
@@ -198,4 +185,4 @@ async function listContent() {
   }
 }
 
-listContent();
+listSeries();

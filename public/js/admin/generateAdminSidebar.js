@@ -27,6 +27,12 @@ export function generateAdminSidebar() {
                         <span>Streams</span>
                     </a>
                     </li>
+                    <li class="nav-item" data-content="list-series">
+                    <a class="nav-link" href="/admin/list-series.html">
+                        <i class="fa-solid fa-atom me-2"></i>
+                        <span>Series</span>
+                    </a>
+                    </li>
                     <li class="nav-item" data-content="list-ads">
                     <a class="nav-link" href="/admin/list-ads.html">
                         <i class="fas fa-ad me-2"></i>

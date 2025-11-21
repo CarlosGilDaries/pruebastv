@@ -14,6 +14,7 @@ const permissionToContentMap = {
   contenido_local: 'list-local-content',
   contenido_externo: 'list-external-content',
   streams: 'list-streams',
+  series: 'list-series',
   anuncios: 'list-ads',
   planes: 'list-plans',
   generos: 'list-genders',

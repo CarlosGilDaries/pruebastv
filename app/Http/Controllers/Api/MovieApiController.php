@@ -67,6 +67,7 @@ class MovieApiController extends Controller
             }
             $movies = Movie::with('genders')
                 ->whereIn('type', $filter)
+                ->where('serie', 0)
                 ->get();
 
 			return DataTables::of($movies)
@@ -87,6 +88,9 @@ class MovieApiController extends Controller
 				})
 				->addColumn('pay_per_view', function($movie) {
 					return $movie->pay_per_view;
+				})
+                ->addColumn('rent', function($movie) {
+					return $movie->rent;
 				})
                 ->addColumn('created_at', function($movie) {
 					return Carbon::parse($movie->created_at)->format('d-m-Y');
