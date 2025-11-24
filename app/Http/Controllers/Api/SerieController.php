@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Illuminate\Support\Facades\URL;
-use GuzzleHttp\Client;
 use Illuminate\Support\Carbon;
 use DataTables;
 
@@ -185,6 +182,27 @@ class SerieController extends Controller
 			return response()->json([
 				'success' => false,
 				'message' => 'Error en show SerieController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
+    public function episodeEditShow($id)
+    {
+        try {
+            $episode = Serie::where('id', $id)
+                ->with('scripts', 'seoSetting', 'movie.scripts', 'movie.seoSetting')
+                ->first();
+
+            return response()->json([
+                'success' => true,
+                'episode' => $episode
+            ], 200);
+        } catch(\Exception $e) {
+            Log::error('Error en episodeEditShow SerieController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en episodeEditShow SerieController: ' . $e->getMessage(),
 			], 500);
         }
     }
@@ -506,11 +524,11 @@ class SerieController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            Log::error('Error: ' . $e->getMessage());
+            Log::error('Error en serieUpdate: ' . $e->getMessage());
             
             return response()->json([
                 'success' => false,
-                'message' => 'Error: ' . $e->getMessage(),
+                'message' => 'Error en serieUpdate: ' . $e->getMessage(),
             ], 500);
         }
     }
@@ -526,9 +544,22 @@ class SerieController extends Controller
             $episode->movie_id = $serieId;
             $episode->type = $serie->type;
             $episode->season_number = sanitize_html($request->season_number);
-            $episode->episode_number = sanitize_html($request->episode_number);
+            //$episode->episode_number = sanitize_html($request->episode_number);
             $external_url = sanitize_html($request->input('external_url'));
-            $episode->url = 'temp';
+
+            $newEpisodeNumber = $request->episode_number;
+            
+            // Si el número de capítulo para esa temporada ya existe, desplazar los capítulos existentes
+            if (Serie::where('movie_id', $serieId)
+                ->where('season_number', $request->season_number)
+                ->where('episode_number', $newEpisodeNumber)->exists()) {
+
+                    Serie::where('movie_id', $serieId)
+                        ->where('season_number', $request->season_number)
+                        ->where('episode_number', '>=', $newEpisodeNumber)
+                        ->increment('episode_number');
+            }
+            $episode->episode_number = $newEpisodeNumber;
 
             //Para que se puedan generar series con el mismo título pero cada una tenga un slug único
             $slug = Str::slug($episode->title, '-');
@@ -539,51 +570,55 @@ class SerieController extends Controller
             }
             $episode->slug = $slug;
 
+            $episode->url = 'temp';
+
             $episode->save();
 
             $cover = $request->file('cover');
-            if ($cover) {
+            if ($cover != null) {
                 $coverExtension = $cover->getClientOriginalExtension();
                 $episode->image_url = '/file/content-' . $serie->id. '/' . $episode->id . '-img.' . $coverExtension;
                 $cover->storeAs('content/content-' . $serie->id, $episode->id . '-img.' . $coverExtension, 'private');
             }
 
-            if ($serie->type != "url_mp4" && $serie->type != "url_hls" && $serie->type != 'url_mp3' && $serie->type != 'stream') {
-                if ($serie->type != 'application/vnd.apple.mpegurl') {
-                    $content = $request->file('content');
-                    $contentExtension = $content->getClientOriginalExtension();
-					$episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
-					$content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
-				} else {
-					$content = $request->file('m3u8');
-					//$mime = $content->getMimeType();
-					//dd($mime);
-					$contentExtension = $content->getClientOriginalExtension();
-					$episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
-					$content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
-				}
+            if (($request->file('content') != null) || $request->file('m3u8') != null || $request->file('external_url') != null) {
+                if ($serie->type != "url_mp4" && $serie->type != "url_hls" && $serie->type != 'url_mp3' && $serie->type != 'stream') {
+                    if ($serie->type != 'application/vnd.apple.mpegurl') {
+                        $content = $request->file('content');
+                        $contentExtension = $content->getClientOriginalExtension();
+                        $episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
+                        $content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
+                    } else {
+                        $content = $request->file('m3u8');
+                        //$mime = $content->getMimeType();
+                        //dd($mime);
+                        $contentExtension = $content->getClientOriginalExtension();
+                        $episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
+                        $content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
+                    }
 
-				$zips = ['ts1', 'ts2', 'ts3'];
-				$extractPath = storage_path('app/private/content/content-' . $serie->id);
+                    $zips = ['ts1', 'ts2', 'ts3'];
+                    $extractPath = storage_path('app/private/content/content-' . $serie->id);
 
-				if (!file_exists($extractPath)) {
-					mkdir($extractPath, 0777, true);
-				}
+                    if (!file_exists($extractPath)) {
+                        mkdir($extractPath, 0777, true);
+                    }
 
-				foreach ($zips as $zipKey) {
-					$zipFile = $request->file($zipKey);
-					if ($zipFile) {
-						$zip = new \ZipArchive;
-						if ($zip->open($zipFile->getRealPath()) === true) {
-							$zip->extractTo($extractPath);
-							$zip->close();
-						}
-					}
-				}
-			} else {
-				$episode->url = $external_url;
-			}
-
+                    foreach ($zips as $zipKey) {
+                        $zipFile = $request->file($zipKey);
+                        if ($zipFile) {
+                            $zip = new \ZipArchive;
+                            if ($zip->open($zipFile->getRealPath()) === true) {
+                                $zip->extractTo($extractPath);
+                                $zip->close();
+                            }
+                        }
+                    }
+                } else {
+                    $episode->url = $external_url;
+                }
+            }
+            
 			$episode->save();
 
             $translations = $request->translations ?? [];
@@ -640,12 +675,34 @@ class SerieController extends Controller
         DB::beginTransaction();
 
         try {
-            $episode = Serie::where('id', $episodeId)->first();
+            $episode = Serie::where('id', $episodeId)
+                ->with('scripts', 'seoSetting')
+                ->first();
             $serie = Movie::where('id', $serieId)->first();
             $episode->movie_id = $serieId;
             $episode->season_number = sanitize_html($request->season_number);
-            $episode->episode_number = sanitize_html($request->episode_number);
             $external_url = sanitize_html($request->input('external_url'));
+
+            $currentEpisodeNumber = $episode->episode_number;
+            $newEpisodeNumber = $request->episode_number;
+
+            if ($currentEpisodeNumber != $newEpisodeNumber) {
+                if ($newEpisodeNumber < $currentEpisodeNumber) {
+                    Serie::where('movie_id', $serieId)
+                        ->where('season_number', $request->season_number)
+                        ->where('episode_number', '>=', $newEpisodeNumber)
+                        ->where('episode_number', '<', $currentEpisodeNumber)
+                        ->increment('episode_number');
+                } else {
+                    Serie::where('movie_id', $serieId)
+                        ->where('season_number', $request->season_number)
+                        ->where('episode_number', '<=', $newEpisodeNumber)
+                        ->decrement('episode_number');
+                }
+            }
+
+            $episode->episode_number = $newEpisodeNumber;
+
             $episode->url = 'temp';
 
             // El slug sólo cambia si ha cambiado el título
@@ -658,59 +715,55 @@ class SerieController extends Controller
                 }
                 $episode->slug = $slug;
             }
+            $episode->title = sanitize_html($request->input('title'));
 
             $episode->save();
 
             $cover = $request->file('cover');
-            if ($cover) {
+            if ($request->hasFile('cover')) {
                 $coverExtension = $cover->getClientOriginalExtension();
-                $episode->cover = '/file/content-' . $serie->id. '/' . $episode->id . '-img.' . $coverExtension;
+                $episode->image_url = '/file/content-' . $serie->id. '/' . $episode->id . '-img.' . $coverExtension;
                 $cover->storeAs('content/content-' . $serie->id, $episode->id . '-img.' . $coverExtension, 'private');
             }
+            
 
-            $trailer = $request->file('trailer');
+            if ($request->hasFile('content') || $request->hasFile('m3u8') || $request->external_url != null) {
+                if ($serie->type != "url_mp4" && $serie->type != "url_hls" && $serie->type != 'url_mp3' && $serie->type != 'stream') {
+                    if ($serie->type != 'application/vnd.apple.mpegurl') {
+                        $content = $request->file('content');
+                        $contentExtension = $content->getClientOriginalExtension();
+                        $episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
+                        $content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
+                    } else {
+                        $content = $request->file('m3u8');
+                        //$mime = $content->getMimeType();
+                        //dd($mime);
+                        $contentExtension = $content->getClientOriginalExtension();
+                        $episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
+                        $content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
+                    }
 
-            if ($trailer) {
-                $trailerExtension = $trailer->getClientOriginalExtension();
-                $episode->trailer = '/file/content-' . $serie->id . '/' . $episode->id . '-trailer.' . $trailerExtension;
-                $trailer->storeAs('content/content-' . $serie->id, $episode->id . '-trailer.' . $trailerExtension, 'private');
+                    $zips = ['ts1', 'ts2', 'ts3'];
+                    $extractPath = storage_path('app/private/content/content-' . $serie->id);
+
+                    if (!file_exists($extractPath)) {
+                        mkdir($extractPath, 0777, true);
+                    }
+
+                    foreach ($zips as $zipKey) {
+                        $zipFile = $request->file($zipKey);
+                        if ($zipFile) {
+                            $zip = new \ZipArchive;
+                            if ($zip->open($zipFile->getRealPath()) === true) {
+                                $zip->extractTo($extractPath);
+                                $zip->close();
+                            }
+                        }
+                    }
+                } else {
+                    $episode->url = $external_url;
+                }
             }
-
-            if ($serie->type != "url_mp4" && $serie->type != "url_hls" && $serie->type != 'url_mp3' && $serie->type != 'stream') {
-                if ($serie->type != 'application/vnd.apple.mpegurl') {
-                    $content = $request->file('content');
-                    $contentExtension = $content->getClientOriginalExtension();
-					$episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
-					$content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
-				} else {
-					$content = $request->file('m3u8');
-					//$mime = $content->getMimeType();
-					//dd($mime);
-					$contentExtension = $content->getClientOriginalExtension();
-					$episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;
-					$content->storeAs('content/content-' . $serie->id, $episode->id . '.' . $contentExtension, 'private');
-				}
-
-				$zips = ['ts1', 'ts2', 'ts3'];
-				$extractPath = storage_path('app/private/content/content-' . $serie->id);
-
-				if (!file_exists($extractPath)) {
-					mkdir($extractPath, 0777, true);
-				}
-
-				foreach ($zips as $zipKey) {
-					$zipFile = $request->file($zipKey);
-					if ($zipFile) {
-						$zip = new \ZipArchive;
-						if ($zip->open($zipFile->getRealPath()) === true) {
-							$zip->extractTo($extractPath);
-							$zip->close();
-						}
-					}
-				}
-			} else {
-				$episode->url = $external_url;
-			}
 			
 			$episode->save();
 
@@ -754,11 +807,11 @@ class SerieController extends Controller
         } catch(\Exception $e) {
             DB::rollBack();
 
-            Log::error('Error en episodeStore SerieController: ' . $e->getMessage());
+            Log::error('Error en episodeUpdate SerieController: ' . $e->getMessage());
 
 			return response()->json([
 				'success' => false,
-				'message' => 'Error en episodeStore SerieController: ' . $e->getMessage(),
+				'message' => 'Error en episodeUpdate SerieController: ' . $e->getMessage(),
 			], 500);
         }
     }
@@ -813,7 +866,7 @@ class SerieController extends Controller
 				<div class="actions-menu">
                 <a href="' . $location . '" class="action-item">Ver</a>
 					<a href="/admin/' . $url . '" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
-					<a href="/admin/list-episodes.html" class="action-item content-action list-button" data-id="'.$id.'" data-title="'.$title.'" data-slug="'.$slug.'">Capítulos</a>
+					<a href="/admin/list-episodes.html" class="action-item content-action list-button" data-serie-id="'.$id.'" data-title="'.$title.'" data-serie-slug="'.$slug.'">Capítulos</a>
                     <form class="content-delete-form" data-id="' . $id . '">
 						<input type="hidden" name="content_id" value="' . $id . '">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>

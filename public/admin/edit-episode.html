@@ -17,7 +17,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <title>Añadir Episodio</title>
+    <title>Editar Episodio</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
@@ -112,14 +112,14 @@
           >
             <div class="container p-3 p-md-5 admin-panel" id="list-series">
               <h1>
-                <i class="fa-solid fa-layer-group me-2"></i>Añadir Episodio
+                <i class="fa-solid fa-layer-group me-2"></i>Editar Episodio
               </h1>
 
               <div
                 id="success-message"
                 class="alert alert-success d-none success-submit"
               >
-                Episodio añadido con éxito
+                Episodio editado con éxito
               </div>
 
               <form id="form" class="needs-validation" novalidate>
@@ -223,12 +223,12 @@
                   <div class="spinner-border me-3" role="status">
                     <span class="visually-hidden">Cargando...</span>
                   </div>
-                  <p class="mb-0">Creando episodio, por favor espere...</p>
+                  <p class="mb-0">Editando episodio, por favor espere...</p>
                 </div>
 
                 <div class="d-grid gap-2">
                   <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-plus-circle me-2"></i> Añadir Episodio
+                    <i class="fas fa-plus-circle me-2"></i> Editar Episodio
                   </button>
                 </div>
               </form>
@@ -300,7 +300,7 @@
     ></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
-    <script type="module" src="/js/admin/addEpisode.js"></script>
+    <script type="module" src="/js/admin/editEpisode.js"></script>
     <script src="/js/webSettings.js"></script>
   </body>
 </html>

@@ -1,11 +1,14 @@
 import { generateTranslationInputs } from '../modules/generateTranslationInputs.js';
+import { getContentTranslations } from '../modules/contentTranslations.js';
 import { validateAddForm } from '../modules/validateAddForm.js';
 import { buildSeoFormData } from '../modules/buildSeoFormData.js';
+import { getSeoSettingsValues } from '../modules/getSeoSettingsValues.js';
 import { buildSeoInputs } from '../modules/buildSeoInputs.js';
 import { setupSlugGenerator } from '../modules/setUpSlugGeneratos.js';
 import {
   buildScriptInputs,
   buildScriptFormData,
+  getScriptValues,
 } from '../modules/buildScriptsSettings.js';
 import { buildInputFromSerieType, buildSelectOptions } from '../modules/buildEpisodesForms.js';
 
@@ -13,12 +16,23 @@ buildSeoInputs();
 buildScriptInputs();
 setupSlugGenerator();
 
-async function initAddEpisode() {
+async function editEpisode() {
   const authToken = localStorage.getItem('auth_token');
   let slug = localStorage.getItem('serie-slug');
   let id = localStorage.getItem('serie-id');
+  let episodeId = localStorage.getItem('id');
 
   generateTranslationInputs(authToken);
+
+  const response = await fetch(`/api/serie/${slug}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  const data = await response.json();
+
+  await loadEpisodeData(episodeId, data);
 
   const languagesResponse = await fetch(`/api/all-languages`, {
     method: 'GET',
@@ -30,31 +44,6 @@ async function initAddEpisode() {
 
   const languagesData = await languagesResponse.json();
   const languages = languagesData.languages;
-
-  const response = await fetch(`/api/serie/${slug}`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
-
-  const data = await response.json();
-
-  if (data.serie.scripts.length != 0) {
-    data.serie.scripts.forEach((script) => {
-      if (script.type == 'google') {
-        document.getElementById('google-code').value = script.code;
-      }
-    });
-  }
-  if (data.serie.seo_setting != null) {
-    document.getElementById('seo-canonical').value =
-      data.serie.seo_setting.canonical;
-    document.getElementById('seo-keywords').value =
-      data.serie.seo_setting.keywords;
-    document.getElementById('seo-robots').value = data.serie.seo_setting.robots;
-  }
-  buildInputFromSerieType(data.serie.type);
-  buildSelectOptions(data);
 
   const contentForm = document.getElementById('form');
   const seoForm = document.getElementById('seo-form');
@@ -135,7 +124,7 @@ async function initAddEpisode() {
           );
         }
 
-        const response = await fetch(`/api/add-episode/${id}`, {
+        const response = await fetch(`/api/edit-episode/${id}/${episodeId}`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -153,37 +142,74 @@ async function initAddEpisode() {
         if (seoForm.querySelectorAll('input, textarea').length > 0) {
           const { seoFormData, seo } = buildSeoFormData('episode');
           if (data.success && seo) {
-            const seoResponse = await fetch(
-              `/api/create-seo-settings/${data.episode.id}`,
-              {
-                method: 'POST',
-                headers: {
-                  Authorization: `Bearer ${authToken}`,
-                },
-                body: seoFormData,
-              }
-            );
-
+            let seoResponse;
+            if (data.episode.seo_setting_id == null) {
+              seoResponse = await fetch(
+                `/api/create-seo-settings/${data.episode.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: seoFormData,
+                }
+              );
+            } else {
+              seoResponse = await fetch(
+                `/api/edit-seo-settings/${data.episode.seo_setting_id}/${data.episode.id}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: seoFormData,
+                }
+              );
+            }
             const seoData = await seoResponse.json();
           }
         }
+
         // Crear Script (si el usuario llenó datos)
         if (scriptsForm.querySelectorAll('input, textarea').length > 0) {
           const { scriptFormData: googleScriptFormData, script: googleScript } =
             buildScriptFormData('google');
           if (data.success && googleScript) {
-            const scriptResponse = await fetch(
-              `/api/create-script/${data.episode.id}/episode`,
-              {
-                method: 'POST',
-                headers: {
-                  Authorization: `Bearer ${authToken}`,
-                },
-                body: googleScriptFormData,
-              }
-            );
+            console.log(data);
+            if (data.episode.scripts.length != 0) {
+              const scripts = data.episode.scripts;
+              let googleScriptId;
+              scripts.forEach((script) => {
+                if (script.serie_id == data.episode.id) {
+                  googleScriptId = script.id;
+                }
+              });
 
-            const scriptData = await scriptResponse.json();
+              const googleScriptResponse = await fetch(
+                `/api/edit-script/${googleScriptId}`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: googleScriptFormData,
+                }
+              );
+              const googleScriptData = await googleScriptResponse.json();
+            } else {
+              const scriptResponse = await fetch(
+                `/api/create-script/${data.episode.id}/episode`,
+                {
+                  method: 'POST',
+                  headers: {
+                    Authorization: `Bearer ${authToken}`,
+                  },
+                  body: googleScriptFormData,
+                }
+              );
+
+              const scriptData = await scriptResponse.json();
+            }
           }
         }
 
@@ -196,7 +222,6 @@ async function initAddEpisode() {
           document.querySelectorAll('.success-submit').forEach((element) => {
             element.classList.add('d-none');
           });
-          window.location.reload();
         }, 2000);
       } catch (error) {
         console.error('Error:', error);
@@ -206,9 +231,60 @@ async function initAddEpisode() {
       }
     });
   });
+
+  async function loadEpisodeData(id, serie) {
+    try {
+      const episodeResponse = await fetch(`/api/episode-show/${id}`, {
+        headers: { Authorization: `Bearer ${authToken}` },
+      });
+      const languagesResponse = await fetch(`/api/all-languages`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      const episodeData = await episodeResponse.json();
+      const languagesData = await languagesResponse.json();
+      const languages = languagesData.languages;
+
+      if (episodeData.success && episodeData.episode && languages && languagesData.success) {
+        document.getElementById('title').value = episodeData.episode.title;
+        getContentTranslations(languages, episodeData.episode.id);
+        buildInputFromSerieType(episodeData.episode.type, true);
+        buildSelectOptions(serie);
+        const seasonSelect = document.getElementById('season_number');
+        seasonSelect.value = episodeData.episode.season_number;
+
+        // Disparar el listener que rellena los episodios
+        seasonSelect.dispatchEvent(new Event('change'));
+
+        document.getElementById('episode_number').value =
+          episodeData.episode.episode_number;
+
+        if (episodeData.episode.scripts.length != 0) {
+          episodeData.episode.scripts.forEach((script) => {
+            getScriptValues(script);
+          });
+        }
+
+        if (episodeData.episode.seo_setting != null) {
+          getSeoSettingsValues(episodeData.episode.seo_setting);
+        }
+      } 
+    } catch (error) {
+      console.log(error);
+      // Mostrar error al usuario
+      const errorElement = document.createElement('div');
+      errorElement.className = 'alert alert-danger mt-3';
+      errorElement.textContent = error.message;
+      document.getElementById('form').prepend(errorElement);
+      setTimeout(() => errorElement.remove(), 5000);
+    }
+  }
 }
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', function () {
-  initAddEpisode();
+  editEpisode();
 });

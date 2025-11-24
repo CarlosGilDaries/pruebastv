@@ -22,6 +22,11 @@ class Script extends Model
         return $this->belongsTo(Movie::class);
     }
 
+    public function serie()
+    {
+        return $this->belongsTo(Serie::class);
+    }
+
     public function action()
     {
         return $this->belongsTo(Action::class);

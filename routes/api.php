@@ -96,6 +96,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('episodes/{serieId}/datatable', [SerieController::class, 'episodesDatatable']);
         Route::post('add-serie', [SerieController::class, 'serieStore']);
         Route::get('serie-edit-show/{id}', [SerieController::class, 'showEdit']);
+        Route::get('episode-show/{id}', [SerieController::class, 'episodeEditShow']);
         Route::post('edit-serie/{id}', [SerieController::class, 'serieUpdate']);
         Route::post('add-episode/{serieId}', [SerieController::class, 'episodeStore']);
         Route::post('edit-episode/{serieId}/{episodeId}', [SerieController::class, 'episodeUpdate']);

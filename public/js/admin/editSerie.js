@@ -24,54 +24,6 @@ async function editContentForm() {
 
   await loadContentData(id);
 
-  // Manejar el checkbox para cambiar archivo de contenido
-  const changeContentCheckbox = document.getElementById('change-content-file');
-  /*changeContentCheckbox.addEventListener('change', function () {
-    const shouldChange = this.checked;
-    document
-      .getElementById('type-content')
-      .classList.toggle('d-none', !shouldChange);
-
-    // Ocultar todos los campos de archivos si el checkbox no está marcado
-    if (!shouldChange) {
-      document.getElementById('single-content').classList.add('d-none');
-      document.getElementById('hls-content').classList.add('d-none');
-      document.getElementById('external-content').classList.add('d-none');
-    } else {
-      // Mostrar los campos según el tipo seleccionado
-      const type = document.getElementById('type').value;
-      if (type) {
-        toggleContentFiles(type);
-      }
-    }
-  });
-
-  // Manejar cambio de tipo de contenido
-  document.getElementById('type').addEventListener('change', function () {
-    if (changeContentCheckbox.checked) {
-      toggleContentFiles(this.value);
-    }
-  });
-
-  // Función para mostrar/ocultar campos de archivos según el tipo
-  function toggleContentFiles(type) {
-    const singleContent = document.getElementById('single-content');
-    const hlsContent = document.getElementById('hls-content');
-    const externalUrl = document.getElementById('external-content');
-
-    singleContent.classList.add('d-none');
-    hlsContent.classList.add('d-none');
-    externalUrl.classList.add('d-none');
-
-    if (type === 'video/mp4' || type === 'audio/mpeg') {
-      singleContent.classList.remove('d-none');
-    } else if (type === 'application/vnd.apple.mpegurl') {
-      hlsContent.classList.remove('d-none');
-    } else {
-      externalUrl.classList.remove('d-none');
-    }
-  }*/
-
   // Manejar el envío del formulario
   const contentForm = document.getElementById('form');
   const seoForm = document.getElementById('seo-form');
@@ -118,9 +70,6 @@ async function editContentForm() {
         const languagesData = await languagesResponse.json();
         const languages = languagesData.languages;
 
-       /* const shouldChangeContent = document.getElementById(
-          'change-content-file'
-        ).checked;*/
         document.getElementById('loading').classList.remove('d-none');
 
         const formData = new FormData();
@@ -215,31 +164,6 @@ async function editContentForm() {
           formData.append('trailer', trailerInput.files[0]);
         }
 
-        /*// Procesar contenido solo si se debe cambiar
-        if (shouldChangeContent) {
-          const type = document.getElementById('type').value;
-          formData.append('type', type);
-
-          if (type === 'video/mp4' || type === 'audio/mpeg') {
-            const contentInput = document.getElementById('content');
-            if (contentInput.files.length > 0) {
-              formData.append('content', contentInput.files[0]);
-            }
-          } else if (type === 'application/vnd.apple.mpegurl') {
-            ['m3u8', 'ts1', 'ts2', 'ts3'].forEach((field) => {
-              const input = document.getElementById(field);
-              if (input.files.length > 0) {
-                formData.append(field, input.files[0]);
-              }
-            });
-          } else {
-            formData.append(
-              'external_url',
-              document.getElementById('external_url').value
-            );
-          }
-        }
-*/
         // Agregar checkboxes seleccionados
         ['plans-container', 'categories-container', 'tags-container', 'genders-container'].forEach(
           (container) => {
@@ -561,16 +485,6 @@ async function editContentForm() {
       CKEDITOR.replace(`tagline`);
       CKEDITOR.instances.tagline.setData(content.tagline || '');
       CKEDITOR.instances.overview.setData(content.overview || '');
-
-      // Configurar URL externa si corresponde
-      /*if (
-        content.type &&
-        !['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl'].includes(
-          content.type
-        )
-      ) {
-        document.getElementById('external_url').value = content.url || '';
-      }*/
     } catch (error) {
       console.error('Error cargando contenido:', error);
     }

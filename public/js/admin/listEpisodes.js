@@ -7,7 +7,7 @@ async function listEpisodes() {
   const api = '/api/';
   const backendDeleteApi = `/api/delete-episode`;
   const authToken = localStorage.getItem('auth_token');
-  let id = localStorage.getItem('id');
+  let id = localStorage.getItem('serie-id');
   let title = localStorage.getItem('title');
   document.title = `Episodios de ${title}`;
 
@@ -58,6 +58,7 @@ async function listEpisodes() {
         scrollY: true,
         processing: true,
         serverSide: true,
+        order: [],
         ajax: {
           url: api + `episodes/${id}/datatable`,
           type: 'GET',
