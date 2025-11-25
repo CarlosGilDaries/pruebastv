@@ -898,7 +898,8 @@ class SerieController extends Controller
 				<button class="actions-button">Acciones</button>
 				<div class="actions-menu">
                 <a href="' . $location . '" class="action-item">Ver</a>
-					<a href="/admin/' . $url . '" class="action-item content-action edit-button" data-id="'.$id.'" data-slug="'.$slug.'">Editar</a>
+					<a href="/admin/' . $url . '" class="action-item content-action edit-button" data-id="'.$id.'" data-title="'.$title.'" data-slug="'.$slug.'">Editar</a>
+                    <a href="/admin/link-content-with-ads.html" class="action-item content-action edit-button" data-type="episode" data-id="'.$id.'" data-title="'.$title.'" data-slug="'.$slug.'">Anuncios</a>
                     <form class="content-delete-form" data-id="' . $id . '">
 						<input type="hidden" name="content_id" value="' . $id . '">
 						<button class="action-item content-action delete-btn" type="submit">Eliminar</button>

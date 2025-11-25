@@ -1,6 +1,17 @@
-export async function linkedAds(id, token, ads_table, message) {
+export async function linkedAds(id, token, ads_table, message, episode = false) {
+
+  let contentWithAdsApi;
+  let unLinkAdsApi;
+  if (!episode) {
+    contentWithAdsApi = `/api/content-with-ads/${id}`;
+    unLinkAdsApi = `/api/content-with-ads-destroy`;
+  } else {
+    contentWithAdsApi = `/api/episode-with-ads/${id}`;
+    unLinkAdsApi = `/api/episode-with-ads-destroy`;
+  }
+
   try {
-    const response = await fetch(`/api/content-with-ads/${id}`, {
+    const response = await fetch(contentWithAdsApi, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -11,7 +22,7 @@ export async function linkedAds(id, token, ads_table, message) {
       let movieId = data.data.movie.id;
       let ads = data.data.movie.ads;
       ads_table.innerHTML = generateAdsTable(ads, movieId);
-      setupUnlinkButtons(token, id, message);
+      setupUnlinkButtons(token, id, message, unLinkAdsApi, contentWithAdsApi);
 
       return ads.map((ad) => ad.id);
     }
@@ -69,7 +80,7 @@ function generateAdsTable(ads, movieId) {
   return tableHTML;
 }
 
-function setupUnlinkButtons(token, id, message) {
+function setupUnlinkButtons(token, id, message, unLinkAdsApi, contentWithAdsApi) {
   document.querySelectorAll('.unlink-btn').forEach((button) => {
     button.addEventListener('click', async function () {
       const contentId = this.getAttribute('data-content-id');
@@ -77,62 +88,57 @@ function setupUnlinkButtons(token, id, message) {
 
       if (confirm('¿Estás seguro de que deseas desvincular este anuncio?')) {
         try {
-          const response = await fetch(
-            '/api/content-with-ads-destroy',
-            {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`,
-				},
-				body: JSON.stringify({
-					content_id: contentId,
-					ad_id: adId,
-				}),
-			}
-		  );
+          const response = await fetch(unLinkAdsApi, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              content_id: contentId,
+              ad_id: adId,
+            }),
+          });
 
-			const data = await response.json();
+          const data = await response.json();
 
-			if (data.success) {
-				message.style.display = 'block';
-				setTimeout(() => {
-					message.style.display = 'none';
-				}, 5000);
+          if (data.success) {
+            message.style.display = 'block';
+            setTimeout(() => {
+              message.style.display = 'none';
+            }, 5000);
 
-				window.scrollTo({ top: 0, behavior: 'smooth' });
-				const newResponse = await fetch(`/api/content-with-ads/${id}`,
-					{
-						headers: { Authorization: `Bearer ${token}` },
-					}
-				);
-				const newData = await newResponse.json();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const newResponse = await fetch(contentWithAdsApi, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            const newData = await newResponse.json();
 
-				if (newData.success) {
-					document.getElementById('ads-table').innerHTML = generateAdsTable(
-						newData.data.movie.ads,
-						contentId
-					);
-					setupUnlinkButtons(token, id, message);
-					updateAvailableAds(id, token);
-				}
-			} else {
-				alert(
-					'Error al desvincular: ' + (data.message || 'Error desconocido')
-				);
-			}
-		} catch (error) {
-			console.error('Error:', error);
-			alert('Error de conexión al intentar desvincular');
-		}
-	  }
-	});
+            if (newData.success) {
+              document.getElementById('ads-table').innerHTML = generateAdsTable(
+                newData.data.movie.ads,
+                contentId
+              );
+              setupUnlinkButtons(token, id, message);
+              updateAvailableAds(id, token, contentWithAdsApi);
+            }
+          } else {
+            alert(
+              'Error al desvincular: ' + (data.message || 'Error desconocido')
+            );
+          }
+        } catch (error) {
+          console.error('Error:', error);
+          alert('Error de conexión al intentar desvincular');
+        }
+      }
+    });
   });
 }
 
-export async function updateAvailableAds(id, token) {
+export async function updateAvailableAds(id, token, contentWithAdsApi) {
 	try {
-		const linkedResponse = await fetch(`/api/content-with-ads/${id}`,
+		const linkedResponse = await fetch(contentWithAdsApi,
 			{
 				headers: { Authorization: `Bearer ${token}` },
 			}

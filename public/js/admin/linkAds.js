@@ -11,7 +11,21 @@ async function linkAds() {
   let id = localStorage.getItem('id');
   let title = localStorage.getItem('title');
   let h1Element = document.getElementById('link-movie-title');
-  h1Element.innerHTML = title;
+  h1Element.innerHTML = '<i class="fas fa-film me-2"></i> ' + title;
+    let type = localStorage.getItem('type');
+    let linkAdsApi;
+    let contentWithAdsApi;
+    let episode;
+
+    if (type == 'episode') {
+      linkAdsApi = '/api/link-episode-ads';
+      contentWithAdsApi = `/api/episode-with-ads/${id}`;
+      episode = true;
+    } else {
+      linkAdsApi = '/api/link-ads';
+      contentWithAdsApi = `/api/content-with-ads/${id}`;
+      episode = false;
+    }
 
   if (!authToken) {
     window.location.href = '/login';
@@ -27,7 +41,8 @@ async function linkAds() {
         id,
         authToken,
         table,
-        unlinkMessage
+        unlinkMessage,
+        episode
       );
 
       // Cargar anuncios
@@ -244,7 +259,7 @@ async function linkAds() {
       });
 
       try {
-        const response = await fetch(backendAPI + 'link-ads', {
+        const response = await fetch(linkAdsApi, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${authToken}`,
@@ -272,10 +287,11 @@ async function linkAds() {
             id,
             authToken,
             table,
-            unlinkMessage
+            unlinkMessage,
+            episode
           );
           // Actualizar los checkboxes disponibles
-          await updateAvailableAds(id, authToken);
+          await updateAvailableAds(id, authToken, contentWithAdsApi);
           // Resetear el formulario
           document.getElementById('link-form').reset();
         }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\MovieApiController;
 use App\Http\Controllers\Api\AdApiController;
 use App\Http\Controllers\Api\AdMovieControllerApiController;
+use App\Http\Controllers\Api\AdSerieController;
 use App\Http\Controllers\Api\BillController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\GenderController;
@@ -117,6 +118,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('link-ads', [AdMovieControllerApiController::class, 'store']);
         Route::post('content-with-ads-destroy', [AdMovieControllerApiController::class, 'destroy']);
         Route::get('ads/datatable', [AdApiController::class, 'datatable']);
+
+        Route::post('link-episode-ads', [AdSerieController::class, 'store']);
+        Route::post('episode-with-ads-destroy', [AdSerieController::class, 'destroy']);
     });
 
     Route::get('ads-list', [AdApiController::class, 'index']);
@@ -126,6 +130,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('content-with-ads', [AdMovieControllerApiController::class, 'index']);
     Route::get('content-with-ads/{id}', [AdMovieControllerApiController::class, 'show']);
     Route::get('ads/{slug}', [AdMovieControllerApiController::class, 'getAds']);
+
+    Route::get('episode-with-ads', [AdSerieController::class, 'index']);
+    Route::get('episode-with-ads/{id}', [AdSerieController::class, 'show']);
+    Route::get('episode-ads/{slug}', [AdSerieController::class, 'getAds']);
 
     // Rutas de planes protegidas
     Route::middleware([

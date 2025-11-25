@@ -20,4 +20,10 @@ class Ad extends Model
         return $this->belongsToMany(Movie::class)
             ->withPivot('type', 'midroll_time', 'skippable', 'skip_time', 'image', 'description', 'redirect_url');
     }
+
+    public function series()
+    {
+        return $this->belongsToMany(Serie::class)
+            ->withPivot('type', 'midroll_time', 'skippable', 'skip_time');
+    }
 }

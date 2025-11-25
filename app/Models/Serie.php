@@ -33,4 +33,10 @@ class Serie extends Model
     {
         return $this->hasMany(Script::class);
     }
+
+    public function ads()
+    {
+        return $this->belongsToMany(Ad::class)
+            ->withPivot('type', 'midroll_time', 'skippable', 'skip_time');
+    }
 }
