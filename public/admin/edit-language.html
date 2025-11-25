@@ -1,1154 +1,2660 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link 
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" 
-    rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" 
-    crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/normalize.css">
-    <link rel="stylesheet" href="/css/admin/admin.css">
-    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/css/normalize.css" />
+    <link rel="stylesheet" href="/css/admin/admin.css" />
+    <link id="favicon" rel="icon" type="image/png" href="/images/favicon.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <title>Editar Idioma</title>
-</head>
-<body>
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-black">
-        <div class="container-fluid">
-            <div class="d-flex align-items-center">
-                <button class="navbar-toggler me-2 order-first" type="button" 
-                        data-bs-toggle="offcanvas" data-bs-target="#adminSidebar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                
-                <a class="navbar-brand order-lg-2 m-0" href="/">
-                    <img id="logo" src="/images/logo.png" alt="Streaming logo" style="width: 180px; height: 55px;">
-                </a>
-            </div>
+      <div class="container-fluid">
+        <div class="d-flex align-items-center">
+          <button
+            class="navbar-toggler me-2 order-first"
+            type="button"
+            data-bs-toggle="offcanvas"
+            data-bs-target="#adminSidebar"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
 
-            <div class="d-flex align-items-center">
-                <button id="logout-button" class="login-btn">Cerrar sesión</button>
-            </div>
+          <a class="navbar-brand order-lg-2 m-0" href="/">
+            <img
+              id="logo"
+              src="/images/logo.png"
+              alt="Streaming logo"
+              style="width: 180px; height: 55px"
+            />
+          </a>
         </div>
+
+        <div class="d-flex align-items-center">
+          <button id="logout-button" class="login-btn">Cerrar sesión</button>
+        </div>
+      </div>
     </nav>
 
     <div class="admin-container d-flex">
-
-        <aside class="admin-sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="adminSidebar">
-            <div class="offcanvas-body">
-                <ul class="admin-menu nav flex-column">
-                    <li class="nav-item" data-content="admin-panel">
-                        <a class="nav-link" href="/admin/admin-panel.html">
-                            <i class="fa-solid fa-square-poll-vertical me-2"></i>
-                            <span>Estadísticas</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-local-content">
-                        <a class="nav-link" href="/admin/list-content.html">
-                            <i class="fas fa-film me-2"></i>
-                            <span>Contenido Local</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-external-content">
-                        <a class="nav-link" href="/admin/list-external-content.html">
-                            <i class="fa-solid fa-arrow-up-right-from-square me-2"></i>
-                            <span>Contenido Externo</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-streams">
-                        <a class="nav-link" href="/admin/list-streams.html">
-                            <i class="fa-solid fa-tower-broadcast me-2"></i>
-                            <span>Streams</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-ads">
-                        <a class="nav-link" href="/admin/list-ads.html">
-                            <i class="fas fa-ad me-2"></i>
-                            <span>Anuncios</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-plans">
-                        <a class="nav-link" href="/admin/list-plans.html">
-                            <i class="fa-solid fa-euro-sign me-2"></i>
-                            <span>Planes</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-genders">
-                        <a class="nav-link" href="/admin/list-genders.html">
-                            <i class="fa-solid fa-rocket me-2"></i>
-                            <span>Géneros</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-categories">
-                        <a class="nav-link" href="/admin/list-categories.html">
-                            <i class="fa-solid fa-layer-group me-2"></i>
-                            <span>Categorías</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-tags">
-                        <a class="nav-link" href="/admin/list-tags.html">
-                            <i class="fa-solid fa-tag me-2"></i>
-                            <span>Etiquetas</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-actions">
-                        <a class="nav-link" href="/admin/list-actions.html">
-                            <i class="fa-solid fa-location-crosshairs me-2"></i>
-                            <span>LLamadas a Acción</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-users">
-                        <a class="nav-link" href="/admin/list-users.html">
-                            <i class="fas fa-user me-2"></i>
-                            <span>Usuarios</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-orders">
-                        <a class="nav-link" href="/admin/list-orders.html">
-                            <i class="fa-solid fa-file-invoice-dollar me-2"></i>
-                            <span>Pedidos</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-bills">
-                        <a class="nav-link" href="/admin/list-bills.html">
-                            <i class="fa-solid fa-receipt me-2"></i>
-                            <span>Facturas</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-languages">
-                        <a class="nav-link active" href="/admin/list-languages.html">
-                            <i class="fa-solid fa-language me-2"></i>
-                            <span>Idiomas</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="web-config">
-                        <a class="nav-link" href="/admin/web-config.html">
-                            <i class="fa-solid fa-globe me-2"></i>
-                            <span>Configuración Web</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="mail-config">
-                        <a class="nav-link" href="/admin/mail-config.html">
-                            <i class="fa-solid fa-envelope me-2"></i>
-                            <span>Configuración Mail</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-legal-notices">
-                        <a class="nav-link" href="/admin/list-legal-notices.html">
-                            <i class="fa-solid fa-gavel me-2"></i>
-                            <span>Aviso Legal</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-privacy-politics">
-                        <a class="nav-link" href="/admin/list-privacy-politics.html">
-                            <i class="fa-solid fa-lock me-2"></i>
-                            <span>Política de Privacidad</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-payment-politics">
-                        <a class="nav-link" href="/admin/list-payment-politics.html">
-                            <i class="fa-solid fa-money-bill me-2"></i>
-                            <span>Política de Pagos</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-cookies">
-                        <a class="nav-link" href="/admin/list-cookies.html">
-                            <i class="fa-solid fa-cookie me-2"></i>
-                            <span>Cookies</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-footer-items">
-                        <a class="nav-link" href="/admin/list-footer-items.html">
-                            <i class="fa-solid fa-shoe-prints me-2"></i>
-                            <span>Items Footer</span>
-                        </a>
-                    </li>
-                    <li class="nav-item" data-content="list-roles">
-                        <a class="nav-link" href="/admin/list-roles.html">
-                            <i class="fa-solid fa-users me-2"></i>
-                            <span>Roles</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </aside>
-
-
-        <div class="container p-5 admin-panel" id="list-languages">
-            <h1><i class="fas fa-pen me-2"></i>Editar Idioma</h1>
-            
-            <div id="edit-language-success-message" class="alert alert-success d-none">
-                Idioma editado con éxito
-            </div>
-            
-            <form id="edit-language-form" class="needs-validation" novalidate>
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label for="edit-language-name" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" id="edit-language-name" name="name" required>
-                        <div id="edit-language-name-error" class="invalid-feedback"></div>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label for="edit-language-code" class="form-label">Código</label>
-                        <input type="text" class="form-control" id="edit-language-code" name="code" placeholder="es, en, etc" required>
-                        <div id="edit-language-code-error" class="invalid-feedback"></div>
-                    </div>
-                </div>
-                
-                <div class="mb-3">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1">
-                        <label class="form-check-label" for="is_active">Activo</label>
-                    </div>
-                </div>
-                
-                <!-- Sección de traducciones -->
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Header</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_nav_home" class="form-label">"Inicio" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_home" name="translations[nav_home]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_nav_account" class="form-label">"Cuenta" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_account" name="translations[nav_account]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_nav_profile" class="form-label">"Perfil" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_profile" name="translations[nav_profile]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_nav_favorites" class="form-label">"Favoritos" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_favorites" name="translations[nav_favorites]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_nav_watched" class="form-label">"Vistos" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_watched" name="translations[nav_watched]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_nav_paid_resources" class="form-label">"Recursos Pagados" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_paid_resources" name="translations[nav_paid_resources]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_nav_payment_history" class="form-label">"Historial de pagos" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_payment_history" name="translations[nav_payment_history]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_nav_logout" class="form-label">"Cerrar sesión" (nav)</label>
-                                <input type="text" class="form-control" id="translation_nav_logout" name="translations[nav_logout]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_search_placeholder" class="form-label">"Buscar contenido..." (placeholder)</label>
-                                <input type="text" class="form-control" id="translation_search_placeholder" name="translations[search_placeholder]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_see_more" class="form-label">"Ver más" (nav)</label>
-                                <input value="Ver Más" type="text" class="form-control" id="translation_see_more" name="translations[see_more]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Login</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_login_title" class="form-label">"Login" (Document Title)</label>
-                                <input type="text" class="form-control" id="translation_login_title" name="translations[login_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_login" class="form-label">"Iniciar Sesión" (Encabezado)</label>
-                                <input type="text" class="form-control" id="translation_login" name="translations[login]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_forgot_password" class="form-label">"¿Olvidaste la contraseña?"</label>
-                                <input type="text" class="form-control" id="translation_forgot_password" name="translations[forgot_password]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_login_button" class="form-label">"Iniciar Sesión" (botón)</label>
-                                <input type="text" class="form-control" id="translation_login_button" name="translations[login_button]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_no_account" class="form-label">"¿No tienes cuenta?"</label>
-                                <input type="text" class="form-control" id="translation_no_account" name="translations[no_account]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_register" class="form-label">"Regístrate"</label>
-                                <input type="text" class="form-control" id="translation_register" name="translations[register]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Registro</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_register_title" class="form-label">"Registro" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_register_title" name="translations[register_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_register_heading" class="form-label">"Registro" (encabezado)</label>
-                                <input type="text" class="form-control" id="translation_register_heading" name="translations[register_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_name_label" class="form-label">"Nombre" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_name_label" name="translations[name_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_surnames_label" class="form-label">"Apellidos" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_surnames_label" name="translations[surnames_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_address_label" class="form-label">"Dirección" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_address_label" name="translations[address_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_city_label" class="form-label">"Ciudad" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_city_label" name="translations[city_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_country_label" class="form-label">"País" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_country_label" name="translations[country_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_birth_year_label" class="form-label">"Año de nacimiento" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_birth_year_label" name="translations[birth_year_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_gender_label" class="form-label">"Género" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_gender_label" name="translations[gender_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_gender_man" class="form-label">"Hombre" (opción género)</label>
-                                <input type="text" class="form-control" id="translation_gender_man" name="translations[gender_man]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_gender_woman" class="form-label">"Mujer" (opción género)</label>
-                                <input type="text" class="form-control" id="translation_gender_woman" name="translations[gender_woman]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_gender_others" class="form-label">"Otros" (opción género)</label>
-                                <input type="text" class="form-control" id="translation_gender_others" name="translations[gender_others]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_phone_label" class="form-label">"Teléfono (Opcional)" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_phone_label" name="translations[phone_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_prev_button" class="form-label">"Anterior" (botón)</label>
-                                <input type="text" class="form-control" id="translation_prev_button" name="translations[prev_button]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_next_button" class="form-label">"Siguiente" (botón)</label>
-                                <input type="text" class="form-control" id="translation_next_button" name="translations[next_button]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_submit_button" class="form-label">"Registro" (botón)</label>
-                                <input type="text" class="form-control" id="translation_submit_button" name="translations[submit_button]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_accept_text" class="form-label">"Acepto políticas de privacidad" (texto checkbox)</label>
-                                <input type="text" class="form-control" id="translation_accept_text" name="translations[accept_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_submit_pay_plan_button" class="form-label">"Pagar Plan" (botón)</label>
-                                <input type="text" class="form-control" id="translation_submit_pay_plan_button" name="translations[submit_pay_plan_button]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_have_account" class="form-label">"¿Ya tienes cuenta?"</label>
-                                <input type="text" class="form-control" id="translation_have_account" name="translations[have_account]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_login_link" class="form-label">"Inicia Sesión"</label>
-                                <input type="text" class="form-control" id="translation_login_link" name="translations[login_link]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_password" class="form-label">"Contraseña"</label>
-                                <input type="text" class="form-control" id="translation_password" name="translations[password]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_confirm_password" class="form-label">"Confirmar contraseña"</label>
-                                <input type="text" class="form-control" id="translation_confirm_password" name="translations[confirm_password]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Pop Up Cookies</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_cookies_popup_heading" class="form-label">"Aviso de Cookies" (encabezado)</label>
-                                <input type="text" class="form-control" id="translation_cookies_popup_heading" name="translations[cookies_popup_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_popup_text_1" class="form-label">"Este sitio web utiliza..." (texto 1)</label>
-                                <input type="text" class="form-control" id="translation_cookies_popup_text_1" name="translations[cookies_popup_text_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_popup_text_2" class="form-label">"Para más detalles..." (texto 2)</label>
-                                <input type="text" class="form-control" id="translation_cookies_popup_text_2" name="translations[cookies_popup_text_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_cookies_popup_link" class="form-label">"Política de Cookies" (enlace)</label>
-                                <input type="text" class="form-control" id="translation_cookies_popup_link" name="translations[cookies_popup_link]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Recuperar Contraseña</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_restore_password_title" class="form-label">"Recuperar Contraseña" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_restore_password_title" name="translations[restore_password_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_restore_password_heading" class="form-label">"Recuperar Contraseña" (encabezado)</label>
-                                <input type="text" class="form-control" id="translation_restore_password_heading" name="translations[restore_password_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_restore_password_email_label" class="form-label">"Introduzca su email" (texto)</label>
-                                <input type="text" class="form-control" id="translation_restore_password_email_label" name="translations[restore_password_email_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_restore_password_button" class="form-label">"Enviar email de recuperación" (botón)</label>
-                                <input type="text" class="form-control" id="translation_restore_password_button" name="translations[restore_password_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Nuevo Dispositivo</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_new_device_title" class="form-label">"Nuevo Dispositivo" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_new_device_title" name="translations[new_device_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_new_device_heading" class="form-label">"Nuevo dispositivo" (encabezado)</label>
-                                <input type="text" class="form-control" id="translation_new_device_heading" name="translations[new_device_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_device_name_label" class="form-label">"Nombre del dispositivo" (etiqueta)</label>
-                                <input type="text" class="form-control" id="translation_device_name_label" name="translations[device_name_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_add_device_button" class="form-label">"Añadir dispositivo" (botón)</label>
-                                <input type="text" class="form-control" id="translation_add_device_button" name="translations[add_device_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Gestión de Dispositivos</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_devices_management_title" class="form-label">"Gestión de Dispositivos" (título página)</label>
-                                <input type="text" class="form-control" id="translation_devices_management_title" name="translations[devices_management_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_active_devices_heading" class="form-label">"Dispositivos Activos" (encabezado)</label>
-                                <input type="text" class="form-control" id="translation_active_devices_heading" name="translations[active_devices_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_device_limit_message" class="form-label">"Has alcanzado el límite de dispositivos permitidos para tu plan actual."</label>
-                                <input type="text" class="form-control" id="translation_device_limit_message" name="translations[device_limit_message]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_plan_link" class="form-label">"CAMBIAR DE PLAN" (texto del enlace)</label>
-                                <input type="text" class="form-control" id="translation_change_plan_link" name="translations[change_plan_link]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_unnamed_device" class="form-label">"Dispositivo sin nombre"</label>
-                                <input type="text" class="form-control" id="translation_unnamed_device" name="translations[unnamed_device]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_delete_button" class="form-label">"Eliminar" (botón)</label>
-                                <input type="text" class="form-control" id="translation_delete_button" name="translations[delete_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Gestión de Streams Simultáneos</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_manage_streams_title" class="form-label">"Gestión de Streams" (document title)</label>
-                                <input type="text" class="form-control" id="translation_manage_streams_title" name="translations[manage_streams_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_streams_heading" class="form-label">"Límite Alcanzado" (encabezado)</label>
-                                <input type="text" class="form-control" id="translation_manage_streams_heading" name="translations[manage_streams_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_streams_text" class="form-label">"Has alcanzado el límite de visualizacions simultáneas permitidas para tu plan actual."</label>
-                                <input type="text" class="form-control" id="translation_manage_streams_text" name="translations[manage_streams_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_streams_question" class="form-label">"¿Quieres " (Primera parte de la pregunta)</label>
-                                <input type="text" class="form-control" id="translation_manage_streams_question" name="translations[manage_streams_question]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_streams_link" class="form-label">"CAMBIAR DE PLAN" (enlace a planes dentro de la pregunta)</label>
-                                <input type="text" class="form-control" id="translation_manage_streams_link" name="translations[manage_streams_link]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Planes</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_plans_title" class="form-label">"Cambiar Plan" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_plans_title" name="translations[plans_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_choose_plan" class="form-label">"Elige uno de nuestros planes"</label>
-                                <input type="text" class="form-control" id="translation_choose_plan" name="translations[choose_plan]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_free" class="form-label">"Gratis"</label>
-                                <input type="text" class="form-control" id="translation_free" name="translations[free]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_quarterly_price" class="form-label">"Precio trimestral"</label>
-                                <input type="text" class="form-control" id="translation_quarterly_price" name="translations[quarterly_price]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_annual_price" class="form-label">"Precio anual"</label>
-                                <input type="text" class="form-control" id="translation_annual_price" name="translations[annual_price]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_device" class="form-label">"dispositivo"</label>
-                                <input type="text" class="form-control" id="translation_device" name="translations[device]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_devices" class="form-label">"dispositivos"</label>
-                                <input type="text" class="form-control" id="translation_devices" name="translations[devices]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_screen" class="form-label">"pantalla"</label>
-                                <input type="text" class="form-control" id="translation_screen" name="translations[screen]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_screens" class="form-label">"pantallas"</label>
-                                <input type="text" class="form-control" id="translation_screens" name="translations[screens]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_with_ads" class="form-label">"Con anuncios"</label>
-                                <input type="text" class="form-control" id="translation_with_ads" name="translations[with_ads]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_without_ads" class="form-label">"Sin anuncios"</label>
-                                <input type="text" class="form-control" id="translation_without_ads" name="translations[without_ads]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_current_plan" class="form-label">"Plan Actual"</label>
-                                <input type="text" class="form-control" id="translation_current_plan" name="translations[current_plan]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_renew_current_plan" class="form-label">"Renovar Plan Actual"</label>
-                                <input type="text" class="form-control" id="translation_renew_current_plan" name="translations[renew_current_plan]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_quarterly" class="form-label">"Trimestral"</label>
-                                <input type="text" class="form-control" id="translation_quarterly" name="translations[quarterly]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_annual" class="form-label">"Anual"</label>
-                                <input type="text" class="form-control" id="translation_annual" name="translations[annual]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_not_applicable" class="form-label">"No aplica"</label>
-                                <input type="text" class="form-control" id="translation_not_applicable" name="translations[not_applicable]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Perfil</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_account_title" class="form-label">"Perfil" (Document Title)</label>
-                                <input type="text" class="form-control" id="translation_account_title" name="translations[account_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_account_heading" class="form-label">"Perfil" (Encabezado)</label>
-                                <input type="text" class="form-control" id="translation_account_heading" name="translations[account_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_account_change_plan" class="form-label">"Cambiar Plan" (botón)</label>
-                                <input type="text" class="form-control" id="translation_account_change_plan" name="translations[account_change_plan]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_plan_label" class="form-label">"Plan" (fila)</label>
-                                <input type="text" class="form-control" id="translation_plan_label" name="translations[plan_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_account_phone" class="form-label">"Teléfono" (fila)</label>
-                                <input type="text" class="form-control" id="translation_account_phone" name="translations[account_phone]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_account_change_button" class="form-label">"Cambiar" (botón filas)</label>
-                                <input type="text" class="form-control" id="translation_account_change_button" name="translations[account_change_button]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_account_expiration_span" class="form-label">"Caducidad" (palabra)</label>
-                                <input type="text" class="form-control" id="translation_account_expiration_span" name="translations[account_expiration_span]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_download_bill_button" class="form-label">"Descargar Factura" (botón)</label>
-                                <input type="text" class="form-control" id="translation_download_bill_button" name="translations[download_bill_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Edición Usuario (campos comunes)</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_wrong_password" class="form-label">"Contraseña incorrecta" (Mensaje error)</label>
-                                <input type="text" class="form-control" id="translation_wrong_password" name="translations[wrong_password]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_loading" class="form-label">"Cargando..." (Texto accesibilidad spinner)</label>
-                                <input type="text" class="form-control" id="translation_loading" name="translations[loading]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Cambiar Dirección</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_change_address_title" class="form-label">"Cambiar Dirección" (document title)</label>
-                                <input type="text" class="form-control" id="translation_change_address_title" name="translations[change_address_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_address_heading" class="form-label">"Cambiar Dirección" (Encabezado)</label>
-                                <input type="text" class="form-control" id="translation_change_address_heading" name="translations[change_address_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_address_success" class="form-label">"Dirección cambiada con éxito" (Mensaje éxito)</label>
-                                <input type="text" class="form-control" id="translation_change_address_success" name="translations[change_address_success]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_address_1" class="form-label">"Dirección" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_change_address_1" name="translations[change_address_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_address_2" class="form-label">"Ciudad" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_change_address_2" name="translations[change_address_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_address_3" class="form-label">"País" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_change_address_3" name="translations[change_address_3]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_address_wait" class="form-label">"Editando dirección, por favor espere..." (Texto loading)</label>
-                                <input type="text" class="form-control" id="translation_change_address_wait" name="translations[change_address_wait]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_address_button" class="form-label">"Cambiar Dirección" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_change_address_button" name="translations[change_address_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Cambiar Email</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_change_email_title" class="form-label">"Cambiar Email" (document title)</label>
-                                <input type="text" class="form-control" id="translation_change_email_title" name="translations[change_email_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_email_heading" class="form-label">"Cambiar Email" (Encabezado)</label>
-                                <input type="text" class="form-control" id="translation_change_email_heading" name="translations[change_email_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_email_success" class="form-label">"Email cambiado con éxito" (Mensaje éxito)</label>
-                                <input type="text" class="form-control" id="translation_change_email_success" name="translations[change_email_success]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_label" class="form-label">"Email" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_email_label" name="translations[email_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_email_loading" class="form-label">"Editando email, por favor espere..." (Texto loading)</label>
-                                <input type="text" class="form-control" id="translation_change_email_loading" name="translations[change_email_loading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_email_button" class="form-label">"Cambiar Email" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_change_email_button" name="translations[change_email_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Cambiar Teléfono</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_change_phone_title" class="form-label">"Cambiar Teléfono" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_change_phone_title" name="translations[change_phone_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_phone_heading" class="form-label">"Cambiar Teléfono" (Encabezado)</label>
-                                <input type="text" class="form-control" id="translation_change_phone_heading" name="translations[change_phone_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_phone_success" class="form-label">"Teléfono cambiado con éxito" (Mensaje éxito)</label>
-                                <input type="text" class="form-control" id="translation_change_phone_success" name="translations[change_phone_success]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_phone_loading" class="form-label">"Editando teléfono, por favor espere..." (Texto loading)</label>
-                                <input type="text" class="form-control" id="translation_change_phone_loading" name="translations[change_phone_loading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_phone_button" class="form-label">"Cambiar Teléfono" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_change_phone_button" name="translations[change_phone_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Cambiar Contraseña</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_change_password_title" class="form-label">"Cambiar Contraseña" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_change_password_title" name="translations[change_password_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_password_heading" class="form-label">"Cambiar Contraseña" (Título)</label>
-                                <input type="text" class="form-control" id="translation_change_password_heading" name="translations[change_password_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_password_success" class="form-label">"Contraseña cambiada con éxito" (Mensaje éxito)</label>
-                                <input type="text" class="form-control" id="translation_change_password_success" name="translations[change_password_success]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_current_password_label" class="form-label">"Contraseña Actual" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_current_password_label" name="translations[current_password_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_confirm_current_password_label" class="form-label">"Confirmar Contraseña Actual" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_confirm_current_password_label" name="translations[confirm_current_password_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_new_password_label" class="form-label">"Nueva Contraseña" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_new_password_label" name="translations[new_password_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_confirm_new_password_label" class="form-label">"Confirmar Nueva Contraseña" (Etiqueta campo)</label>
-                                <input type="text" class="form-control" id="translation_confirm_new_password_label" name="translations[confirm_new_password_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_password_loading" class="form-label">"Editando contraseña, por favor espere..." (Texto loading)</label>
-                                <input type="text" class="form-control" id="translation_change_password_loading" name="translations[change_password_loading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_change_password_button" class="form-label">"Cambiar Contraseña" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_change_password_button" name="translations[change_password_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Validar Email</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_title" class="form-label">"Validar Email" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_title" name="translations[email_verification_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_heading" class="form-label">"Validar Email" (Encabezado h1)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_heading" name="translations[email_verification_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_text" class="form-label">"Es necesario validar tu correo electrónico..." (Texto principal)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_text" name="translations[email_verification_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_details" class="form-label">"Si no tienes el correo o ha caducado..." (Texto detalles)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_details" name="translations[email_verification_details]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_button" class="form-label">"Reenviar" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_button" name="translations[email_verification_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Email Verificado con Éxito</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_success_title" class="form-label">"¡Email verificado con éxito!" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_success_title" name="translations[email_verification_success_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_success" class="form-label">"¡Email verificado con éxito!" (Encabezado h1)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_success" name="translations[email_verification_success]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_success_text" class="form-label">"Tu email ha sido verificado correctamente." (Texto confirmación)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_success_text" name="translations[email_verification_success_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_success_link_1" class="form-label">"Ir al Inicio" (Texto primer botón)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_success_link_1" name="translations[email_verification_success_link_1]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_email_verification_success_link_2" class="form-label">"Ver mi cuenta" (Texto segundo botón)</label>
-                                <input type="text" class="form-control" id="translation_email_verification_success_link_2" name="translations[email_verification_success_link_2]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Cambio de Plan</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_manage_plans_title" class="form-label">"Gestión de Planes" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_manage_plans_title" name="translations[manage_plans_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_plans_actual_plan" class="form-label">"Plan Actual"</label>
-                                <input type="text" class="form-control" id="translation_manage_plans_actual_plan" name="translations[manage_plans_actual_plan]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_plans_text" class="form-label">"No se puede visualizar..."</label>
-                                <input type="text" class="form-control" id="translation_manage_plans_text" name="translations[manage_plans_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_plans_none_text" class="form-label">"Plan/es para visualizar el contenido:" (Texto si el usuario no tiene plan)</label>
-                                <input type="text" class="form-control" id="translation_manage_plans_none_text" name="translations[manage_plans_none_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_plans_link" class="form-label">"Cambiar de plan" (Texto enlace)</label>
-                                <input type="text" class="form-control" id="translation_manage_plans_link" name="translations[manage_plans_link]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_manage_plans_link_2" class="form-label">"Suscribirse a un plan" (Texto enlace si el usuario no tiene plan)</label>
-                                <input type="text" class="form-control" id="translation_manage_plans_link_2" name="translations[manage_plans_link_2]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Pago realizado con éxito durante el registro</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_need_device_payment_title" class="form-label">"Pago Realizado" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_need_device_payment_title" name="translations[need_device_payment_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_need_device_payment_heading" class="form-label">"¡Pago realizado con éxito!"</label>
-                                <input type="text" class="form-control" id="translation_need_device_payment_heading" name="translations[need_device_payment_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_need_device_payment_text" class="form-label">"Sólo falta un paso..."</label>
-                                <input type="text" class="form-control" id="translation_need_device_payment_text" name="translations[need_device_payment_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_need_device_payment_button" class="form-label">"Finalizar Registro" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_need_device_payment_button" name="translations[need_device_payment_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Método de Pago</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_payment_method_title" class="form-label">"Método de pago" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_payment_method_title" name="translations[payment_method_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_method_heading" class="form-label">"Elige un método de pago"</label>
-                                <input type="text" class="form-control" id="translation_payment_method_heading" name="translations[payment_method_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_method_text" class="form-label">"Pagar con "</label>
-                                <input type="text" class="form-control" id="translation_payment_method_text" name="translations[payment_method_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_method_card" class="form-label">"Tarjeta"</label>
-                                <input type="text" class="form-control" id="translation_payment_method_card" name="translations[payment_method_card]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Formulario de Contacto</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_contact_heading" class="form-label">"Contacto" (Título)</label>
-                                <input type="text" class="form-control" id="translation_contact_heading" name="translations[contact_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_contact_success_message" class="form-label">"Email enviado con éxito" (Mensaje éxito)</label>
-                                <input type="text" class="form-control" id="translation_contact_success_message" name="translations[contact_success_message]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_contact_email_label" class="form-label">"Tu correo" (Etiqueta email)</label>
-                                <input type="text" class="form-control" id="translation_contact_email_label" name="translations[contact_email_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_contact_subject_label" class="form-label">"Asunto" (Etiqueta asunto)</label>
-                                <input type="text" class="form-control" id="translation_contact_subject_label" name="translations[contact_subject_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_contact_message_label" class="form-label">"Cuéntanos" (Etiqueta mensaje)</label>
-                                <input type="text" class="form-control" id="translation_contact_message_label" name="translations[contact_message_label]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_contact_loading_message" class="form-label">"Enviando email, por favor espere..." (Mensaje loading)</label>
-                                <input type="text" class="form-control" id="translation_contact_loading_message" name="translations[contact_loading_message]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_contact_submit_button" class="form-label">"Enviar" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_contact_submit_button" name="translations[contact_submit_button]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Página 404</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_404_title" class="form-label">"Página no encontrada" (Document title)</label>
-                                <input type="text" class="form-control" id="translation_404_title" name="translations[404_title]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_404_heading" class="form-label">"Página no encontrada" (encabezado)</label>
-                                <input type="text" class="form-control" id="translation_404_heading" name="translations[404_heading]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_404_heading_2" class="form-label">"Página no encontrada" (Subtítulo)</label>
-                                <input type="text" class="form-control" id="translation_404_heading_2" name="translations[404_heading_2]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_404_text" class="form-label">"No hemos encontrado lo que buscabas." (Texto descriptivo)</label>
-                                <input type="text" class="form-control" id="translation_404_text" name="translations[404_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_404_action" class="form-label">"Volver al inicio" (Texto botón)</label>
-                                <input type="text" class="form-control" id="translation_404_action" name="translations[404_action]" required>
-                            </div>
-                        </div>                
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Ficha de Contenido</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_description_show" class="form-label">"Descripción" (título)</label>
-                                <input type="text" class="form-control" id="translation_description_show" name="translations[description_show]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_details_show" class="form-label">"Detalles" (tab)</label>
-                                <input type="text" class="form-control" id="translation_details_show" name="translations[details_show]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_similars_show" class="form-label">"Similares" (tab)</label>
-                                <input type="text" class="form-control" id="translation_similars_show" name="translations[similars_show]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_ppv_button_text" class="form-label">"Pagar para ver" (texto ppv)</label>
-                                <input type="text" class="form-control" id="translation_ppv_button_text" name="translations[ppv_button_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_rent_button_text" class="form-label">"Alquilar" (texto botón alquilar)</label>
-                                <input type="text" class="form-control" id="translation_rent_button_text" name="translations[rent_button_text]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_rent_button_days" class="form-label">"días" (texto botón alquilar)</label>
-                                <input type="text" class="form-control" id="translation_rent_button_days" name="translations[rent_button_days]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Footer</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label for="translation_legal_notice" class="form-label">"Aviso Legal"</label>
-                                <input type="text" class="form-control" id="translation_legal_notice" name="translations[legal_notice]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_privacy_policy" class="form-label">"Política de Privacidad"</label>
-                                <input type="text" class="form-control" id="translation_privacy_policy" name="translations[privacy_policy]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_payment_policy" class="form-label">"Política de Pagos"</label>
-                                <input type="text" class="form-control" id="translation_payment_policy" name="translations[payment_policy]" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="translation_contact" class="form-label">"Contacto"</label>
-                                <input type="text" class="form-control" id="translation_contact" name="translations[contact]" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Contenido</h5>
-                    </div>
-                    <div class="card-body" id="content"></div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Llamadas a la acción</h5>
-                    </div>
-                    <div class="card-body" id="actions"></div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Géneros</h5>
-                    </div>
-                    <div class="card-body" id="genders"></div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Categorías</h5>
-                    </div>
-                    <div class="card-body" id="categories">
-                    </div>
-                </div>
-                
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5 class="mb-0">Etiquetas</h5>
-                    </div>
-                    <div class="card-body" id="tags">
-                    </div>
-                </div>
-                
-                <div class="d-flex justify-content-center align-items-center my-4 d-none" id="edit-language-loading">
-                    <div class="spinner-border me-3" role="status">
-                        <span class="visually-hidden">Cargando...</span>
-                    </div>
-                    <p class="mb-0">Editando Idioma, por favor espere...</p>
-                </div>
-                
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-plus-circle me-2"></i> Editar Idioma
-                    </button>
-                </div>
-            </form>
+      <aside
+        class="admin-sidebar offcanvas-lg offcanvas-start"
+        tabindex="-1"
+        id="adminSidebar"
+      >
+        <div class="offcanvas-body">
+          <ul class="admin-menu nav flex-column">
+            <li class="nav-item" data-content="admin-panel">
+              <a class="nav-link" href="/admin/admin-panel.html">
+                <i class="fa-solid fa-square-poll-vertical me-2"></i>
+                <span>Estadísticas</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-local-content">
+              <a class="nav-link" href="/admin/list-content.html">
+                <i class="fas fa-film me-2"></i>
+                <span>Contenido Local</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-external-content">
+              <a class="nav-link" href="/admin/list-external-content.html">
+                <i class="fa-solid fa-arrow-up-right-from-square me-2"></i>
+                <span>Contenido Externo</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-streams">
+              <a class="nav-link" href="/admin/list-streams.html">
+                <i class="fa-solid fa-tower-broadcast me-2"></i>
+                <span>Streams</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-ads">
+              <a class="nav-link" href="/admin/list-ads.html">
+                <i class="fas fa-ad me-2"></i>
+                <span>Anuncios</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-plans">
+              <a class="nav-link" href="/admin/list-plans.html">
+                <i class="fa-solid fa-euro-sign me-2"></i>
+                <span>Planes</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-genders">
+              <a class="nav-link" href="/admin/list-genders.html">
+                <i class="fa-solid fa-rocket me-2"></i>
+                <span>Géneros</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-categories">
+              <a class="nav-link" href="/admin/list-categories.html">
+                <i class="fa-solid fa-layer-group me-2"></i>
+                <span>Categorías</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-tags">
+              <a class="nav-link" href="/admin/list-tags.html">
+                <i class="fa-solid fa-tag me-2"></i>
+                <span>Etiquetas</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-actions">
+              <a class="nav-link" href="/admin/list-actions.html">
+                <i class="fa-solid fa-location-crosshairs me-2"></i>
+                <span>LLamadas a Acción</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-users">
+              <a class="nav-link" href="/admin/list-users.html">
+                <i class="fas fa-user me-2"></i>
+                <span>Usuarios</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-orders">
+              <a class="nav-link" href="/admin/list-orders.html">
+                <i class="fa-solid fa-file-invoice-dollar me-2"></i>
+                <span>Pedidos</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-bills">
+              <a class="nav-link" href="/admin/list-bills.html">
+                <i class="fa-solid fa-receipt me-2"></i>
+                <span>Facturas</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-languages">
+              <a class="nav-link active" href="/admin/list-languages.html">
+                <i class="fa-solid fa-language me-2"></i>
+                <span>Idiomas</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="web-config">
+              <a class="nav-link" href="/admin/web-config.html">
+                <i class="fa-solid fa-globe me-2"></i>
+                <span>Configuración Web</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="mail-config">
+              <a class="nav-link" href="/admin/mail-config.html">
+                <i class="fa-solid fa-envelope me-2"></i>
+                <span>Configuración Mail</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-legal-notices">
+              <a class="nav-link" href="/admin/list-legal-notices.html">
+                <i class="fa-solid fa-gavel me-2"></i>
+                <span>Aviso Legal</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-privacy-politics">
+              <a class="nav-link" href="/admin/list-privacy-politics.html">
+                <i class="fa-solid fa-lock me-2"></i>
+                <span>Política de Privacidad</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-payment-politics">
+              <a class="nav-link" href="/admin/list-payment-politics.html">
+                <i class="fa-solid fa-money-bill me-2"></i>
+                <span>Política de Pagos</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-cookies">
+              <a class="nav-link" href="/admin/list-cookies.html">
+                <i class="fa-solid fa-cookie me-2"></i>
+                <span>Cookies</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-footer-items">
+              <a class="nav-link" href="/admin/list-footer-items.html">
+                <i class="fa-solid fa-shoe-prints me-2"></i>
+                <span>Items Footer</span>
+              </a>
+            </li>
+            <li class="nav-item" data-content="list-roles">
+              <a class="nav-link" href="/admin/list-roles.html">
+                <i class="fa-solid fa-users me-2"></i>
+                <span>Roles</span>
+              </a>
+            </li>
+          </ul>
         </div>
+      </aside>
+
+      <div class="container p-5 admin-panel" id="list-languages">
+        <h1><i class="fas fa-pen me-2"></i>Editar Idioma</h1>
+
+        <div
+          id="edit-language-success-message"
+          class="alert alert-success d-none"
+        >
+          Idioma editado con éxito
+        </div>
+
+        <form id="edit-language-form" class="needs-validation" novalidate>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="edit-language-name" class="form-label">Nombre</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-language-name"
+                name="name"
+                required
+              />
+              <div id="edit-language-name-error" class="invalid-feedback"></div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="edit-language-code" class="form-label">Código</label>
+              <input
+                type="text"
+                class="form-control"
+                id="edit-language-code"
+                name="code"
+                placeholder="es, en, etc"
+                required
+              />
+              <div id="edit-language-code-error" class="invalid-feedback"></div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="is_active"
+                name="is_active"
+                value="1"
+              />
+              <label class="form-check-label" for="is_active">Activo</label>
+            </div>
+          </div>
+
+          <!-- Sección de traducciones -->
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Header</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_nav_home" class="form-label"
+                    >"Inicio" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_home"
+                    name="translations[nav_home]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_nav_account" class="form-label"
+                    >"Cuenta" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_account"
+                    name="translations[nav_account]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_nav_profile" class="form-label"
+                    >"Perfil" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_profile"
+                    name="translations[nav_profile]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_nav_favorites" class="form-label"
+                    >"Favoritos" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_favorites"
+                    name="translations[nav_favorites]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_nav_watched" class="form-label"
+                    >"Vistos" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_watched"
+                    name="translations[nav_watched]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_nav_paid_resources" class="form-label"
+                    >"Recursos Pagados" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_paid_resources"
+                    name="translations[nav_paid_resources]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_nav_payment_history"
+                    class="form-label"
+                    >"Historial de pagos" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_payment_history"
+                    name="translations[nav_payment_history]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_nav_logout" class="form-label"
+                    >"Cerrar sesión" (nav)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_nav_logout"
+                    name="translations[nav_logout]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_search_placeholder" class="form-label"
+                    >"Buscar contenido..." (placeholder)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_search_placeholder"
+                    name="translations[search_placeholder]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_see_more" class="form-label"
+                    >"Ver más" (nav)</label
+                  >
+                  <input
+                    value="Ver Más"
+                    type="text"
+                    class="form-control"
+                    id="translation_see_more"
+                    name="translations[see_more]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Login</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_login_title" class="form-label"
+                    >"Login" (Document Title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_login_title"
+                    name="translations[login_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_login" class="form-label"
+                    >"Iniciar Sesión" (Encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_login"
+                    name="translations[login]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_forgot_password" class="form-label"
+                    >"¿Olvidaste la contraseña?"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_forgot_password"
+                    name="translations[forgot_password]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_login_button" class="form-label"
+                    >"Iniciar Sesión" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_login_button"
+                    name="translations[login_button]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_no_account" class="form-label"
+                    >"¿No tienes cuenta?"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_no_account"
+                    name="translations[no_account]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_register" class="form-label"
+                    >"Regístrate"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_register"
+                    name="translations[register]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Registro</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_register_title" class="form-label"
+                    >"Registro" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_register_title"
+                    name="translations[register_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_register_heading" class="form-label"
+                    >"Registro" (encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_register_heading"
+                    name="translations[register_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_name_label" class="form-label"
+                    >"Nombre" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_name_label"
+                    name="translations[name_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_surnames_label" class="form-label"
+                    >"Apellidos" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_surnames_label"
+                    name="translations[surnames_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_address_label" class="form-label"
+                    >"Dirección" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_address_label"
+                    name="translations[address_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_city_label" class="form-label"
+                    >"Ciudad" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_city_label"
+                    name="translations[city_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_country_label" class="form-label"
+                    >"País" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_country_label"
+                    name="translations[country_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_birth_year_label" class="form-label"
+                    >"Año de nacimiento" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_birth_year_label"
+                    name="translations[birth_year_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_gender_label" class="form-label"
+                    >"Género" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_gender_label"
+                    name="translations[gender_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_gender_man" class="form-label"
+                    >"Hombre" (opción género)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_gender_man"
+                    name="translations[gender_man]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_gender_woman" class="form-label"
+                    >"Mujer" (opción género)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_gender_woman"
+                    name="translations[gender_woman]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_gender_others" class="form-label"
+                    >"Otros" (opción género)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_gender_others"
+                    name="translations[gender_others]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_phone_label" class="form-label"
+                    >"Teléfono (Opcional)" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_phone_label"
+                    name="translations[phone_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_prev_button" class="form-label"
+                    >"Anterior" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_prev_button"
+                    name="translations[prev_button]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_next_button" class="form-label"
+                    >"Siguiente" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_next_button"
+                    name="translations[next_button]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_submit_button" class="form-label"
+                    >"Registro" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_submit_button"
+                    name="translations[submit_button]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_accept_text" class="form-label"
+                    >"Acepto políticas de privacidad" (texto checkbox)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_accept_text"
+                    name="translations[accept_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_submit_pay_plan_button"
+                    class="form-label"
+                    >"Pagar Plan" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_submit_pay_plan_button"
+                    name="translations[submit_pay_plan_button]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_have_account" class="form-label"
+                    >"¿Ya tienes cuenta?"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_have_account"
+                    name="translations[have_account]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_login_link" class="form-label"
+                    >"Inicia Sesión"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_login_link"
+                    name="translations[login_link]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_password" class="form-label"
+                    >"Contraseña"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_password"
+                    name="translations[password]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_confirm_password" class="form-label"
+                    >"Confirmar contraseña"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_confirm_password"
+                    name="translations[confirm_password]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Pop Up Cookies</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_cookies_popup_heading"
+                    class="form-label"
+                    >"Aviso de Cookies" (encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_cookies_popup_heading"
+                    name="translations[cookies_popup_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_cookies_popup_text_1"
+                    class="form-label"
+                    >"Este sitio web utiliza..." (texto 1)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_cookies_popup_text_1"
+                    name="translations[cookies_popup_text_1]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_cookies_popup_text_2"
+                    class="form-label"
+                    >"Para más detalles..." (texto 2)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_cookies_popup_text_2"
+                    name="translations[cookies_popup_text_2]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_cookies_popup_link" class="form-label"
+                    >"Política de Cookies" (enlace)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_cookies_popup_link"
+                    name="translations[cookies_popup_link]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Recuperar Contraseña</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_restore_password_title"
+                    class="form-label"
+                    >"Recuperar Contraseña" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_restore_password_title"
+                    name="translations[restore_password_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_restore_password_heading"
+                    class="form-label"
+                    >"Recuperar Contraseña" (encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_restore_password_heading"
+                    name="translations[restore_password_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_restore_password_email_label"
+                    class="form-label"
+                    >"Introduzca su email" (texto)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_restore_password_email_label"
+                    name="translations[restore_password_email_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_restore_password_button"
+                    class="form-label"
+                    >"Enviar email de recuperación" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_restore_password_button"
+                    name="translations[restore_password_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Nuevo Dispositivo</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_new_device_title" class="form-label"
+                    >"Nuevo Dispositivo" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_new_device_title"
+                    name="translations[new_device_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_new_device_heading" class="form-label"
+                    >"Nuevo dispositivo" (encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_new_device_heading"
+                    name="translations[new_device_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_device_name_label" class="form-label"
+                    >"Nombre del dispositivo" (etiqueta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_device_name_label"
+                    name="translations[device_name_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_add_device_button" class="form-label"
+                    >"Añadir dispositivo" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_add_device_button"
+                    name="translations[add_device_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Gestión de Dispositivos</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_devices_management_title"
+                    class="form-label"
+                    >"Gestión de Dispositivos" (título página)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_devices_management_title"
+                    name="translations[devices_management_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_active_devices_heading"
+                    class="form-label"
+                    >"Dispositivos Activos" (encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_active_devices_heading"
+                    name="translations[active_devices_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_device_limit_message"
+                    class="form-label"
+                    >"Has alcanzado el límite de dispositivos permitidos para tu
+                    plan actual."</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_device_limit_message"
+                    name="translations[device_limit_message]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_change_plan_link" class="form-label"
+                    >"CAMBIAR DE PLAN" (texto del enlace)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_plan_link"
+                    name="translations[change_plan_link]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_unnamed_device" class="form-label"
+                    >"Dispositivo sin nombre"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_unnamed_device"
+                    name="translations[unnamed_device]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_delete_button" class="form-label"
+                    >"Eliminar" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_delete_button"
+                    name="translations[delete_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Gestión de Streams Simultáneos</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_streams_title"
+                    class="form-label"
+                    >"Gestión de Streams" (document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_streams_title"
+                    name="translations[manage_streams_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_streams_heading"
+                    class="form-label"
+                    >"Límite Alcanzado" (encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_streams_heading"
+                    name="translations[manage_streams_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_streams_text"
+                    class="form-label"
+                    >"Has alcanzado el límite de visualizacions simultáneas
+                    permitidas para tu plan actual."</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_streams_text"
+                    name="translations[manage_streams_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_streams_question"
+                    class="form-label"
+                    >"¿Quieres " (Primera parte de la pregunta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_streams_question"
+                    name="translations[manage_streams_question]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_streams_link"
+                    class="form-label"
+                    >"CAMBIAR DE PLAN" (enlace a planes dentro de la
+                    pregunta)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_streams_link"
+                    name="translations[manage_streams_link]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Planes</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_plans_title" class="form-label"
+                    >"Cambiar Plan" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_plans_title"
+                    name="translations[plans_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_choose_plan" class="form-label"
+                    >"Elige uno de nuestros planes"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_choose_plan"
+                    name="translations[choose_plan]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_free" class="form-label"
+                    >"Gratis"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_free"
+                    name="translations[free]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_quarterly_price" class="form-label"
+                    >"Precio trimestral"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_quarterly_price"
+                    name="translations[quarterly_price]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_annual_price" class="form-label"
+                    >"Precio anual"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_annual_price"
+                    name="translations[annual_price]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_device" class="form-label"
+                    >"dispositivo"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_device"
+                    name="translations[device]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_devices" class="form-label"
+                    >"dispositivos"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_devices"
+                    name="translations[devices]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_screen" class="form-label"
+                    >"pantalla"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_screen"
+                    name="translations[screen]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_screens" class="form-label"
+                    >"pantallas"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_screens"
+                    name="translations[screens]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_with_ads" class="form-label"
+                    >"Con anuncios"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_with_ads"
+                    name="translations[with_ads]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_without_ads" class="form-label"
+                    >"Sin anuncios"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_without_ads"
+                    name="translations[without_ads]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_current_plan" class="form-label"
+                    >"Plan Actual"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_current_plan"
+                    name="translations[current_plan]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_renew_current_plan" class="form-label"
+                    >"Renovar Plan Actual"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_renew_current_plan"
+                    name="translations[renew_current_plan]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_quarterly" class="form-label"
+                    >"Trimestral"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_quarterly"
+                    name="translations[quarterly]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_annual" class="form-label"
+                    >"Anual"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_annual"
+                    name="translations[annual]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_not_applicable" class="form-label"
+                    >"No aplica"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_not_applicable"
+                    name="translations[not_applicable]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Perfil</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_account_title" class="form-label"
+                    >"Perfil" (Document Title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_account_title"
+                    name="translations[account_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_account_heading" class="form-label"
+                    >"Perfil" (Encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_account_heading"
+                    name="translations[account_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_account_change_plan"
+                    class="form-label"
+                    >"Cambiar Plan" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_account_change_plan"
+                    name="translations[account_change_plan]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_plan_label" class="form-label"
+                    >"Plan" (fila)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_plan_label"
+                    name="translations[plan_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_account_phone" class="form-label"
+                    >"Teléfono" (fila)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_account_phone"
+                    name="translations[account_phone]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_account_change_button"
+                    class="form-label"
+                    >"Cambiar" (botón filas)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_account_change_button"
+                    name="translations[account_change_button]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_account_expiration_span"
+                    class="form-label"
+                    >"Caducidad" (palabra)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_account_expiration_span"
+                    name="translations[account_expiration_span]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_download_bill_button"
+                    class="form-label"
+                    >"Descargar Factura" (botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_download_bill_button"
+                    name="translations[download_bill_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Edición Usuario (campos comunes)</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_wrong_password" class="form-label"
+                    >"Contraseña incorrecta" (Mensaje error)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_wrong_password"
+                    name="translations[wrong_password]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_loading" class="form-label"
+                    >"Cargando..." (Texto accesibilidad spinner)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_loading"
+                    name="translations[loading]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Cambiar Dirección</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_address_title"
+                    class="form-label"
+                    >"Cambiar Dirección" (document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_title"
+                    name="translations[change_address_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_address_heading"
+                    class="form-label"
+                    >"Cambiar Dirección" (Encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_heading"
+                    name="translations[change_address_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_address_success"
+                    class="form-label"
+                    >"Dirección cambiada con éxito" (Mensaje éxito)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_success"
+                    name="translations[change_address_success]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_change_address_1" class="form-label"
+                    >"Dirección" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_1"
+                    name="translations[change_address_1]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_change_address_2" class="form-label"
+                    >"Ciudad" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_2"
+                    name="translations[change_address_2]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_change_address_3" class="form-label"
+                    >"País" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_3"
+                    name="translations[change_address_3]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_address_wait"
+                    class="form-label"
+                    >"Editando dirección, por favor espere..." (Texto
+                    loading)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_wait"
+                    name="translations[change_address_wait]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_address_button"
+                    class="form-label"
+                    >"Cambiar Dirección" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_address_button"
+                    name="translations[change_address_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Cambiar Email</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_change_email_title" class="form-label"
+                    >"Cambiar Email" (document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_email_title"
+                    name="translations[change_email_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_email_heading"
+                    class="form-label"
+                    >"Cambiar Email" (Encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_email_heading"
+                    name="translations[change_email_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_email_success"
+                    class="form-label"
+                    >"Email cambiado con éxito" (Mensaje éxito)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_email_success"
+                    name="translations[change_email_success]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_email_label" class="form-label"
+                    >"Email" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_label"
+                    name="translations[email_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_email_loading"
+                    class="form-label"
+                    >"Editando email, por favor espere..." (Texto
+                    loading)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_email_loading"
+                    name="translations[change_email_loading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_email_button"
+                    class="form-label"
+                    >"Cambiar Email" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_email_button"
+                    name="translations[change_email_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Cambiar Teléfono</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_change_phone_title" class="form-label"
+                    >"Cambiar Teléfono" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_phone_title"
+                    name="translations[change_phone_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_phone_heading"
+                    class="form-label"
+                    >"Cambiar Teléfono" (Encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_phone_heading"
+                    name="translations[change_phone_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_phone_success"
+                    class="form-label"
+                    >"Teléfono cambiado con éxito" (Mensaje éxito)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_phone_success"
+                    name="translations[change_phone_success]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_phone_loading"
+                    class="form-label"
+                    >"Editando teléfono, por favor espere..." (Texto
+                    loading)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_phone_loading"
+                    name="translations[change_phone_loading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_phone_button"
+                    class="form-label"
+                    >"Cambiar Teléfono" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_phone_button"
+                    name="translations[change_phone_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Cambiar Contraseña</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_password_title"
+                    class="form-label"
+                    >"Cambiar Contraseña" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_password_title"
+                    name="translations[change_password_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_password_heading"
+                    class="form-label"
+                    >"Cambiar Contraseña" (Título)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_password_heading"
+                    name="translations[change_password_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_password_success"
+                    class="form-label"
+                    >"Contraseña cambiada con éxito" (Mensaje éxito)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_password_success"
+                    name="translations[change_password_success]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_current_password_label"
+                    class="form-label"
+                    >"Contraseña Actual" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_current_password_label"
+                    name="translations[current_password_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_confirm_current_password_label"
+                    class="form-label"
+                    >"Confirmar Contraseña Actual" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_confirm_current_password_label"
+                    name="translations[confirm_current_password_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_new_password_label" class="form-label"
+                    >"Nueva Contraseña" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_new_password_label"
+                    name="translations[new_password_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_confirm_new_password_label"
+                    class="form-label"
+                    >"Confirmar Nueva Contraseña" (Etiqueta campo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_confirm_new_password_label"
+                    name="translations[confirm_new_password_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_password_loading"
+                    class="form-label"
+                    >"Editando contraseña, por favor espere..." (Texto
+                    loading)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_password_loading"
+                    name="translations[change_password_loading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_change_password_button"
+                    class="form-label"
+                    >"Cambiar Contraseña" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_change_password_button"
+                    name="translations[change_password_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Validar Email</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_title"
+                    class="form-label"
+                    >"Validar Email" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_title"
+                    name="translations[email_verification_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_heading"
+                    class="form-label"
+                    >"Validar Email" (Encabezado h1)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_heading"
+                    name="translations[email_verification_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_text"
+                    class="form-label"
+                    >"Es necesario validar tu correo electrónico..." (Texto
+                    principal)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_text"
+                    name="translations[email_verification_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_details"
+                    class="form-label"
+                    >"Si no tienes el correo o ha caducado..." (Texto
+                    detalles)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_details"
+                    name="translations[email_verification_details]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_button"
+                    class="form-label"
+                    >"Reenviar" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_button"
+                    name="translations[email_verification_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Email Verificado con Éxito</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_success_title"
+                    class="form-label"
+                    >"¡Email verificado con éxito!" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_success_title"
+                    name="translations[email_verification_success_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_success"
+                    class="form-label"
+                    >"¡Email verificado con éxito!" (Encabezado h1)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_success"
+                    name="translations[email_verification_success]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_success_text"
+                    class="form-label"
+                    >"Tu email ha sido verificado correctamente." (Texto
+                    confirmación)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_success_text"
+                    name="translations[email_verification_success_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_success_link_1"
+                    class="form-label"
+                    >"Ir al Inicio" (Texto primer botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_success_link_1"
+                    name="translations[email_verification_success_link_1]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_email_verification_success_link_2"
+                    class="form-label"
+                    >"Ver mi cuenta" (Texto segundo botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_email_verification_success_link_2"
+                    name="translations[email_verification_success_link_2]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Cambio de Plan</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_manage_plans_title" class="form-label"
+                    >"Gestión de Planes" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_plans_title"
+                    name="translations[manage_plans_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_plans_actual_plan"
+                    class="form-label"
+                    >"Plan Actual"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_plans_actual_plan"
+                    name="translations[manage_plans_actual_plan]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_manage_plans_text" class="form-label"
+                    >"No se puede visualizar..."</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_plans_text"
+                    name="translations[manage_plans_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_plans_none_text"
+                    class="form-label"
+                    >"Plan/es para visualizar el contenido:" (Texto si el
+                    usuario no tiene plan)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_plans_none_text"
+                    name="translations[manage_plans_none_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_manage_plans_link" class="form-label"
+                    >"Cambiar de plan" (Texto enlace)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_plans_link"
+                    name="translations[manage_plans_link]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_manage_plans_link_2"
+                    class="form-label"
+                    >"Suscribirse a un plan" (Texto enlace si el usuario no
+                    tiene plan)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_manage_plans_link_2"
+                    name="translations[manage_plans_link_2]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Pago realizado con éxito durante el registro</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_need_device_payment_title"
+                    class="form-label"
+                    >"Pago Realizado" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_need_device_payment_title"
+                    name="translations[need_device_payment_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_need_device_payment_heading"
+                    class="form-label"
+                    >"¡Pago realizado con éxito!"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_need_device_payment_heading"
+                    name="translations[need_device_payment_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_need_device_payment_text"
+                    class="form-label"
+                    >"Sólo falta un paso..."</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_need_device_payment_text"
+                    name="translations[need_device_payment_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_need_device_payment_button"
+                    class="form-label"
+                    >"Finalizar Registro" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_need_device_payment_button"
+                    name="translations[need_device_payment_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Método de Pago</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label
+                    for="translation_payment_method_title"
+                    class="form-label"
+                    >"Método de pago" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_payment_method_title"
+                    name="translations[payment_method_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_payment_method_heading"
+                    class="form-label"
+                    >"Elige un método de pago"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_payment_method_heading"
+                    name="translations[payment_method_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_payment_method_text"
+                    class="form-label"
+                    >"Pagar con "</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_payment_method_text"
+                    name="translations[payment_method_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_payment_method_card"
+                    class="form-label"
+                    >"Tarjeta"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_payment_method_card"
+                    name="translations[payment_method_card]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Formulario de Contacto</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_contact_heading" class="form-label"
+                    >"Contacto" (Título)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact_heading"
+                    name="translations[contact_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_contact_success_message"
+                    class="form-label"
+                    >"Email enviado con éxito" (Mensaje éxito)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact_success_message"
+                    name="translations[contact_success_message]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_contact_email_label"
+                    class="form-label"
+                    >"Tu correo" (Etiqueta email)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact_email_label"
+                    name="translations[contact_email_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_contact_subject_label"
+                    class="form-label"
+                    >"Asunto" (Etiqueta asunto)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact_subject_label"
+                    name="translations[contact_subject_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_contact_message_label"
+                    class="form-label"
+                    >"Cuéntanos" (Etiqueta mensaje)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact_message_label"
+                    name="translations[contact_message_label]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_contact_loading_message"
+                    class="form-label"
+                    >"Enviando email, por favor espere..." (Mensaje
+                    loading)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact_loading_message"
+                    name="translations[contact_loading_message]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label
+                    for="translation_contact_submit_button"
+                    class="form-label"
+                    >"Enviar" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact_submit_button"
+                    name="translations[contact_submit_button]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Página 404</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_404_title" class="form-label"
+                    >"Página no encontrada" (Document title)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_404_title"
+                    name="translations[404_title]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_404_heading" class="form-label"
+                    >"Página no encontrada" (encabezado)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_404_heading"
+                    name="translations[404_heading]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_404_heading_2" class="form-label"
+                    >"Página no encontrada" (Subtítulo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_404_heading_2"
+                    name="translations[404_heading_2]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_404_text" class="form-label"
+                    >"No hemos encontrado lo que buscabas." (Texto
+                    descriptivo)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_404_text"
+                    name="translations[404_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_404_action" class="form-label"
+                    >"Volver al inicio" (Texto botón)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_404_action"
+                    name="translations[404_action]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Ficha de Contenido</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_description_show" class="form-label"
+                    >"Descripción" (título)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_description_show"
+                    name="translations[description_show]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_details_show" class="form-label"
+                    >"Detalles" (tab)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_details_show"
+                    name="translations[details_show]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_similars_show" class="form-label"
+                    >"Similares" (tab)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_similars_show"
+                    name="translations[similars_show]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_ppv_button_text" class="form-label"
+                    >"Pagar para ver" (texto ppv)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_ppv_button_text"
+                    name="translations[ppv_button_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_rent_button_text" class="form-label"
+                    >"Alquilar" (texto botón alquilar)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_rent_button_text"
+                    name="translations[rent_button_text]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_rent_button_days" class="form-label"
+                    >"días" (texto botón alquilar)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_rent_button_days"
+                    name="translations[rent_button_days]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_episodes_line" class="form-label"
+                    >"Episodios" (texto episodios)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_episodes_line"
+                    name="translations[episodes_line]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_seasons_line" class="form-label"
+                    >"Temporadas" (texto temporadas)</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_seasons_line"
+                    name="translations[seasons_line]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Footer</h5>
+            </div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="translation_legal_notice" class="form-label"
+                    >"Aviso Legal"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_legal_notice"
+                    name="translations[legal_notice]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_privacy_policy" class="form-label"
+                    >"Política de Privacidad"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_privacy_policy"
+                    name="translations[privacy_policy]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_payment_policy" class="form-label"
+                    >"Política de Pagos"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_payment_policy"
+                    name="translations[payment_policy]"
+                    required
+                  />
+                </div>
+                <div class="col-md-6">
+                  <label for="translation_contact" class="form-label"
+                    >"Contacto"</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="translation_contact"
+                    name="translations[contact]"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Contenido</h5>
+            </div>
+            <div class="card-body" id="content"></div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Llamadas a la acción</h5>
+            </div>
+            <div class="card-body" id="actions"></div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Géneros</h5>
+            </div>
+            <div class="card-body" id="genders"></div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Categorías</h5>
+            </div>
+            <div class="card-body" id="categories"></div>
+          </div>
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5 class="mb-0">Etiquetas</h5>
+            </div>
+            <div class="card-body" id="tags"></div>
+          </div>
+
+          <div
+            class="d-flex justify-content-center align-items-center my-4 d-none"
+            id="edit-language-loading"
+          >
+            <div class="spinner-border me-3" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mb-0">Editando Idioma, por favor espere...</p>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-plus-circle me-2"></i> Editar Idioma
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" 
-    crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
+      crossorigin="anonymous"
+    ></script>
     <script src="/ckeditor/ckeditor.js"></script>
     <script type="module" src="/js/admin/admin.js"></script>
     <script type="module" src="/js/admin/editLanguage.js"></script>
     <script src="/js/webSettings.js"></script>
-</body>
+  </body>
 </html>

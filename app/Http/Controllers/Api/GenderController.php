@@ -18,7 +18,7 @@ class GenderController extends Controller
     public function index()
     {
         try {
-        $genders = Gender::with('movies', 'seoSetting')->get();
+        $genders = Gender::with('movies.series', 'seoSetting')->get();
 
         return response()->json([
             'success' => true,
@@ -144,7 +144,20 @@ class GenderController extends Controller
     public function show(string $id)
     {
         try {
-            $gender = Gender::with('seoSetting', 'movies.genders', 'movies.seoSetting', 'scripts')->where('id', $id)->first();
+            $gender = Gender::with([
+                'seoSetting', 
+                'movies.series' => function($query) {
+                    $query->orderBy('season_number', 'asc')
+                        ->orderBy('episode_number', 'asc');
+                },  
+                'movies.genders', 
+                'movies.seoSetting', 
+                'scripts'
+                ])->where('id', $id)->first();
+
+            $gender->movies->each(function ($movie) {
+                $movie->series_by_season = $movie->series->groupBy('season_number')->values();
+            });
 
             return response()->json([
                 'success' => true,

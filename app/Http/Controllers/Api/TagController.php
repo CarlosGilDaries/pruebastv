@@ -141,7 +141,19 @@ class TagController extends Controller
     public function show(string $id)
     {
         try {
-            $tag = Tag::with('seoSetting', 'scripts', 'movies.genders')->where('id', $id)->first();
+            $tag = Tag::with([
+                'seoSetting', 
+                'scripts', 
+                'movies.genders', 
+                'movies.series' => function($query) {
+                    $query->orderBy('season_number', 'asc')
+                        ->orderBy('episode_number', 'asc');
+                    }
+            ])->where('id', $id)->first();
+
+            $tag->movies->each(function ($movie) {
+                $movie->series_by_season = $movie->series->groupBy('season_number')->values();
+            });
 
             return response()->json([
                 'success' => true,

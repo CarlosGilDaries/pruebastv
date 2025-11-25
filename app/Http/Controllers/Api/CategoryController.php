@@ -18,19 +18,36 @@ class CategoryController extends Controller
     public function index()
     {
         try {
-			$categories = Category::with(['seoSetting', 'movies' => function ($query) {
-				$query->orderBy('created_at', 'desc')
-                ->with('genders')
-                ->with('seoSetting');
-			}])
-            ->where('render_at_index', 1)
-            ->orderBy('priority')
-            ->get();
+			$categories = Category::with([
+                'seoSetting',
+                'movies' => function ($query) {
+                    $query->orderBy('created_at', 'desc')
+                        ->with([
+                            'genders',
+                            'seoSetting',
+                            'series' => function ($q) {
+                                $q->orderBy('season_number', 'asc')
+                                ->orderBy('episode_number', 'asc');
+                            }
+                        ]);
+                }
+            ])
+                ->where('render_at_index', 1)
+                ->orderBy('priority')
+                ->get();
+            
+            $moviesGrouped = $categories->map(function ($category) {
+                $category->movies->each(function ($movie) {
+                    $movie->series_by_season = $movie->series->groupBy('season_number');
+                });
+                return $category;
+            });
+
             $priorities = Category::all()->sortBy('priority')->pluck('priority')->toArray();
 
             return response()->json([
                 'success' => true,
-                'categories' => $categories,
+                'categories' => $moviesGrouped,
                 'priorities' => $priorities
             ], 200);
 
@@ -47,7 +64,7 @@ class CategoryController extends Controller
     public function dropDownMenu()
 	{
 		try {
-			$categories = Category::orderBy('priority')->with('movies.genders', 'seoSetting')->get();
+			$categories = Category::orderBy('priority')->with('movies.series', 'movies.genders', 'seoSetting')->get();
 
 			return response()->json([
 				'success' => true,
@@ -100,11 +117,29 @@ class CategoryController extends Controller
             ], 500);
         }
     }
-
+/*
+->orderBy('season_number', 'asc')
+                ->orderBy('episode_number', 'asc')
+                ->get()
+                ->groupBy('season_number');
+*/
     public function show(string $id)
     {
         try {
-            $category = Category::with('seoSetting', 'movies.genders', 'movies.SeoSetting', 'scripts')->where('id', $id)->first();
+            $category = Category::with([
+                'seoSetting',
+                'movies.series' => function($query) {
+                    $query->orderBy('season_number', 'asc')
+                        ->orderBy('episode_number', 'asc');
+                },
+                'movies.genders',
+                'movies.seoSetting',
+                'scripts'
+            ])->where('id', $id)->first();
+
+            $category->movies->each(function ($movie) {
+                $movie->series_by_season = $movie->series->groupBy('season_number')->values();
+            });
 
             return response()->json([
                 'success' => true,

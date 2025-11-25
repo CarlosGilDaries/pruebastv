@@ -30,9 +30,7 @@ class MovieApiController extends Controller
     public function index()
     {
         try {
-            $movies = Movie::with(['seoSetting', 'categories', 'genders' => function($query) {
-                   			$query->select('id', 'name');
-                  		}])->get();;
+            $movies = Movie::with(['series', 'seoSetting', 'categories', 'genders'])->get();
 			$genders = Gender::all(['id', 'name']);
             
             return response()->json([
@@ -113,7 +111,7 @@ class MovieApiController extends Controller
 
     public function show($slug)
     {
-        $movie = Movie::with('seoSetting', 'genders.seoSetting', 'tags.seoSetting', 'scripts')->where('slug', $slug)->first();
+        $movie = Movie::with('series', 'seoSetting', 'genders.seoSetting', 'tags.seoSetting', 'scripts')->where('slug', $slug)->first();
 
         if (!$movie) {
             return response()->json([

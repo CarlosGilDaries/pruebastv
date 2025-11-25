@@ -28,7 +28,6 @@ export async function setGoogleAnalyticsScript(scriptsArray = null, page = null)
           `/api/generic-script/${page}/google`
         );
         const customData = await customResponse.json();
-        console.log(customData);
         googleAnalyticsCustomScript = customData.script;
     }
     
