@@ -19,7 +19,6 @@ export async function renderSimilars(content, token) {
     });
 
     const data = await response.json();
-    console.log('Películas del género', gender.name, data);
 
     // 2. Añadir películas de este género
     if (data.gender && data.gender.movies) {

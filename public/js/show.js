@@ -295,7 +295,6 @@ async function fetchMovieData() {
       image.src = data.data.movie.cover;
       title.textContent = data.data.movie.title;
       document.title = data.data.movie.title + ' - Pruebas TV';
-      console.log(data.data.movie);
       gender.innerHTML = '';
       // Recorre todos los géneros
       data.data.movie.genders.forEach((g, index) => {
@@ -306,7 +305,6 @@ async function fetchMovieData() {
 
         if (g.seo_setting && g.seo_setting.url) {
           a.href = g.seo_setting.url;
-          console.log(g.seo_setting.url);
         } else {
           a.href = `/gender-show.html?id=${g.id}`;
         }
@@ -326,8 +324,9 @@ async function fetchMovieData() {
         `content_${data.data.movie.id}_tagline`
       );
       tagline.appendChild(taglineText);
-      duration.innerHTML = formatDuration(data.data.movie.duration);
-      const overviewText = document.createElement('div'); // 🔄 CAMBIO AQUÍ
+      console.log(data.data.movie);
+      duration.innerHTML = formatDuration(data.data.movie);
+      const overviewText = document.createElement('div');
       overviewText.innerHTML = data.data.movie.overview;
       overviewText.setAttribute(
         'data-i18n',

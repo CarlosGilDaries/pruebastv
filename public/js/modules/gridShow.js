@@ -56,16 +56,6 @@ export async function gridShow(
     }
     
     movies.forEach((movie) => {
-      let serie = false;
-      let seasons = false;
-      if (movie.series && movie.series.length != 0) {
-        console.log(movie.series);
-        serie = true;
-        if (Object.keys(movie.series_by_season).length > 1) {
-          seasons = true;
-        }
-      }
-
       const article = document.createElement('article');
       article.classList.add('content');
 
@@ -104,20 +94,8 @@ export async function gridShow(
       });
 
       const duration = document.createElement('p');
-      if (!serie) {
-        const formatedDuration = formatDuration(movie.duration);
-        duration.textContent = `${formatedDuration}`;
-      } else {
-        let durationType;
-        if (!seasons) {
-          durationType = `${movie.series.length} <span data-i18n="episodes_line">Episodios</span>`;
-        } else {
-          durationType = `${
-            Object.keys(movie.series_by_season).length
-          } <span data-i18n="seasons_line">Temporadas</span>`;
-        }
-        duration.innerHTML = durationType;
-      }
+        const formatedDuration = formatDuration(movie);
+        duration.innerHTML = `${formatedDuration}`;
 
       info.append(title2, gender, duration);
       article.append(link, info);

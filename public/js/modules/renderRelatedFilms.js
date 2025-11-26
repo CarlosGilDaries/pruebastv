@@ -60,8 +60,8 @@ export async function renderGridFilms(data, node) {
         });
 
       const duration = document.createElement('p');
-      const formatedDuration = formatDuration(movie.duration);
-      duration.textContent = `${formatedDuration}`;
+      const formatedDuration = formatDuration(movie);
+      duration.innerHTML = `${formatedDuration}`;
       duration.classList.add('text-white', 'small');
 
       info.append(title, gender, duration);

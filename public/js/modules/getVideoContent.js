@@ -4,15 +4,6 @@ import { formatDuration } from './formatDuration.js';
 export function getVideoContent(data, node) {
 
   data.forEach((video) => {
-    let serie = false;
-    let seasons = false;
-    if (video.series && video.series.length != 0) {
-      console.log(video.series_by_season);
-      serie = true;
-      if (Object.keys(video.series_by_season).length > 1) {
-        seasons = true;
-      }
-    }
     const article = document.createElement('article');
     article.classList.add('content');
 
@@ -51,18 +42,8 @@ export function getVideoContent(data, node) {
     });
 
     const duration = document.createElement('p');
-    if (!serie) {
-      const formatedDuration = formatDuration(video.duration);
-      duration.textContent = `${formatedDuration}`;
-    } else {
-      let durationType;
-      if (!seasons) {
-        durationType = `${video.series.length} <span data-i18n="episodes_line">Episodios</span>`;
-      } else {
-        durationType = `${Object.keys(video.series_by_season).length} <span data-i18n="seasons_line">Temporadas</span>`;
-      }
-      duration.innerHTML = durationType;
-    }
+      const formatedDuration = formatDuration(video);
+      duration.innerHTML = `${formatedDuration}`;
 
     info.append(title, gender, duration);
   

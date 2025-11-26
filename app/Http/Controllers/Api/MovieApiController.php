@@ -111,7 +111,17 @@ class MovieApiController extends Controller
 
     public function show($slug)
     {
-        $movie = Movie::with('series', 'seoSetting', 'genders.seoSetting', 'tags.seoSetting', 'scripts')->where('slug', $slug)->first();
+        $movie = Movie::with([
+            'series'=> function($query) 
+            {
+                $query->orderBy('season_number', 'asc')
+                    ->orderBy('episode_number', 'asc');
+            }, 
+            'seoSetting', 
+            'genders.seoSetting', 
+            'tags.seoSetting', 
+            'scripts'
+            ])->where('slug', $slug)->first();
 
         if (!$movie) {
             return response()->json([
@@ -123,6 +133,8 @@ class MovieApiController extends Controller
             $user = Auth::user();
             $plans = $movie->plans;
             $ads = DB::table('ad_movie')->where('movie_id', $movie->id)->count();
+
+            $movie->series_by_season = $movie->series->groupBy('season_number')->values();
 
             return response()->json([
                 'success' => true,
