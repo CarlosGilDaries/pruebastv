@@ -1,18 +1,26 @@
 import { formatDuration } from './formatDuration.js';
 import { applyTranslations } from '../translations.js';
 
-export async function renderGridFilms(data, node) {
+export async function renderGridFilms(data, node, serie = false) {
   let counter = 0;
+  let max;
+  if (!serie) {
+    max = 12;
+  } else {
+    max = data.length;
+  }
+
   data.forEach((movie) => {
-    counter++;
-    if (counter <= 12) {
+    counter++; 
+    if (counter <= max) {
       const article = document.createElement('article');
       article.classList.add(
         'content',
-        'col-6',
-        'col-sm-4',
-        'col-md-3',
-        'col-lg-2'
+        'col-12',
+        'col-sm-6',
+        'col-md-4',
+        'col-lg-3',
+        'col-xl-2'
       );
 
       const link = document.createElement('a');
@@ -23,13 +31,29 @@ export async function renderGridFilms(data, node) {
       }
       link.classList.add('text-decoration-none');
 
+      let imgSource;
+      if (movie.cover) {
+        imgSource = movie.cover;
+      } else {
+        imgSource = movie.image_url;
+      }
       const img = document.createElement('img');
-      img.src = movie.cover;
+      img.src = imgSource;
       img.classList.add('img-fluid', 'rounded-2', 'mb-2');
       link.append(img);
 
       const info = document.createElement('a');
-      info.classList.add('text-white');
+      info.classList.add(
+        'info',
+        'text-white',
+        'd-flex',
+        'flex-column',
+        'justify-content-start',
+        'gap-1',
+        'm-0',
+        'p-2'
+      );
+
       if (movie.seo_setting && movie.seo_setting.url) {
         info.href = movie.seo_setting.url;
       } else {
@@ -37,15 +61,22 @@ export async function renderGridFilms(data, node) {
       }
       info.classList.add('info');
 
+      let translation;
+      if (movie.serie == 0) {
+        translation = `content_${movie.id}_title`;
+      } else {
+         translation = `episode_${movie.id}_title`;
+      }
       const title = document.createElement('h3');
-      title.classList.add('h6', 'mb-1');
-      title.setAttribute('data-i18n', `content_${movie.id}_title`);
+      title.classList.add('h6', 'mb-0', 'text-break');
+      title.setAttribute('data-i18n', translation);
       title.textContent = movie.title;
 
       const gender = document.createElement('p');
-        gender.classList.add('text-white', 'small', 'mb-1');
+        gender.classList.add('text-white', 'small', 'mb-0', 'text-break');
         
-        gender.innerHTML = '';
+      gender.innerHTML = '';
+      if (movie.genders) {
         // Recorre todos los géneros
         movie.genders.forEach((g, index) => {
           const span = document.createElement('span');
@@ -58,11 +89,12 @@ export async function renderGridFilms(data, node) {
             gender.appendChild(document.createTextNode(' - '));
           }
         });
+      }
 
       const duration = document.createElement('p');
       const formatedDuration = formatDuration(movie);
       duration.innerHTML = `${formatedDuration}`;
-      duration.classList.add('text-white', 'small');
+      duration.classList.add('text-white', 'small', 'mb-0', 'text-break');
 
       info.append(title, gender, duration);
       article.append(link, info);

@@ -146,14 +146,7 @@
 @media (min-width: 1400px) {
     #tab-content,
     #tabs-container-id {
-            margin-inline: 80px;
-    }
-}
-
-@media (max-width: 1400px) {
-    .content {
-        height: 140px;
-        width: 260px;
+        margin-inline: 80px;
     }
 }
 
@@ -190,6 +183,12 @@
     }
 }
 
+@media (max-width: 992px) {
+    .content .info {
+        opacity: 1;
+    }
+}
+
 @media (max-width: 576px) {
     .background-banner, .banner {
         height: 60vh;
@@ -211,10 +210,11 @@
     }
 
     .content {
-        height: 105px;
-        width: 190px;
-        transition: transform 0.3s ease;
-        z-index: 1;
+        height: 300px;
+    }
+
+    .content .info {
+        justify-content: center !important;
     }
 }
 

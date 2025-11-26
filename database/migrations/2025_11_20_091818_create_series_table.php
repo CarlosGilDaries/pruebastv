@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('type', ['video/mp4', 'audio/mpeg', 'application/vnd.apple.mpegurl', 'url_mp4', 'url_hls', 'url_mp3', 'stream']);
             $table->integer('season_number');
             $table->integer('episode_number');
+            $table->time('duration')->nullable();
             $table->string('url');
             $table->string('image_url')->nullable();
             $table->foreignId('seo_setting_id')->nullable()->constrained()->nullOnDelete();

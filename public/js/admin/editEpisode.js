@@ -105,6 +105,10 @@ async function editEpisode() {
           'episode_number',
           document.getElementById('episode_number').value
         );
+        formAdData.append(
+          'duration',
+          document.getElementById('duration').value
+        );
         if (document.getElementById('single-content')) {
           formAdData.append(
             'content',
@@ -261,6 +265,8 @@ async function editEpisode() {
 
         document.getElementById('episode_number').value =
           episodeData.episode.episode_number;
+        
+        document.getElementById('duration').value = episodeData.episode.duration;
 
         if (episodeData.episode.scripts.length != 0) {
           episodeData.episode.scripts.forEach((script) => {

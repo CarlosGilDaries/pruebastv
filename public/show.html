@@ -129,9 +129,12 @@
 
         <div class="tabs-container-fluid bg-black mt-5" id="tabs-container-id">
             <div class="container-fluid">
-                <ul class="tabs nav nav-tabs border-0">
+                <ul class="tabs nav nav-tabs">
                     <li class="tab nav-item" data-tab="details">
                         <button class="nav-link text-secondary fw-bold active" data-bs-toggle="tab" data-bs-target="#details-tab" data-i18n="details_show">Detalles</button>
+                    </li>
+                    <li class="tab nav-item d-none" data-tab="episodes" id="episodes-tab-li">
+                        <button class="nav-link text-secondary fw-bold" data-bs-toggle="tab" data-bs-target="#episodes-tab" data-i18n="episodes_show">Episodios</button>
                     </li>
                     <li class="tab nav-item" data-tab="similar">
                         <button class="nav-link text-secondary fw-bold" data-bs-toggle="tab" data-bs-target="#similar-tab" data-i18n="similars_show">Similares</button>
@@ -149,6 +152,7 @@
                             <div id="overview-text" class="text-white"></div>
                         </div>
                     </div>
+                    
                     <div class="col-12 col-lg-5">
                         <div class="keywords bg-secondary bg-opacity-10 rounded-3 p-4">
                             <h3 class="text-white border-bottom border-secondary pb-2 mb-3">
@@ -160,8 +164,12 @@
                 </div>
             </div>
 
+            <div id="episodes-tab" class="tab-pane container-fluid">
+                <div class="row g-4" id="episodes"></div>
+            </div>
+
             <div class="tab-pane container-fluid" id="similar-tab">
-                <div class="row g-4 justify-content-center" id="similars"></div>
+                <div class="row g-4" id="similars"></div>
             </div>
         </div>
     </div>

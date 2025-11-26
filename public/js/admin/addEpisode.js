@@ -116,6 +116,7 @@ async function initAddEpisode() {
           'episode_number',
           document.getElementById('episode_number').value
         );
+        formAdData.append('duration', document.getElementById('duration').value);
         if (document.getElementById('single-content')) {
           formAdData.append(
             'content',

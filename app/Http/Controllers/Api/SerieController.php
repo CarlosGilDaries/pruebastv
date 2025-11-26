@@ -544,7 +544,7 @@ class SerieController extends Controller
             $episode->movie_id = $serieId;
             $episode->type = $serie->type;
             $episode->season_number = sanitize_html($request->season_number);
-            //$episode->episode_number = sanitize_html($request->episode_number);
+            $episode->duration = sanitize_html($request->duration);
             $external_url = sanitize_html($request->input('external_url'));
 
             $newEpisodeNumber = $request->episode_number;
@@ -681,6 +681,7 @@ class SerieController extends Controller
             $serie = Movie::where('id', $serieId)->first();
             $episode->movie_id = $serieId;
             $episode->season_number = sanitize_html($request->season_number);
+            $episode->duration = sanitize_html($request->duration);
             $external_url = sanitize_html($request->input('external_url'));
 
             $currentEpisodeNumber = $episode->episode_number;

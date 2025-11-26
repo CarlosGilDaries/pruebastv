@@ -13,6 +13,7 @@ class Serie extends Model
         'type',
         'season_number', 
         'episode_number',
+        'duration',
         'url',
         'image_url',
         'seo_setting_id',

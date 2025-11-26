@@ -11,6 +11,7 @@ import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
 import { setSeoSettings } from './modules/setSeoSettings.js';
 import { setGoogleAnalyticsScript } from './modules/setScripts.js';
+import { renderGridFilms } from './modules/renderRelatedFilms.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -101,6 +102,10 @@ async function fetchMovieData() {
     }
     const scripts = data.data.movie.scripts;
     setGoogleAnalyticsScript(scripts, null);
+
+    if (data.data.movie.serie == 1) {
+      showEpisodesTab(data.data.movie);
+    }
 
     const tags = data.data.movie.tags;
     const tagsContainer = document.querySelector('.keyword-links');
@@ -219,11 +224,12 @@ async function fetchMovieData() {
                 dateTimeIntoTime(data.data.movie.start_time);
               play.classList.add('disabled-btn');
               startTimeContainer.style.display = 'block';
-              startTimeText.innerHTML = 'El contenido no ha empezado todavía.';
+              startTimeText.innerHTML =
+                '<span data-i18n="not_started_yet">El contenido no ha empezado todavía.</span>';
               startTimeDateTime.innerHTML =
-                'Fecha de inicio: ' +
+                '<span data-i18n="content_start_date">Fecha de inicio:</span> ' +
                 dateTimeIntoDate(data.data.movie.start_time) +
-                ' a las ' +
+                ' <span data-i18n="content_start_at">a las</span> ' +
                 dateTimeIntoTime(data.data.movie.start_time);
             } else if (hasEnded(data.data.movie.end_time)) {
               const response = await fetch(
@@ -236,15 +242,15 @@ async function fetchMovieData() {
                   },
                 }
               );
-              play.innerHTML = 'Finalizado';
+              play.innerHTML = '<span data-i18n="play_button_ended">Finalizado</span>';
               play.classList.add('disabled-btn');
               startTimeContainer.style.display = 'block';
               startTimeContainer.classList.remove('d-none');
-              startTimeText.innerHTML = 'El contenido ya ha terminado.';
+              startTimeText.innerHTML = '<span data-i18n="text_content_ended">El contenido ya ha terminado.</span>';
               startTimeDateTime.innerHTML =
-                'Fecha de fin: ' +
+                '<span data-i18n="content_end_date">Fecha de fin:</span> ' +
                 dateTimeIntoDate(data.data.movie.end_time) +
-                ' a las ' +
+                ' <span data-i18n="content_start_at">a las</span> ' +
                 dateTimeIntoTime(data.data.movie.end_time);
             } else if (
               hasStarted(data.data.movie.start_time) &&
@@ -324,7 +330,6 @@ async function fetchMovieData() {
         `content_${data.data.movie.id}_tagline`
       );
       tagline.appendChild(taglineText);
-      console.log(data.data.movie);
       duration.innerHTML = formatDuration(data.data.movie);
       const overviewText = document.createElement('div');
       overviewText.innerHTML = data.data.movie.overview;
@@ -431,4 +436,100 @@ function dateTimeIntoTime(dateTime) {
 
 if (token != null) {
   resetFreeExpiration(token);
+}
+
+function showEpisodesTab(content) {
+  const episodesTab = document.getElementById('episodes-tab-li');
+  const episodesContainer = document.getElementById('episodes');
+  const episodesTabPane = document.getElementById('episodes-tab');
+
+  // Mostrar pestaña Episodios
+  episodesTab.classList.remove('d-none');
+
+  const seasons = content.series_by_season;
+  const numSeasons = seasons.length;
+
+  // Limpia contenido previo
+  episodesContainer.innerHTML = '';
+  episodesTabPane.innerHTML = '';
+
+  // ----------------------------------------------------
+  // SI SOLO HAY UNA TEMPORADA → mostrar un grid normal
+  // ----------------------------------------------------
+  if (numSeasons === 1) {
+    const seasonEpisodes = seasons[0];
+    episodesTabPane.appendChild(episodesContainer);
+    renderGridFilms(seasonEpisodes, episodesContainer, true);
+    return;
+  }
+
+  // ----------------------------------------------------
+  // SI HAY VARIAS TEMPORADAS → crear tabs dinámicas
+  // ----------------------------------------------------
+
+  // Crear contenedor de tabs
+  const tabsId = 'seasonTabs';
+  const contentId = 'seasonTabsContent';
+
+  let tabsHtml = `
+        <ul class="nav nav-tabs pt-0 border-0" id="${tabsId}" role="tablist">
+    `;
+
+  let tabsContentHtml = `
+        <div class="tab-content" id="${contentId}">
+    `;
+
+  seasons.forEach((seasonEpisodes, index) => {
+    const seasonNumber = seasonEpisodes[0].season_number;
+    const activeClass = index === 0 ? 'active' : '';
+    const showClass = index === 0 ? 'show active' : '';
+
+    // Crear TAB
+    tabsHtml += `
+        <li class="tab nav-item" role="presentation">
+            <button class="nav-link text-secondary fw-bold ${activeClass}"
+                id="season-${seasonNumber}-tab"
+                data-bs-toggle="tab"
+                data-bs-target="#season-${seasonNumber}"
+                type="button"
+                role="tab">
+                <span data-i18n="seasons_line">Temporada</span> ${seasonNumber}
+            </button>
+        </li>
+    `;
+
+    // Crear TAB CONTENT vacío
+    tabsContentHtml += `
+        <div class="tab-pane fade ${showClass}"
+            id="season-${seasonNumber}"
+            role="tabpanel"
+            aria-labelledby="season-${seasonNumber}-tab">
+        </div>
+    `;
+  });
+
+  tabsHtml += `</ul>`;
+  tabsContentHtml += `</div>`;
+
+  // Insertar tabs en el contenedor principal
+  episodesTabPane.innerHTML = tabsHtml + tabsContentHtml;
+
+  // ─────────────────────────────────────────────
+  // DESPUÉS DE INSERTARLOS EN EL DOM → rellenarlos
+  // ─────────────────────────────────────────────
+
+  seasons.forEach((seasonEpisodes) => {
+    const seasonNumber = seasonEpisodes[0].season_number;
+    const pane = document.getElementById(`season-${seasonNumber}`);
+
+    if (pane) {
+      // Crear un contenedor interno para los episodios
+      const episodesGrid = document.createElement('div');
+      episodesGrid.classList.add('row', 'g-3');
+      pane.appendChild(episodesGrid);
+
+      // Renderizar los episodios en el contenedor
+      renderGridFilms(seasonEpisodes, episodesGrid, true);
+    }
+  });
 }
