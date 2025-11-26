@@ -2,6 +2,7 @@ import { renderTypeGrid } from './modules/renderTypeGrid.js';
 import { dropDownTypeMenu } from './modules/dropDownTypeMenu.js';
 import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
+import { aceptedCookies } from './modules/acceptedCookies.js';
 import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 const categoriesDropDown = document.getElementById('categories');
@@ -20,3 +21,4 @@ renderTypeGrid('/api/tags', 'tags', 'tag');
 
 setupLoginSignupButtons();
 clickLogOut();
+aceptedCookies();
