@@ -7,6 +7,7 @@ use App\Http\Requests\AdMovieRequest;
 use Illuminate\Support\Facades\DB;
 use App\Models\Movie;
 use App\Models\Ad;
+use App\Models\Serie;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
@@ -171,19 +172,32 @@ class AdMovieControllerApiController extends Controller
         }
     }
 
-    public function getAds($movieSlug)
+    public function getAds($movieId, $isSerie)
     {
         try {
-            $ads = Movie::where('slug', $movieSlug)
-            ->with(['ads' => function ($query) {
-                $query->select('ads.id', 'ads.type', 'ads.url')
-                    ->withPivot('type', 'midroll_time','skippable', 'skip_time', 'image', 'description', 'redirect_url');
-            }])->first();
+            if ($isSerie == 'true') {
+                $ads = Serie::where('id', $movieId)
+                    ->with(['ads' => function ($query) {
+                        $query->select('ads.id', 'ads.type', 'ads.url')
+                            ->withPivot('type', 'midroll_time','skippable', 'skip_time');
+                    }])->first();
 
-           $movie = Movie::where('slug', $movieSlug)
-            ->with('seoSetting')
-            ->first();
+                $movie = Serie::where('id', $movieId)
+                    ->with('seoSetting')
+                    ->first();
 
+            } else {
+                $ads = Movie::where('id', $movieId)
+                    ->with(['ads' => function ($query) {
+                        $query->select('ads.id', 'ads.type', 'ads.url')
+                            ->withPivot('type', 'midroll_time','skippable', 'skip_time', 'image', 'description', 'redirect_url');
+                    }])->first();
+
+                $movie = Movie::where('id', $movieId)
+                    ->with('seoSetting')
+                    ->first();
+            }
+            
             return response()->json([
                 'movie' => $movie,
                 'ads' => $ads

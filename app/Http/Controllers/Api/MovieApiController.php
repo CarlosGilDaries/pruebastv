@@ -134,7 +134,66 @@ class MovieApiController extends Controller
             $plans = $movie->plans;
             $ads = DB::table('ad_movie')->where('movie_id', $movie->id)->count();
 
-            $movie->series_by_season = $movie->series->groupBy('season_number')->values();
+            $movie->series_by_season = $movie->series()
+                ->with('seoSetting')
+                ->orderBy('episode_number')
+                ->orderBy('season_number')
+                ->get()
+                ->groupBy('season_number')
+                ->values();
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'movie' => $movie,
+                    'ads_count' => $ads,
+                    'plans' => $plans,
+                ],
+                'message' => 'Película con sus planes obtenida con éxito'
+            ], 200);
+
+        } catch (\Exception $e) {
+            Log::error('Error al obtener película: ' . $e->getMessage());
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function showById($id)
+    {
+        $movie = Movie::with([
+            'series'=> function($query) 
+            {
+                $query->orderBy('season_number', 'asc')
+                    ->orderBy('episode_number', 'asc');
+            }, 
+            'seoSetting', 
+            'genders.seoSetting', 
+            'tags.seoSetting', 
+            'scripts'
+            ])->where('id', $id)->first();
+
+        if (!$movie) {
+            return response()->json([
+                'success' => false,
+            ], 404);
+        }
+
+        try {
+            $user = Auth::user();
+            $plans = $movie->plans;
+            $ads = DB::table('ad_movie')->where('movie_id', $movie->id)->count();
+
+            $movie->series_by_season = $movie->series()
+                ->with('seoSetting')
+                ->orderBy('episode_number')
+                ->orderBy('season_number')
+                ->get()
+                ->groupBy('season_number')
+                ->values();
 
             return response()->json([
                 'success' => true,
@@ -901,7 +960,7 @@ class MovieApiController extends Controller
 
 			return response()->json([
 				'success' => false,
-				'message' => 'Error: ' . $e->getMessage(),
+				'message' => 'Error en signedUrl: ' . $e->getMessage(),
 			], 500);
 		}
 	}

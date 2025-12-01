@@ -6,14 +6,23 @@ import { signedUrl } from './modules/signedUrl.js';
 import { setupBackArrowAndTitle } from './modules/backArrowAndTitle.js';
 import { VideoProgressTracker } from './modules/videoProgressTrackerClass.js';
 import { hasStarted, hasEnded } from './modules/compareDateTime.js';
-import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 
 async function initPlayer() {
   try {
-    const pathParts = window.location.pathname.split('/');
-    const movieSlug = pathParts[pathParts.length - 1];
-    const api = 'https://pruebastv.kmc.es/api/';
-    const apiShow = `/api/content/${movieSlug}`;
+    const path = window.location.pathname;
+    const parts = path.split('/'); // ["", "player", "episode", "74"]
+    const type = parts[2]; // "episode"
+    const id = parts[3]; // "74"
+    console.log(type, id);
+    let apiShow;
+
+    if (type == 'episode') {
+      apiShow = `/api/serie-by-id/${id}`
+      console.log('episodio');
+    } else {
+      apiShow = `/api/content-by-id/${id}`;
+    }
+
     const apiAds = 'https://pruebastv.kmc.es/api/ads/';
     const backendURL = 'https://pruebastv.kmc.es';
 
@@ -46,12 +55,11 @@ async function initPlayer() {
     });
 
     const showData = await showResponse.json();
+    console.log(showData);
     if (!showData.success) {
       console.error('Error al obtener el video:', showData.message);
       return;
     }
-
-    setGoogleAnalyticsScript(showData.data.movie.scripts);
 
     let location;
     if (
@@ -64,7 +72,7 @@ async function initPlayer() {
     }
 
     let isSerie = false;
-    if (showData.data.movie.serie == 1) {
+    if (showData.data.serie) {
       isSerie = true;
     }
 
@@ -167,13 +175,13 @@ async function initPlayer() {
     const url = await signedUrl(token, showData.data.movie.id, isSerie);
 
     if (showData.data.ads_count === 0) {
-      await playVideoWithoutAds(showData.data.movie, token, url);
+      await playVideoWithoutAds(showData.data.movie, token, url, isSerie);
     } else {
-      await playVideoWithAds(movieSlug, token, showData.data.movie);
+      await playVideoWithAds(showData.data.movie.id, token, showData.data.movie, isSerie);
     }
 
     const viewedResponse = await fetch(
-      `/api/add-viewed/${showData.data.movie.id}`,
+      `/api/add-viewed/${showData.data.movie.id}/${isSerie}`,
       {
         method: 'POST',
         headers: {
@@ -192,7 +200,7 @@ async function initPlayer() {
   }
 }
 
-async function playVideoWithoutAds(movie, token, signedUrl) {
+async function playVideoWithoutAds(movie, token, signedUrl, isSerie) {
   try {
     let videoUrl = movie.url;
     let type = movie.type;
@@ -261,17 +269,17 @@ async function playVideoWithoutAds(movie, token, signedUrl) {
       },
     });
 
-    new VideoProgressTracker(movie.id, player, token);
-    setupBackArrowAndTitle(player, movie);
+    new VideoProgressTracker(movie.id, player, token, isSerie);
+    setupBackArrowAndTitle(player, movie, isSerie);
     player.play();
   } catch (error) {
     console.log(error);
   }
 }
 
-async function playVideoWithAds(movieSlug, token, movie) {
+async function playVideoWithAds(movieId, token, movie, isSerie) {
   try {
-    const { movie: movieData, ads } = await loadAds(movieSlug, token);
+    const { movie: movieData, ads } = await loadAds(movieId, token, isSerie);
 
     if (movieData.type != 'iframe') {
       const player = videojs('my-video', {}, async function () {
@@ -286,7 +294,7 @@ async function playVideoWithAds(movieSlug, token, movie) {
           token,
           savedTime
         );
-        new VideoProgressTracker(movieData.id, player, token);
+        new VideoProgressTracker(movieData.id, player, token, isSerie);
       });
 
       player.getSavedProgress = async (movieId, token) => {
@@ -304,7 +312,7 @@ async function playVideoWithAds(movieSlug, token, movie) {
         }
       };
 
-      setupBackArrowAndTitle(player, movieData);
+      setupBackArrowAndTitle(player, movieData, isSerie);
     }
   } catch (error) {
     console.error('Error al cargar anuncios:', error);

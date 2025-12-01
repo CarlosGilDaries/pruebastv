@@ -69,8 +69,29 @@ class SeoSettingController extends Controller
             $settings->save();
 
             if ($settings->key == 'movie') {
-                $movie = Movie::where('id', $id)->first();
+                $movie = Movie::where('id', $id)
+                    ->with('series.seoSetting')
+                    ->first();
                 $movie->seo_setting_id = $settings->id;
+
+                foreach($movie->series as $episode) {
+                    if ($episode->seoSetting) {
+                        // actualizar SEO existente
+                        $episode->seoSetting->canonical = sanitize_html($request->canonical);
+                        $episode->seoSetting->save();
+
+                    } else {
+                        // si no tiene seoSetting, crear uno nuevo
+                        $epSeo = new SeoSetting();
+                        $epSeo->key = 'episode';
+                        $epSeo->canonical = sanitize_html($request->canonical);
+                        $epSeo->save();
+
+                        $episode->seo_setting_id = $epSeo->id;
+                        $episode->save();
+                    }
+                }
+
                 $movie->save();
             } 
             else if ($settings->key == 'episode') {
@@ -156,8 +177,29 @@ class SeoSettingController extends Controller
             $settings->save();
 
             if ($settings->key == 'movie') {
-                $movie = Movie::where('id', $id)->first();
+                $movie = Movie::where('id', $id)
+                    ->with('series.seoSetting')
+                    ->first();
                 $movie->seo_setting_id = $settings->id;
+
+                foreach($movie->series as $episode) {
+                    if ($episode->seoSetting) {
+                        // actualizar SEO existente
+                        $episode->seoSetting->canonical = sanitize_html($request->canonical);
+                        $episode->seoSetting->save();
+
+                    } else {
+                        // si no tiene seoSetting, crear uno nuevo
+                        $epSeo = new SeoSetting();
+                        $epSeo->key = 'episode';
+                        $epSeo->canonical = sanitize_html($request->canonical);
+                        $epSeo->save();
+
+                        $episode->seo_setting_id = $epSeo->id;
+                        $episode->save();
+                    }
+                }
+
                 $movie->save();
             } 
             else if ($settings->key == 'category') {

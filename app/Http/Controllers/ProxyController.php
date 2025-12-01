@@ -95,7 +95,7 @@ class ProxyController extends Controller
 
 			return response()->json([
 				'success' => false,
-				'message' => 'Error: ' . $e->getMessage(),
+				'message' => 'Error en proxyHls: ' . $e->getMessage(),
 			], 500);
 		}
 	}
@@ -144,7 +144,7 @@ class ProxyController extends Controller
 
 			return response()->json([
 				'success' => false,
-				'message' => 'Error: ' . $e->getMessage(),
+				'message' => 'Error en proxyTs: ' . $e->getMessage(),
 			], 500);
 		}
 	}

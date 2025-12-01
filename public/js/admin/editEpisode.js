@@ -232,6 +232,7 @@ async function editEpisode() {
       } finally {
         document.getElementById('loading').classList.add('d-none');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+        btn.disabled = false;
       }
     });
   });

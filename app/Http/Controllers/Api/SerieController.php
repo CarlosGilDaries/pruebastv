@@ -164,6 +164,47 @@ class SerieController extends Controller
         }
     }
 
+    public function showById($id)
+    {
+        try {
+            $actualEpisode = Serie::where('id', $id)
+                ->with('movie')
+                ->first();
+            $serie = $actualEpisode->movie;
+            $episodes = $serie->series()
+                ->with('seoSetting')
+                ->orderBy('season_number', 'asc')
+                ->orderBy('episode_number', 'asc')
+                ->get()
+                ->groupBy('season_number');
+            $no_seasons = $episodes->has(0);
+
+            $plans = $serie->plans;
+            $ads = DB::table('ad_serie')->where('serie_id', $actualEpisode->id)->count();
+            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'movie' => $actualEpisode,
+                    'ads_count' => $ads,
+                    'plans' => $plans,
+                    'serie' => $serie,
+                    'all_episodes' => $episodes,
+                    'no_seasons' => $no_seasons
+                ]             
+            ], 200);
+
+        } catch(\Exception $e) {
+            Log::error('Error en show SerieController: ' . $e->getMessage());
+
+			return response()->json([
+				'success' => false,
+				'message' => 'Error en show SerieController: ' . $e->getMessage(),
+			], 500);
+        }
+    }
+
+
     public function showEdit($id)
     {
         try {
@@ -729,8 +770,10 @@ class SerieController extends Controller
             
 
             if ($request->hasFile('content') || $request->hasFile('m3u8') || $request->external_url != null) {
+                Log::debug('Primer filtro');
                 if ($serie->type != "url_mp4" && $serie->type != "url_hls" && $serie->type != 'url_mp3' && $serie->type != 'stream') {
                     if ($serie->type != 'application/vnd.apple.mpegurl') {
+                        Log::debug('Segundo filtro');
                         $content = $request->file('content');
                         $contentExtension = $content->getClientOriginalExtension();
                         $episode->url = '/file/content-' . $serie->id . '/' . $episode->id . '.' . $contentExtension;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Serie extends Model
 {
@@ -39,5 +40,13 @@ class Serie extends Model
     {
         return $this->belongsToMany(Ad::class)
             ->withPivot('type', 'midroll_time', 'skippable', 'skip_time');
+    }
+
+    public function episodeProgress() 
+    {
+        $user = Auth::user();
+
+        return $this->hasMany(UserSerieProgress::class)
+                ->where('user_id', $user->id);
     }
 }

@@ -41,6 +41,7 @@ use App\Http\Controllers\Api\RentOrderController;
 use App\Http\Controllers\Api\ScriptController;
 use App\Http\Controllers\Api\SeoSettingController;
 use App\Http\Controllers\Api\SerieController;
+use App\Http\Controllers\Api\SerieProgressController;
 use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\ViewedContentController;
 use App\Http\Middleware\EnsureEmailIsVerified;
@@ -83,11 +84,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('content/{slug}', [MovieApiController::class, 'show'])
         ->middleware(EnsureEmailIsVerified::class);
+    Route::get('content-by-id/{id}', [MovieApiController::class, 'showById'])
+        ->middleware(EnsureEmailIsVerified::class);
     Route::get('favorites', [FavoritesController::class, 'getFavorites']);
     Route::post('add-favorite/{id}', [FavoritesController::class, 'addFavorite']);
     Route::post('quit-favorite/{id}', [FavoritesController::class, 'quitFavorite']);
     Route::get('viewed', [ViewedContentController::class, 'getViewedContent']);
-    Route::post('add-viewed/{id}', [ViewedContentController::class, 'viewed']);
+    Route::post('add-viewed/{id}/{isSerie}', [ViewedContentController::class, 'viewed']);
 
     // Rutas de series protegidas
     Route::middleware([
@@ -106,6 +109,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('serie/{slug}', [SerieController::class, 'show'])
         ->middleware(EnsureEmailIsVerified::class);
+    Route::get('serie-by-id/{id}', [SerieController::class, 'showById'])
+        ->middleware(EnsureEmailIsVerified::class);
+
 
     // Rutas de anuncios protegidas
     Route::middleware([
@@ -129,7 +135,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('content-with-ads', [AdMovieControllerApiController::class, 'index']);
     Route::get('content-with-ads/{id}', [AdMovieControllerApiController::class, 'show']);
-    Route::get('ads/{slug}', [AdMovieControllerApiController::class, 'getAds']);
+    Route::get('ads/{id}/{isSerie}', [AdMovieControllerApiController::class, 'getAds']);
 
     Route::get('episode-with-ads', [AdSerieController::class, 'index']);
     Route::get('episode-with-ads/{id}', [AdSerieController::class, 'show']);
@@ -354,6 +360,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/movie-progress', [MovieProgressController::class, 'store']);
     Route::get('/movie-progress/{movieId}', [MovieProgressController::class, 'show']);
     Route::delete('/movie-progress/{movieId}', [MovieProgressController::class, 'destroy']);
+
+    Route::get('/serie-progress', [SerieProgressController::class, 'index']);
+    Route::post('/serie-progress', [SerieProgressController::class, 'store']);
+    Route::get('/serie-progress/{movieId}', [SerieProgressController::class, 'show']);
+    Route::delete('/serie-progress/{movieId}', [SerieProgressController::class, 'destroy']);
 
     Route::get('check-if-rented/{movieId}', [RentController::class, 'show']);
 });

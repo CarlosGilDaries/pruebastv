@@ -12,6 +12,7 @@ import { hideSpinner } from './modules/spinner.js';
 import { setSeoSettings } from './modules/setSeoSettings.js';
 import { setGoogleAnalyticsScript } from './modules/setScripts.js';
 import { renderGridFilms } from './modules/renderRelatedFilms.js';
+import { resourceUrl } from './modules/resourceUrl.js';
 
 const token = localStorage.getItem('auth_token');
 
@@ -175,7 +176,7 @@ async function fetchMovieData() {
           play.innerHTML = 'Ver Ahora';
 
           play.addEventListener('click', function () {
-            window.location.href = `/player/${movieSlug}`;
+            window.location.href = resourceUrl(data.data.movie);
           });
         }
       }
@@ -210,7 +211,7 @@ async function fetchMovieData() {
           play.innerHTML = 'Ver Ahora';
 
           play.addEventListener('click', function () {
-            window.location.href = `/player/${movieSlug}`;
+            window.location.href = resourceUrl(data.data.movie);
           });
         }
       } else {
@@ -259,14 +260,14 @@ async function fetchMovieData() {
               play.innerHTML = 'Ver Ahora';
 
               play.addEventListener('click', function () {
-                window.location.href = `/player/${movieSlug}`;
+                window.location.href = resourceUrl(data.data.movie);
               });
             }
           } else {
             play.innerHTML = 'Ver Ahora';
 
             play.addEventListener('click', function () {
-              window.location.href = `/player/${movieSlug}`;
+              window.location.href = resourceUrl(data.data.movie);
             });
           }
         }

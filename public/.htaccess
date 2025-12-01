@@ -32,7 +32,7 @@
     RewriteRule ^gestionar-dispositivos$ /manage-devices.html [L,QSA]
     RewriteRule ^gestionar-planes$ /manage-plans.html [L,QSA]
     RewriteRule ^stream-limit$ /stream-limit.html [L,QSA]
-    RewriteRule ^player/([^/]+)$ /player.html [L,QSA]
+    RewriteRule ^player/(episode|content)/([0-9]+)$ player.html?type=$1&id=$2 [L,QSA]
     RewriteRule ^admin/player/ad/([^/]+)$ /admin/ad-player.html [L,QSA]
     RewriteRule ^account$ /account.html [L,QSA]
     RewriteRule ^datos-de-facturacion$ /need-user-dni.html [L,QSA]

@@ -4,19 +4,18 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\UserMovieProgress;
+use App\Models\UserSerieProgress;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class MovieProgressController extends Controller
+class SerieProgressController extends Controller
 {
-
     public function index()
     {
         try {
             $user = Auth::user();
             
-            $progress = UserMovieProgress::with(['movie.series', 'movie.genders', 'movie.movieProgress', 'movie.seoSetting'])
+            $progress = UserSerieProgress::with(['episode.movie.series', 'episode.movie.genders', 'episode.episodeProgress', 'episode.seoSetting'])
                 ->where('user_id', $user->id)
                 ->orderBy('updated_at', 'desc')
                 ->get();
@@ -48,14 +47,14 @@ class MovieProgressController extends Controller
         try {
             $user = Auth::user();
             $validated = $request->validate([
-                'movie_id' => 'required|exists:movies,id',
+                'movie_id' => 'required|exists:series,id',
                 'progress_seconds' => 'required|integer|min:0'
             ]);
             
-            $progress = UserMovieProgress::updateOrCreate(
+            $progress = UserSerieProgress::updateOrCreate(
                 [
                     'user_id' => $user->id,
-                    'movie_id' => $validated['movie_id']
+                    'serie_id' => $validated['movie_id']
                 ],
                 [
                     'progress_seconds' => $validated['progress_seconds']
@@ -78,8 +77,8 @@ class MovieProgressController extends Controller
     {
         try {
             $user = Auth::user();
-            $progress = UserMovieProgress::where('user_id', $user->id)
-                ->where('movie_id', $movieId)
+            $progress = UserSerieProgress::where('user_id', $user->id)
+                ->where('serie_id', $movieId)
                 ->first();
                 
             return response()->json($progress ? $progress->progress_seconds : 0);
@@ -98,8 +97,8 @@ class MovieProgressController extends Controller
     {
         try {
             $user = Auth::user();
-            $deleted = UserMovieProgress::where('user_id', $user->id)
-                ->where('movie_id', $movieId)
+            $deleted = UserSerieProgress::where('user_id', $user->id)
+                ->where('serie_id', $movieId)
                 ->delete();
                 
             return response()->json(['success' => $deleted > 0]);

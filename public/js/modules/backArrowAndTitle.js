@@ -1,4 +1,4 @@
-export function setupBackArrowAndTitle(player, content) {
+export function setupBackArrowAndTitle(player, content, isSerie) {
   const videoJsElement = player.el();
   const backButtonContainer = document.createElement('div');
   backButtonContainer.className = 'vjs-back-button-container';
@@ -7,11 +7,17 @@ export function setupBackArrowAndTitle(player, content) {
   backButton.className = 'vjs-back-button';
   
   let location;
-  if (content.seo_setting && content.seo_setting.url) {
-    location = content.seo_setting.url;
+  console.log(content);
+  if (!isSerie) {
+    if (content.seo_setting && content.seo_setting.url) {
+      location = content.seo_setting.url;
+    } else {
+      location = `/contenido/${content.slug}`;
+    }
   } else {
-    location = `/contenido/${content.slug}`;
+    location = content.seo_setting.canonical;
   }
+  
   backButton.addEventListener('click', () => {
     window.location.href = location;
   });

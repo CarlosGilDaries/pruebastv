@@ -4,17 +4,23 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Movie;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 class ViewedContentController extends Controller
 {
-    public function viewed(string $id)
+    public function viewed(string $id, $isSerie)
     {
         try {
             $user = Auth::user();
-            $content = Movie::where('id', $id)->first();
+            if ($isSerie == 'true') {
+                $episode = Serie::where('id', $id)->first();
+                $content = Movie::where('id', $episode->movie_id)->first();
+            } else {
+                $content = Movie::where('id', $id)->first();
+            }
 
             $user->viewed()->syncWithoutDetaching($content->id);
 

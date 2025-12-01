@@ -1,5 +1,6 @@
 import { formatDuration } from './formatDuration.js';
 import { applyTranslations } from '../translations.js';
+import { resourceUrl } from './resourceUrl.js';
 
 export async function renderGridFilms(data, node, serie = false) {
   let counter = 0;
@@ -24,11 +25,16 @@ export async function renderGridFilms(data, node, serie = false) {
       );
 
       const link = document.createElement('a');
-      if (movie.seo_setting && movie.seo_setting.url) {
-        link.href = movie.seo_setting.url;
+      if (serie) {
+        link.href = `/player/episode/${movie.id}`;
       } else {
-        link.href = `/contenido/${movie.slug}`;
+        if (movie.seo_setting && movie.seo_setting.url) {
+          link.href = movie.seo_setting.url;
+        } else {
+          link.href = `/contenido/${movie.slug}`;
+        }
       }
+      
       link.classList.add('text-decoration-none');
 
       let imgSource;
@@ -54,11 +60,16 @@ export async function renderGridFilms(data, node, serie = false) {
         'p-2'
       );
 
-      if (movie.seo_setting && movie.seo_setting.url) {
-        info.href = movie.seo_setting.url;
+      if (serie) {
+        info.href = `/player/episode/${movie.id}`;
       } else {
-        info.href = `/contenido/${movie.slug}`;
+        if (movie.seo_setting && movie.seo_setting.url) {
+          info.href = movie.seo_setting.url;
+        } else {
+          info.href = `/contenido/${movie.slug}`;
+        }
       }
+      
       info.classList.add('info');
 
       let translation;

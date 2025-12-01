@@ -1,8 +1,9 @@
 export class VideoProgressTracker {
-  constructor(movieId, player, token) {
+  constructor(movieId, player, token, isSerie) {
     this.movieId = movieId;
     this.player = player;
     this.token = token;
+    this.isSerie = isSerie;
     this.lastSavedTime = 0;
     this.saveInterval = 10000; // Guardar cada 10 segundos
 
@@ -38,7 +39,14 @@ export class VideoProgressTracker {
 
   async fetchSavedProgress() {
     try {
-      const response = await fetch(`/api/movie-progress/${this.movieId}`, {
+      let url;
+      if (this.isSerie) {
+        url = `/api/serie-progress/${this.movieId}`;
+      } else {
+        url = `/api/movie-progress/${this.movieId}`;
+      }
+
+      const response = await fetch(url, {
         headers: {
           Authorization: `Bearer ${this.token}`,
           'Content-Type': 'application/json',
@@ -69,7 +77,13 @@ export class VideoProgressTracker {
       return;
 
     try {
-      const response = await fetch('/api/movie-progress', {
+      let url;
+      if (this.isSerie) {
+        url = `/api/serie-progress`;
+      } else {
+        url = `/api/movie-progress`;
+      }
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${this.token}`,
@@ -92,7 +106,13 @@ export class VideoProgressTracker {
 
   async clearProgress() {
     try {
-      const response = await fetch(`/api/movie-progress/${this.movieId}`, {
+      let url;
+      if (this.isSerie) {
+        url = `/api/serie-progress/${this.movieId}`;
+      } else {
+         url = `/api/movie-progress/${this.movieId}`;
+      }
+      const response = await fetch(url, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${this.token}`,
