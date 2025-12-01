@@ -5,46 +5,54 @@ export class VideoProgressTracker {
     this.token = token;
     this.isSerie = isSerie;
     this.lastSavedTime = 0;
-    this.saveInterval = 10000; // Guardar cada 10 segundos
+    this.saveInterval = 10000;
 
     this.init();
   }
 
   async init() {
-    // Cargar progreso guardado al iniciar
-    const savedTime = await this.fetchSavedProgress();
-    if (savedTime > 0) {
-      const duration = this.player.duration();
-      this.player.currentTime(savedTime);
+    // Solo intentar cargar progreso si NO estamos en modo con anuncios
+    // (porque en modo con anuncios ya lo maneja initAdPlayer)
 
+    // Verificar si hay un savedTime en el player (seteado por initAdPlayer)
+    if (this.player.userSavedTime) {
+      console.log(
+        'VideoProgressTracker: Usando tiempo del player.userSavedTime:',
+        this.player.userSavedTime
+      );
+      return;
     }
 
-    // Configurar eventos
+    // Si no, cargar normalmente
+    const savedTime = await this.fetchSavedProgress();
+    if (savedTime > 0) {
+      this.player.one('loadedmetadata', () => {
+        const duration = this.player.duration();
+        if (savedTime < duration - 5) {
+          console.log('VideoProgressTracker aplicando tiempo:', savedTime);
+          this.player.currentTime(savedTime);
+        }
+      });
+    }
+
     this.setupEvents();
   }
 
   setupEvents() {
-    // Intervalo para guardar progreso
     setInterval(() => this.saveProgress(), this.saveInterval);
 
-    // Guardar al pausar
     this.player.on('pause', () => this.saveProgress());
 
-    // Eliminar progreso al finalizar
     this.player.on('ended', () => this.clearProgress());
 
-    // Guardar al cerrar la página
     window.addEventListener('beforeunload', () => this.saveProgress());
   }
 
   async fetchSavedProgress() {
     try {
-      let url;
-      if (this.isSerie) {
-        url = `/api/serie-progress/${this.movieId}`;
-      } else {
-        url = `/api/movie-progress/${this.movieId}`;
-      }
+      const url = this.isSerie
+        ? `/api/serie-progress/${this.movieId}`
+        : `/api/movie-progress/${this.movieId}`;
 
       const response = await fetch(url, {
         headers: {
@@ -63,13 +71,14 @@ export class VideoProgressTracker {
   }
 
   async saveProgress() {
-    // No guardar si el video ha terminado
     if (this.player.ended()) return;
 
     const currentTime = Math.floor(this.player.currentTime());
     const duration = this.player.duration();
 
-    // Solo guardar si ha cambiado significativamente
+    // Evitar guardar cuando duration aún es inválida en series HLS
+    if (!duration || isNaN(duration) || duration < 10) return;
+
     if (
       Math.abs(currentTime - this.lastSavedTime) < 5 ||
       duration - currentTime < 5
@@ -77,12 +86,8 @@ export class VideoProgressTracker {
       return;
 
     try {
-      let url;
-      if (this.isSerie) {
-        url = `/api/serie-progress`;
-      } else {
-        url = `/api/movie-progress`;
-      }
+      const url = this.isSerie ? `/api/serie-progress` : `/api/movie-progress`;
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -106,12 +111,10 @@ export class VideoProgressTracker {
 
   async clearProgress() {
     try {
-      let url;
-      if (this.isSerie) {
-        url = `/api/serie-progress/${this.movieId}`;
-      } else {
-         url = `/api/movie-progress/${this.movieId}`;
-      }
+      const url = this.isSerie
+        ? `/api/serie-progress/${this.movieId}`
+        : `/api/movie-progress/${this.movieId}`;
+
       const response = await fetch(url, {
         method: 'DELETE',
         headers: {
@@ -121,7 +124,6 @@ export class VideoProgressTracker {
       });
 
       if (response.ok) {
-        console.log('Progreso eliminado al finalizar el video');
         this.lastSavedTime = 0;
       }
     } catch (error) {
@@ -129,4 +131,3 @@ export class VideoProgressTracker {
     }
   }
 }
-

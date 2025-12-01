@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use App\Models\UserSerieProgress;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +16,31 @@ class SerieProgressController extends Controller
         try {
             $user = Auth::user();
             
-            $progress = UserSerieProgress::with(['episode.movie.series', 'episode.movie.genders', 'episode.episodeProgress', 'episode.seoSetting'])
+            $progress = UserSerieProgress::with([
+                    'serie.movie.series' => function($query) {
+                        $query->orderBy('season_number', 'asc')
+                            ->orderBy('episode_number', 'asc');
+                    }, 
+                    'serie.movie.genders', 
+                    'serie.episodeProgress', 
+                    'serie.seoSetting'
+                ])
                 ->where('user_id', $user->id)
                 ->orderBy('updated_at', 'desc')
                 ->get();
+
+            foreach ($progress as $item) {
+                if ($item->serie && $item->serie->movie) {
+                    $item->serie->movie->series_by_season =
+                        $item->serie->movie->series()
+                            ->with('seoSetting')
+                            ->orderBy('season_number', 'asc')
+                            ->orderBy('episode_number', 'asc')
+                            ->get()
+                            ->groupBy('season_number')
+                            ->values();
+                }
+            }
     
             if ($progress->isEmpty()) {
                 return response()->json([
@@ -50,6 +72,16 @@ class SerieProgressController extends Controller
                 'movie_id' => 'required|exists:series,id',
                 'progress_seconds' => 'required|integer|min:0'
             ]);
+
+            $episode = Serie::with('movie')->findOrFail($validated['movie_id']);
+            $serieId = $episode->movie->id;
+            $episodesOfSameSerie = Serie::where('movie_id', $serieId)->pluck('id');
+
+            // Eliminar progresos de otros capítulos de esta serie
+            UserSerieProgress::where('user_id', $user->id)
+                ->whereIn('serie_id', $episodesOfSameSerie)
+                ->where('serie_id', '!=', $validated['movie_id'])
+                ->delete();
             
             $progress = UserSerieProgress::updateOrCreate(
                 [

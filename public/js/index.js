@@ -6,6 +6,7 @@ import { setupLoginSignupButtons } from './modules/loginSignupButtons.js';
 import { checkDeviceID } from './modules/checkDeviceId.js';
 import { clickLogOut } from './modules/clickLogOutButton.js';
 import { getVideoContent } from './modules/getVideoContent.js';
+import { getKeepWatchingContent } from './modules/getKeepWatchingContent.js';
 import { resetFreeExpiration } from './modules/checkForFreeExpiration.js';
 import { showSpinner } from './modules/spinner.js';
 import { hideSpinner } from './modules/spinner.js';
@@ -53,15 +54,33 @@ async function indexData() {
           'Content-Type': 'application/json',
         },
       });
+      const progressSeriesResponse = await fetch('/api/serie-progress', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
       const progressData = await progressResponse.json();
-      if (progressData.success) {
+      const progressSeriesData = await progressSeriesResponse.json();
+
+      if (progressData.success && progressSeriesData) {
         keepWatching.style.display = 'flex';
         const content = progressData.movies;
+        const series = progressSeriesData.movies;
+        let arrayDePueba = [];
         let contentArray = [];
-      content.forEach(movie => {
-        contentArray.push(movie.movie);
-      });
-      getVideoContent(contentArray, keepWatchingVideoContent);
+        content.forEach((movie) => {
+          contentArray.push(movie.movie);
+          arrayDePueba.push(movie.movie);
+        });
+        if (series) {
+          series.forEach((serie) => {
+            contentArray.push(serie.serie.movie);
+            arrayDePueba.push(serie.serie);
+          });
+        }
+        //getVideoContent(contentArray, keepWatchingVideoContent);
+        getKeepWatchingContent(arrayDePueba, keepWatchingVideoContent);
       }
     }
 

@@ -10,29 +10,44 @@ export function setupPreroll(
   token,
   initialTime = 0
 ) {
+  const preroll = ads.find((ad) => ad.ad_movie_type === 'preroll');
+
   // Solo mostrar preroll si el usuario comienza desde el inicio
   if (initialTime > 0) {
-    player.trigger('nopreroll');
+    console.log(
+      'Tiempo guardado encontrado, saltando preroll. initialTime:',
+      initialTime
+    );
+
+    // IMPORTANTE: Asegurar que se dispare el evento nopreroll
+    // Pequeño delay para asegurar que los listeners están configurados
+    setTimeout(() => {
+      console.log('Disparando nopreroll event');
+      player.trigger('nopreroll');
+    }, 50);
+
     return;
   }
-
-  const preroll = ads.find((ad) => ad.ad_movie_type === 'preroll');
-  const { type, url } = getVideoSource(movieType, movieUrl, movieId, token);
 
   if (!preroll) {
-    player.trigger('nopreroll');
+    console.log('No hay preroll disponible');
+    setTimeout(() => {
+      player.trigger('nopreroll');
+    }, 50);
     return;
   }
 
+  console.log('Configurando preroll para tiempo 0');
   player.on('readyforpreroll', function () {
+    console.log('readyforpreroll disparado');
     player.ads.startLinearAdMode();
     player.src({
       src: preroll.src,
       type: preroll.type,
     });
 
-    // Cuando el anuncio empiece, quitar el loader
     player.one('adplaying', function () {
+      console.log('Preroll empezando');
       document.querySelector(
         '#my-video > div.vjs-back-button-container'
       ).style.display = 'none';
@@ -41,6 +56,7 @@ export function setupPreroll(
     });
 
     player.one('adended', function () {
+      console.log('Preroll terminado');
       player.ads.endLinearAdMode();
       document.querySelector(
         '#my-video > div.vjs-back-button-container'

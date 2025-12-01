@@ -13,17 +13,16 @@ async function initPlayer() {
     const parts = path.split('/'); // ["", "player", "episode", "74"]
     const type = parts[2]; // "episode"
     const id = parts[3]; // "74"
-    console.log(type, id);
+    console.log(id);
     let apiShow;
 
+    let isSerie = false;
     if (type == 'episode') {
       apiShow = `/api/serie-by-id/${id}`;
+      isSerie = true;
     } else {
       apiShow = `/api/content-by-id/${id}`;
     }
-
-    const apiAds = 'https://pruebastv.kmc.es/api/ads/';
-    const backendURL = 'https://pruebastv.kmc.es';
 
     const token = localStorage.getItem('auth_token');
     if (!token) {
@@ -68,11 +67,6 @@ async function initPlayer() {
       location = showData.data.movie.seo_setting.url;
     } else {
       location = `/contenido/${showData.data.movie.slug}`;
-    }
-
-    let isSerie = false;
-    if (showData.data.serie) {
-      isSerie = true;
     }
 
     const userResponse = await fetch(`/api/user`, {
@@ -208,26 +202,7 @@ async function playVideoWithoutAds(movie, token, signedUrl, isSerie) {
     let techOrder = 'html5';
 
     document.title = movie.title;
-    /*
-    if (type === 'iframe') {
-      const video = document.querySelector('video');
-      if (video) video.remove();
-      console.log(urlData.url);
 
-      const container = document.getElementById('iframe-container');
-      container.style.display = 'flex';
-      container.innerHTML = `
-									<iframe
-										  id="iframe-without-ads"
-										  src="${movie.url}" 
-										  frameborder="0" 
-										  allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope" 
-										  allowfullscreen>
-									</iframe>;
-									`;
-      return;
-    }
-*/
     if (type === 'stream') {
       videoUrl = signedUrl;
       type = 'application/vnd.apple.mpegurl';
@@ -284,9 +259,11 @@ async function playVideoWithAds(movieId, token, movie, isSerie) {
     const player = videojs('my-video');
 
     player.ready(async () => {
+      // Obtener tiempo guardado
       const savedTime = await player.getSavedProgress(movieData.id, token);
+      console.log('Tiempo guardado recuperado:', savedTime);
 
-      await initAdPlayer(
+      const { playerInstance, midrollState } = await initAdPlayer(
         player,
         movieData.url,
         movieData.type,
@@ -296,27 +273,59 @@ async function playVideoWithAds(movieId, token, movie, isSerie) {
         savedTime
       );
 
-      new VideoProgressTracker(movieData.id, player, token, isSerie);
-    });
+      // Añadir listener adicional para verificar si el tiempo se aplicó
+      playerInstance.on('timeupdate', function firstTimeUpdate() {
+        const currentTime = playerInstance.currentTime();
+        console.log('timeupdate - tiempo actual:', currentTime);
 
-    ads.forEach(ad => {
-      if (ad.ad_movie_type == 'preroll') {
-        console.log(ad);
-      }
+        // Verificar si el tiempo inicial se aplicó correctamente
+        if (savedTime > 0 && Math.abs(currentTime - savedTime) < 1) {
+          console.log('✓ Tiempo inicial aplicado correctamente:', currentTime);
+        } else if (savedTime > 0 && currentTime < 1) {
+          console.log('✗ El tiempo NO se aplicó, aún en inicio');
+          // Intentar aplicar nuevamente
+          setTimeout(() => {
+            if (
+              playerInstance.duration() &&
+              savedTime < playerInstance.duration() - 5
+            ) {
+              playerInstance.currentTime(savedTime);
+              console.log('Re-aplicando tiempo inicial:', savedTime);
+            }
+          }, 1000);
+        }
+
+        // Remover este listener después del primer timeupdate
+        playerInstance.off('timeupdate', firstTimeUpdate);
+      });
+
+      // Crear VideoProgressTracker
+      new VideoProgressTracker(movieData.id, playerInstance, token, isSerie);
     });
 
     setupBackArrowAndTitle(player, movieData, isSerie);
 
+    let url;
+    if (isSerie) {
+      url = `/api/serie-progress/${movieId}`;
+    } else {
+      url = `/api/movie-progress/${movieId}`;
+    }
+
     player.getSavedProgress = async (movieId, token) => {
       try {
-        const response = await fetch(`/api/movie-progress/${movieId}`, {
+        const response = await fetch(url, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
         });
 
-        return response.ok ? await response.json() : 0;
+        if (!response.ok) return 0;
+
+        const data = await response.json();
+        // Asegurar que obtenemos un número
+        return typeof data === 'number' ? data : data.progress_seconds || 0;
       } catch (error) {
         console.error('Error fetching progress:', error);
         return 0;

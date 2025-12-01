@@ -1,13 +1,6 @@
 import { getVideoSource } from './getVideoSource.js';
 
-export async function setupPlayer(
-  player,
-  movieUrl,
-  movieType,
-  movieId,
-  token,
-  initialTime = 0
-) {
+export async function setupPlayer(player, movieUrl, movieType, movieId, token) {
   const { type, url } = await getVideoSource(
     movieType,
     movieUrl,
@@ -15,6 +8,9 @@ export async function setupPlayer(
     token
   );
 
+  console.log('setupPlayer - Configurando fuente:', { type, url });
+
+  // Configurar el source
   player.src({
     src: url,
     type: type,
@@ -23,15 +19,8 @@ export async function setupPlayer(
   // Inicializar ads
   player.ads();
 
-  // Si hay tiempo inicial, configurarlo después de que los metadatos estén cargados
-  if (initialTime > 0) {
-    player.one('loadedmetadata', function () {
-      // Saltar al tiempo guardado, pero no demasiado cerca del final
-      const duration = player.duration();
-      const startTime = initialTime < duration - 5 ? initialTime : 0;
-      player.currentTime(startTime);
-    });
-  }
+  // IMPORTANTE: Forzar la carga de metadatos
+  player.load();
 
   // Manejar reinicio después de contentended
   player.on('contentended', function () {
@@ -41,5 +30,6 @@ export async function setupPlayer(
     });
   });
 
+  console.log('setupPlayer completado');
   return player;
 }

@@ -7,20 +7,20 @@ export function getVideoContent(data, node) {
     const article = document.createElement('article');
     article.classList.add('content');
 
-    const link = document.createElement('a');
-    if (video.seo_setting && video.seo_setting.url != null) {
-      link.href = video.seo_setting.url;
-    } else {
-      link.href = `/contenido/${video.slug}`;
-    }
+     const link = document.createElement('a');
+     const info = document.createElement('a');
+     info.classList.add('miniature-info');
+     if (video.seo_setting && video.seo_setting.url != null) {
+       link.href = video.seo_setting.url;
+       info.href = video.seo_setting.url;
+     } else {
+       link.href = `/contenido/${video.slug}`;
+       info.href = `/contenido/${video.slug}`;
+     }
 
     const img = document.createElement('img');
     img.src = video.tall_cover;
     link.append(img);
-
-    const info = document.createElement('a');
-    info.href = `/content/${video.slug}`;
-    info.classList.add('miniature-info');
 
     const title = document.createElement('h3');
     title.setAttribute('data-i18n', `content_${video.id}_title`);

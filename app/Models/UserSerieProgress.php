@@ -12,7 +12,7 @@ class UserSerieProgress extends Model
         'progress_seconds'
     ];
 
-    public function episode()
+    public function serie()
     {
         return $this->belongsTo(Serie::class);
     }
