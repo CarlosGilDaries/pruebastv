@@ -7,7 +7,6 @@ export function setupBackArrowAndTitle(player, content, isSerie) {
   backButton.className = 'vjs-back-button';
   
   let location;
-  console.log(content);
   if (!isSerie) {
     if (content.seo_setting && content.seo_setting.url) {
       location = content.seo_setting.url;

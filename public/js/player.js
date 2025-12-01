@@ -17,7 +17,7 @@ async function initPlayer() {
     let apiShow;
 
     if (type == 'episode') {
-      apiShow = `/api/serie-by-id/${id}`
+      apiShow = `/api/serie-by-id/${id}`;
     } else {
       apiShow = `/api/content-by-id/${id}`;
     }
@@ -130,10 +130,7 @@ async function initPlayer() {
       }
     }
 
-    if (
-      showData.data.movie.rent &&
-      userData.data.user.rol !== 'admin'
-    ) {
+    if (showData.data.movie.rent && userData.data.user.rol !== 'admin') {
       const rentResponse = await fetch('/api/check-if-rented/' + movieId, {
         method: 'GET',
         headers: {
@@ -176,7 +173,12 @@ async function initPlayer() {
     if (showData.data.ads_count === 0) {
       await playVideoWithoutAds(showData.data.movie, token, url, isSerie);
     } else {
-      await playVideoWithAds(showData.data.movie.id, token, showData.data.movie, isSerie);
+      await playVideoWithAds(
+        showData.data.movie.id,
+        token,
+        showData.data.movie,
+        isSerie
+      );
     }
 
     const viewedResponse = await fetch(
@@ -206,7 +208,7 @@ async function playVideoWithoutAds(movie, token, signedUrl, isSerie) {
     let techOrder = 'html5';
 
     document.title = movie.title;
-/*
+    /*
     if (type === 'iframe') {
       const video = document.querySelector('video');
       if (video) video.remove();
@@ -279,40 +281,47 @@ async function playVideoWithoutAds(movie, token, signedUrl, isSerie) {
 async function playVideoWithAds(movieId, token, movie, isSerie) {
   try {
     const { movie: movieData, ads } = await loadAds(movieId, token, isSerie);
+    const player = videojs('my-video');
 
-    if (movieData.type != 'iframe') {
-      const player = videojs('my-video', {}, async function () {
-        const savedTime = await this.getSavedProgress(movieData.id, token);
+    player.ready(async () => {
+      const savedTime = await player.getSavedProgress(movieData.id, token);
 
-        await initAdPlayer(
-          player,
-          movieData.url,
-          movieData.type,
-          ads,
-          movieData.id,
-          token,
-          savedTime
-        );
-        new VideoProgressTracker(movieData.id, player, token, isSerie);
-      });
+      await initAdPlayer(
+        player,
+        movieData.url,
+        movieData.type,
+        ads,
+        movieData.id,
+        token,
+        savedTime
+      );
 
-      player.getSavedProgress = async (movieId, token) => {
-        try {
-          const response = await fetch(`/api/movie-progress/${movieId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
-            },
-          });
-          return response.ok ? await response.json() : 0;
-        } catch (error) {
-          console.error('Error fetching progress:', error);
-          return 0;
-        }
-      };
+      new VideoProgressTracker(movieData.id, player, token, isSerie);
+    });
 
-      setupBackArrowAndTitle(player, movieData, isSerie);
-    }
+    ads.forEach(ad => {
+      if (ad.ad_movie_type == 'preroll') {
+        console.log(ad);
+      }
+    });
+
+    setupBackArrowAndTitle(player, movieData, isSerie);
+
+    player.getSavedProgress = async (movieId, token) => {
+      try {
+        const response = await fetch(`/api/movie-progress/${movieId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        return response.ok ? await response.json() : 0;
+      } catch (error) {
+        console.error('Error fetching progress:', error);
+        return 0;
+      }
+    };
   } catch (error) {
     console.error('Error al cargar anuncios:', error);
   }
