@@ -18,7 +18,6 @@ async function initPlayer() {
 
     if (type == 'episode') {
       apiShow = `/api/serie-by-id/${id}`
-      console.log('episodio');
     } else {
       apiShow = `/api/content-by-id/${id}`;
     }

@@ -168,7 +168,7 @@ class SerieController extends Controller
     {
         try {
             $actualEpisode = Serie::where('id', $id)
-                ->with('movie')
+                ->with('seoSetting', 'movie')
                 ->first();
             $serie = $actualEpisode->movie;
             $episodes = $serie->series()
