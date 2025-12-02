@@ -16,10 +16,10 @@ export class VideoProgressTracker {
 
     // Verificar si hay un savedTime en el player (seteado por initAdPlayer)
     if (this.player.userSavedTime) {
-      console.log(
+      /*console.log(
         'VideoProgressTracker: Usando tiempo del player.userSavedTime:',
         this.player.userSavedTime
-      );
+      );*/
       return;
     }
 
@@ -29,7 +29,7 @@ export class VideoProgressTracker {
       this.player.one('loadedmetadata', () => {
         const duration = this.player.duration();
         if (savedTime < duration - 5) {
-          console.log('VideoProgressTracker aplicando tiempo:', savedTime);
+          //console.log('VideoProgressTracker aplicando tiempo:', savedTime);
           this.player.currentTime(savedTime);
         }
       });

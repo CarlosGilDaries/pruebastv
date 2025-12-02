@@ -14,7 +14,7 @@ export function initAdPlayer(
 ) {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log('initAdPlayer - initialTime:', initialTime);
+      //console.log('initAdPlayer - initialTime:', initialTime);
 
       // Setup player SIN initialTime
       const playerInstance = await setupPlayer(
@@ -32,16 +32,13 @@ export function initAdPlayer(
       // Función para aplicar el tiempo inicial
       const applyInitialTime = () => {
         if (!initialTimeApplied && initialTime > 0) {
-          console.log('Intentando aplicar tiempo inicial:', initialTime);
+          //console.log('Intentando aplicar tiempo inicial:', initialTime);
 
           // Intentar inmediatamente si ya hay metadatos
           if (playerInstance.duration() && !isNaN(playerInstance.duration())) {
             const duration = playerInstance.duration();
             if (initialTime < duration - 5) {
-              console.log(
-                'Aplicando tiempo inicial inmediatamente:',
-                initialTime
-              );
+              //console.log('Aplicando tiempo inicial inmediatamente:',initialTime);
               playerInstance.currentTime(initialTime);
               initialTimeApplied = true;
             }
@@ -49,13 +46,10 @@ export function initAdPlayer(
             // Esperar a que los metadatos se carguen
             const loadedHandler = function () {
               const duration = playerInstance.duration();
-              console.log('Metadatos cargados, duración:', duration);
+              //console.log('Metadatos cargados, duración:', duration);
 
               if (initialTime < duration - 5) {
-                console.log(
-                  'Aplicando tiempo inicial después de metadatos:',
-                  initialTime
-                );
+                //console.log('Aplicando tiempo inicial después de metadatos:',initialTime);
                 playerInstance.currentTime(initialTime);
                 initialTimeApplied = true;
               }
@@ -67,9 +61,7 @@ export function initAdPlayer(
             // Timeout de seguridad
             setTimeout(() => {
               if (!initialTimeApplied) {
-                console.log(
-                  'Timeout en loadedmetadata, intentando aplicar tiempo'
-                );
+                //console.log('Timeout en loadedmetadata, intentando aplicar tiempo');
                 if (
                   playerInstance.duration() &&
                   initialTime < playerInstance.duration() - 5
@@ -108,7 +100,7 @@ export function initAdPlayer(
 
       // Evento cuando NO hay preroll (se aplica tiempo inicial inmediatamente)
       playerInstance.on('nopreroll', () => {
-        console.log('Evento nopreroll disparado');
+        //console.log('Evento nopreroll disparado');
         prerollHandled = true;
 
         // Aplicar tiempo inicial
@@ -121,7 +113,7 @@ export function initAdPlayer(
 
       // Evento cuando TERMINA el preroll
       playerInstance.one('adended', function handler() {
-        console.log('Evento adended disparado (preroll)');
+        //console.log('Evento adended disparado (preroll)');
         prerollHandled = true;
 
         // Pequeño delay antes de aplicar tiempo inicial
@@ -133,15 +125,13 @@ export function initAdPlayer(
       });
 
       // Iniciar flujo de ads
-      console.log('Disparando adsready...');
+      //console.log('Disparando adsready...');
       playerInstance.trigger('adsready');
 
       // Caso de seguridad: si no se dispara ningún evento después de un tiempo
       setTimeout(() => {
         if (!prerollHandled) {
-          console.log(
-            'Timeout de seguridad - ningún evento de preroll fue disparado'
-          );
+          //console.log('Timeout de seguridad - ningún evento de preroll fue disparado');
           applyInitialTime();
           resolve({ playerInstance, midrollState });
         }

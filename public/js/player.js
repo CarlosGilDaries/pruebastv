@@ -13,7 +13,6 @@ async function initPlayer() {
     const parts = path.split('/'); // ["", "player", "episode", "74"]
     const type = parts[2]; // "episode"
     const id = parts[3]; // "74"
-    console.log(id);
     let apiShow;
 
     let isSerie = false;
@@ -53,7 +52,7 @@ async function initPlayer() {
     });
 
     const showData = await showResponse.json();
-    console.log(showData);
+
     if (!showData.success) {
       console.error('Error al obtener el video:', showData.message);
       return;
@@ -261,7 +260,7 @@ async function playVideoWithAds(movieId, token, movie, isSerie) {
     player.ready(async () => {
       // Obtener tiempo guardado
       const savedTime = await player.getSavedProgress(movieData.id, token);
-      console.log('Tiempo guardado recuperado:', savedTime);
+      //console.log('Tiempo guardado recuperado:', savedTime);
 
       const { playerInstance, midrollState } = await initAdPlayer(
         player,
@@ -276,13 +275,13 @@ async function playVideoWithAds(movieId, token, movie, isSerie) {
       // Añadir listener adicional para verificar si el tiempo se aplicó
       playerInstance.on('timeupdate', function firstTimeUpdate() {
         const currentTime = playerInstance.currentTime();
-        console.log('timeupdate - tiempo actual:', currentTime);
+        //console.log('timeupdate - tiempo actual:', currentTime);
 
         // Verificar si el tiempo inicial se aplicó correctamente
         if (savedTime > 0 && Math.abs(currentTime - savedTime) < 1) {
-          console.log('✓ Tiempo inicial aplicado correctamente:', currentTime);
+          //console.log('✓ Tiempo inicial aplicado correctamente:', currentTime);
         } else if (savedTime > 0 && currentTime < 1) {
-          console.log('✗ El tiempo NO se aplicó, aún en inicio');
+          //console.log('✗ El tiempo NO se aplicó, aún en inicio');
           // Intentar aplicar nuevamente
           setTimeout(() => {
             if (
@@ -290,7 +289,7 @@ async function playVideoWithAds(movieId, token, movie, isSerie) {
               savedTime < playerInstance.duration() - 5
             ) {
               playerInstance.currentTime(savedTime);
-              console.log('Re-aplicando tiempo inicial:', savedTime);
+              //console.log('Re-aplicando tiempo inicial:', savedTime);
             }
           }, 1000);
         }

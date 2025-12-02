@@ -8,7 +8,7 @@ export async function setupPlayer(player, movieUrl, movieType, movieId, token) {
     token
   );
 
-  console.log('setupPlayer - Configurando fuente:', { type, url });
+  //console.log('setupPlayer - Configurando fuente:', { type, url });
 
   // Configurar el source
   player.src({
@@ -30,6 +30,6 @@ export async function setupPlayer(player, movieUrl, movieType, movieId, token) {
     });
   });
 
-  console.log('setupPlayer completado');
+  //console.log('setupPlayer completado');
   return player;
 }

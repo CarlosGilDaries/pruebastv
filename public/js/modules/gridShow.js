@@ -46,7 +46,6 @@ export async function gridShow(
     if (title != null) {
       title.innerHTML = data[endpoint].name;
       title.setAttribute('data-i18n', `${endpoint}_${data[endpoint].id}`);
-      document.title = data[endpoint].name;
     }
     const node = document.querySelector('.main-grid');
 

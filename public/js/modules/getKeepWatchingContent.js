@@ -3,14 +3,16 @@ import { formatDuration } from './formatDuration.js';
 
 export function getKeepWatchingContent(data, node) {
   data.forEach((video) => {
-    console.log(video);
     const article = document.createElement('article');
     article.classList.add('content');
 
+    let season;
     const link = document.createElement('a');
     const info = document.createElement('a');
     info.classList.add('miniature-info');
     if (video.episode_number) {
+      season = document.createElement('p');
+      season.innerHTML = `<span data-i18n="seasons_line">Temporada</span> ${video.season_number}`;
         link.href = `/player/episode/${video.id}`;
         info.href = `/player/episode/${video.id}`;
     } else {
@@ -62,18 +64,22 @@ export function getKeepWatchingContent(data, node) {
     const formatedDuration = formatDuration(video);
     duration.innerHTML = `${formatedDuration}`;
 
-    info.append(title, gender, duration);
+    if (video.episode_number) {
+      info.append(title, season , gender, duration);
+    } else {
+      info.append(title, gender, duration);
 
-    if (video.pay_per_view == 1) {
-      const ppv = document.createElement('p');
-      ppv.textContent = `Pay Per View: ${video.pay_per_view_price} €`;
-      info.append(ppv);
-    }
+      if (video.pay_per_view == 1) {
+        const ppv = document.createElement('p');
+        ppv.textContent = `Pay Per View: ${video.pay_per_view_price} €`;
+        info.append(ppv);
+      }
 
-    if (video.rent == 1) {
-      const rent = document.createElement('p');
-      rent.innerHTML = `<span data-i18n="rent">Alquiler</span>: ${video.rent_price} €`;
-      info.append(rent);
+      if (video.rent == 1) {
+        const rent = document.createElement('p');
+        rent.innerHTML = `<span data-i18n="rent">Alquiler</span>: ${video.rent_price} €`;
+        info.append(rent);
+      }
     }
 
     article.append(link, info);

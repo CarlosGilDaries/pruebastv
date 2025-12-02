@@ -14,15 +14,12 @@ export function setupPreroll(
 
   // Solo mostrar preroll si el usuario comienza desde el inicio
   if (initialTime > 0) {
-    console.log(
-      'Tiempo guardado encontrado, saltando preroll. initialTime:',
-      initialTime
-    );
+    //console.log('Tiempo guardado encontrado, saltando preroll. initialTime:',initialTime);
 
     // IMPORTANTE: Asegurar que se dispare el evento nopreroll
     // Pequeño delay para asegurar que los listeners están configurados
     setTimeout(() => {
-      console.log('Disparando nopreroll event');
+      //console.log('Disparando nopreroll event');
       player.trigger('nopreroll');
     }, 50);
 
@@ -30,16 +27,16 @@ export function setupPreroll(
   }
 
   if (!preroll) {
-    console.log('No hay preroll disponible');
+    //console.log('No hay preroll disponible');
     setTimeout(() => {
       player.trigger('nopreroll');
     }, 50);
     return;
   }
 
-  console.log('Configurando preroll para tiempo 0');
+  //console.log('Configurando preroll para tiempo 0');
   player.on('readyforpreroll', function () {
-    console.log('readyforpreroll disparado');
+    //console.log('readyforpreroll disparado');
     player.ads.startLinearAdMode();
     player.src({
       src: preroll.src,
@@ -47,7 +44,7 @@ export function setupPreroll(
     });
 
     player.one('adplaying', function () {
-      console.log('Preroll empezando');
+      //console.log('Preroll empezando');
       document.querySelector(
         '#my-video > div.vjs-back-button-container'
       ).style.display = 'none';
@@ -56,7 +53,7 @@ export function setupPreroll(
     });
 
     player.one('adended', function () {
-      console.log('Preroll terminado');
+      //console.log('Preroll terminado');
       player.ads.endLinearAdMode();
       document.querySelector(
         '#my-video > div.vjs-back-button-container'

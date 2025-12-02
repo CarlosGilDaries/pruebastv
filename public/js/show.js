@@ -301,7 +301,6 @@ async function fetchMovieData() {
       trailer.poster = data.data.movie.cover;
       image.src = data.data.movie.cover;
       title.textContent = data.data.movie.title;
-      document.title = data.data.movie.title + ' - Pruebas TV';
       gender.innerHTML = '';
       // Recorre todos los géneros
       data.data.movie.genders.forEach((g, index) => {

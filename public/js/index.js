@@ -67,20 +67,21 @@ async function indexData() {
         keepWatching.style.display = 'flex';
         const content = progressData.movies;
         const series = progressSeriesData.movies;
-        let arrayDePueba = [];
         let contentArray = [];
         content.forEach((movie) => {
           contentArray.push(movie.movie);
-          arrayDePueba.push(movie.movie);
         });
         if (series) {
           series.forEach((serie) => {
-            contentArray.push(serie.serie.movie);
-            arrayDePueba.push(serie.serie);
+            contentArray.push(serie.serie);
           });
         }
-        //getVideoContent(contentArray, keepWatchingVideoContent);
-        getKeepWatchingContent(arrayDePueba, keepWatchingVideoContent);
+
+        contentArray.sort((a, b) => {
+          return new Date(b.created_at) - new Date(a.created_at);
+        });
+
+        getKeepWatchingContent(contentArray, keepWatchingVideoContent);
       }
     }
 
